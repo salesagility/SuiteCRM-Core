@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {DataItem, ObjectMap, SeriesResult} from 'common';
+import {DataItem, SeriesResult} from '../../../../common/containers/chart/chart.model';
+import {ObjectMap} from '../../../../common/types/object-map';
 
 export interface SeriesVisitor {
 

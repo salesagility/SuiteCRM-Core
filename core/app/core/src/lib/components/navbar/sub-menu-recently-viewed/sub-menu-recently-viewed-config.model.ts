@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonCallback} from "common";
+import {ButtonCallback} from '../../../common/components/button/button.model';
 import {Observable} from "rxjs";
 
 export interface SubMenuRecentlyViewedConfig {

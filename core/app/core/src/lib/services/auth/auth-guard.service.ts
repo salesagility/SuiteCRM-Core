@@ -33,7 +33,8 @@ import {Process} from '../process/process.service';
 import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {RouteConverter, RouteInfo} from '../navigation/route-converter/route-converter.service';
-import {emptyObject, isEmptyString} from 'common';
+import {isEmptyString} from '../../common/utils/value-utils';
+import {emptyObject} from '../../common/utils/object-utils';
 import {LanguageStore} from '../../store/language/language.store';
 import {NotificationStore} from '../../store/notification/notification.store';
 

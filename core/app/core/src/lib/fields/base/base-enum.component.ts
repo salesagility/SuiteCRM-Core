@@ -27,7 +27,8 @@
 import {BaseFieldComponent} from './base-field.component';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Field, FieldDefinition, isEmptyString, isVoid, Option} from 'common';
+import {Field, FieldDefinition, Option} from '../../common/record/field.model';
+import {isVoid, isEmptyString} from '../../common/utils/value-utils';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {
     LanguageListStringMap,

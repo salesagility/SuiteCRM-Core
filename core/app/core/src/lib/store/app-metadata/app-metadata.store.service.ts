@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
-import {deepClone, emptyObject} from 'common';
+import {deepClone, emptyObject} from '../../common/utils/object-utils';
 import {StateStore} from '../state';
 import {LanguageStore, LanguageStrings} from '../language/language.store';
 import {SystemConfigStore} from '../system-config/system-config.store';

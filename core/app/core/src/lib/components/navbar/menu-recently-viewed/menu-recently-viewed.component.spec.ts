@@ -29,7 +29,7 @@ import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -40,6 +40,7 @@ import {languageMockData} from '../../../store/language/language.store.spec.mock
 import {themeImagesMockData} from '../../../store/theme-images/theme-images.store.spec.mock';
 import {ImageModule} from '../../image/image.module';
 import {ThemeImagesStore} from '../../../store/theme-images/theme-images.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const recentRecords = [
     {
@@ -70,26 +71,25 @@ describe('MenuRecentlyViewedComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                MenuItemLinkComponent,
-                MenuRecentlyViewedComponent,
-                MenuRecentlyViewedTestHostComponent
-            ],
-            imports: [
-                AngularSvgIconModule.forRoot(),
-                RouterTestingModule,
-                HttpClientTestingModule,
-                ImageModule,
-                NgbModule,
-            ],
-            providers: [
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-            ],
-        }).compileComponents();
+    declarations: [
+        MenuItemLinkComponent,
+        MenuRecentlyViewedComponent,
+        MenuRecentlyViewedTestHostComponent
+    ],
+    imports: [AngularSvgIconModule.forRoot(),
+        RouterTestingModule,
+        ImageModule,
+        NgbModule],
+    providers: [
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
     }));
 
     beforeEach(() => {

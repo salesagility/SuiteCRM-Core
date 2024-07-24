@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ModalButtonInterface, ViewMode} from 'common';
+import {ModalButtonInterface} from '../../../../common/components/modal/modal.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';

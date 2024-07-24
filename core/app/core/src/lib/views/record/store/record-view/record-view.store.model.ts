@@ -24,7 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Record, ViewMode} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {AppData} from '../../../../store/view/view.store';
 import {Metadata} from '../../../../store/metadata/metadata.store.service';
 

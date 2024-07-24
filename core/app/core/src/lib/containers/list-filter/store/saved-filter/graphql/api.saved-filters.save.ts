@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
-import {Record} from 'common';
+import {Record} from '../../../../../common/record/record.model';
 import {ApolloQueryResult} from '@apollo/client/core';
 import {RecordSaveGQL} from '../../../../../store/record/graphql/api.record.save';
 import {SavedFilter} from '../../../../../store/saved-filters/saved-filter.model';

@@ -25,8 +25,7 @@
  */
 
 import {Component, Input, OnInit, signal} from '@angular/core';
-import {ButtonInterface} from "common";
-
+import {ButtonInterface} from '../../../../common/components/button/button.model';
 @Component({
     selector: 'scrm-popup-button',
     templateUrl: 'popup-button.component.html',

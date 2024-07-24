@@ -25,14 +25,9 @@
  */
 
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {
-    ButtonInterface,
-    deepClone,
-    DropdownButtonInterface,
-    DropdownButtonSection,
-    DropdownButtonSectionMap,
-    emptyObject
-} from 'common';
+import {deepClone, emptyObject} from '../../common/utils/object-utils';
+import {ButtonInterface} from '../../common/components/button/button.model';
+import {DropdownButtonInterface, DropdownButtonSection, DropdownButtonSectionMap} from '../../common/components/button/dropdown-button.model';
 import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
 import {PlacementArray} from '@ng-bootstrap/ng-bootstrap/util/positioning';
 import {LanguageStore} from '../../store/language/language.store';

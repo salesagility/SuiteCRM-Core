@@ -27,7 +27,8 @@
 import {Injectable} from '@angular/core';
 import {DataTypeUnitConverter} from '../../../../unit-converters/data-type.unit-converter.service';
 import {SeriesVisitor} from '../series-traverser.service';
-import {DataItem, ObjectMap} from 'common';
+import {DataItem} from '../../../../../common/containers/chart/chart.model';
+import {ObjectMap} from '../../../../../common/types/object-map';
 
 @Injectable({
     providedIn: 'root'

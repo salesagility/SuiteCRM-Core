@@ -33,7 +33,7 @@ import {SystemConfigStore} from '../../../../store/system-config/system-config.s
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {userPreferenceStoreMock} from '../../../../store/user-preference/user-preference.store.spec.mock';
 import {DateFilterFieldComponent} from './date.component';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 
 @Component({
     selector: 'date-filter-field-test-host-component',

@@ -25,7 +25,11 @@
  */
 
 import {BehaviorSubject, forkJoin, Observable, of, Subscription} from 'rxjs';
-import {deepClone, Record, ViewContext, ViewFieldDefinition, ViewMode} from 'common';
+import {ViewContext} from '../../common/views/view.model';
+import {deepClone} from '../../common/utils/object-utils';
+import {Record} from '../../common/record/record.model';
+import {ViewFieldDefinition} from '../../common/metadata/metadata.model';
+import {ViewMode} from '../../common/views/view.model';
 import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
 import {RecordStore} from '../record/record.store';
 import {AppStateStore} from '../app-state/app-state.store';

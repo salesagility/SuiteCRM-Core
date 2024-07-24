@@ -25,7 +25,9 @@
  */
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Record, ViewFieldDefinition, ViewMode} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {map} from 'rxjs/operators';
 import {BaseRecordContainerStore} from '../../../../store/record-container/base-record-container.store';
 import {RecordPanelMetadata} from './record-panel.store.model';

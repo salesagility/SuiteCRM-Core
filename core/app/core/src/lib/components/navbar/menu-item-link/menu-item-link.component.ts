@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {MenuItemLink} from 'common';
+import {Component, Input} from '@angular/core';
+import {MenuItemLink} from '../../../common/menu/menu.model';
 import {MenuItemLinkRegistry} from './menu-item-link.registry';
 import {MenuItemLinkConfig} from "./menu-item-link-config.model";
 

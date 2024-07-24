@@ -27,7 +27,9 @@
 import {Injectable} from '@angular/core';
 import {Params, Router} from '@angular/router';
 import {ModuleNameMapper,} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
-import {AttributeMap, isVoid, ViewMode} from 'common';
+import {ViewMode} from '../../../../common/views/view.model';
+import {AttributeMap} from '../../../../common/record/record.model';
+import {isVoid} from '../../../../common/utils/value-utils';
 import get from 'lodash-es/get';
 import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
 

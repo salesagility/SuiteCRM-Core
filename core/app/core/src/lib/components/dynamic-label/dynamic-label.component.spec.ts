@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {Field} from 'common';
+import {Field} from '../../common/record/field.model';
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 import {datetimeFormatterMock} from '../../services/formatters/datetime/datetime-formatter.service.spec.mock';
 import {CurrencyFormatter} from '../../services/formatters/currency/currency-formatter.service';

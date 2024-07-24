@@ -29,7 +29,8 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {AppStateStore} from '../app-state/app-state.store';
 import {StateStore} from '../state';
-import {deepClone, ObjectMap} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
+import {ObjectMap} from '../../common/types/object-map';
 import {AdminMetadata} from './admin-metadata.model';
 
 

@@ -26,7 +26,7 @@
 
 import {Component, OnDestroy, OnInit,} from '@angular/core';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {isEmptyString, isVoid} from 'common';
+import {isVoid, isEmptyString} from '../../../../common/utils/value-utils';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DateParserFormatter} from '../../../base/datetime/date/date-parser-formatter.service';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';

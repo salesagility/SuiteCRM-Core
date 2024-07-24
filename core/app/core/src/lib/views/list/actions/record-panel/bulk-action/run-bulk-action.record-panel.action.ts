@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {isFalse, ViewMode} from 'common';
+import {ViewMode} from '../../../../../common/views/view.model';
+import {isFalse} from '../../../../../common/utils/value-utils';
 import {take} from 'rxjs/operators';
 import {Process} from '../../../../../services/process/process.service';
 import {ConfirmationModalService} from '../../../../../services/modals/confirmation-modal.service';

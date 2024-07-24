@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {StringMap} from 'common';
+import {StringMap} from '../../common/types/string-map';
 import {Observable} from 'rxjs';
 import {AuthService} from '../../services/auth/auth.service';
 import {RecordListStore} from '../record-list/record-list.store';

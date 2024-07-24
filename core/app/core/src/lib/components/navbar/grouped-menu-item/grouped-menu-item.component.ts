@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {MenuItem} from 'common';
+import {MenuItem} from '../../../common/menu/menu.model';
 import {GroupedMenuItemRegistry} from './grouped-menu-item.registry';
 
 @Component({

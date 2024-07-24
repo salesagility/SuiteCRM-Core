@@ -29,7 +29,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {ListContainerComponent} from './list-container.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -44,6 +44,7 @@ import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.
 import {listviewStoreMock} from '../../store/list-view/list-view.store.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
 import {TableModule} from '../../../../components/table/table.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ListcontainerUiComponent', () => {
     let component: ListContainerComponent;
@@ -51,31 +52,30 @@ describe('ListcontainerUiComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [
-                TableModule,
-                WidgetPanelModule,
-                AngularSvgIconModule.forRoot(),
-                HttpClientTestingModule,
-                NoopAnimationsModule,
-                ApolloTestingModule,
-                RouterTestingModule
-            ],
-            providers: [
-                {
-                    provide: ListViewStore, useValue: listviewStoreMock
-                },
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-                {
-                    provide: LanguageStore, useValue: languageStoreMock
-                },
-                {provide: MetadataStore, useValue: metadataStoreMock},
-            ],
-            declarations: [ListContainerComponent]
-        })
+    declarations: [ListContainerComponent],
+    imports: [TableModule,
+        WidgetPanelModule,
+        AngularSvgIconModule.forRoot(),
+        NoopAnimationsModule,
+        ApolloTestingModule,
+        RouterTestingModule],
+    providers: [
+        {
+            provide: ListViewStore, useValue: listviewStoreMock
+        },
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        {
+            provide: LanguageStore, useValue: languageStoreMock
+        },
+        { provide: MetadataStore, useValue: metadataStoreMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     }));
 

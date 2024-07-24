@@ -25,7 +25,9 @@
  */
 
 import {isEmpty} from 'lodash-es';
-import {Field, FieldDefinition, Record, ViewFieldDefinition} from 'common';
+import {Field, FieldDefinition} from '../../../common/record/field.model';
+import {Record} from '../../../common/record/record.model';
+import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
 import {LanguageStore} from '../../../store/language/language.store';
 import {Injectable} from '@angular/core';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';

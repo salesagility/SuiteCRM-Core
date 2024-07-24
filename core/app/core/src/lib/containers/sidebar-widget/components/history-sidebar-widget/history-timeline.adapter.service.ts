@@ -28,7 +28,9 @@ import {Injectable} from '@angular/core';
 import {HistoryTimelineEntry} from './history-sidebar-widget.model';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HistoryTimelineStore} from '../../store/history-timeline/history-timeline.store';
-import {emptyObject, Record, ViewContext} from 'common';
+import {emptyObject} from '../../../../common/utils/object-utils';
+import {Record} from '../../../../common/record/record.model';
+import {ViewContext} from '../../../../common/views/view.model';
 import {take} from 'rxjs/operators';
 import {HistoryTimelineStoreFactory} from './history-timeline.store.factory';
 

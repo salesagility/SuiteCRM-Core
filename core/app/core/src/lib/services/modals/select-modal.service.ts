@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Record} from 'common';
+import {Record} from '../../common/record/record.model';
 import {RecordListModalComponent} from '../../containers/record-list-modal/components/record-list-modal/record-list-modal.component';
 import {RecordListModalResult} from '../../containers/record-list-modal/components/record-list-modal/record-list-modal.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';

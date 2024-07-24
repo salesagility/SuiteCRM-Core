@@ -36,7 +36,7 @@ import {AuthService} from '../../../../services/auth/auth.service';
 import {LanguageStore, LanguageStringMap} from '../../../../store/language/language.store';
 import {MessageService} from '../../../../services/message/message.service';
 import {Process} from '../../../../services/process/process.service';
-import {StringMap} from 'common';
+import {StringMap} from '../../../../common/types/string-map';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
 

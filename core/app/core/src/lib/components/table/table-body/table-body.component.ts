@@ -27,16 +27,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {combineLatestWith, BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
-import {
-    ColumnDefinition,
-    Field,
-    Record,
-    RecordSelection,
-    SelectionStatus,
-    SortDirection,
-    SortingSelection,
-    ActiveLineAction
-} from 'common';
+import {ColumnDefinition} from '../../../common/metadata/list.metadata.model';
+import {Field} from '../../../common/record/field.model';
+import {Record} from '../../../common/record/record.model';
+import {RecordSelection, SelectionStatus} from '../../../common/views/list/record-selection.model';
+import {SortDirection, SortingSelection} from '../../../common/views/list/list-navigation.model';
 import {FieldManager} from '../../../services/record/field/field.manager';
 import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';

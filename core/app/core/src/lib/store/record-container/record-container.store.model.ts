@@ -24,7 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Panel, ViewFieldDefinitionMap, ViewMode} from 'common';
+import {Panel, ViewFieldDefinitionMap} from '../../common/metadata/metadata.model';
+import {ViewMode} from '../../common/views/view.model';
 
 export interface RecordContainerState {
     module?: string;

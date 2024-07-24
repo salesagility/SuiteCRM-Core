@@ -26,7 +26,8 @@
 
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Action, ViewMode} from 'common';
+import {Action} from '../../../../common/actions/action.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {LineActionActionHandler, LineActionData} from '../line.action';
 

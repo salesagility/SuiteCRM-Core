@@ -26,7 +26,8 @@
 
 import {Injectable} from '@angular/core';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
-import {Field, Record} from 'common';
+import {Field} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
 import {divide, multiply, round} from 'mathjs';
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
 

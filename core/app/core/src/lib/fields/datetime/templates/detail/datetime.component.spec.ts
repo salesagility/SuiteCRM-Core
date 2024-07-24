@@ -29,7 +29,7 @@ import {Component} from '@angular/core';
 import {DateTimeDetailFieldComponent} from './datetime.component';
 import {CommonModule} from '@angular/common';
 import {BehaviorSubject} from 'rxjs';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {UserPreferenceMockStore} from '../../../../store/user-preference/user-preference.store.spec.mock';
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';

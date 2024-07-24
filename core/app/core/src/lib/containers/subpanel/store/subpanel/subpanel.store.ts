@@ -30,21 +30,13 @@ import {RecordList, RecordListStore} from '../../../../store/record-list/record-
 import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {LanguageStore} from '../../../../store/language/language.store';
-import {
-    ColumnDefinition,
-    deepClone,
-    Record,
-    RecordListMeta,
-    SearchCriteria,
-    SearchCriteriaFilter,
-    SearchMeta,
-    Statistic,
-    StatisticsMap,
-    StatisticsQuery,
-    StatisticsQueryMap,
-    StatisticWidgetOptions,
-    SubPanelDefinition
-} from 'common';
+import {deepClone} from '../../../../common/utils/object-utils';
+import {Record} from '../../../../common/record/record.model';
+import {SearchCriteria, SearchCriteriaFilter} from '../../../../common/views/list/search-criteria.model';
+import {ColumnDefinition, SearchMeta, RecordListMeta} from '../../../../common/metadata/list.metadata.model';
+import {Statistic, StatisticsQuery, StatisticsQueryMap} from '../../../../common/statistics/statistics.model';
+import {StatisticWidgetOptions} from '../../../../common/metadata/widget.metadata';
+import {SubPanelDefinition} from '../../../../common/metadata/subpanel.metadata.model';
 import {SingleValueStatisticsStore} from '../../../../store/single-value-statistics/single-value-statistics.store';
 import {
     SingleValueStatisticsStoreFactory

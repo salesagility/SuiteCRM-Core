@@ -31,7 +31,7 @@ import {LanguageStore} from '../../store/language/language.store';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
 import {isArray, isEmpty, isEqual, uniqBy} from 'lodash-es';
-import { isVoid } from 'common';
+import {isVoid} from '../../common/utils/value-utils';
 
 @Component({template: ''})
 export class BaseMultiEnumComponent extends BaseEnumComponent {

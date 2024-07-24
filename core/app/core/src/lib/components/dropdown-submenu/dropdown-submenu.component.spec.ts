@@ -29,7 +29,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {DropdownSubmenuComponent} from './dropdown-submenu.component';
 import {Component} from '@angular/core';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {DropdownButtonInterface} from 'common';
+import {DropdownButtonInterface} from '../../common/components/button/dropdown-button.model';
 import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';
 import {ButtonModule} from '../button/button.module';
 

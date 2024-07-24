@@ -42,7 +42,8 @@ import {LocalStorageService} from '../../../../services/local-storage/local-stor
 import {SubpanelStoreFactory} from '../../../../containers/subpanel/store/subpanel/subpanel.store.factory';
 import {AuthService} from '../../../../services/auth/auth.service';
 import {MessageService} from '../../../../services/message/message.service';
-import {Record, ViewMode} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {PanelLogicManager} from '../../../../components/panel-logic/panel-logic.manager';

@@ -34,7 +34,7 @@ import {RecordPanelStore} from '../../../containers/record-panel/store/record-pa
 import {BaseRecordActionsAdapter} from '../../../services/actions/base-record-action.adapter';
 import {ListViewRecordPanelActionAdapterFactory} from './record-panel-actions.adapter.factory';
 import {RecordPanelStoreFactory} from '../../../containers/record-panel/store/record-panel/record-panel.store.factory';
-import {ViewMode} from 'common';
+import {ViewMode} from '../../../common/views/view.model';
 import {RecordManager} from '../../../services/record/record.manager';
 
 @Injectable()

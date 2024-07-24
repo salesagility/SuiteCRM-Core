@@ -26,7 +26,11 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Field, isTrue, Record, StandardValidationErrors, StandardValidatorFn, ViewFieldDefinition} from 'common';
+import {Field} from '../../../../common/record/field.model';
+import {Record} from '../../../../common/record/record.model';
+import {StandardValidatorFn, StandardValidationErrors} from '../../../../common/services/validators/validators.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
+import {isTrue} from '../../../../common/utils/value-utils';
 import {Injectable} from '@angular/core';
 
 export const primaryEmailValidator = (viewField: ViewFieldDefinition, record: Record): StandardValidatorFn => (

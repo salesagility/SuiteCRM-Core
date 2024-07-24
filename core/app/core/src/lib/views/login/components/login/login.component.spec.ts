@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginUiComponent} from './login.component';
@@ -41,6 +41,7 @@ import {recoverPasswordMock} from '../../../../services/process/processes/recove
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LoginComponent', () => {
     let component: LoginUiComponent;
@@ -49,22 +50,21 @@ describe('LoginComponent', () => {
     beforeEach(waitForAsync(() => {
 
         TestBed.configureTestingModule({
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [
-                RouterTestingModule,
-                HttpClientTestingModule,
-                FormsModule,
-                NoopAnimationsModule,
-                ApolloTestingModule,
-                ButtonLoadingUiModule
-            ],
-            declarations: [LoginUiComponent],
-            providers: [
-                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
-                {provide: LanguageStore, useValue: languageStoreMock},
-                {provide: RecoverPasswordService, useValue: recoverPasswordMock},
-            ],
-        })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [LoginUiComponent],
+    imports: [RouterTestingModule,
+        FormsModule,
+        NoopAnimationsModule,
+        ApolloTestingModule,
+        ButtonLoadingUiModule],
+    providers: [
+        { provide: SystemConfigStore, useValue: systemConfigStoreMock },
+        { provide: LanguageStore, useValue: languageStoreMock },
+        { provide: RecoverPasswordService, useValue: recoverPasswordMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     }));
 

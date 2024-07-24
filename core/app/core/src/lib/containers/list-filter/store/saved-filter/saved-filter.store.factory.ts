@@ -33,7 +33,7 @@ import {RecordManager} from '../../../../services/record/record.manager';
 import {SavedFilterStore} from './saved-filter.store';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {SavedFilterSaveGQL} from './graphql/api.saved-filters.save';
-import {RecordMapperRegistry} from 'common';
+import {RecordMapperRegistry} from '../../../../common/record/record-mappers/record-mapper.registry';
 import {BaseSaveRecordMapper} from '../../../../store/record/record-mappers/base-save.record-mapper';
 import {SavedSearchRecordMapper} from './record-mappers/saved-search.record-mapper';
 import {FieldManager} from '../../../../services/record/field/field.manager';

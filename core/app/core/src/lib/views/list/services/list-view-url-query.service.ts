@@ -24,20 +24,17 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { isArray, isEmpty } from 'lodash-es';
-import { DateTime } from 'luxon';
-import {
-    FieldDefinitionMap,
-    isEmptyString,
-    SearchCriteria,
-    SearchCriteriaFieldFilter
-} from 'common';
-import { Injectable } from '@angular/core';
-import { Params } from '@angular/router';
-import { SavedFilter } from '../../../store/saved-filters/saved-filter.model';
-import { MetadataStore } from '../../../store/metadata/metadata.store.service';
-import { SystemConfigStore } from '../../../store/system-config/system-config.store';
-import { DataTypeFormatter } from '../../../services/formatters/data-type.formatter.service';
+import {isArray, isEmpty} from 'lodash-es';
+import {DateTime} from 'luxon';
+import {isEmptyString} from '../../../common/utils/value-utils';
+import {FieldDefinitionMap} from '../../../common/record/field.model';
+import {SearchCriteria, SearchCriteriaFieldFilter} from '../../../common/views/list/search-criteria.model';
+import {Injectable} from '@angular/core';
+import {Params} from '@angular/router';
+import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
+import {SystemConfigStore} from '../../../store/system-config/system-config.store';
+import {DataTypeFormatter} from '../../../services/formatters/data-type.formatter.service';
 
 type GenericMap<T> = { [key: string]: T };
 type NestedGenericMap<T> = GenericMap<GenericMap<T>>;

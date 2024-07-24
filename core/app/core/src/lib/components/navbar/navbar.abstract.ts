@@ -28,7 +28,9 @@ import {NavbarModel} from './navbar-model';
 import {LogoAbstract} from '../logo/logo-abstract';
 import {CurrentUserModel} from './current-user-model';
 import {ActionLinkModel} from './action-link-model';
-import {MenuItem, ready, User} from 'common';
+import {ready} from '../../common/utils/object-utils';
+import {MenuItem} from '../../common/menu/menu.model';
+import {User} from '../../common/types/user';
 import {LanguageStore} from '../../store/language/language.store';
 import {
     GroupedTab,

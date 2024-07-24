@@ -24,7 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, AttributeMap, FieldDefinitionMap, SearchCriteria} from 'common';
+import {Action} from '../../../../common/actions/action.model';
+import {AttributeMap} from '../../../../common/record/record.model';
+import {FieldDefinitionMap} from '../../../../common/record/field.model';
+import {SearchCriteria} from '../../../../common/views/list/search-criteria.model';
 import {RecordThreadItemConfig} from '../record-thread-item/record-thread-item.model';
 import {Observable} from 'rxjs';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';

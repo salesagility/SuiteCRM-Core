@@ -26,8 +26,8 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
-import {ViewContext, WidgetMetadata} from 'common';
-import {map} from 'rxjs/operators';
+import {ViewContext} from '../../../../common/views/view.model';
+import {WidgetMetadata} from '../../../../common/metadata/widget.metadata';
 import {MaxColumnsCalculator} from '../../../../services/ui/max-columns-calculator/max-columns-calculator.service';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {ScreenSize} from '../../../../services/ui/screen-size-observer/screen-size-observer.service';

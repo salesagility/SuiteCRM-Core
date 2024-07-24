@@ -25,7 +25,7 @@
  */
 
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {GroupedButtonInterface} from 'common';
+import {GroupedButtonInterface} from '../../common/components/button/dropdown-button.model';
 
 @Component({
     selector: 'scrm-grouped-button',

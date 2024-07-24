@@ -25,7 +25,7 @@
  */
 
 import {Injectable, Type} from '@angular/core';
-import {OverridableMap} from 'common';
+import {OverridableMap} from '../common/types/overridable-map';
 import {BaseFieldComponent} from './base/base-field.component';
 import {viewFieldsMap} from './field.manifest';
 import {FieldComponentMap} from './field.model';

@@ -27,7 +27,7 @@
 import {BaseRecordActionsAdapter} from '../../../../services/actions/base-record-action.adapter';
 import {RecordPanelStore} from '../../store/record-panel/record-panel.store';
 import {RecordPanelMetadata} from '../../store/record-panel/record-panel.store.model';
-import {ActionData, ActionHandler} from 'common';
+import {ActionData, ActionHandler} from '../../../../common/actions/action.model';
 
 export interface RecordPanelConfig {
     klass?: string;

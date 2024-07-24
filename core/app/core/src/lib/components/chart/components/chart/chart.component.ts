@@ -25,8 +25,8 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {ChartDataSource} from 'common';
 import {ChartRegistry} from './chart.registry';
+import {ChartDataSource} from '../../../../common/containers/chart/chart.model';
 
 @Component({
     selector: 'scrm-chart',

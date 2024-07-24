@@ -25,7 +25,8 @@
  */
 
 import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
-import {isFalse, SingleSeries} from 'common';
+import {SingleSeries} from '../../../../common/containers/chart/chart.model';
+import {isFalse} from '../../../../common/utils/value-utils';
 import {BaseChartComponent} from '../base-chart/base-chart.component';
 import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
 import {debounceTime} from "rxjs/operators";

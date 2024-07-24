@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, signal} from '@angular/core';
-import {MenuItem} from 'common';
+import {MenuItem} from '../../../common/menu/menu.model';
 import {Subscription} from "rxjs";
 import {AppStateStore} from "../../../store/app-state/app-state.store";
 

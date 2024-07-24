@@ -25,7 +25,10 @@
  */
 
 import {Injectable} from '@angular/core';
-import {FieldDefinitionMap, FieldMap, isVoid, Record, ViewFieldDefinition} from 'common';
+import {ViewFieldDefinition} from '../../common/metadata/metadata.model';
+import {FieldMap, FieldDefinitionMap} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
+import {isVoid} from '../../common/utils/value-utils';
 import {UntypedFormGroup} from '@angular/forms';
 import {LanguageStore} from '../../store/language/language.store';
 import {FieldManager} from './field/field.manager';

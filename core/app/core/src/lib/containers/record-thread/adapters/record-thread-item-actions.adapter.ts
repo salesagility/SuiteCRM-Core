@@ -25,7 +25,9 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext, isTrue, ModeActions, ViewMode} from 'common';
+import {Action, ActionContext, ModeActions} from '../../../common/actions/action.model';
+import {ViewMode} from '../../../common/views/view.model';
+import {isTrue} from '../../../common/utils/value-utils';
 import {combineLatestWith, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';

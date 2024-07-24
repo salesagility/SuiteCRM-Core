@@ -25,7 +25,8 @@
  */
 
 import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
-import {Action, ViewFieldDefinitionMap} from 'common';
+import {Action} from '../../../../common/actions/action.model';
+import {ViewFieldDefinitionMap} from '../../../../common/metadata/metadata.model';
 
 export interface RecordThreadItemMetadata {
     headerLayout?: FieldFlexbox;

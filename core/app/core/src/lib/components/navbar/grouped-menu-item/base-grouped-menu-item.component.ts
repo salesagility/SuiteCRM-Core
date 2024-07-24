@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
-import {MenuItem} from 'common';
+import {MenuItem} from '../../../common/menu/menu.model';
 import {Subject, Subscription} from "rxjs";
 import {AppStateStore} from "../../../store/app-state/app-state.store";
 import {MenuItemLinkConfig} from "../menu-item-link/menu-item-link-config.model";

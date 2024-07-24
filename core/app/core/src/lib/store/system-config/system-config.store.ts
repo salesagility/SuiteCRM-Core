@@ -27,9 +27,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
-
 import {CollectionGQL} from '../../services/api/graphql-api/api.collection.get';
-import {deepClone} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
 import {StateStore} from '../state';
 
 export interface SystemConfig {

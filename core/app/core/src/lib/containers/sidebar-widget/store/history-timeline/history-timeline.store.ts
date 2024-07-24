@@ -29,7 +29,7 @@ import {StateStore} from '../../../../store/state';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
 import {Observable} from 'rxjs';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
-import {ViewContext} from 'common';
+import {ViewContext} from '../../../../common/views/view.model';
 
 @Injectable()
 export class HistoryTimelineStore implements StateStore {

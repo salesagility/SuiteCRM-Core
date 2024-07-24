@@ -27,7 +27,9 @@
 import {Injectable, signal} from '@angular/core';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {deepClone, isVoid, User} from 'common';
+import {isVoid} from '../../common/utils/value-utils';
+import {deepClone} from '../../common/utils/object-utils';
+import {User} from '../../common/types/user';
 import {StateStore} from '../state';
 import {LoadingBufferFactory} from '../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../services/ui/loading-buffer/loading-buffer.service';

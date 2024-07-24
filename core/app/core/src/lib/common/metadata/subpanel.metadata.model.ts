@@ -45,7 +45,6 @@ export interface SubPanelMeta {
     [key: string]: SubPanelDefinition;
 }
 
-/* eslint-disable camelcase */
 export interface SubPanelDefinition {
     insightWidget?: WidgetOptionMap;
     order?: 10;
@@ -69,7 +68,9 @@ export interface SubPanelDefinition {
     lineActions?: Action[];
     get_subpanel_data?: string;
     showFilter?: boolean;
-    parameters?: { [key: string]: any };
+    parameters?: {
+        [key: string]: any;
+    };
 }
 
 /* eslint-enable camelcase */

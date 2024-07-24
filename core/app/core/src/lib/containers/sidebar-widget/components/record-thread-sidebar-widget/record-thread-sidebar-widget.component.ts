@@ -25,19 +25,14 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {
-    Action,
-    AttributeMap,
-    deepClone,
-    FieldDefinitionMap,
-    isFalse,
-    isTrue,
-    Record,
-    SearchCriteria,
-    SearchCriteriaFilter,
-    StringMap,
-    ViewContext
-} from 'common';
+import {isTrue, isFalse} from '../../../../common/utils/value-utils';
+import {deepClone} from '../../../../common/utils/object-utils';
+import {Action} from '../../../../common/actions/action.model';
+import {FieldDefinitionMap} from '../../../../common/record/field.model';
+import {Record, AttributeMap} from '../../../../common/record/record.model';
+import {SearchCriteria, SearchCriteriaFilter} from '../../../../common/views/list/search-criteria.model';
+import {StringMap} from '../../../../common/types/string-map';
+import {ViewContext} from '../../../../common/views/view.model';
 import {Observable, of, Subscription} from 'rxjs';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';

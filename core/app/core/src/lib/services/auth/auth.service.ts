@@ -26,10 +26,11 @@
 
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, filter, finalize, take} from 'rxjs/operators';
-import {isEmptyString, isTrue, User} from 'common';
+import {User} from '../../common/types/user';
+import {isTrue, isEmptyString} from '../../common/utils/value-utils';
 import {MessageService} from '../message/message.service';
 import {StateManager} from '../../store/state-manager';
 import {LanguageStore} from '../../store/language/language.store';

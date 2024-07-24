@@ -28,7 +28,7 @@ import {ActionLinkModel} from './action-link-model';
 import {CurrentUserModel} from './current-user-model';
 import {AllMenuModel} from './all-menu-model';
 import {LogoModel} from '../logo/logo-model';
-import {MenuItem} from 'common';
+import {MenuItem} from '../../common/menu/menu.model';
 import {GroupedTab, NavbarModuleMap, Navigation, UserActionMenu} from '../../store/navigation/navigation.store';
 
 export interface NavbarModel {

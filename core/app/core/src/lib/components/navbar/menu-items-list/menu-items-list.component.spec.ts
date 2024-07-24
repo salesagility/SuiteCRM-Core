@@ -29,7 +29,7 @@ import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -40,6 +40,7 @@ import {themeImagesMockData} from '../../../store/theme-images/theme-images.stor
 import {MenuItemComponent} from '../menu-item/menu-item.component';
 import {ImageModule} from '../../image/image.module';
 import {ThemeImagesStore} from '../../../store/theme-images/theme-images.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
 const mockMenuItems = [
@@ -80,28 +81,27 @@ describe('MenuItemsListComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                MenuItemComponent,
-                MenuItemLinkComponent,
-                MenuItemsListComponent,
-                MenuRecentlyViewedComponent,
-                MenuItemListTestHostComponent
-            ],
-            imports: [
-                AngularSvgIconModule.forRoot(),
-                RouterTestingModule,
-                HttpClientTestingModule,
-                ImageModule,
-                NgbModule,
-            ],
-            providers: [
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-            ],
-        }).compileComponents();
+    declarations: [
+        MenuItemComponent,
+        MenuItemLinkComponent,
+        MenuItemsListComponent,
+        MenuRecentlyViewedComponent,
+        MenuItemListTestHostComponent
+    ],
+    imports: [AngularSvgIconModule.forRoot(),
+        RouterTestingModule,
+        ImageModule,
+        NgbModule],
+    providers: [
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
     }));
 
     beforeEach(() => {

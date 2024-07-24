@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {EmailListFieldsComponent} from './email.component';
 import {Component} from '@angular/core';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {dateFormatterMock} from '../../../../services/formatters/datetime/date-formatter.service.spec.mock';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';

@@ -27,16 +27,14 @@
 import {isEmpty} from 'lodash-es';
 import {Injectable} from '@angular/core';
 import {StateStore} from '../../../../store/state';
-import {
-    ButtonInterface,
-    DropdownButtonInterface,
-    emptyObject,
-    Field,
-    isVoid,
-    SearchMetaFieldMap,
-    ViewMode,
-    SearchCriteriaFieldFilter
-} from 'common';
+import {emptyObject} from '../../../../common/utils/object-utils';
+import {isVoid} from '../../../../common/utils/value-utils';
+import {Field} from '../../../../common/record/field.model';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {DropdownButtonInterface} from '../../../../common/components/button/dropdown-button.model';
+import {SearchCriteriaFieldFilter} from '../../../../common/views/list/search-criteria.model';
+import {SearchMetaFieldMap} from '../../../../common/metadata/list.metadata.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {map, take, tap} from 'rxjs/operators';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {FilterConfig} from '../../components/list-filter/list-filter.model';

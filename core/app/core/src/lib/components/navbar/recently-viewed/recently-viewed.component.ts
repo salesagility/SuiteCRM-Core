@@ -30,7 +30,7 @@ import {ImageModule} from "../../image/image.module";
 import {RouterLink} from "@angular/router";
 import {ModuleNameMapper} from "../../../services/navigation/module-name-mapper/module-name-mapper.service";
 import {ModuleNavigation} from "../../../services/navigation/module-navigation/module-navigation.service";
-import {RecentlyViewed} from "common";
+import {RecentlyViewed} from '../../../common/record/recently-viewed.model';
 import {LabelModule} from "../../label/label.module";
 
 @Component({

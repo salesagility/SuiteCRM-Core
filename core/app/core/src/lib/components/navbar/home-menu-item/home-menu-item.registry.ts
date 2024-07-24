@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BaseComponentRegistry} from 'common';
+import {BaseComponentRegistry} from '../../../common/components/registry/base-component.registry';
 import {BaseHomeMenuItemComponent} from './base-home-menu-item.component';
 
 @Injectable({

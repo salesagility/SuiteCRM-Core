@@ -28,7 +28,8 @@ import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChil
 import {IframeResizeHandlerHandler} from "../../../../views/classic/services/iframe-resize-handler.service";
 import {IframePageChangeObserver} from "../../../../views/classic/services/iframe-page-change-observer.service";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {ButtonInterface, ModalCloseFeedBack} from "common";
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {ModalCloseFeedBack} from '../../../../common/components/modal/modal.model';
 import {animate, transition, trigger} from "@angular/animations";
 import {LanguageStore} from "../../../../store/language/language.store";
 

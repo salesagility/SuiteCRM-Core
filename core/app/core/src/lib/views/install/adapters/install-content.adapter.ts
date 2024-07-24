@@ -27,7 +27,9 @@
 import {combineLatestWith, Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map, shareReplay} from 'rxjs/operators';
-import {Panel, PanelRow, Record, ViewMode} from 'common';
+import {Panel, PanelRow} from '../../../common/metadata/metadata.model';
+import {Record} from '../../../common/record/record.model';
+import {ViewMode} from '../../../common/views/view.model';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
 import {LanguageStore} from '../../../store/language/language.store';

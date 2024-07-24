@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {isTrue} from 'common';
-import {Component, OnInit} from '@angular/core';
+import {isTrue} from '../../common/utils/value-utils';
+import {Component} from '@angular/core';
 import {BaseFieldComponent} from './base-field.component';
 
 @Component({template: ''})

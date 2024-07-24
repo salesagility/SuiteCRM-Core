@@ -27,7 +27,12 @@
 import { isEmpty } from 'lodash-es';
 import {Injectable} from '@angular/core';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
-import {Action, DisplayType, Field, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {Action} from '../../../common/actions/action.model';
+import {DisplayType, Field} from '../../../common/record/field.model';
+import {Record} from '../../../common/record/record.model';
+import {StringArrayMap} from '../../../common/types/string-map';
+import {StringArrayMatrix} from '../../../common/types/string-matrix';
+import {ViewMode} from '../../../common/views/view.model';
 import {ConditionOperatorManager} from '../../../services/condition-operators/condition-operator.manager';
 
 /**

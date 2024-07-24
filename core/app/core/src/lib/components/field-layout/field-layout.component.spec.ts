@@ -28,7 +28,10 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {FieldLayoutComponent} from './field-layout.component';
 import {Component} from '@angular/core';
-import {deepClone, FieldMap, Panel, Record} from 'common';
+import {Panel} from '../../common/metadata/metadata.model';
+import {FieldMap} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
+import {deepClone} from '../../common/utils/object-utils';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {LayoutModule} from '@angular/cdk/layout';
 import {CommonModule} from '@angular/common';

@@ -26,7 +26,10 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
-import {BulkActionsMap, DropdownButtonInterface, SelectionDataSource, SelectionStatus} from 'common';
+import {BulkActionsMap} from '../../common/actions/bulk-action.model';
+import {DropdownButtonInterface} from '../../common/components/button/dropdown-button.model';
+import {SelectionStatus} from '../../common/views/list/record-selection.model';
+import {SelectionDataSource} from '../../common/views/list/selection.model';
 import {LanguageStore} from '../../store/language/language.store';
 
 export interface BulkActionDataSource {

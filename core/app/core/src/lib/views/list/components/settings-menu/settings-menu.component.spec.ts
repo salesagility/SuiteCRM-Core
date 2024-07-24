@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {SettingsMenuComponent} from './settings-menu.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -38,6 +38,7 @@ import {themeImagesMockData} from '../../../../store/theme-images/theme-images.s
 import {ImageModule} from '../../../../components/image/image.module';
 import {listviewStoreMock} from '../../store/list-view/list-view.store.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SettingsmenuUiComponent', () => {
     let component: SettingsMenuComponent;
@@ -45,23 +46,22 @@ describe('SettingsmenuUiComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [
-                ColumnChooserModule,
-                HttpClientTestingModule,
-                ApolloTestingModule,
-                ImageModule,
-                ButtonModule,
-            ],
-            declarations: [SettingsMenuComponent],
-            providers: [
-                {provide: ListViewStore, useValue: listviewStoreMock},
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-            ],
-        })
+    declarations: [SettingsMenuComponent],
+    imports: [ColumnChooserModule,
+        ApolloTestingModule,
+        ImageModule,
+        ButtonModule],
+    providers: [
+        { provide: ListViewStore, useValue: listviewStoreMock },
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     }));
 

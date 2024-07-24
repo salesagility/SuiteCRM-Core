@@ -29,7 +29,7 @@ import {shareReplay} from 'rxjs/operators';
 import {SingleValueStatisticsStoreFactory} from '../../store/single-value-statistics/single-value-statistics.store.factory';
 import {fieldManagerMock} from '../../services/record/field/field.manager.spec.mock';
 import {StatisticsFetchGQL} from '../../store/statistics/graphql/api.statistics.get';
-import {StatisticsMap, StatisticsQueryMap} from 'common';
+import {StatisticsMap, StatisticsQueryMap} from '../../common/statistics/statistics.model';
 
 class StatisticsFetchGQLSpy extends StatisticsFetchGQL {
     constructor() {

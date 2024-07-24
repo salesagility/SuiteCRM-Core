@@ -25,7 +25,10 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {Field, Record, ScreenSizeMap, ViewMode} from 'common';
+import {Record} from '../../common/record/record.model';
+import {Field} from '../../common/record/field.model';
+import {ScreenSizeMap} from '../../common/services/ui/resize.model';
+import {ViewMode} from '../../common/views/view.model';
 import {combineLatestWith, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {RecordGridConfig, RecordGridViewModel} from './record-grid.model';

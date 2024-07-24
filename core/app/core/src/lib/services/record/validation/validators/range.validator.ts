@@ -26,15 +26,11 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl, Validators} from '@angular/forms';
-import {
-    FieldDefinition,
-    Record,
-    StandardValidationErrors,
-    StandardValidatorFn,
-    ValidationDefinition,
-    ViewFieldDefinition
-} from 'common';
+import {FieldDefinition, ValidationDefinition} from '../../../../common/record/field.model';
 import {Injectable} from '@angular/core';
+import {Record} from '../../../../common/record/record.model';
+import {StandardValidatorFn, StandardValidationErrors} from '../../../../common/services/validators/validators.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
 import {isNumber} from "lodash-es";
 
 export const minValidator = (min: number): StandardValidatorFn => (

@@ -25,7 +25,7 @@
  */
 
 import {Type} from '@angular/core';
-import {BaseField} from 'common';
+import {BaseField} from '../../../common/record/field.model';
 
 export interface FieldObjectTypeMap {
     [key: string]: Type<BaseField>

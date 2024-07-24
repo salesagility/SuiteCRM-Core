@@ -25,10 +25,10 @@
  */
 
 import {Component, ElementRef, Input, signal} from '@angular/core';
-import {ChartDataSource} from 'common';
-import {fromEvent, Observable, Subscription} from "rxjs";
-import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
+import {fromEvent, Subscription} from "rxjs";
 import {debounceTime, tap} from "rxjs/operators";
+import {ChartDataSource} from '../../../../common/containers/chart/chart.model';
+import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-observer/screen-size-observer.service";
 
 @Component({template: ''})
 export class BaseChartComponent {

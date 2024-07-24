@@ -27,7 +27,8 @@ import {Injectable} from "@angular/core";
 import {ProcessService} from "../../../../process/process.service";
 import {take} from "rxjs/operators";
 import {AsyncActionInput} from "../../../../process/processes/async-action/async-action";
-import {BaseField, Field, Record} from "common";
+import {BaseField, Field} from '../../../../../common/record/field.model';
+import {Record} from '../../../../../common/record/record.model';
 import {BaseFieldHandler} from "./base.field-handler";
 import {MessageService} from "../../../../message/message.service";
 @Injectable({

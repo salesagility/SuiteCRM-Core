@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, ActionData} from 'common';
+import {Action, ActionData} from '../../common/actions/action.model';
 
 export abstract class ActionLogicHandler<D extends ActionData> {
 

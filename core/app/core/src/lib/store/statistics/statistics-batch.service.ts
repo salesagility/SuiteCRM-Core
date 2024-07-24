@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {StatisticsFetchGQL} from './graphql/api.statistics.get';
-import {StatisticsMap, StatisticsQueryMap} from 'common';
+import {StatisticsMap, StatisticsQueryMap} from '../../common/statistics/statistics.model';
 
 
 @Injectable({

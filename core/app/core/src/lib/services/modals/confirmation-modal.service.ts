@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {MessageModalComponent} from '../../components/modal/components/message-modal/message-modal.component';
-import {ModalButtonInterface} from 'common';
+import {ModalButtonInterface} from '../../common/components/modal/modal.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable({

@@ -26,11 +26,11 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Record} from 'common';
-import {ViewFieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
 import {DatetimeFormatter} from '../../../formatters/datetime/datetime-formatter.service';
-import {StandardValidationErrors, StandardValidatorFn} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {StandardValidatorFn, StandardValidationErrors} from '../../../../common/services/validators/validators.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
 
 export const dateTimeValidator = (formatter: DatetimeFormatter, userFormat: string): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {

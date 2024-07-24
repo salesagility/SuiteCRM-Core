@@ -26,7 +26,9 @@
 
 import {Injectable} from '@angular/core';
 import {DataTypeFormatter} from '../formatters/data-type.formatter.service';
-import {Field, FieldMap, isVoid, StringMap} from 'common';
+import {StringMap} from '../../common/types/string-map';
+import {isVoid} from '../../common/utils/value-utils';
+import {Field, FieldMap} from '../../common/record/field.model';
 import {LanguageStore} from '../../store/language/language.store';
 import get from 'lodash-es/get';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';

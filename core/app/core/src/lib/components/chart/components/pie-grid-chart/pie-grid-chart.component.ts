@@ -25,7 +25,7 @@
  */
 
 import {Component, ElementRef, OnDestroy, OnInit} from '@angular/core';
-import {SeriesResult, SingleSeries} from 'common';
+import {SeriesResult, SingleSeries} from '../../../../common/containers/chart/chart.model';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseChartComponent} from '../base-chart/base-chart.component';
 import {debounceTime} from "rxjs/operators";

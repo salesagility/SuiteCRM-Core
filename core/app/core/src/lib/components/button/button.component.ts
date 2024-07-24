@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ButtonCallback, ButtonInterface} from 'common';
+import {ButtonInterface, ButtonCallback} from '../../common/components/button/button.model';
 import {LanguageStore} from '../../store/language/language.store';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';

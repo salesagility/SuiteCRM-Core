@@ -26,7 +26,8 @@
 
 import {Component, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {NgbCalendar, NgbDateStruct, NgbPopover, NgbPopoverConfig, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, isEmptyString} from 'common';
+import {isEmptyString} from '../../../../common/utils/value-utils';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
 import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DatetimeFormatter} from "../../../../services/formatters/datetime/datetime-formatter.service";

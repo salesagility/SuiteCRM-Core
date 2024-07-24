@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {BaseField} from 'common';
-import {isArray, isString, trimEnd, trimStart} from "lodash-es";
+import {BaseField} from '../../../../common/record/field.model';
+import {isArray, isString} from "lodash-es";
 
 export class MultiEnumField extends BaseField {
 

@@ -25,7 +25,10 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {Action} from '../../../common/actions/action.model';
+import {StringArrayMap} from '../../../common/types/string-map';
+import {StringArrayMatrix} from '../../../common/types/string-matrix';
+import {ViewMode} from '../../../common/views/view.model';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
 import {RequiredValidator} from '../../../services/record/validation/validators/required.validator';
 import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";

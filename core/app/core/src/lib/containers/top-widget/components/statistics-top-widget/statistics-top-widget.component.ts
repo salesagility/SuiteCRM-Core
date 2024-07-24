@@ -33,7 +33,9 @@ import {
 import {map, take} from 'rxjs/operators';
 import {LanguageStore, LanguageStringMap} from '../../../../store/language/language.store';
 import {combineLatestWith, Observable, of, Subscription} from 'rxjs';
-import {SingleValueStatisticsState, StatisticsQuery, ViewContext} from 'common';
+import {StatisticsQuery} from '../../../../common/statistics/statistics.model';
+import {SingleValueStatisticsState} from '../../../../common/statistics/statistics-store.model';
+import {ViewContext} from '../../../../common/views/view.model';
 
 interface StatisticsTopWidgetState {
     statistics: { [key: string]: SingleValueStatisticsState };

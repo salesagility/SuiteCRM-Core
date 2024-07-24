@@ -25,9 +25,10 @@
  */
 
 import {Type} from '@angular/core';
-import {OverridableMap} from 'common';
+
 import {BaseFieldComponent} from './base/base-field.component';
 import {FieldComponentMap} from './field.model';
+import {OverridableMap} from "../common/types/overridable-map";
 
 export interface FieldRegistryInterface {
     register(module: string, type: string, mode: string, component: Type<BaseFieldComponent>): void;

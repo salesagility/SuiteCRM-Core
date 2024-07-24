@@ -27,7 +27,9 @@
 import {Injectable} from "@angular/core";
 import {SavedFilter} from "../../../store/saved-filters/saved-filter.model";
 import {ListViewStore} from "../store/list-view/list-view.store";
-import {ButtonGroupInterface, ButtonInterface, isTrue, isVoid} from 'common';
+import {ButtonInterface} from '../../../common/components/button/button.model';
+import {ButtonGroupInterface} from '../../../common/components/button/button-group.model';
+import {isTrue} from '../../../common/utils/value-utils';
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {
     ScreenSize,

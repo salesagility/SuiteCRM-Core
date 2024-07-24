@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {VarcharFilterFieldComponent} from './filter.component';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {UntypedFormControl} from '@angular/forms';
 import {VarcharFilterFieldModule} from './filter.module';

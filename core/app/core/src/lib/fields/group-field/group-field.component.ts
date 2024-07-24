@@ -25,7 +25,8 @@
  */
 
 import {AfterViewInit, Component, ElementRef, HostListener, signal, ViewChild, WritableSignal} from '@angular/core';
-import {Field, FieldDefinition, ViewMode} from 'common';
+import {Field, FieldDefinition} from '../../common/record/field.model';
+import {ViewMode} from '../../common/views/view.model';
 import {BaseFieldComponent} from '../base/base-field.component';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';

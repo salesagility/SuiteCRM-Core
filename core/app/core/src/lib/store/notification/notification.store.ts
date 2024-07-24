@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of, timer} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '../state';
-import {deepClone} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
 import {RecordThreadStore} from '../../containers/record-thread/store/record-thread/record-thread.store';
 import {NotificationsService} from './notifications.service';
 import {AppStateStore} from '../app-state/app-state.store';

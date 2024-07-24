@@ -29,7 +29,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {ModalButtonGroupInterface} from 'common';
+import {ModalButtonGroupInterface} from '../../../../common/components/modal/modal.model';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {ModalButtonGroupModule} from './modal-button-group.module';

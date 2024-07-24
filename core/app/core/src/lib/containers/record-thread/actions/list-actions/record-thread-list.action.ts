@@ -24,7 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, ActionData, ActionHandler, Record} from 'common';
+import {Action, ActionData, ActionHandler} from '../../../../common/actions/action.model';
+import {Record} from '../../../../common/record/record.model';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 

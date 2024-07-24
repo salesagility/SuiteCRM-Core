@@ -30,7 +30,10 @@ import {Subscription} from 'rxjs';
 import {RecordViewStore} from '../../store/record-view/record-view.store';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {RecordActionsAdapter} from '../../adapters/actions.adapter';
-import {ActionContext, ButtonInterface, Record, ViewMode} from 'common';
+import {ActionContext} from '../../../../common/actions/action.model';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {Record} from '../../../../common/record/record.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {Router} from "@angular/router";
 

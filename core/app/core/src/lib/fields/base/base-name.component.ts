@@ -25,7 +25,8 @@
  */
 
 import {BaseFieldComponent} from './base-field.component';
-import {Field, Record} from 'common';
+import {Field} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
 import {Component} from '@angular/core';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';

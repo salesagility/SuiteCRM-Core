@@ -26,7 +26,8 @@
 
 import {Component, Input, OnChanges} from '@angular/core';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {Field, Record} from 'common';
+import {Field} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
 import {FieldGridColumn, FieldGridRow} from './field-grid.model';
 import {BaseFieldGridComponent} from './base-field-grid.component';
 

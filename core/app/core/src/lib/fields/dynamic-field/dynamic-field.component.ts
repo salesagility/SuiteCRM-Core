@@ -34,7 +34,10 @@ import {
     Signal,
     Type
 } from '@angular/core';
-import {EDITABLE_VIEW_MODES, Field, Record, StringMap, ViewMode} from 'common';
+import {Record} from '../../common/record/record.model';
+import {Field} from '../../common/record/field.model';
+import {EDITABLE_VIEW_MODES, ViewMode} from '../../common/views/view.model';
+import {StringMap} from '../../common/types/string-map';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {ModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service';

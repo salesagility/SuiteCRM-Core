@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {SearchMeta, SearchMetaFieldMap} from 'common';
+import {SearchMeta, SearchMetaFieldMap} from '../../../common/metadata/list.metadata.model';
 import {map} from 'rxjs/operators';
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';
 import {RecordListModalFilterAdapterInterface} from './adapter.model';

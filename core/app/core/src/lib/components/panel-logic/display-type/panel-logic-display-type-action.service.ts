@@ -26,7 +26,13 @@
 
 import {Injectable} from '@angular/core';
 import {PanelLogicActionData, PanelLogicActionHandler} from '../panel-logic.action';
-import {Action, Field, isVoid, Record, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {isVoid} from '../../../common/utils/value-utils';
+import {Record} from '../../../common/record/record.model';
+import {ViewMode} from '../../../common/views/view.model';
+import {Field} from '../../../common/record/field.model';
+import {Action} from '../../../common/actions/action.model';
+import {StringArrayMap} from '../../../common/types/string-map';
+import {StringArrayMatrix} from '../../../common/types/string-matrix';
 import {isEmpty} from 'lodash-es';
 
 @Injectable({

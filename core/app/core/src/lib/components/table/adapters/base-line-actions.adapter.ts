@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext} from 'common';
+import {Action, ActionContext} from '../../../common/actions/action.model';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {MessageService} from '../../../services/message/message.service';
 import {LineActionActionManager} from '../line-actions/line-action-manager.service';

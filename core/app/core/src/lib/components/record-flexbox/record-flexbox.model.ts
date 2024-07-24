@@ -25,15 +25,15 @@
  */
 
 import {
-    ActionDataSource,
     ContentAlign,
     ContentJustify,
-    Record,
     TextColor,
-    TextSizes,
-    ViewFieldDefinition,
-    ViewMode
-} from 'common';
+    TextSizes
+} from '../../common/metadata/widget.metadata';
+import {ActionDataSource} from '../../common/actions/action.model';
+import {Record} from '../../common/record/record.model';
+import {ViewFieldDefinition} from '../../common/metadata/metadata.model';
+import {ViewMode} from '../../common/views/view.model';
 import {Observable} from 'rxjs';
 import {LabelDisplay} from '../field-grid/field-grid.model';
 

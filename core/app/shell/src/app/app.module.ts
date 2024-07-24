@@ -26,7 +26,7 @@
 
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXsrfConfiguration } from '@angular/common/http';
 
 import {Apollo, ApolloModule} from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
@@ -74,14 +74,10 @@ import {AngularSvgIconModule} from 'angular-svg-icon';
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
     ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        HttpClientXsrfModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         FooterUiModule,
         NavbarUiModule,
@@ -104,21 +100,23 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         MessageModalModule,
         RecordListModalModule,
         ApolloModule,
-        SidebarComponent
-    ],
-    providers: [
-        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-        {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
+        SidebarComponent], providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy },
         AppInit,
         {
             provide: APP_INITIALIZER,
             useFactory: initializeApp,
             multi: true,
             deps: [AppInit]
-        }
-    ],
-    bootstrap: [AppComponent]
-})
+        },
+        provideHttpClient(withInterceptorsFromDi(),
+            withXsrfConfiguration({
+                cookieName: 'XSRF-TOKEN',
+                headerName: 'X-XSRF-TOKEN'
+               })
+        )
+    ] })
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService, protected appStore: AppStateStore, protected baseRoute: BaseRouteService) {
 

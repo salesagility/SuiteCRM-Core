@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {RecordContainerComponent} from './record-container.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -56,6 +56,7 @@ import {languageStoreMock} from '../../../../store/language/language.store.spec.
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
 import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RecordContainerComponent', () => {
     let component: RecordContainerComponent;
@@ -63,33 +64,32 @@ describe('RecordContainerComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [
-                WidgetPanelModule,
-                AngularSvgIconModule.forRoot(),
-                HttpClientTestingModule,
-                NoopAnimationsModule,
-                ApolloTestingModule,
-                SubpanelModule
-            ],
-            providers: [
-                {provide: RecordViewStore, useValue: recordviewStoreMock},
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-                {provide: ModuleNavigation, useValue: mockModuleNavigation},
-                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
-                {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
-                {provide: NavigationStore, useValue: navigationMock},
-                {provide: ModuleNavigation, useValue: mockModuleNavigation},
-                {provide: LanguageStore, useValue: languageStoreMock},
-                {provide: MetadataStore, useValue: metadataStoreMock},
-                {provide: AppStateStore, useValue: appStateStoreMock},
-                {provide: Router, useValue: mockRouter},
-            ],
-            declarations: [RecordContainerComponent]
-        })
+    declarations: [RecordContainerComponent],
+    imports: [WidgetPanelModule,
+        AngularSvgIconModule.forRoot(),
+        NoopAnimationsModule,
+        ApolloTestingModule,
+        SubpanelModule],
+    providers: [
+        { provide: RecordViewStore, useValue: recordviewStoreMock },
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        { provide: ModuleNavigation, useValue: mockModuleNavigation },
+        { provide: SystemConfigStore, useValue: systemConfigStoreMock },
+        { provide: UserPreferenceStore, useValue: userPreferenceStoreMock },
+        { provide: NavigationStore, useValue: navigationMock },
+        { provide: ModuleNavigation, useValue: mockModuleNavigation },
+        { provide: LanguageStore, useValue: languageStoreMock },
+        { provide: MetadataStore, useValue: metadataStoreMock },
+        { provide: AppStateStore, useValue: appStateStoreMock },
+        { provide: Router, useValue: mockRouter },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     }));
 

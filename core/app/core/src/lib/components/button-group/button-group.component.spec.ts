@@ -29,7 +29,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ButtonGroupComponent} from './button-group.component';
 import {Component} from '@angular/core';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonGroupInterface} from 'common';
+import {ButtonGroupInterface} from '../../common/components/button/button-group.model';
 import {shareReplay} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';

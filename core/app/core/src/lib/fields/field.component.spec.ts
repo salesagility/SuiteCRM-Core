@@ -35,7 +35,7 @@ import {TagInputModule} from 'ngx-chips';
 import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {Field} from 'common';
+import {Field} from '../common/record/field.model';
 import {UserPreferenceMockStore} from '../store/user-preference/user-preference.store.spec.mock';
 import {SystemConfigStore} from '../store/system-config/system-config.store';
 import {UserPreferenceStore} from '../store/user-preference/user-preference.store';

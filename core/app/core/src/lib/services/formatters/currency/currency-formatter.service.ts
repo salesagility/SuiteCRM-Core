@@ -29,7 +29,7 @@ import {UserPreferenceStore} from '../../../store/user-preference/user-preferenc
 import {formatCurrency, formatNumber} from '@angular/common';
 import {NumberFormatter} from '../number/number-formatter.service';
 import {FormatOptions, Formatter} from '../formatter.model';
-import {isVoid} from 'common';
+import {isVoid} from '../../../common/utils/value-utils';
 
 export interface CurrencyFormat {
     iso4217: string;

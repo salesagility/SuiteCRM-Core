@@ -25,7 +25,8 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {ButtonGroupInterface, ButtonInterface} from 'common';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {ButtonGroupInterface} from '../../../../common/components/button/button-group.model';
 import {BehaviorSubject} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {ListViewStore} from '../../store/list-view/list-view.store';

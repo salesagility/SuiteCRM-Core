@@ -28,23 +28,15 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
-import {
-    Action,
-    ColumnDefinition,
-    deepClone,
-    Favorite,
-    FieldActions,
-    FieldDefinitionMap,
-    ListViewMeta,
-    MassUpdateMeta,
-    Panel,
-    RecentlyViewed,
-    SearchMeta,
-    SubPanelMeta,
-    WidgetMetadata,
-    TabDefinitions,
-    ObjectMap
-} from 'common';
+import {Action} from '../../common/actions/action.model';
+import {ColumnDefinition, ListViewMeta, MassUpdateMeta, SearchMeta} from '../../common/metadata/list.metadata.model';
+import {FieldDefinitionMap} from '../../common/record/field.model';
+import {deepClone} from '../../common/utils/object-utils';
+import {RecentlyViewed} from '../../common/record/recently-viewed.model';
+import {Favorite} from '../../common/record/favorites.model';
+import {Panel, TabDefinitions} from '../../common/metadata/metadata.model';
+import {SubPanelMeta} from '../../common/metadata/subpanel.metadata.model';
+import {WidgetMetadata} from '../../common/metadata/widget.metadata';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
 

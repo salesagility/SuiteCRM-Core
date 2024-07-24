@@ -24,7 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {BaseField, Record} from 'common';
+import {BaseField} from '../../../../common/record/field.model';
+import {Record} from '../../../../common/record/record.model';
 
 export interface FieldHandler<T extends BaseField> {
     initDefaultValue(field: T, record: Record): void;

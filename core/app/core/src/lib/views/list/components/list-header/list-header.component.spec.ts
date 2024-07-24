@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {take} from 'rxjs/operators';
 import {of} from 'rxjs';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 
 import {ListHeaderComponent} from './list-header.component';
@@ -58,6 +58,7 @@ import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spe
 import {listviewStoreMock} from '../../store/list-view/list-view.store.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
 import {SettingsMenuModule} from '../settings-menu/settings-menu.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
     selector: 'list-header-test-host-component',
@@ -72,52 +73,51 @@ describe('ListHeaderComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                ModuleTitleModule,
-                ActionMenuModule,
-                ButtonModule,
-                SettingsMenuModule,
-                ApolloTestingModule,
-                HttpClientTestingModule,
-                ImageModule,
-                ListFilterModule,
-                RouterTestingModule,
-                AngularSvgIconModule.forRoot()
-            ],
-            declarations: [ListHeaderComponent, ListHeaderTestHostComponent],
-            providers: [
-                {provide: ListViewStore, useValue: listviewStoreMock},
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-                {
-                    provide: ModuleNavigation, useValue: mockModuleNavigation
-                },
-                {
-                    provide: SystemConfigStore, useValue: systemConfigStoreMock
-                },
-                {
-                    provide: UserPreferenceStore, useValue: userPreferenceStoreMock
-                },
-                {
-                    provide: NavigationStore, useValue: navigationMock
-                },
-                {
-                    provide: ModuleNavigation, useValue: mockModuleNavigation
-                },
-                {
-                    provide: LanguageStore, useValue: languageStoreMock
-                },
-                {
-                    provide: MetadataStore, useValue: metadataStoreMock
-                },
-                {
-                    provide: AppStateStore, useValue: appStateStoreMock
-                },
-            ],
-        })
+    declarations: [ListHeaderComponent, ListHeaderTestHostComponent],
+    imports: [ModuleTitleModule,
+        ActionMenuModule,
+        ButtonModule,
+        SettingsMenuModule,
+        ApolloTestingModule,
+        ImageModule,
+        ListFilterModule,
+        RouterTestingModule,
+        AngularSvgIconModule.forRoot()],
+    providers: [
+        { provide: ListViewStore, useValue: listviewStoreMock },
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        {
+            provide: ModuleNavigation, useValue: mockModuleNavigation
+        },
+        {
+            provide: SystemConfigStore, useValue: systemConfigStoreMock
+        },
+        {
+            provide: UserPreferenceStore, useValue: userPreferenceStoreMock
+        },
+        {
+            provide: NavigationStore, useValue: navigationMock
+        },
+        {
+            provide: ModuleNavigation, useValue: mockModuleNavigation
+        },
+        {
+            provide: LanguageStore, useValue: languageStoreMock
+        },
+        {
+            provide: MetadataStore, useValue: metadataStoreMock
+        },
+        {
+            provide: AppStateStore, useValue: appStateStoreMock
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     });
 

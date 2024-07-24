@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionData, ActionHandler, ActionHandlerMap, ActionManager, ViewMode} from 'common';
+import {Action, ActionData, ActionHandler, ActionHandlerMap, ActionManager} from '../../common/actions/action.model';
+import {ViewMode} from '../../common/views/view.model';
 
 @Injectable({
     providedIn: 'root',

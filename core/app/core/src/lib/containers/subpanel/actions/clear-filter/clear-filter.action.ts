@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
+import {ViewMode} from '../../../../common/views/view.model';
 import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
 import {SubpanelStore} from "../../store/subpanel/subpanel.store";
 

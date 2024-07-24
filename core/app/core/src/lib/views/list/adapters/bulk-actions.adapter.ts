@@ -25,7 +25,9 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BulkActionsMap, isFalse, Record} from 'common';
+import {BulkActionsMap} from '../../../common/actions/bulk-action.model';
+import {Record} from '../../../common/record/record.model';
+import {isFalse} from '../../../common/utils/value-utils';
 import {Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';

@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {MenuItem} from 'common';
+import {MenuItem} from '../../../common/menu/menu.model';
 import {MenuItemsListRegistry} from './menu-items-list-registry';
 
 @Component({

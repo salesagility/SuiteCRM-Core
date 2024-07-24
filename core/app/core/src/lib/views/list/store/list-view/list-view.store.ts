@@ -25,22 +25,16 @@
  */
 
 import { isArray, isEmpty, union } from 'lodash-es';
-import {
-    Action,
-    ColumnDefinition,
-    deepClone,
-    emptyObject,
-    ListViewMeta,
-    Pagination,
-    Record,
-    RecordSelection,
-    SearchCriteria,
-    SelectionStatus,
-    SortDirection,
-    SortingSelection,
-    ViewContext,
-    isTrue
-} from 'common';
+import {deepClone} from '../../../../common/utils/object-utils';
+import {emptyObject} from '../../../../common/utils/object-utils';
+import {isTrue} from '../../../../common/utils/value-utils';
+import {Action} from '../../../../common/actions/action.model';
+import {Record} from '../../../../common/record/record.model';
+import {ViewContext} from '../../../../common/views/view.model';
+import {RecordSelection, SelectionStatus} from '../../../../common/views/list/record-selection.model';
+import {Pagination, SortDirection, SortingSelection} from '../../../../common/views/list/list-navigation.model';
+import {ListViewMeta, ColumnDefinition} from '../../../../common/metadata/list.metadata.model';
+import {SearchCriteria} from '../../../../common/views/list/search-criteria.model';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map, take, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';

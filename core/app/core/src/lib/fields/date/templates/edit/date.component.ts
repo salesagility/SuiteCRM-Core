@@ -26,8 +26,8 @@
 
 import {Component, OnDestroy, OnInit,} from '@angular/core';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, isEmptyString, isVoid} from 'common';
-import {BaseDateTimeComponent} from '../../../base/datetime/base-datetime.component';
+import {isVoid, isEmptyString} from '../../../../common/utils/value-utils';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {DateParserFormatter} from '../../../base/datetime/date/date-parser-formatter.service';
 import {DateFormatter} from '../../../../services/formatters/datetime/date-formatter.service';

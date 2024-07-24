@@ -24,7 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Panel, Record, ViewMode, TabDefinitions} from 'common';
+import {Panel, TabDefinitions} from '../../common/metadata/metadata.model';
+import {Record} from '../../common/record/record.model';
+import {ViewMode} from '../../common/views/view.model';
 import {Observable} from 'rxjs';
 
 export interface RecordContentDataSource {

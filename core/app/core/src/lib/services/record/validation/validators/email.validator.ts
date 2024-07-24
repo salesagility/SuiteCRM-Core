@@ -26,9 +26,11 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Record, StandardValidationErrors, StandardValidatorFn, ViewFieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
 import {EmailFormatter} from '../../../formatters/email/email-formatter.service';
+import {Record} from '../../../../common/record/record.model';
+import {StandardValidatorFn, StandardValidationErrors} from '../../../../common/services/validators/validators.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
 
 export const emailValidator = (formatter: EmailFormatter, customValidationRegex?: string): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {

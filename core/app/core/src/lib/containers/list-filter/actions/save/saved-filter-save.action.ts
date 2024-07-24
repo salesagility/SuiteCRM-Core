@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
+import {ViewMode} from '../../../../common/views/view.model';
 import {take} from 'rxjs/operators';
 import {MessageService} from '../../../../services/message/message.service';
 import {SavedFilterActionData, SavedFilterActionHandler} from '../saved-filter.action';

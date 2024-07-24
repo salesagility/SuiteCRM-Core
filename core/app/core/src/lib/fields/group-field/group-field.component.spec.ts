@@ -33,7 +33,7 @@ import {TagInputModule} from 'ngx-chips';
 import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {Record} from 'common';
+import {Record} from '../../common/record/record.model';
 import {baseFieldModules} from '../base-fields.manifest';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';

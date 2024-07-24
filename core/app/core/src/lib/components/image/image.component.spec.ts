@@ -27,13 +27,14 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ImageComponent} from './image.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {themeImagesMockData} from '../../store/theme-images/theme-images.store.spec.mock';
 import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
     selector: 'host-component',
@@ -54,19 +55,18 @@ describe('ImageComponent', () => {
     beforeEach(() => {
 
         TestBed.configureTestingModule({
-            declarations: [ImageComponent, TestHostComponent],
-            imports: [
-                AngularSvgIconModule.forRoot(),
-                HttpClientTestingModule
-            ],
-            providers: [
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-            ],
-        })
+    declarations: [ImageComponent, TestHostComponent],
+    imports: [AngularSvgIconModule.forRoot()],
+    providers: [
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
 
 

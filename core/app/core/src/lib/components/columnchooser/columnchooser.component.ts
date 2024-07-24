@@ -27,7 +27,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, ColumnDefinition, ModalCloseFeedBack} from "common";
+import {ButtonInterface} from '../../common/components/button/button.model';
+import {ColumnDefinition} from '../../common/metadata/list.metadata.model';
+import {ModalCloseFeedBack} from '../../common/components/modal/modal.model';
 import {AppStateStore} from "../../store/app-state/app-state.store";
 import {LanguageStore} from "../../store/language/language.store";
 

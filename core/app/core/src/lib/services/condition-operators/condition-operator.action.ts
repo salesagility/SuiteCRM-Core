@@ -24,7 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, Field, Record, LogicRuleValues} from 'common';
+import {ActionData} from '../../common/actions/action.model';
+import {Field} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
+import {LogicRuleValues} from '../../common/metadata/metadata.model';
 
 export interface ConditionOperatorActionData extends ActionData {
     field: Field,

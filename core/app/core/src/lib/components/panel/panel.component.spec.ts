@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {PanelComponent} from './panel.component';
 import {By} from '@angular/platform-browser';
-import {DropdownButtonInterface} from 'common';
+import {DropdownButtonInterface} from '../../common/components/button/dropdown-button.model';
 import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';
 import {ButtonModule} from '../button/button.module';
 import {ListViewStore} from '../../views/list/store/list-view/list-view.store';

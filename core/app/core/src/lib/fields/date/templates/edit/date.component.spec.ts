@@ -29,7 +29,7 @@ import {Component} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, of} from 'rxjs';
 import {CommonModule} from '@angular/common';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {DateEditFieldComponent} from './date.component';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';

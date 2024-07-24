@@ -26,7 +26,9 @@
 
 import {Injectable} from '@angular/core';
 import {ConditionOperatorActionHandler} from '../condition-operator.action';
-import {Record, Field, LogicRuleValues, isTrue, isFalse} from 'common';
+import {Field} from '../../../common/record/field.model';
+import {Record} from '../../../common/record/record.model';
+import {LogicRuleValues} from '../../../common/metadata/metadata.model';
 import {ConditionOperatorModel} from '../condition-operator.model';
 
 @Injectable({

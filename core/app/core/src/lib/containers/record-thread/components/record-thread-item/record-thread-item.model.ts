@@ -26,7 +26,7 @@
 
 import {RecordThreadItemStore} from '../../store/record-thread/record-thread-item.store';
 import {RecordThreadItemMetadata} from '../../store/record-thread/record-thread-item.store.model';
-import {ViewMode} from 'common';
+import {ViewMode} from '../../../../common/views/view.model';
 import {RecordThreadStore} from '../../store/record-thread/record-thread.store';
 
 

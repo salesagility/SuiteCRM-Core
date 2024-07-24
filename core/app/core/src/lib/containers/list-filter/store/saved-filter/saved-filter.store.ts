@@ -26,17 +26,13 @@
 
 import {inject, Injectable} from '@angular/core';
 import {BehaviorSubject, combineLatestWith, forkJoin, Observable, of, Subscription} from 'rxjs';
-import {
-    ColumnDefinition,
-    deepClone,
-    ObjectMap,
-    Record,
-    SearchCriteria,
-    SearchMetaFieldMap,
-    ViewContext,
-    ViewFieldDefinition,
-    ViewMode
-} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {SearchCriteria} from '../../../../common/views/list/search-criteria.model';
+import {ColumnDefinition, SearchMetaFieldMap} from '../../../../common/metadata/list.metadata.model';
+import {ViewContext} from '../../../../common/views/view.model';
+import {ViewMode} from '../../../../common/views/view.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
+import {deepClone} from '../../../../common/utils/object-utils';
 import {catchError, distinctUntilChanged, filter, finalize, map, startWith, take, tap} from 'rxjs/operators';
 import {StateStore} from '../../../../store/state';
 import {MetadataStore, RecordViewMetadata} from '../../../../store/metadata/metadata.store.service';

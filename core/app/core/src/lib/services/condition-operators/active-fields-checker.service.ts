@@ -25,7 +25,13 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Field, Record, StringArrayMap, StringArrayMatrix, isFalse, isTrue, LogicRuleValues} from "common";
+import {Record} from '../../common/record/record.model';
+import {Field} from '../../common/record/field.model';
+import {StringArrayMap} from '../../common/types/string-map';
+import {StringArrayMatrix} from '../../common/types/string-matrix';
+import {isFalse} from '';
+import {isTrue} from '';
+import {LogicRuleValues} from '';
 import {isEmpty} from "lodash-es";
 import {ConditionOperatorManager} from "./condition-operator.manager";
 

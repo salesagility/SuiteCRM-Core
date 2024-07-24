@@ -25,7 +25,10 @@
  */
 
 import {Component, ElementRef, ViewChild} from '@angular/core';
-import {AttributeMap, ButtonInterface, emptyObject, Field, Record} from 'common';
+import {emptyObject} from '../../../../common/utils/object-utils';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {Field} from '../../../../common/record/field.model';
+import {Record, AttributeMap} from '../../../../common/record/record.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';

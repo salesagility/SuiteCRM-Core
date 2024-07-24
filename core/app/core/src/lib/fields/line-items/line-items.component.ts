@@ -29,7 +29,8 @@ import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.s
 import {RecordManager} from '../../services/record/record.manager';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {BaseLineItemsComponent} from '../base/base-line-items.component';
-import {ButtonInterface, EDITABLE_VIEW_MODES, ObjectMap, ViewMode} from 'common';
+import {ObjectMap} from '../../common/types/object-map';
+import {ButtonInterface} from '../../common/components/button/button.model';
 import {FieldManager} from '../../services/record/field/field.manager';
 import {FieldRegistry} from '../field.registry';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';

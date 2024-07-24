@@ -24,7 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionDataSource, Record, ScreenSizeMap, ViewMode} from 'common';
+import {ActionDataSource} from '../../common/actions/action.model';
+import {Record} from '../../common/record/record.model';
+import {ScreenSizeMap} from '../../common/services/ui/resize.model';
+import {ViewMode} from '../../common/views/view.model';
 import {Observable} from 'rxjs';
 import {LabelDisplay} from '../field-grid/field-grid.model';
 

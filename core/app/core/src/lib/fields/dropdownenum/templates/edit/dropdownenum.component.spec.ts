@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component, ViewChild} from '@angular/core';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';

@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler} from 'common';
+import {ActionData, ActionHandler} from '../../../common/actions/action.model';
 import {InstallViewStore} from '../store/install-view/install-view.store';
 
 export interface InstallViewActionData extends ActionData {

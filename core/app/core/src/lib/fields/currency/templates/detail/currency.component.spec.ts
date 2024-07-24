@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
 import {CurrencyDetailFieldComponent} from './currency.component';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {UserPreferenceMockStore} from '../../../../store/user-preference/user-preference.store.spec.mock';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';

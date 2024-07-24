@@ -26,7 +26,8 @@
 
 import {of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ActionDataSource, SortDirection} from 'common';
+import {ActionDataSource} from '../../../common/actions/action.model';
+import {SortDirection} from '../../../common/views/list/list-navigation.model';
 import {ListViewStore} from '../store/list-view/list-view.store';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {TableConfig} from '../../../components/table/table.model';

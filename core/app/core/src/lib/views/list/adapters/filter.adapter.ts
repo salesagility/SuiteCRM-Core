@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {SearchMetaFieldMap} from 'common';
+import {SearchMetaFieldMap} from '../../../common/metadata/list.metadata.model';
 import {map} from 'rxjs/operators';
 import {ListViewStore} from '../store/list-view/list-view.store';
 import {Metadata} from '../../../store/metadata/metadata.store.service';

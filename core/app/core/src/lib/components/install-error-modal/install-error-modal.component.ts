@@ -26,7 +26,9 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {ButtonInterface, isEmptyString, ModalCloseFeedBack} from 'common';
+import {ModalCloseFeedBack} from '../../common/components/modal/modal.model';
+import {isEmptyString} from '../../common/utils/value-utils';
+import {ButtonInterface} from '../../common/components/button/button.model';
 import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LanguageStore} from '../../store/language/language.store';
 

@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {RecordSelection} from 'common';
-import {Record} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {RecordSelection} from '../../../../common/views/list/record-selection.model';
 
 export interface RecordListModalResult {
     [key: string]: any;

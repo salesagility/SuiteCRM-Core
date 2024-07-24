@@ -28,7 +28,7 @@ import {Injectable} from "@angular/core";
 import {FilterConfig} from "../../list-filter/components/list-filter/list-filter.model";
 import {map} from "rxjs/operators";
 import {SavedFilter, SavedFilterMap} from "../../../store/saved-filters/saved-filter.model";
-import {SearchMeta, SearchMetaFieldMap} from "common";
+import {SearchMeta, SearchMetaFieldMap} from '../../../common/metadata/list.metadata.model';
 import {SubpanelStore} from "../store/subpanel/subpanel.store";
 
 @Injectable()

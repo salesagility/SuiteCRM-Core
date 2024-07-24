@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BaseField, BaseTypeRegistry} from 'common';
+import {BaseField} from '../../../common/record/field.model';
+import {BaseTypeRegistry} from '../../../common/registry/base-type.registry';
 import {FieldObjectTypeMap} from "./field-object.model";
 import {baseObjectFieldsTypeMap} from "./field-object-type.manifest";
 

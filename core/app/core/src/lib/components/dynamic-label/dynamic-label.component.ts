@@ -25,7 +25,8 @@
  */
 
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {FieldMap, StringMap} from 'common';
+import {FieldMap} from '../../common/record/field.model';
+import {StringMap} from '../../common/types/string-map';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';

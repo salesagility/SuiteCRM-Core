@@ -26,7 +26,8 @@
 
 import {Injectable} from '@angular/core';
 import {AsyncActionInput, AsyncActionService} from '../../process/processes/async-action/async-action';
-import {Field, Record} from 'common';
+import {Field} from '../../../common/record/field.model';
+import {Record} from '../../../common/record/record.model';
 
 @Injectable({
     providedIn: 'root',

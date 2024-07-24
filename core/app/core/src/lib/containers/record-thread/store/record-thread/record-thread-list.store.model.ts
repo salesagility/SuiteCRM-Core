@@ -24,8 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {FieldFlexbox} from '../../../../components/record-flexbox/record-flexbox.model';
-import {Action} from 'common';
+import {Action} from '../../../../common/actions/action.model';
 
 export interface RecordThreadListMetadata {
     actions?: Action[];

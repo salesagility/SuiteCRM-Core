@@ -29,7 +29,7 @@ import {FieldHandler, FieldHandlerMap} from "./field-handler.model";
 import {DateFieldHandler} from "./handlers/date.field-handler";
 import {MultiEnumFieldHandler} from "./handlers/multienum.field-handler";
 import {DefaultFieldHandler} from "./handlers/default.field-handler";
-import {BaseServiceRegistry} from "common";
+import {BaseServiceRegistry} from '../../../../common/registry/base-service.registry';
 
 @Injectable({
     providedIn: 'root'

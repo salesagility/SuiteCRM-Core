@@ -26,7 +26,11 @@
 
 import {Injectable} from '@angular/core';
 import {ValidatorInterface} from './validator.Interface';
-import {MapEntry, OverridableMap, Record, StringMap, StringMatrix, ViewFieldDefinition} from 'common';
+import {StringMatrix} from '../../../common/types/string-matrix';
+import {StringMap} from '../../../common/types/string-map';
+import {MapEntry, OverridableMap} from '../../../common/types/overridable-map';
+import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
+import {Record} from '../../../common/record/record.model';
 import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 import {AsyncValidatorInterface} from './aync-validator.Interface';
 import {RequiredValidator} from './validators/required.validator';

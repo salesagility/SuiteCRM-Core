@@ -26,11 +26,11 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Record} from 'common';
-import {ViewFieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
 import {PhoneFormatter} from '../../../formatters/phone/phone-formatter.service';
-import {StandardValidationErrors, StandardValidatorFn} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {StandardValidatorFn, StandardValidationErrors} from '../../../../common/services/validators/validators.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
 
 export const phoneValidator = (formatter: PhoneFormatter, customRegex?: string): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {

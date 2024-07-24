@@ -24,7 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 import {Injectable} from "@angular/core";
-import {BaseField, Record} from "common";
+import {BaseField} from '../../../../../common/record/field.model';
+import {Record} from '../../../../../common/record/record.model';
 import {FieldHandler} from "../field-handler.model";
 
 @Injectable({

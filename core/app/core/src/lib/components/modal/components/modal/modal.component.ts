@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
-import {ButtonInterface} from 'common';
+import {Component, Input} from '@angular/core';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
 
 @Component({
     selector: 'scrm-modal',

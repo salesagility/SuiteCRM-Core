@@ -24,7 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ActionData, ActionHandler, Record} from 'common';
+import {ActionData, ActionHandler} from '../../../common/actions/action.model';
+import {Record} from '../../../common/record/record.model';
 
 export interface LineActionData extends ActionData {
     record: Record;

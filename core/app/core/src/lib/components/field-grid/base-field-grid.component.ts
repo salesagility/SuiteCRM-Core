@@ -28,7 +28,7 @@ import {Directive, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {FieldGridRow, LabelDisplay} from './field-grid.model';
-import {ScreenSizeMap} from 'common';
+import {ScreenSizeMap} from '../../common/services/ui/resize.model';
 
 
 @Directive()

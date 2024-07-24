@@ -26,19 +26,13 @@
 
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
-import {
-    BulkAction,
-    BulkActionsMap,
-    ColumnDefinition,
-    PaginationCount,
-    PaginationDataSource,
-    Record,
-    RecordSelection,
-    SelectionDataSource,
-    SelectionStatus,
-    SortDirection,
-    SortingSelection
-} from 'common';
+import {BulkAction, BulkActionsMap} from '../../common/actions/bulk-action.model';
+import {ColumnDefinition} from '../../common/metadata/list.metadata.model';
+import {PaginationDataSource} from '../../common/components/pagination/pagination.model';
+import {PaginationCount, SortDirection, SortingSelection} from '../../common/views/list/list-navigation.model';
+import {Record} from '../../common/record/record.model';
+import {RecordSelection, SelectionStatus} from '../../common/views/list/record-selection.model';
+import {SelectionDataSource} from '../../common/views/list/selection.model';
 import {DataSource} from '@angular/cdk/collections';
 import {BulkActionDataSource} from '../bulk-action-menu/bulk-action-menu.component';
 import {TableConfig} from './table.model';

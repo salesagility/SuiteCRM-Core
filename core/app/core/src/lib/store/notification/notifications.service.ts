@@ -27,7 +27,10 @@
 import {Injectable} from '@angular/core';
 import {RecordThreadStore} from '../../containers/record-thread/store/record-thread/record-thread.store';
 import {SystemConfigStore} from '../system-config/system-config.store';
-import {deepClone, Field, Record, SearchCriteria} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
+import {Record} from '../../common/record/record.model';
+import {Field} from '../../common/record/field.model';
+import {SearchCriteria} from '../../common/views/list/search-criteria.model';
 import {RecordThreadItemMetadata} from '../../containers/record-thread/store/record-thread/record-thread-item.store.model';
 import {
     RecordThreadConfig,

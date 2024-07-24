@@ -27,7 +27,8 @@
 import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
 import {Observable} from 'rxjs';
-import {Pagination, SearchCriteria, SortingSelection} from 'common';
+import {Pagination, SortingSelection} from '../../../common/views/list/list-navigation.model';
+import {SearchCriteria} from '../../../common/views/list/search-criteria.model';
 import {ListGQL} from '../../record-list/graphql/api.list.get';
 import {SavedFilter, SavedFilterList} from '../saved-filter.model';
 

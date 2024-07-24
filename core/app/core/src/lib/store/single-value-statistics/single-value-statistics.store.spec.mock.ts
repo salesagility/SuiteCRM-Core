@@ -26,7 +26,7 @@
 
 import {SingleValueStatisticsStoreFactory} from './single-value-statistics.store.factory';
 import {StatisticsFetchGQL} from '../statistics/graphql/api.statistics.get';
-import {StatisticsMap, StatisticsQueryMap} from 'common';
+import {StatisticsMap, StatisticsQueryMap} from '../../common/statistics/statistics.model';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {fieldManagerMock} from '../../services/record/field/field.manager.spec.mock';

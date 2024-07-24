@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {EnumEditFieldComponent} from './enum.component';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {TagInputModule} from 'ngx-chips';
 import {UntypedFormControl, FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';

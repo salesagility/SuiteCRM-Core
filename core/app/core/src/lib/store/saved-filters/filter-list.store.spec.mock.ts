@@ -31,7 +31,8 @@ import {messageServiceMock} from '../../services/message/message.service.spec.mo
 import {systemConfigStoreMock} from '../system-config/system-config.store.spec.mock';
 import {userPreferenceStoreMock} from '../user-preference/user-preference.store.spec.mock';
 import {Observable, of} from 'rxjs';
-import {deepClone, User} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
+import {User} from '../../common/types/user';
 import {AuthService} from '../../services/auth/auth.service';
 import {moduleNameMapperMock} from '../../services/navigation/module-name-mapper/module-name-mapper.service.spec.mock';
 import {FilterListStoreFactory} from './filter-list.store.factory';

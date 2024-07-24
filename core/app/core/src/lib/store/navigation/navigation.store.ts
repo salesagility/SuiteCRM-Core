@@ -30,7 +30,8 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {StateStore} from '../state';
-import {deepClone, ObjectMap} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
+import {ObjectMap} from '../../common/types/object-map';
 import {Params} from '@angular/router';
 
 export interface Navigation {

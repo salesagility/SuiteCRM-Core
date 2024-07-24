@@ -26,7 +26,12 @@
 
 import {Component, computed, inject, Input, OnDestroy, OnInit, signal, Signal} from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
-import {AttributeDependency, Field, isVoid, ObjectMap, Record, ViewMode} from 'common';
+import {AttributeDependency} from '../../common/record/field.model';
+import {ObjectMap} from '../../common/types/object-map';
+import {isVoid} from '../../common/utils/value-utils';
+import {Field} from '../../common/record/field.model';
+import {ViewMode} from '../../common/views/view.model';
+import {Record} from '../../common/record/record.model';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {debounceTime} from 'rxjs/operators';

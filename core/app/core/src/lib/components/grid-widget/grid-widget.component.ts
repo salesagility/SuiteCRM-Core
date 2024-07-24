@@ -33,22 +33,19 @@ import {LanguageStore} from '../../store/language/language.store';
 import {
     ContentAlign,
     ContentJustify,
-    FieldMap,
-    isTrue,
-    SingleValueStatisticsState,
-    SingleValueStatisticsStoreInterface,
-    StatisticMetadata,
-    StatisticsQuery,
     StatisticWidgetLayoutCol,
     StatisticWidgetLayoutRow,
     StatisticWidgetOptions,
-    StringMap,
     TextColor,
     TextSizes,
-    ViewContext,
-    WidgetMetadata,
-} from 'common';
-
+    WidgetMetadata
+} from '../../common/metadata/widget.metadata';
+import {FieldMap} from '../../common/record/field.model';
+import {SingleValueStatisticsState, SingleValueStatisticsStoreInterface} from '../../common/statistics/statistics-store.model';
+import {StatisticMetadata, StatisticsQuery} from '../../common/statistics/statistics.model';
+import {StringMap} from '../../common/types/string-map';
+import {ViewContext} from '../../common/views/view.model';
+import {isTrue} from '../../common/utils/value-utils';
 interface StatisticsEntry {
     labelKey?: string;
     type: string;

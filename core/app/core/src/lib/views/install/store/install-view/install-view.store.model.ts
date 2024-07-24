@@ -24,7 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, Panel, Record, ViewMode} from 'common';
+import {Action} from '../../../../common/actions/action.model';
+import {Panel} from '../../../../common/metadata/metadata.model';
+import {Record} from '../../../../common/record/record.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {RecordTemplateMetadata} from '../../../../store/metadata/metadata.store.service';
 
 export interface InstallViewModel {

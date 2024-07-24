@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {IntDetailFieldComponent} from './int.component';
 import {Component} from '@angular/core';
 import {BehaviorSubject, of} from 'rxjs';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {UserPreferenceMockStore} from '../../../../store/user-preference/user-preference.store.spec.mock';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';

@@ -25,7 +25,9 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ButtonInterface, isVoid, ScreenSizeMap} from 'common';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {ScreenSizeMap} from '../../../../common/services/ui/resize.model';
+import {isVoid} from '../../../../common/utils/value-utils';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {RecordGridConfig} from '../../../../components/record-grid/record-grid.model';

@@ -25,7 +25,10 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Button, ButtonGroupInterface, DropdownButtonInterface, AnyButtonInterface} from 'common';
+import {Button} from '../../common/components/button/button.model';
+import {ButtonGroupInterface} from '../../common/components/button/button-group.model';
+import {DropdownButtonInterface, AnyButtonInterface} from '../../common/components/button/dropdown-button.model';
+
 import {Observable, Subscription} from 'rxjs';
 
 interface SplitButtons {

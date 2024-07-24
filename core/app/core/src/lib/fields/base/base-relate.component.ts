@@ -27,7 +27,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import {AttributeMap, Record} from 'common';
+import {AttributeMap} from '../../common/record/record.model';
+import {Record} from '../../common/record/record.model';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {BaseFieldComponent} from './base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';

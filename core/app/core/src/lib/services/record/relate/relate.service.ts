@@ -28,7 +28,7 @@ import {Injectable} from '@angular/core';
 import {RecordListStoreFactory} from '../../../store/record-list/record-list.store.factory';
 import {RecordListStore} from '../../../store/record-list/record-list.store';
 import {map, shareReplay, take} from 'rxjs/operators';
-import {Record} from 'common';
+import {Record} from '../../../common/record/record.model';
 import {Observable} from 'rxjs';
 
 @Injectable()

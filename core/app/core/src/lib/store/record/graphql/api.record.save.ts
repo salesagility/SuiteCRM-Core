@@ -27,7 +27,8 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
 import {Observable} from 'rxjs';
-import {deepClone, Record} from 'common';
+import {deepClone} from '../../../common/utils/object-utils';
+import {Record} from '../../../common/record/record.model';
 import {map} from 'rxjs/operators';
 import {ApolloQueryResult} from '@apollo/client/core';
 

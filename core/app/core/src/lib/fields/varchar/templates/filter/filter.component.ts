@@ -25,7 +25,7 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {isVoid} from 'common';
+import {isVoid} from '../../../../common/utils/value-utils';
 import {BaseFieldComponent} from '../../../base/base-field.component';
 import {DataTypeFormatter} from '../../../../services/formatters/data-type.formatter.service';
 import {FieldLogicManager} from '../../../field-logic/field-logic.manager';

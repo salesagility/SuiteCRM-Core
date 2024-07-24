@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
+import {ViewMode} from '../../../../common/views/view.model';
 import {TableActionData, TableActionHandler} from "../table.action";
 
 @Injectable({

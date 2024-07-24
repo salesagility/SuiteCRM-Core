@@ -25,7 +25,8 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ButtonInterface, Record} from 'common';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {Record} from '../../../../common/record/record.model';
 import {FavoritesService} from '../../../../services/navigation/favorites/favorites.service';
 import {ImmediateDebounce} from '../../../../services/utils/immediate-debounce.service';
 

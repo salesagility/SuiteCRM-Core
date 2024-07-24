@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {SubpanelContainerComponent} from './subpanel-container.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -36,6 +36,7 @@ import {ActionMenuModule} from '../../../../views/list/components/action-menu/ac
 import {ImageModule} from '../../../../components/image/image.module';
 import {ModuleTitleModule} from '../../../../components/module-title/module-title.module';
 import {SettingsMenuModule} from '../../../../views/list/components/settings-menu/settings-menu.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
     selector: 'subpanel-test-host-component',
@@ -50,20 +51,17 @@ describe('SubpanelContainerComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                ModuleTitleModule,
-                ActionMenuModule,
-                ButtonModule,
-                SettingsMenuModule,
-                ApolloTestingModule,
-                HttpClientTestingModule,
-                ImageModule,
-                ListFilterModule,
-                RouterTestingModule
-            ],
-            declarations: [SubpanelContainerComponent, SubpanelContainerComponentTestHostComponent],
-            providers: [],
-        })
+    declarations: [SubpanelContainerComponent, SubpanelContainerComponentTestHostComponent],
+    imports: [ModuleTitleModule,
+        ActionMenuModule,
+        ButtonModule,
+        SettingsMenuModule,
+        ApolloTestingModule,
+        ImageModule,
+        ListFilterModule,
+        RouterTestingModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
             .compileComponents();
     });
 

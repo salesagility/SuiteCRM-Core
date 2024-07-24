@@ -26,7 +26,10 @@
 
 import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
-import {deepClone, Record, RecordMapperRegistry, StatisticsMap, StatisticsQueryMap} from 'common';
+import {deepClone} from '../../../../common/utils/object-utils';
+import {Record} from '../../../../common/record/record.model';
+import {RecordMapperRegistry} from '../../../../common/record/record-mappers/record-mapper.registry';
+import {StatisticsMap, StatisticsQueryMap} from '../../../../common/statistics/statistics.model';
 import {navigationMock} from '../../../../store/navigation/navigation.store.spec.mock';
 import {RecordViewStore} from './record-view.store';
 import {mockModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service.spec.mock';

@@ -26,7 +26,9 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {ButtonGroupInterface, deepClone, ModalButtonGroupInterface} from 'common';
+import {ButtonGroupInterface} from '../../../../common/components/button/button-group.model';
+import {ModalButtonGroupInterface} from '../../../../common/components/modal/modal.model';
+import {deepClone} from '../../../../common/utils/object-utils';
 import {map} from 'rxjs/operators';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import defaults from 'lodash-es/defaults';

@@ -33,8 +33,7 @@ import {LanguageListStringMap, LanguageStore, LanguageStringMap, LanguageStrings
 import {NavbarModule, Navigation, NavigationStore} from '../navigation/navigation.store';
 import {ModuleNavigation} from '../../services/navigation/module-navigation/module-navigation.service';
 import {Metadata, MetadataStore} from '../metadata/metadata.store.service';
-import {SearchMeta} from 'common';
-
+import {SearchMeta} from '../../common/metadata/list.metadata.model';
 
 export interface AppData {
     appState: AppState;

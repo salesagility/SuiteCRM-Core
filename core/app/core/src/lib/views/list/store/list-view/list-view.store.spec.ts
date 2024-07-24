@@ -24,7 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {PageSelection, SelectionStatus, SearchCriteriaFieldFilter} from 'common';
+import {PageSelection} from '../../../../common/views/list/list-navigation.model';
+import {SelectionStatus} from '../../../../common/views/list/record-selection.model';
+import {SearchCriteriaFieldFilter} from '../../../../common/views/list/search-criteria.model';
 import {take} from 'rxjs/operators';
 import {ListViewStore} from './list-view.store';
 import {listviewMockData, listviewStoreMock} from './list-view.store.spec.mock';

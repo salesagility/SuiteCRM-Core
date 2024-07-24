@@ -24,7 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, ActionData, ActionHandler, Field, Panel, Record} from 'common';
+import {Action, ActionData, ActionHandler} from '../../common/actions/action.model';
+import {Field} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
 
 export interface FieldLogicDisplayActionData extends ActionData {
     field: Field,

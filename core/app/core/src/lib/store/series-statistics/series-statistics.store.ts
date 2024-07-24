@@ -26,13 +26,13 @@
 
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {deepClone} from 'common';
-import {SeriesStatistic, StatisticsQuery} from 'common';
 import {StatisticsFetchGQL} from '../statistics/graphql/api.statistics.get';
 import {StatisticsStore} from '../statistics/statistics.store';
 import {distinctUntilChanged, map} from 'rxjs/operators';
-import {SeriesResult} from 'common';
-import {StatisticsState} from 'common';
+import {SeriesResult} from '../../common/containers/chart/chart.model';
+import {StatisticsState} from '../../common/statistics/statistics-store.model';
+import {deepClone} from '../../common/utils/object-utils';
+import {SeriesStatistic, StatisticsQuery} from '../../common/statistics/statistics.model';
 
 const initialState = {
     module: '',

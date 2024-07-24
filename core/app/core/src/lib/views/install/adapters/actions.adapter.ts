@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext, ModeActions, ViewMode} from 'common';
+import {Action, ActionContext, ModeActions} from '../../../common/actions/action.model';
+import {ViewMode} from '../../../common/views/view.model';
 import {combineLatestWith, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';

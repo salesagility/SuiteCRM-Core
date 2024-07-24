@@ -25,25 +25,16 @@
  */
 
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
-import {
-    Action,
-    deepClone,
-    Field,
-    FieldDefinition,
-    FieldMetadata,
-    isVoid,
-    Option,
-    Panel,
-    PanelCell,
-    PanelRow,
-    Record,
-    ViewContext,
-    ViewFieldDefinition,
-    ViewMode,
-    TabDefinition,
-    TabDefinitions
-} from 'common';
+import {BehaviorSubject, combineLatestWith, Observable, of, Subscription} from 'rxjs';
+import {isVoid} from '../../../../common/utils/value-utils';
+import {deepClone} from '../../../../common/utils/object-utils';
+import {Action} from '../../../../common/actions/action.model';
+import {Field, FieldDefinition, FieldMetadata, Option} from '../../../../common/record/field.model';
+import {Record} from '../../../../common/record/record.model';
+import {Panel, PanelCell, PanelRow, TabDefinition, TabDefinitions} from '../../../../common/metadata/metadata.model';
+import {ViewContext} from '../../../../common/views/view.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {InstallViewMetadata, InstallViewModel, InstallViewState} from './install-view.store.model';
 import {StateStore} from '../../../../store/state';

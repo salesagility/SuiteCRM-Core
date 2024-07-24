@@ -27,20 +27,12 @@
 import {Injectable} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
-import {
-    AttributeDependency,
-    BaseField,
-    DisplayType,
-    Field,
-    FieldDefinition,
-    FieldLogic,
-    FieldLogicMap,
-    isFalse,
-    isTrue,
-    ObjectMap,
-    Record,
-    ViewFieldDefinition
-} from 'common';
+import {isTrue} from '../../../common/utils/value-utils';
+import {ObjectMap} from '../../../common/types/object-map';
+import {AttributeDependency, BaseField, DisplayType, Field, FieldDefinition} from '../../../common/record/field.model';
+import {FieldLogic, FieldLogicMap} from '../../../common/actions/field-logic-action.model';
+import {Record} from '../../../common/record/record.model';
+import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
 import {AsyncValidatorFn, UntypedFormArray, UntypedFormControl, ValidatorFn} from '@angular/forms';
 import {LanguageStore} from '../../../store/language/language.store';
 import get from 'lodash-es/get';

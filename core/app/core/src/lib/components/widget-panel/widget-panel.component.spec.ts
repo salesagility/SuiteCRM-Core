@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {WidgetPanelComponent} from './widget-panel.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {of} from 'rxjs';
@@ -39,6 +39,7 @@ import {themeImagesMockData} from '../../store/theme-images/theme-images.store.s
 import {ImageModule} from '../image/image.module';
 import {listviewStoreMock} from '../../views/list/store/list-view/list-view.store.spec.mock';
 import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('WidgetPanelComponent', () => {
     let component: WidgetPanelComponent;
@@ -46,20 +47,19 @@ describe('WidgetPanelComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [
-                AngularSvgIconModule.forRoot(),
-                ChartModule,
-                HttpClientTestingModule,
-                NoopAnimationsModule,
-                ApolloTestingModule,
-                ImageModule
-            ],
-            declarations: [WidgetPanelComponent],
-            providers: [
-                {provide: ListViewStore, useValue: listviewStoreMock},
-                {provide: ThemeImagesStore, useValue: {images$: of(themeImagesMockData).pipe(take(1))}},
-            ],
-        })
+    declarations: [WidgetPanelComponent],
+    imports: [AngularSvgIconModule.forRoot(),
+        ChartModule,
+        NoopAnimationsModule,
+        ApolloTestingModule,
+        ImageModule],
+    providers: [
+        { provide: ListViewStore, useValue: listviewStoreMock },
+        { provide: ThemeImagesStore, useValue: { images$: of(themeImagesMockData).pipe(take(1)) } },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     }));
 

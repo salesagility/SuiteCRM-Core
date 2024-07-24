@@ -24,18 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, signal} from '@angular/core';
-import {
-    Action,
-    ActionContext,
-    ActionDataSource,
-    Button,
-    ButtonGroupInterface,
-    ButtonInterface,
-    isFalse,
-    Record,
-    ActiveLineAction
-} from 'common';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Action, ActionContext, ActionDataSource} from '../../common/actions/action.model';
+import {Button, ButtonInterface} from '../../common/components/button/button.model';
+import {ButtonGroupInterface} from '../../common/components/button/button-group.model';
+import {isFalse} from '../../common/utils/value-utils';
+import {Record} from '../../common/record/record.model';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {

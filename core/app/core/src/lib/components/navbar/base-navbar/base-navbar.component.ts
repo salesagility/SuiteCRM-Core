@@ -45,7 +45,9 @@ import {ModuleNavigation} from '../../../services/navigation/module-navigation/m
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
 import {AppState, AppStateStore} from '../../../store/app-state/app-state.store';
 import {AuthService} from '../../../services/auth/auth.service';
-import {MenuItem, ready, RecentlyViewed} from 'common';
+import {ready} from '../../../common/utils/object-utils';
+import {MenuItem} from '../../../common/menu/menu.model';
+import {RecentlyViewed} from '../../../common/record/recently-viewed.model';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {NotificationStore} from "../../../store/notification/notification.store";
 import {GlobalRecentlyViewedStore} from "../../../store/global-recently-viewed/global-recently-viewed.store";

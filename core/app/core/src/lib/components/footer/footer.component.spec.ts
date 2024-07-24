@@ -28,10 +28,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import {FooterUiComponent} from './footer.component';
 import {ApolloTestingModule} from 'apollo-angular/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FooterUiComponent', () => {
     let component: FooterUiComponent;
@@ -39,10 +40,11 @@ describe('FooterUiComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [RouterTestingModule, HttpClientTestingModule, FormsModule, ApolloTestingModule],
-            declarations: [FooterUiComponent]
-        })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [FooterUiComponent],
+    imports: [RouterTestingModule, FormsModule, ApolloTestingModule],
+    providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+})
             .compileComponents();
     }));
 

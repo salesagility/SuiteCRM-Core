@@ -25,7 +25,10 @@
  */
 
 import {of} from 'rxjs';
-import {ColumnDefinition, Field, Record, SortDirection} from 'common';
+import {ColumnDefinition} from '../../../common/metadata/list.metadata.model';
+import {Field} from '../../../common/record/field.model';
+import {Record} from '../../../common/record/record.model';
+import {SortDirection} from '../../../common/views/list/list-navigation.model';
 import {map} from 'rxjs/operators';
 import {RecordListModalTableAdapterInterface} from './adapter.model';
 import {RecordListModalStore} from '../store/record-list-modal/record-list-modal.store';

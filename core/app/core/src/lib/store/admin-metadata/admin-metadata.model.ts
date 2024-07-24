@@ -23,7 +23,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
-import {ObjectMap} from 'common';
+import {ObjectMap} from '../../common/types/object-map';
 
 export interface AdminMetadata {
     adminPanel?: AdminMetadataModel[];

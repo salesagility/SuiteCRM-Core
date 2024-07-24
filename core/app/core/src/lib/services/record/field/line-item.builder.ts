@@ -24,7 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {deepClone, Field, FieldDefinition, FieldMap, Record, ViewFieldDefinition} from 'common';
+import {deepClone} from '../../../common/utils/object-utils';
+import {Field, FieldMap, FieldDefinition} from '../../../common/record/field.model';
+import {Record} from '../../../common/record/record.model';
+import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
 import {LanguageStore} from '../../../store/language/language.store';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';

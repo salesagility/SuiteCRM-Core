@@ -27,12 +27,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {animate, transition, trigger} from '@angular/animations';
-import {ButtonInterface} from 'common';
-import {
-    AnyModalButtonInterface,
-    ModalButtonGroupInterface,
-    ModalCloseFeedBack
-} from 'common';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {AnyModalButtonInterface, ModalButtonGroupInterface, ModalCloseFeedBack} from '../../../../common/components/modal/modal.model';
 import {Observable, of} from 'rxjs';
 
 

@@ -24,9 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { User } from 'common';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {User} from '../../common/types/user';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

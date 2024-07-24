@@ -32,7 +32,7 @@ import {
     UrlSegment, UrlSegmentGroup,
     UrlTree
 } from '@angular/router';
-import {HttpParams} from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {ModuleNameMapper} from '../module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '../action-name-mapper/action-name-mapper.service';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';

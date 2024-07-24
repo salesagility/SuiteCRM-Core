@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Record, ViewMode} from 'common';
+import {Record} from '../../../../common/record/record.model';
+import {ViewMode} from '../../../../common/views/view.model';
 import {SubpanelActionData, SubpanelActionHandler} from '../subpanel.action';
 import {
     RecordListModalComponent

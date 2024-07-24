@@ -19,23 +19,23 @@ module.exports = {
       shared: {
         '@angular/core': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: '^18.1.1'
         },
         '@angular/common': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: '^18.1.1'
         },
         '@angular/common/http': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: '^18.1.1'
         },
         '@angular/router': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: '^18.1.1'
         },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: '^18.1.1'
         },
         '@angular/cdk': {
           singleton: true,
@@ -51,7 +51,7 @@ module.exports = {
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: '^18.1.1'
         },
         '@apollo/client': {
           singleton: true,
@@ -104,12 +104,6 @@ module.exports = {
         'rxjs/operators': {
           singleton: true,
           requiredVersion: '^7.8.1'
-        },
-
-        common: {
-          singleton: true,
-          import: 'dist/common',
-          requiredVersion: false
         },
 
         core: {

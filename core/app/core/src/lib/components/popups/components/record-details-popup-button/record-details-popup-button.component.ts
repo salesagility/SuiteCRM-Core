@@ -25,11 +25,9 @@
  */
 
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {
-    ColumnDefinition,
-    Field,
-    Record
-} from 'common';
+import {ColumnDefinition} from '../../../../common/metadata/list.metadata.model';
+import {Field} from '../../../../common/record/field.model';
+import {Record} from '../../../../common/record/record.model';
 import {FieldManager} from "../../../../services/record/field/field.manager";
 
 @Component({

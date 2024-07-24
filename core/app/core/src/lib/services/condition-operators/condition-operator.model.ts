@@ -24,7 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Field, Record, LogicRuleValues} from 'common';
+import {Field} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
+import {LogicRuleValues} from '../../common/metadata/metadata.model';
 
 export interface ConditionOperatorModel {
     key: string;

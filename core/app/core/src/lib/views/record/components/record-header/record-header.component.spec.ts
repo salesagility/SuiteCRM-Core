@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {RecordHeaderComponent} from './record-header.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -54,6 +54,7 @@ import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spe
 import {recordActionsMock} from '../../adapters/actions.adapter.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
 import {ActionGroupMenuModule} from '../../../../components/action-group-menu/action-group-menu.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
     selector: 'record-header-test-host-component',
@@ -68,30 +69,29 @@ describe('RecordHeaderComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [
-                ModuleTitleModule,
-                ButtonModule,
-                ApolloTestingModule,
-                HttpClientTestingModule,
-                ImageModule,
-                RouterTestingModule,
-                ActionGroupMenuModule
-            ],
-            declarations: [RecordHeaderComponent, RecordHeaderTestHostComponent],
-            providers: [
-                {provide: RecordViewStore, useValue: recordviewStoreMock},
-                {provide: ThemeImagesStore, useValue: themeImagesStoreMock},
-                {provide: ModuleNavigation, useValue: mockModuleNavigation},
-                {provide: SystemConfigStore, useValue: systemConfigStoreMock},
-                {provide: UserPreferenceStore, useValue: userPreferenceStoreMock},
-                {provide: NavigationStore, useValue: navigationMock},
-                {provide: ModuleNavigation, useValue: mockModuleNavigation},
-                {provide: LanguageStore, useValue: languageStoreMock},
-                {provide: MetadataStore, useValue: metadataStoreMock},
-                {provide: AppStateStore, useValue: appStateStoreMock},
-                {provide: RecordActionsAdapter, useValue: recordActionsMock},
-            ],
-        })
+    declarations: [RecordHeaderComponent, RecordHeaderTestHostComponent],
+    imports: [ModuleTitleModule,
+        ButtonModule,
+        ApolloTestingModule,
+        ImageModule,
+        RouterTestingModule,
+        ActionGroupMenuModule],
+    providers: [
+        { provide: RecordViewStore, useValue: recordviewStoreMock },
+        { provide: ThemeImagesStore, useValue: themeImagesStoreMock },
+        { provide: ModuleNavigation, useValue: mockModuleNavigation },
+        { provide: SystemConfigStore, useValue: systemConfigStoreMock },
+        { provide: UserPreferenceStore, useValue: userPreferenceStoreMock },
+        { provide: NavigationStore, useValue: navigationMock },
+        { provide: ModuleNavigation, useValue: mockModuleNavigation },
+        { provide: LanguageStore, useValue: languageStoreMock },
+        { provide: MetadataStore, useValue: metadataStoreMock },
+        { provide: AppStateStore, useValue: appStateStoreMock },
+        { provide: RecordActionsAdapter, useValue: recordActionsMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
 
         testHostFixture = TestBed.createComponent(RecordHeaderTestHostComponent);

@@ -25,7 +25,9 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {ActionContext, ButtonGroupInterface, ButtonInterface} from 'common';
+import {ActionContext} from '../../../../common/actions/action.model';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {ButtonGroupInterface} from '../../../../common/components/button/button-group.model';
 import {Observable} from 'rxjs';
 import {TableConfig} from '../../../../components/table/table.model';
 import {SubpanelTableAdapter} from '../../adapters/table.adapter';

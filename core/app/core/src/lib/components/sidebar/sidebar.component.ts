@@ -28,7 +28,7 @@ import {Component, OnDestroy, OnInit, signal, ViewChild, WritableSignal} from '@
 import {AppStateStore} from "../../store/app-state/app-state.store";
 import {combineLatestWith, Subscription} from "rxjs";
 import {NavbarModuleMap, Navigation, NavigationStore} from "../../store/navigation/navigation.store";
-import {MenuItem} from "common";
+import {MenuItem} from '../../common/menu/menu.model';
 import {ModuleNameMapper} from "../../services/navigation/module-name-mapper/module-name-mapper.service";
 import {ModuleNavigation} from "../../services/navigation/module-navigation/module-navigation.service";
 import {LanguageListStringMap, LanguageStore, LanguageStrings} from "../../store/language/language.store";

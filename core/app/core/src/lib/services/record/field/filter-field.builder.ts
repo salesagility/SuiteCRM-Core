@@ -29,15 +29,10 @@ import {Injectable} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
-import {
-    deepClone,
-    Field,
-    FieldDefinition,
-    Option,
-    SearchCriteria,
-    SearchCriteriaFieldFilter,
-    ViewFieldDefinition
-} from 'common';
+import {deepClone} from '../../../common/utils/object-utils';
+import {Field, FieldDefinition, Option} from '../../../common/record/field.model';
+import {SearchCriteria, SearchCriteriaFieldFilter} from '../../../common/views/list/search-criteria.model';
+import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
 import {LanguageStore} from '../../../store/language/language.store';
 import {AsyncValidatorFn, ValidatorFn} from '@angular/forms';
 import {FieldObjectRegistry} from "./field-object-type.registry";

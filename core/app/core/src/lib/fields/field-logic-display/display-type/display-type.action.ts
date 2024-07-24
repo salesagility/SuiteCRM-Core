@@ -26,7 +26,10 @@
 
 import {Injectable} from '@angular/core';
 import {FieldLogicDisplayActionData, FieldLogicDisplayActionHandler} from '../field-logic-display.action';
-import {Action, StringArrayMap, StringArrayMatrix, ViewMode} from 'common';
+import {Action} from '../../../common/actions/action.model';
+import {StringArrayMap} from '../../../common/types/string-map';
+import {StringArrayMatrix} from '../../../common/types/string-matrix';
+import {ViewMode} from '../../../common/views/view.model';
 import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";
 
 

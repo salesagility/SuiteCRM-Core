@@ -29,7 +29,7 @@ import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {SearchMetaFieldMap} from 'common';
+import {SearchMetaFieldMap} from '../../../../common/metadata/list.metadata.model';
 import {map} from 'rxjs/operators';
 import {DropdownButtonModule} from '../../../../components/dropdown-button/dropdown-button.module';
 import {ButtonModule} from '../../../../components/button/button.module';

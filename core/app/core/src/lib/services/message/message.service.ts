@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Message, MessageTypes} from 'common';
+import {Message, MessageTypes} from '../../common/types/messages';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 

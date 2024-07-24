@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit, signal, WritableSignal} from '@angular/core';
-import {MenuItem} from 'common';
+import {MenuItem} from '../../../common/menu/menu.model';
 import {Router, RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {SearchBarModule} from "../../search-bar/search-bar.module";

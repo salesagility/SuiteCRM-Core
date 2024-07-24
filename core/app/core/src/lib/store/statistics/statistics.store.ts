@@ -27,7 +27,10 @@
 import {Injectable} from '@angular/core';
 import {StateStore} from '../state';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {deepClone, Statistic, StatisticsMap, StatisticsQuery, StatisticsState, ViewContext} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
+import {StatisticsState} from '../../common/statistics/statistics-store.model';
+import {StatisticsQuery, Statistic, StatisticsMap} from '../../common/statistics/statistics.model';
+import {ViewContext} from '../../common/views/view.model';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {StatisticsFetchGQL} from './graphql/api.statistics.get';
 

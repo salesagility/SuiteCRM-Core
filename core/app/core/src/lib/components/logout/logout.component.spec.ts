@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import {LogoutUiComponent} from './logout.component';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -36,6 +36,7 @@ import {take} from 'rxjs/operators';
 import {AuthService} from '../../services/auth/auth.service';
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../store/language/language.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LogoutComponent', () => {
     let component: LogoutUiComponent;
@@ -49,24 +50,23 @@ describe('LogoutComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [
-                RouterTestingModule,
-                HttpClientTestingModule,
-                ApolloTestingModule
-            ],
-            declarations: [LogoutUiComponent],
-            providers: [
-                {
-                    provide: AuthService, useValue: authServiceMock
-                },
-                {
-                    provide: LanguageStore, useValue: {
-                        vm$: of(languageStoreMock).pipe(take(1))
-                    }
-                },
-            ]
-        }).compileComponents();
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [LogoutUiComponent],
+    imports: [RouterTestingModule,
+        ApolloTestingModule],
+    providers: [
+        {
+            provide: AuthService, useValue: authServiceMock
+        },
+        {
+            provide: LanguageStore, useValue: {
+                vm$: of(languageStoreMock).pipe(take(1))
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+}).compileComponents();
     }));
 
     beforeEach(() => {

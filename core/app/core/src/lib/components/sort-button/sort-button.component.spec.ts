@@ -30,14 +30,15 @@ import {SortButtonComponent} from './sort-button.component';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {Component} from '@angular/core';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {By} from '@angular/platform-browser';
-import {SortDirection} from 'common';
+import {SortDirection} from '../../common/views/list/list-navigation.model';
 import {take} from 'rxjs/operators';
 import {themeImagesMockData} from '../../store/theme-images/theme-images.store.spec.mock';
 import {ImageModule} from '../image/image.module';
 import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
 import {SortDirectionDataSource} from './sort-button.model';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const sortDirectionSubject = new BehaviorSubject<SortDirection>(SortDirection.NONE);
 let lastDirection = SortDirection.NONE;
@@ -63,23 +64,22 @@ describe('SortButtonComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [
-                SortButtonTestHostComponent,
-                SortButtonComponent,
-            ],
-            imports: [
-                ImageModule,
-                AngularSvgIconModule.forRoot(),
-                HttpClientTestingModule,
-            ],
-            providers: [
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                }
-            ],
-        }).compileComponents();
+    declarations: [
+        SortButtonTestHostComponent,
+        SortButtonComponent,
+    ],
+    imports: [ImageModule,
+        AngularSvgIconModule.forRoot()],
+    providers: [
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
 
         testHostFixture = TestBed.createComponent(SortButtonTestHostComponent);
         testHostComponent = testHostFixture.componentInstance;

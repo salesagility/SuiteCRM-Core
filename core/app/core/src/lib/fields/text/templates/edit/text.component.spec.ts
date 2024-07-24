@@ -37,7 +37,7 @@ import {userPreferenceStoreMock} from '../../../../store/user-preference/user-pr
 import {DatetimeFormatter} from '../../../../services/formatters/datetime/datetime-formatter.service';
 import {numberFormatterMock} from '../../../../services/formatters/number/number-formatter.spec.mock';
 import {NumberFormatter} from '../../../../services/formatters/number/number-formatter.service';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 
 @Component({
     selector: 'text-edit-field-test-host-component',

@@ -25,7 +25,8 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {WidgetMetadata, ViewContext} from 'common';
+import {ViewContext} from '../../common/views/view.model';
+import {WidgetMetadata} from '../../common/metadata/widget.metadata';
 import {Observable} from 'rxjs';
 
 @Component({template: ''})

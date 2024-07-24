@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {ButtonComponent} from './button.component';
 import {Component} from '@angular/core';
-import {ButtonInterface} from 'common';
+import {ButtonInterface} from '../../common/components/button/button.model';
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../store/language/language.store';
 import {ImageModule} from '../image/image.module';

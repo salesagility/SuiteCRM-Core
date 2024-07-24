@@ -25,7 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ObjectMap, SeriesResult} from 'common';
+import {SeriesResult} from '../../../../common/containers/chart/chart.model';
+import {ObjectMap} from '../../../../common/types/object-map';
 import {SeriesTraverser, SeriesVisitor, SeriesVisitorMap} from './series-traverser.service';
 import {DataTypeSeriesMapper} from './data-type-mapper/data-type.series-mapper';
 

@@ -41,7 +41,8 @@ import {SingleValueStatisticsStoreFactory} from '../../store/single-value-statis
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../store/language/language.store';
 import {gridWidgetFactoryMock} from './grid-widget.component.spec.mock';
-import {ViewContext, WidgetMetadata} from 'common';
+import {ViewContext} from '../../common/views/view.model';
+import {WidgetMetadata} from '../../common/metadata/widget.metadata';
 
 @Component({
     selector: 'scrm-grid-widget-test-host-component',

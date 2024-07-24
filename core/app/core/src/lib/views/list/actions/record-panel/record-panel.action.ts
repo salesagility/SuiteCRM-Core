@@ -29,7 +29,7 @@ import {
     RecordPanelActionHandler
 } from '../../../../containers/record-panel/components/record-panel/record-panel.model';
 import {ListViewStore} from '../../store/list-view/list-view.store';
-import {Action} from 'common';
+import {Action} from '../../../../common/actions/action.model';
 
 export interface ListViewRecordPanelActionData extends RecordPanelActionData {
     listStore: ListViewStore;

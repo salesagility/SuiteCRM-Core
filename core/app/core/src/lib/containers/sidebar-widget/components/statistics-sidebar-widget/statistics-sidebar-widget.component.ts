@@ -25,7 +25,8 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {StatisticWidgetOptions, ViewContext, WidgetMetadata} from 'common';
+import {ViewContext} from '../../../../common/views/view.model';
+import {StatisticWidgetOptions, WidgetMetadata} from '../../../../common/metadata/widget.metadata';
 import {Subscription} from 'rxjs';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';

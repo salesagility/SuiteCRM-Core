@@ -26,8 +26,10 @@
 
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {ActionDataSource, ColumnDefinition, SortDirection, SortingSelection} from 'common';
 import {map} from 'rxjs/operators';
+import {ColumnDefinition} from '../../../common/metadata/list.metadata.model';
+import {ActionDataSource} from '../../../common/actions/action.model';
+import {SortDirection, SortingSelection} from '../../../common/views/list/list-navigation.model';
 import {TableConfig} from '../../../components/table/table.model';
 import {SubpanelStore} from '../store/subpanel/subpanel.store';
 import {SubpanelLineActionsAdapterFactory} from './line-actions.adapter.factory';

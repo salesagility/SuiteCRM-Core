@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {SortDirection} from 'common';
+import {SortDirection} from '../../common/views/list/list-navigation.model';
 import {Observable} from 'rxjs';
 import {SortDirectionDataSource} from './sort-button.model';
 

@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {CloseButtonComponent} from './close-button.component';
-import {ButtonInterface} from 'common';
+import {ButtonInterface} from '../../common/components/button/button.model';
 import {ButtonModule} from '../button/button.module';
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../store/language/language.store';

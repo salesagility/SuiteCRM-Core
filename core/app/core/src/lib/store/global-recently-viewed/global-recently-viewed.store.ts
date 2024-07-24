@@ -28,7 +28,8 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay} from 'rxjs/operators';
 import {StateStore} from '../state';
-import {deepClone, GlobalRecentlyViewed, RecentlyViewed} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
+import {RecentlyViewed, GlobalRecentlyViewed} from '../../common/record/recently-viewed.model';
 
 
 const initialState: GlobalRecentlyViewed = {

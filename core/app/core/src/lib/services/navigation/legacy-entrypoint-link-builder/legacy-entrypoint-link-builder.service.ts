@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Params} from '@angular/router';
-import {HttpParams} from "@angular/common/http";
+import { HttpParams } from "@angular/common/http";
 
 @Injectable({providedIn: 'root'})
 export class LegacyEntrypointLinkBuilder {

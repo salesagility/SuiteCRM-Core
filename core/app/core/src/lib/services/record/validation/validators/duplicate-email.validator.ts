@@ -26,8 +26,11 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Field, Record, StandardValidationErrors, StandardValidatorFn, ViewFieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
+import {Field} from '../../../../common/record/field.model';
+import {Record} from '../../../../common/record/record.model';
+import {StandardValidatorFn, StandardValidationErrors} from '../../../../common/services/validators/validators.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
 
 export const duplicateEmailValidator = (viewField: ViewFieldDefinition, record: Record): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {

@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {DropdownButtonComponent} from './dropdown-button.component';
 import {Component} from '@angular/core';
-import {DropdownButtonInterface} from 'common';
+import {DropdownButtonInterface} from '../../common/components/button/dropdown-button.model';
 import {NgbDropdownModule, NgbTooltipModule} from '@ng-bootstrap/ng-bootstrap';
 import {ButtonModule} from '../button/button.module';
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';

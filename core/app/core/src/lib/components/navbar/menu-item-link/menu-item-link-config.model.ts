@@ -24,8 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ButtonCallback} from "common";
-
+import {ButtonCallback} from '../../../common/components/button/button.model';
 export interface MenuItemLinkConfig {
     onClick: ButtonCallback;
     onTouchStart: ButtonCallback;

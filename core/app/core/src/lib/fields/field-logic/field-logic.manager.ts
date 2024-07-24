@@ -27,7 +27,10 @@
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
 import {FieldLogicActionData, FieldLogicActionHandlerMap} from './field-logic.action';
-import {Action, ActionContext, Field, ModeActions, Record, ViewMode} from 'common';
+import {Action, ActionContext, ModeActions} from '../../common/actions/action.model';
+import {Field} from '../../common/record/field.model';
+import {Record} from '../../common/record/record.model';
+import {ViewMode} from '../../common/views/view.model';
 import {FieldLogicDisplayTypeAction} from './display-type/field-logic-display-type.action';
 import {EmailPrimarySelectAction} from './email-primary-select/email-primary-select.action';
 import {RequiredAction} from './required/required.action';

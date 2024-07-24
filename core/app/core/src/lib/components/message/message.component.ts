@@ -25,7 +25,7 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {Message} from 'common';
+import {Message} from '../../common/types/messages';
 import {Observable} from 'rxjs';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn, fadeOut} from 'ng-animate';

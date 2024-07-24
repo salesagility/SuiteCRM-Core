@@ -26,7 +26,10 @@
 
 import {Injectable} from '@angular/core';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
-import {Action, Field, isTrue, ViewMode} from 'common';
+import {Action} from '../../../common/actions/action.model';
+import {Field} from '../../../common/record/field.model';
+import {ViewMode} from '../../../common/views/view.model';
+import {isTrue} from '../../../common/utils/value-utils';
 
 @Injectable({
     providedIn: 'root'

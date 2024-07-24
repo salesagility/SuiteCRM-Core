@@ -28,7 +28,8 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {StatisticsSidebarWidgetComponent} from './statistics-sidebar-widget.component';
 import {Component} from '@angular/core';
-import {ViewContext, WidgetMetadata} from 'common';
+import {ViewContext} from '../../../../common/views/view.model';
+import {WidgetMetadata} from '../../../../common/metadata/widget.metadata';
 import {sidebarWidgetStatisticsFactoryMock} from './statistics-sidebar-widget.component.spec.mock';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {CommonModule} from '@angular/common';

@@ -27,11 +27,10 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
-
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {AppStateStore} from '../app-state/app-state.store';
 import {StateStore} from '../state';
-import {deepClone, emptyObject} from 'common';
+import {deepClone, emptyObject} from '../../common/utils/object-utils';
 import {SvgIconRegistryService} from 'angular-svg-icon';
 
 export interface ThemeImage {

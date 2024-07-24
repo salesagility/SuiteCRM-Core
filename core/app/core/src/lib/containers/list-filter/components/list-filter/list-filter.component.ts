@@ -25,7 +25,9 @@
  */
 
 import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
-import {ButtonInterface, Record, ScreenSizeMap} from 'common';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {Record} from '../../../../common/record/record.model';
+import {ScreenSizeMap} from '../../../../common/services/ui/resize.model';
 import {Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {FilterConfig} from './list-filter.model';

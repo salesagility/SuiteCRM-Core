@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnInit} from '@angular/core';
-import {MenuItemLink} from 'common';
+import {MenuItemLink} from '../../../common/menu/menu.model';
 import {take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {AppStateStore} from '../../../store/app-state/app-state.store';

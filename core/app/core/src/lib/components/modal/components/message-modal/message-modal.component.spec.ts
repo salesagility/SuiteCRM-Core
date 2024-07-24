@@ -25,11 +25,10 @@
  */
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-
 import {MessageModalComponent} from './message-modal.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Component, OnInit} from '@angular/core';
-import {ModalButtonInterface} from 'common';
+import {ModalButtonInterface} from '../../../../common/components/modal/modal.model';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {interval} from 'rxjs';

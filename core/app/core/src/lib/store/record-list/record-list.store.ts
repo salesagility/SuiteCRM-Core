@@ -24,22 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {
-    deepClone,
-    emptyObject,
-    ObjectMap,
-    PageSelection,
-    Pagination,
-    PaginationCount,
-    PaginationDataSource,
-    Record,
-    RecordSelection,
-    SearchCriteria,
-    SelectionDataSource,
-    SelectionStatus,
-    SortDirection,
-    SortingSelection
-} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
+import {emptyObject} from '../../common/utils/object-utils';
+import {ObjectMap} from '../../common/types/object-map';
+import {Pagination, PageSelection, PaginationCount, SortDirection, SortingSelection} from '../../common/views/list/list-navigation.model';
+import {PaginationDataSource} from '../../common/components/pagination/pagination.model';
+import {Record} from '../../common/record/record.model';
+import {RecordSelection, SelectionStatus} from '../../common/views/list/record-selection.model';
+import {SearchCriteria} from '../../common/views/list/search-criteria.model';
+import {SelectionDataSource} from '../../common/views/list/selection.model';
 import {BehaviorSubject, combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {catchError, distinctUntilChanged, map, shareReplay, take, tap} from 'rxjs/operators';
 import {StateStore} from '../state';

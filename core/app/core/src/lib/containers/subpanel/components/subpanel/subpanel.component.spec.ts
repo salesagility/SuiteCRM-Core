@@ -25,7 +25,7 @@
  */
 
 import {CommonModule} from '@angular/common';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterModule} from '@angular/router';
@@ -42,6 +42,7 @@ import {PanelModule} from '../../../../components/panel/panel.module';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.mock';
 import {ImageModule} from '../../../../components/image/image.module';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 const store = recordviewStoreMock.getSubpanels().contacts;
 
@@ -59,24 +60,23 @@ describe('SubpanelComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                CommonModule,
-                NgbModule,
-                ImageModule,
-                PanelModule,
-                RouterModule,
-                ButtonGroupModule,
-                ApolloTestingModule,
-                HttpClientTestingModule,
-                RouterTestingModule
-            ],
-            declarations: [SubpanelComponent, SubpanelComponentTestHostComponent],
-            providers: [
-                {provide: LanguageStore, useValue: languageStoreMock},
-                {provide: RecordViewStore, useValue: recordviewStoreMock},
-                {provide: MetadataStore, useValue: metadataStoreMock},
-            ],
-        })
+    declarations: [SubpanelComponent, SubpanelComponentTestHostComponent],
+    imports: [CommonModule,
+        NgbModule,
+        ImageModule,
+        PanelModule,
+        RouterModule,
+        ButtonGroupModule,
+        ApolloTestingModule,
+        RouterTestingModule],
+    providers: [
+        { provide: LanguageStore, useValue: languageStoreMock },
+        { provide: RecordViewStore, useValue: recordviewStoreMock },
+        { provide: MetadataStore, useValue: metadataStoreMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     });
 

@@ -32,7 +32,7 @@ import {messageServiceMock} from '../../../../services/message/message.service.s
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
 import {userPreferenceStoreMock} from '../../../../store/user-preference/user-preference.store.spec.mock';
 import {Observable, of} from 'rxjs';
-import {deepClone} from 'common';
+import {deepClone} from '../../../../common/utils/object-utils';
 import {take} from 'rxjs/operators';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */

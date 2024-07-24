@@ -25,7 +25,8 @@
  */
 
 import {FieldBuilder} from './field.builder';
-import {Record, ViewFieldDefinition} from 'common';
+import {Record} from '../../../common/record/record.model';
+import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
 import {LanguageStore} from '../../../store/language/language.store';
 import {Injectable} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';

@@ -25,7 +25,7 @@
  */
 
 import {StatisticsFetchGQL} from '../statistics/graphql/api.statistics.get';
-import {StatisticsMap, StatisticsQueryMap} from 'common';
+import {StatisticsMap, StatisticsQueryMap} from '../../common/statistics/statistics.model';
 import {Observable, of} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {ChartDataStoreFactory} from './chart-data.store.factory';

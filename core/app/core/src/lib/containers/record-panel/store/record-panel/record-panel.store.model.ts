@@ -24,7 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, ViewFieldDefinition, ViewMode} from 'common';
+import {Action} from '../../../../common/actions/action.model';
+import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
+import {ViewMode} from '../../../../common/views/view.model';
 
 export interface RecordPanelMetadata {
     title?: string;

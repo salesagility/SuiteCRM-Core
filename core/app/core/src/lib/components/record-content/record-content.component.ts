@@ -26,7 +26,10 @@
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Observable, of, Subscription} from 'rxjs';
-import {FieldMap, Panel, Record, isTrue} from 'common';
+import {FieldMap} from '../../common/record/field.model';
+import {Panel} from '../../common/metadata/metadata.model';
+import {Record} from '../../common/record/record.model';
+import {isTrue} from '../../common/utils/value-utils';
 import {map, shareReplay} from 'rxjs/operators';
 import {RecordContentConfig, RecordContentDataSource} from './record-content.model';
 import {FieldLayoutConfig, FieldLayoutDataSource} from '../field-layout/field-layout.model';

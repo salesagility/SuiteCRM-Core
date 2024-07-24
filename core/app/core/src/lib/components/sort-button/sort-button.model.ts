@@ -25,7 +25,7 @@
  */
 
 import {Observable} from 'rxjs';
-import {SortDirection} from 'common';
+import {SortDirection} from '../../common/views/list/list-navigation.model';
 
 export interface SortDirectionDataSource {
     getSortDirection(): Observable<SortDirection>;

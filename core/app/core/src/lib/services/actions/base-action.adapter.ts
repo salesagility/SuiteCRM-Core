@@ -31,10 +31,10 @@ import {
     ActionDataSource,
     ActionHandler,
     ActionManager,
-    ModeActions,
-    Record,
-    ViewMode
-} from 'common';
+    ModeActions
+} from '../../common/actions/action.model';
+import {Record} from '../../common/record/record.model';
+import {ViewMode} from '../../common/views/view.model';
 import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';

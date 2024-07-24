@@ -28,16 +28,16 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {
     ContentAlign,
     ContentJustify,
-    Field,
-    isTrue,
-    Record,
-    ScreenSizeMap,
     StatisticWidgetLayoutRow,
     TextColor,
     TextSizes,
-    ViewFieldDefinition,
-    ViewMode
-} from 'common';
+} from '../../common/metadata/widget.metadata';
+import {Record} from '../../common/record/record.model';
+import {Field} from '../../common/record/field.model';
+import {ScreenSizeMap} from '../../common/services/ui/resize.model';
+import {ViewFieldDefinition} from '../../common/metadata/metadata.model';
+import {ViewMode} from '../../common/views/view.model';
+import {isTrue} from '../../common/utils/value-utils';
 import {Subscription} from 'rxjs';
 import {FieldFlexbox, FieldFlexboxCol, RecordFlexboxConfig} from './record-flexbox.model';
 import {LabelDisplay} from '../field-grid/field-grid.model';

@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
-import {StringMap} from 'common';
+import {StringMap} from '../../../common/types/string-map';
 
 @Injectable({providedIn: 'root'})
 export class ActionNameMapper {

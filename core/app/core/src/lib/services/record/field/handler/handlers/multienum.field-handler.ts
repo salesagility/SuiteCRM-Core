@@ -26,7 +26,7 @@
 import {MultiEnumField} from "../../types/multi-enum.value-object-type";
 import {trimEnd, trimStart} from "lodash-es";
 import {Injectable} from "@angular/core";
-import {Record} from "common";
+import {Record} from '../../../../../common/record/record.model';
 import {BaseFieldHandler} from "./base.field-handler";
 
 @Injectable({

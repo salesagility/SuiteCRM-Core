@@ -25,9 +25,9 @@
  */
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-
 import {Component} from '@angular/core';
-import {ViewContext, WidgetMetadata} from 'common';
+import {ViewContext} from '../../../../common/views/view.model';
+import {WidgetMetadata} from '../../../../common/metadata/widget.metadata';
 import {topWidgetStatisticsFactoryMock} from '../statistics-top-widget/statistics-top-widget.component.spec.mock';
 import {CommonModule} from '@angular/common';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';

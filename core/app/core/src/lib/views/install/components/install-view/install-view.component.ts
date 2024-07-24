@@ -27,7 +27,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
-import {ViewMode} from 'common';
+import {ViewMode} from '../../../../common/views/view.model';
 import {InstallViewStore} from '../../store/install-view/install-view.store';
 import {InstallViewModel} from '../../store/install-view/install-view.store.model';
 

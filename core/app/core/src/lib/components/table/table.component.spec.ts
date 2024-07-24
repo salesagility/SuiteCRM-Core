@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {TableComponent} from './table.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -48,6 +48,7 @@ import {TableHeaderModule} from './table-header/table-header.module';
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {listviewStoreMock} from '../../views/list/store/list-view/list-view.store.spec.mock';
 import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
     selector: 'table-test-host-component',
@@ -63,35 +64,34 @@ describe('TableComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [
-                TableHeaderModule,
-                TableBodyModule,
-                TableFooterModule,
-                AngularSvgIconModule.forRoot(),
-                HttpClientTestingModule,
-                ApolloTestingModule,
-                ImageModule,
-                SortButtonModule,
-                RouterTestingModule
-            ],
-            declarations: [TableComponent],
-            providers: [
-                {
-                    provide: ListViewStore, useValue: listviewStoreMock
-                },
-                {
-                    provide: LanguageStore, useValue: languageStoreMock
-                },
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-                {
-                    provide: MetadataStore, useValue: metadataStoreMock
-                },
-            ],
-        })
+    declarations: [TableComponent],
+    imports: [TableHeaderModule,
+        TableBodyModule,
+        TableFooterModule,
+        AngularSvgIconModule.forRoot(),
+        ApolloTestingModule,
+        ImageModule,
+        SortButtonModule,
+        RouterTestingModule],
+    providers: [
+        {
+            provide: ListViewStore, useValue: listviewStoreMock
+        },
+        {
+            provide: LanguageStore, useValue: languageStoreMock
+        },
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        {
+            provide: MetadataStore, useValue: metadataStoreMock
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     }));
 

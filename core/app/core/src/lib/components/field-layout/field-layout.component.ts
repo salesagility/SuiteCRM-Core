@@ -25,7 +25,9 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {FieldMap, Panel, Record} from 'common';
+import {FieldMap} from '../../common/record/field.model';
+import {Panel} from '../../common/metadata/metadata.model';
+import {Record} from '../../common/record/record.model';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {FieldGridColumn, FieldGridRow} from '../field-grid/field-grid.model';
 import {BaseFieldGridComponent} from '../field-grid/base-field-grid.component';

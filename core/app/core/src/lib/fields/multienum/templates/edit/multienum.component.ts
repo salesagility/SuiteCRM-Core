@@ -34,7 +34,7 @@ import {ScreenSizeObserverService} from "../../../../services/ui/screen-size-obs
 import {take} from "rxjs/operators";
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 import {PrimeNGConfig} from "primeng/api";
-import {ButtonInterface} from "common";
+import {ButtonInterface} from '../../../../common/components/button/button.model';
 import {MultiSelect} from "primeng/multiselect";
 
 @Component({

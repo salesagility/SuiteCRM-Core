@@ -25,7 +25,9 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {ActionDataSource, PaginationDataSource, SelectionDataSource} from 'common';
+import {ActionDataSource} from '../../../common/actions/action.model';
+import {PaginationDataSource} from '../../../common/components/pagination/pagination.model';
+import {SelectionDataSource} from '../../../common/views/list/selection.model';
 import {BulkActionDataSource} from '../../bulk-action-menu/bulk-action-menu.component';
 
 @Component({

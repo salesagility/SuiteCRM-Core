@@ -25,9 +25,12 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext, SearchCriteria, SubPanelDefinition, ViewMode} from 'common';
-import {combineLatest, combineLatestWith, Observable} from 'rxjs';
-import {map, take, tap} from 'rxjs/operators';
+import {Action, ActionContext} from '../../../common/actions/action.model';
+import {SearchCriteria} from '../../../common/views/list/search-criteria.model';
+import {SubPanelDefinition} from '../../../common/metadata/subpanel.metadata.model';
+import {ViewMode} from '../../../common/views/view.model';
+import {combineLatestWith, Observable} from 'rxjs';
+import {map, take} from 'rxjs/operators';
 import {AsyncActionService} from '../../../services/process/processes/async-action/async-action';
 import {LanguageStore, LanguageStrings} from '../../../store/language/language.store';
 import {MessageService} from '../../../services/message/message.service';

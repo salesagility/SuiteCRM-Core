@@ -32,7 +32,7 @@ import {messageServiceMock} from '../../services/message/message.service.spec.mo
 import {systemConfigStoreMock} from '../system-config/system-config.store.spec.mock';
 import {userPreferenceStoreMock} from '../user-preference/user-preference.store.spec.mock';
 import {Observable, of} from 'rxjs';
-import {deepClone} from 'common';
+import {deepClone} from '../../common/utils/object-utils';
 
 /* eslint-disable camelcase, @typescript-eslint/camelcase */
 export const recordListMockData = {

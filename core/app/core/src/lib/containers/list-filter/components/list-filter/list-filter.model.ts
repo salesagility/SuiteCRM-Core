@@ -25,7 +25,7 @@
  */
 
 import {Observable} from 'rxjs';
-import {ColumnDefinition, SearchMetaFieldMap} from 'common';
+import {ColumnDefinition, SearchMetaFieldMap} from '../../../../common/metadata/list.metadata.model';
 import {SavedFilter} from '../../../../store/saved-filters/saved-filter.model';
 
 export interface FilterConfig {

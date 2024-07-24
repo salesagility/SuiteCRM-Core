@@ -38,6 +38,7 @@ import {
     ExtensionLoader,
     InstallAuthGuard,
     InstallViewComponent,
+    isFalse,
     ListComponent,
     LoginAuthGuard,
     LoginUiComponent,
@@ -49,7 +50,6 @@ import {
     AdminPanelComponent
 } from 'core';
 import {take} from 'rxjs/operators';
-import {isFalse} from 'common';
 
 @Injectable()
 export class AppInit {

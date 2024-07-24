@@ -24,13 +24,18 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {deepClone, MapEntry, Record, RecordMapper, RecordMapperRegistry, ViewFieldDefinition, ObjectMap} from 'common';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, filter, map, shareReplay, startWith, take, tap} from 'rxjs/operators';
 import {RecordFetchGQL} from './graphql/api.record.get';
 import {RecordSaveGQL} from './graphql/api.record.save';
 import {MessageService} from '../../services/message/message.service';
 import {RecordManager} from '../../services/record/record.manager';
+import {deepClone} from '../../common/utils/object-utils';
+import {Record} from '../../common/record/record.model';
+import {RecordMapper} from '../../common/record/record-mappers/record-mapper.model';
+import {RecordMapperRegistry} from '../../common/record/record-mappers/record-mapper.registry';
+import {ViewFieldDefinition} from '../../common/metadata/metadata.model';
+import {MapEntry} from '../../common/types/overridable-map';
 import {signal} from "@angular/core";
 
 const initialState = {

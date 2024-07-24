@@ -25,17 +25,16 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {isTrue} from '../../../../common/utils/value-utils';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {ButtonGroupInterface} from '../../../../common/components/button/button-group.model';
 import {
-    ButtonGroupInterface,
-    ButtonInterface,
     DropdownButtonInterface,
     DropdownButtonSection,
     DropdownButtonSectionMap,
-    GroupedButtonInterface,
-    isTrue,
-    SearchCriteria,
-    SearchCriteriaFilter
-} from 'common';
+    GroupedButtonInterface
+} from '../../../../common/components/button/dropdown-button.model';
+import {SearchCriteria, SearchCriteriaFilter} from '../../../../common/views/list/search-criteria.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BehaviorSubject, combineLatestWith, Subscription} from 'rxjs';
 import {ListViewStore} from '../../store/list-view/list-view.store';

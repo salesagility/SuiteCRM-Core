@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from "@angular/core";
-import {isTrue} from 'common';
+import {isTrue} from '../../../common/utils/value-utils';
 import {Observable, Subscription} from "rxjs";
 import {ScreenSizeObserverService} from "../../../services/ui/screen-size-observer/screen-size-observer.service";
 import {SystemConfigStore} from "../../../store/system-config/system-config.store";

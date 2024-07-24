@@ -27,7 +27,8 @@
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {map, filter} from 'rxjs/operators';
-import {ViewContext, WidgetMetadata} from 'common';
+import {ViewContext} from '../../../../common/views/view.model';
+import {WidgetMetadata} from '../../../../common/metadata/widget.metadata';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {LanguageStore, LanguageStrings} from '../../../../store/language/language.store';
 import {
@@ -40,7 +41,7 @@ import {RecordContentDataSource} from '../../../../components/record-content/rec
 import {TopWidgetAdapter} from '../../adapters/top-widget.adapter';
 import {BottomWidgetAdapter} from '../../adapters/bottom-widget.adapter';
 import {RecordActionsAdapter} from '../../adapters/actions.adapter';
-import {Action, ActionContext} from 'common';
+import {Action, ActionContext} from '../../../../common/actions/action.model';
 import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar-widget.service";
 import {ActivatedRoute} from "@angular/router";
 

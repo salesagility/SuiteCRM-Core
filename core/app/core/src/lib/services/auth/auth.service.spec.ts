@@ -26,7 +26,7 @@
 
 import {TestBed} from '@angular/core/testing';
 import {AuthService} from './auth.service';
-import {HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {of} from 'rxjs';
 import {localStorageServiceMock} from '../local-storage/local-storage.service.spec.mock';
 

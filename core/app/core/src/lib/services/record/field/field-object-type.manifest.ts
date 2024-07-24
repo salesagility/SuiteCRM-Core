@@ -25,7 +25,7 @@
  */
 
 import {FieldObjectTypeMap} from "./field-object.model";
-import {BaseField} from 'common';
+import {BaseField} from '../../../common/record/field.model';
 import {MultiEnumField} from "./types/multi-enum.value-object-type";
 
 

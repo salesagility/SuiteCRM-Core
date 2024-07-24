@@ -25,7 +25,7 @@
  */
 
 import {Component, Input} from '@angular/core';
-import {ButtonInterface} from "common";
+import {ButtonInterface} from '../../common/components/button/button.model';
 
 @Component({
     selector: 'scrm-load-more',

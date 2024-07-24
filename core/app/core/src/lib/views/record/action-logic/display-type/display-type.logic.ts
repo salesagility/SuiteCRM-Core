@@ -24,7 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { Action, LogicDefinitions, StringArrayMap, StringArrayMatrix, ViewMode } from 'common';
+import {isEmpty} from 'lodash-es';
+import {LogicDefinitions} from '../../../../common/metadata/metadata.model';
+import {Action} from '../../../../common/actions/action.model';
+import {isVoid} from '../../../../common/utils/value-utils';
+import {Field} from '../../../../common/record/field.model';
+import {Record} from '../../../../common/record/record.model';
+import {StringArrayMap} from '../../../../common/types/string-map';
+import {StringArrayMatrix} from '../../../../common/types/string-matrix';
+import {ViewMode} from '../../../../common/views/view.model';
 import {Injectable} from '@angular/core';
 import {RecordActionData} from '../../actions/record.action';
 import {ActionLogicHandler} from '../../../../services/actions/action-logic-handler';

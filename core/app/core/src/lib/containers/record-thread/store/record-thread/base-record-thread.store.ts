@@ -30,7 +30,7 @@ import {StateStore} from '../../../../store/state';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
-import {Record} from 'common';
+import {Record} from '../../../../common/record/record.model';
 import {map, take, tap} from 'rxjs/operators';
 import {BaseRecordContainerStore} from '../../../../store/record-container/base-record-container.store';
 import {BaseRecordItemStoreFactoryInterface} from './base-record-thread-thread.model';

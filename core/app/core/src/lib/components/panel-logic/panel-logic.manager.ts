@@ -27,7 +27,11 @@
 import {Injectable} from '@angular/core';
 import {BaseActionManager} from '../../services/actions/base-action-manager.service';
 import {PanelLogicActionData} from './panel-logic.action';
-import {Action, ActionContext, Field, Record, ViewMode, Panel} from 'common';
+import {Action, ActionContext} from '../../common/actions/action.model';
+import {Field} from '../../common/record/field.model';
+import {Panel} from '../../common/metadata/metadata.model';
+import {Record} from '../../common/record/record.model';
+import {ViewMode} from '../../common/views/view.model';
 import {PanelLogicDisplayTypeAction} from './display-type/panel-logic-display-type-action.service';
 
 @Injectable({

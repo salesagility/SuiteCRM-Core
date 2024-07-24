@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Field} from 'common';
+import {Field} from '../../../../common/record/field.model';
 import {BehaviorSubject, of, Subscription} from 'rxjs';
 import {shareReplay} from 'rxjs/operators';
 import {MultiEnumDetailFieldComponent} from './multienum.component';

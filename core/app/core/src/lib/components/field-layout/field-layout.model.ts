@@ -25,10 +25,10 @@
  */
 
 import {Observable} from 'rxjs';
-import {Panel} from 'common';
-import {ViewMode} from 'common';
-import {FieldMap} from 'common';
-import {Record} from 'common';
+import {FieldMap} from '../../common/record/field.model';
+import {Panel} from '../../common/metadata/metadata.model';
+import {Record} from '../../common/record/record.model';
+import {ViewMode} from '../../common/views/view.model';
 
 export interface FieldLayoutConfig {
     mode: ViewMode;

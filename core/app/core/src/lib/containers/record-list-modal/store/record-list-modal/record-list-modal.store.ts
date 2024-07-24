@@ -26,7 +26,10 @@
 
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {ColumnDefinition, emptyObject, RecordListMeta, RecordSelection, SearchMeta, SelectionStatus} from 'common';
+import {ColumnDefinition, SearchMeta, RecordListMeta}  from '../../../../common/metadata/list.metadata.model';
+import {emptyObject} from '../../../../common/utils/object-utils';
+import {RecordSelection, SelectionStatus} from '../../../../common/views/list/record-selection.model';
+
 import {map, take, tap} from 'rxjs/operators';
 import {RecordListStoreFactory} from '../../../../store/record-list/record-list.store.factory';
 import {MetadataStore} from '../../../../store/metadata/metadata.store.service';

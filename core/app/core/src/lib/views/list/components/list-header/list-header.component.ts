@@ -32,7 +32,7 @@ import {RecordPanelConfig} from '../../../../containers/record-panel/components/
 import {Subscription} from 'rxjs';
 import {RecordPanelAdapter} from '../../adapters/record-panel.adapter';
 import {QuickFiltersService} from "../../services/quick-filters.service";
-import {isTrue} from 'common';
+import {isTrue} from '../../../../common/utils/value-utils';
 
 @Component({
     selector: 'scrm-list-header',

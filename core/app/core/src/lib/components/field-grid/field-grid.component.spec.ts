@@ -32,7 +32,7 @@ import {LayoutModule} from '@angular/cdk/layout';
 import {By} from '@angular/platform-browser';
 import {CommonModule} from '@angular/common';
 import {RouterTestingModule} from '@angular/router/testing';
-import {Field} from 'common';
+import {Field} from '../../common/record/field.model';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {FieldModule} from '../../fields/field.module';
 import {DropdownButtonModule} from '../dropdown-button/dropdown-button.module';

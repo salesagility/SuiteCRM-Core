@@ -28,7 +28,8 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {ModuleAction, NavbarModule, Navigation} from '../../../store/navigation/navigation.store';
 import {LanguageListStringMap, LanguageStrings} from '../../../store/language/language.store';
-import {MenuItem, Record} from 'common';
+import {MenuItem} from '../../../common/menu/menu.model';
+import {Record} from '../../../common/record/record.model';
 import {ModuleNameMapper} from '../module-name-mapper/module-name-mapper.service';
 import {ActionNameMapper} from '../action-name-mapper/action-name-mapper.service';
 

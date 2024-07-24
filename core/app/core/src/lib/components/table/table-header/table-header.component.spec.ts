@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {TableHeaderComponent} from './table-header.component';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -41,6 +41,7 @@ import {PaginationModule} from '../../pagination/pagination.module';
 import {ImageModule} from '../../image/image.module';
 import {ThemeImagesStore} from '../../../store/theme-images/theme-images.store';
 import {listviewStoreMock} from '../../../views/list/store/list-view/list-view.store.spec.mock';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('TableheaderUiComponent', () => {
     let component: TableHeaderComponent;
@@ -48,27 +49,26 @@ describe('TableheaderUiComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [
-                PaginationModule,
-                BulkActionMenuModule,
-                AngularSvgIconModule.forRoot(),
-                HttpClientTestingModule,
-                ApolloTestingModule,
-                ImageModule
-            ],
-            declarations: [TableHeaderComponent],
-            providers: [
-                {
-                    provide: ThemeImagesStore, useValue: {
-                        images$: of(themeImagesMockData).pipe(take(1))
-                    }
-                },
-                {provide: LanguageStore, useValue: languageStoreMock},
-                {
-                    provide: ListViewStore, useValue: listviewStoreMock
-                },
-            ],
-        })
+    declarations: [TableHeaderComponent],
+    imports: [PaginationModule,
+        BulkActionMenuModule,
+        AngularSvgIconModule.forRoot(),
+        ApolloTestingModule,
+        ImageModule],
+    providers: [
+        {
+            provide: ThemeImagesStore, useValue: {
+                images$: of(themeImagesMockData).pipe(take(1))
+            }
+        },
+        { provide: LanguageStore, useValue: languageStoreMock },
+        {
+            provide: ListViewStore, useValue: listviewStoreMock
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+    ]
+})
             .compileComponents();
     }));
 

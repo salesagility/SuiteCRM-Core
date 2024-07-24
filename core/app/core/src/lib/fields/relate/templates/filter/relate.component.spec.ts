@@ -26,7 +26,9 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component, ViewChild} from '@angular/core';
-import {Field, Record, SearchCriteriaFieldFilter} from 'common';
+import {Field} from '../../../../common/record/field.model';
+import {Record} from '../../../../common/record/record.model';
+import {SearchCriteriaFieldFilter} from '../../../../common/views/list/search-criteria.model';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';

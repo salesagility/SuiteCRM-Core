@@ -27,7 +27,10 @@
 import {combineLatestWith, Observable, Subscription} from 'rxjs';
 import {inject, Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {Action, Panel, Record, ViewMode} from 'common';
+import {Action} from '../../../common/actions/action.model';
+import {ViewMode} from '../../../common/views/view.model';
+import {Record} from '../../../common/record/record.model';
+import {Panel} from '../../../common/metadata/metadata.model';
 import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
 import {RecordActionManager} from '../actions/record-action-manager.service';

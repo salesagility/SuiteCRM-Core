@@ -29,7 +29,9 @@ import {RecordThreadItemConfig} from './record-thread-item.model';
 import {of, Subscription} from 'rxjs';
 import {FieldFlexbox, RecordFlexboxConfig} from '../../../../components/record-flexbox/record-flexbox.model';
 import {debounceTime, shareReplay} from 'rxjs/operators';
-import {ButtonInterface, Record, StringMap} from 'common';
+import {StringMap} from '../../../../common/types/string-map';
+import {ButtonInterface} from '../../../../common/components/button/button.model';
+import {Record} from '../../../../common/record/record.model';
 import {RecordThreadItemActionsAdapter} from '../../adapters/record-thread-item-actions.adapter';
 import {RecordThreadItemActionsAdapterFactory} from '../../adapters/record-thread-item-actions.adapter.factory';
 

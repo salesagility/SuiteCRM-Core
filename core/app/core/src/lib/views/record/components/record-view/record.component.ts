@@ -30,7 +30,7 @@ import {Observable, Subscription} from 'rxjs';
 import {RecordViewStore} from '../../store/record-view/record-view.store';
 import {ActivatedRoute, Params} from '@angular/router';
 import {RecordViewModel} from '../../store/record-view/record-view.store.model';
-import {ViewMode} from 'common';
+import {ViewMode} from '../../../../common/views/view.model';
 import {RecordActionsAdapter} from '../../adapters/actions.adapter';
 import {RecordViewSidebarWidgetService} from "../../services/record-view-sidebar-widget.service";
 import {RecordPaginationStore} from "../../store/record-pagination/record-pagination.store";

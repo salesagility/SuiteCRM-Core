@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ViewMode} from 'common';
+import {ViewMode} from '../../common/views/view.model';
 
 export interface FormatOptions {
     [key: string]: any;

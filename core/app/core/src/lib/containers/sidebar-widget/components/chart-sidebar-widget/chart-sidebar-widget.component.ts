@@ -25,7 +25,10 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {ChartDataSource, ChartMetadata, ChartsWidgetOptions, StatisticsQuery, ViewContext} from 'common';
+import {ChartDataSource} from '../../../../common/containers/chart/chart.model';
+import {ChartMetadata, ChartsWidgetOptions} from '../../../../common/metadata/charts-widget.metadata';
+import {StatisticsQuery} from '../../../../common/statistics/statistics.model';
+import {ViewContext} from '../../../../common/views/view.model';
 import {combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {map, take, tap} from 'rxjs/operators';
 import {ChartDataStoreFactory} from '../../../../store/chart-data/chart-data.store.factory';

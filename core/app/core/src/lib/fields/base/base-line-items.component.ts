@@ -28,19 +28,15 @@ import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {BaseFieldComponent} from './base-field.component';
 import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.service';
 import {RecordManager} from '../../services/record/record.manager';
-import {
-    emptyObject,
-    Field,
-    FieldAttribute,
-    FieldDefinition,
-    FieldLogicMap,
-    isEditable,
-    isTrue,
-    LineActionEvent,
-    Record,
-    StringMap,
-    ViewMode
-} from 'common';
+import {isTrue} from '../../common/utils/value-utils';
+import {emptyObject} from '../../common/utils/object-utils';
+import {isEditable} from '../../common/utils/view-utils';
+import {Field, FieldDefinition, FieldAttribute} from '../../common/record/field.model';
+import {FieldLogicMap} from '../../common/actions/field-logic-action.model';
+import {LineActionEvent} from '../../common/actions/field-logic-action.model';
+import {Record} from '../../common/record/record.model';
+import {StringMap} from '../../common/types/string-map';
+import {ViewMode} from '../../common/views/view.model';
 import set from 'lodash-es/set';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {FieldManager} from '../../services/record/field/field.manager';

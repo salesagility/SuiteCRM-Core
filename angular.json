@@ -169,34 +169,6 @@
         }
       }
     },
-    "common": {
-      "projectType": "library",
-      "root": "core/app/common",
-      "sourceRoot": "core/app/common/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "core/app/common/tsconfig.lib.json",
-            "project": "core/app/common/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "core/app/common/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "core/app/common/src/test.ts",
-            "tsConfig": "core/app/common/tsconfig.spec.json",
-            "karmaConfig": "core/app/common/karma.conf.js"
-          }
-        }
-      }
-    },
     "core": {
       "projectType": "library",
       "root": "core/app/core",

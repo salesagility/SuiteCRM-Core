@@ -24,9 +24,9 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Record} from 'common';
-import {ViewFieldDefinition} from 'common';
-import {StandardValidatorFn} from 'common';
+import {Record} from '../../../common/record/record.model';
+import {StandardValidatorFn} from '../../../common/services/validators/validators.model';
+import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
 
 export interface ValidatorInterface {
     applies(record: Record, viewField: ViewFieldDefinition): boolean;
