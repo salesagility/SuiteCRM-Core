@@ -139,6 +139,8 @@ class RecordViewCurrencyFieldMapper implements ViewDefinitionMapperInterface
 
             $name = $cell['name'] ?? '';
 
+            $logic = $cell['logic'] ?? [];
+
             $currencyName = $name;
             $currencyIdName = 'currency_id';
             $baseName = $name . '_usdollar';
@@ -190,6 +192,10 @@ class RecordViewCurrencyFieldMapper implements ViewDefinitionMapperInterface
                 $vardefs,
                 $typeConfig
             );
+
+            foreach ($logic as $key => $def){
+                $cellDefinition['groupFields'][$name]['logic'][$key] = $def;
+            }
 
             $cell['fieldDefinition'] = $cellDefinition;
             $cols[$cellKey] = $cell;
