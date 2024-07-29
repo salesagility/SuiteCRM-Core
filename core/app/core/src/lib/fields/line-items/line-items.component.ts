@@ -29,7 +29,7 @@ import {DataTypeFormatter} from '../../services/formatters/data-type.formatter.s
 import {RecordManager} from '../../services/record/record.manager';
 import {FieldLogicManager} from '../field-logic/field-logic.manager';
 import {BaseLineItemsComponent} from '../base/base-line-items.component';
-import {ButtonInterface, ObjectMap} from 'common';
+import {ButtonInterface, EDITABLE_VIEW_MODES, ObjectMap, ViewMode} from 'common';
 import {FieldManager} from '../../services/record/field/field.manager';
 import {FieldRegistry} from '../field.registry';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
@@ -50,6 +50,20 @@ export class LineItemsComponent extends BaseLineItemsComponent {
         protected logicDisplay: FieldLogicDisplayManager
     ) {
         super(typeFormatter, registry, recordManager, logic, fieldManager, logicDisplay);
+    }
+
+    ngOnInit(): void {
+        super.ngOnInit();
+
+        if (EDITABLE_VIEW_MODES.includes(this.mode as ViewMode) ) {
+            this.initEmptyItem();
+        }
+
+        this.subs.push(this.mode$.subscribe((mode: string) => {
+            if (EDITABLE_VIEW_MODES.includes(mode as ViewMode)) {
+                this.initEmptyItem();
+            }
+        }));
     }
 
     /**
