@@ -27,9 +27,7 @@
 import {Injectable} from '@angular/core';
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {isTrue, Record} from 'common';
-import {ViewFieldDefinition} from 'common';
-import {StandardValidationErrors, StandardValidatorFn} from 'common';
+import {isTrue, Record, StandardValidationErrors, StandardValidatorFn, ViewFieldDefinition} from 'common';
 import {FormControlUtils} from '../../field/form-control.utils';
 
 export const requiredValidator = (utils: FormControlUtils): StandardValidatorFn => (
@@ -87,12 +85,21 @@ export class RequiredValidator implements ValidatorInterface {
             return false;
         }
 
+        const viewFieldType = viewField?.type ?? null;
+        const fieldDefinitionType = viewField?.fieldDefinition?.type ?? null;
+
+        if (viewFieldType === 'line-items' || fieldDefinitionType === 'line-items') {
+            return false;
+        }
+
         return isTrue(viewField.fieldDefinition.required);
     }
 
-    getValidator(viewField: ViewFieldDefinition): StandardValidatorFn[] {
+    getValidator(viewField: ViewFieldDefinition, record: Record): StandardValidatorFn[] {
 
-        if(viewField.type === 'boolean'){
+        const type = viewField?.type ?? viewField?.fieldDefinition?.type ?? '';
+
+        if (type === 'boolean') {
             return [booleanRequiredValidator(this.utils)];
         }
 
