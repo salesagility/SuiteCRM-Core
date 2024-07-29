@@ -25,7 +25,7 @@
  */
 
 import {combineLatestWith, Observable, Subscription} from 'rxjs';
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {Action, Panel, Record, ViewMode} from 'common';
 import {MetadataStore, RecordViewMetadata} from '../../../store/metadata/metadata.store.service';
@@ -35,12 +35,14 @@ import {RecordActionData} from '../actions/record.action';
 import {LanguageStore} from '../../../store/language/language.store';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 import {PanelLogicManager} from '../../../components/panel-logic/panel-logic.manager';
+import {RecordValidationHandler} from "../../../services/record/validation/record-validation.handler";
 
 @Injectable()
 export class RecordContentAdapter implements RecordContentDataSource {
     inlineEdit: true;
 
     protected fieldSubs: Subscription[] = [];
+    protected recordValidationHandler: RecordValidationHandler;
 
     constructor(
         protected store: RecordViewStore,
@@ -49,6 +51,7 @@ export class RecordContentAdapter implements RecordContentDataSource {
         protected actions: RecordActionManager,
         protected logicManager: PanelLogicManager
     ) {
+        this.recordValidationHandler = inject(RecordValidationHandler);
     }
 
     getEditAction(): void {
@@ -91,9 +94,9 @@ export class RecordContentAdapter implements RecordContentDataSource {
             combineLatestWith(this.store.mode$),
             map(([record, mode]: [Record, ViewMode]) => {
                 if (mode === 'edit' || mode === 'create') {
-                    this.store.initValidators(record);
+                    this.recordValidationHandler.initValidators(record);
                 } else {
-                    this.store.resetValidatorsForAllFields(record);
+                    this.recordValidationHandler.resetValidators(record);
                 }
 
                 if (record.formGroup) {

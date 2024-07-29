@@ -32,11 +32,13 @@ import {Params} from '@angular/router';
 import {
     BooleanMap,
     deepClone,
-    Field,
     FieldDefinitionMap,
     FieldLogicMap,
     FieldMetadata,
     isVoid,
+    ObjectMap,
+    Panel,
+    PanelRow,
     Record,
     StatisticsMap,
     StatisticsQueryMap,
@@ -45,9 +47,6 @@ import {
     ViewFieldDefinition,
     ViewFieldDefinitionMap,
     ViewMode,
-    ObjectMap,
-    Panel,
-    PanelRow,
 } from 'common';
 import {RecordViewData, RecordViewModel, RecordViewState} from './record-view.store.model';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
@@ -76,6 +75,7 @@ import {UserPreferenceStore} from '../../../../store/user-preference/user-prefer
 import {PanelLogicManager} from '../../../../components/panel-logic/panel-logic.manager';
 import {RecordConvertService} from "../../../../services/record/record-convert.service";
 import {FieldActionsAdapterFactory} from "../../../../components/field-layout/adapters/field.actions.adapter.factory";
+import {RecordValidationHandler} from "../../../../services/record/validation/record-validation.handler";
 
 const initialState: RecordViewState = {
     module: '',
@@ -135,6 +135,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected fieldSubs: Subscription[] = [];
     protected panelsSubject: BehaviorSubject<Panel[]> = new BehaviorSubject(this.panels);
     protected actionAdaptorFactory: FieldActionsAdapterFactory;
+    protected recordValidationHandler: RecordValidationHandler;
 
     constructor(
         protected recordFetchGQL: RecordFetchGQL,
@@ -194,6 +195,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
 
         this.viewContext$ = this.record$.pipe(map(() => this.getViewContext()));
         this.initPanels();
+
+        this.recordValidationHandler = inject(RecordValidationHandler);
     }
 
     get widgets(): boolean {
@@ -433,57 +436,6 @@ export class RecordViewStore extends ViewStore implements StateStore {
         return templates[this.getMode()] || '';
     }
 
-    initValidators(record: Record): void {
-        if (!record || !Object.keys(record?.fields).length) {
-            return;
-        }
-
-        Object.keys(record.fields).forEach(fieldName => {
-            const field = record.fields[fieldName];
-            const formControl = field?.formControl ?? null;
-            if (!formControl) {
-                return;
-            }
-
-            this.resetValidators(field);
-
-            const validators = field?.validators ?? [];
-            const asyncValidators = field?.asyncValidators ?? [];
-
-            if (field?.formControl && validators.length) {
-                field.formControl.setValidators(validators);
-            }
-            if (field?.formControl && asyncValidators.length) {
-                field.formControl.setAsyncValidators(asyncValidators);
-            }
-        });
-
-    }
-
-    resetValidators(field: Field): void {
-        if (!field?.formControl) {
-            return;
-        }
-
-        field.formControl.clearValidators();
-        field.formControl.clearAsyncValidators();
-    }
-
-    resetValidatorsForAllFields(record: Record): void {
-        if (!record || !record?.fields?.length) {
-            return;
-        }
-        Object.keys(record.fields).forEach(fieldName => {
-            const field = record.fields[fieldName];
-            const formControl = field?.formControl ?? null;
-
-            if (!formControl) {
-                return;
-            }
-
-            this.resetValidators(field);
-        });
-    }
 
     /**
      * Parse query params
@@ -627,7 +579,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
                 const label = (panelDefinition.label)
                     ? panelDefinition.label.toUpperCase()
                     : this.languageStore.getFieldLabel(panelDefinition.key.toUpperCase(), module, languages);
-                const panel = { label, key: panelDefinition.key, rows: [] } as Panel;
+                const panel = {label, key: panelDefinition.key, rows: []} as Panel;
 
 
                 let adaptor = null;
@@ -637,7 +589,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
                 }
 
                 panelDefinition.rows.forEach(rowDefinition => {
-                    const row = { cols: [] } as PanelRow;
+                    const row = {cols: []} as PanelRow;
                     rowDefinition.cols.forEach(cellDefinition => {
                         const cellDef = {...cellDefinition};
                         const fieldActions = cellDefinition.fieldActions || null;
