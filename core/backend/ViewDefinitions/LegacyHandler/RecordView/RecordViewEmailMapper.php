@@ -99,6 +99,8 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
             $cell['fieldDefinition']['name'] = 'email_addresses';
             $cell['fieldDefinition']['module'] = 'EmailAddress';
 
+            $isRequired = $cell['required'] ?? $cell['fieldDefinition']['required'] ?? false;
+
             $config = [
                 'labelOnFirstLine' => true,
                 'definition' => [
@@ -113,7 +115,7 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
                             'type' => 'email',
                             'vname' => 'LBL_EMAIL_ADDRESS',
                             'labelKey' => 'LBL_EMAIL_ADDRESS',
-                            'required' => true,
+                            'required' => $isRequired,
                             'valueParent' => 'record',
                             'showLabel' => ['*'],
                         ],
