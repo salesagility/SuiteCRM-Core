@@ -55,7 +55,7 @@ export class LineItemsComponent extends BaseLineItemsComponent {
     ngOnInit(): void {
         super.ngOnInit();
 
-        if (EDITABLE_VIEW_MODES.includes(this.mode as ViewMode) ) {
+        if (EDITABLE_VIEW_MODES.includes(this.mode as ViewMode)) {
             this.initEmptyItem();
         }
 
