@@ -193,6 +193,7 @@ export interface Field {
     itemFormArray?: UntypedFormArray;
     validators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
+    itemFormArraySaveValidators?: ValidatorFn[];
     valueSubject?: BehaviorSubject<FieldValue>;
     valueChanges$?: Observable<FieldValue>;
     fieldDependencies?: ObjectMap;
@@ -224,6 +225,7 @@ export class BaseField implements Field {
     formControl?: UntypedFormControl;
     itemFormArray?: UntypedFormArray;
     validators?: ValidatorFn[];
+    itemFormArraySaveValidators?: ValidatorFn[];
     asyncValidators?: AsyncValidatorFn[];
     attributes?: FieldAttributeMap;
     valueSubject?: BehaviorSubject<FieldValue>;

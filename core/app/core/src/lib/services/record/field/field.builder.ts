@@ -75,14 +75,14 @@ export class FieldBuilder {
         const multiModuleDefinitions = viewField?.multiModuleDefinitions ?? {} as ObjectMap;
         const currentModuleDefinitions = multiModuleDefinitions[module] ?? {} as FieldDefinition;
 
-        if (!isEmpty(currentModuleDefinitions)){
+        if (!isEmpty(currentModuleDefinitions)) {
             definition = currentModuleDefinitions;
         }
 
         const {value, valueList, valueObject} = this.parseValue(viewField, definition, record);
-        const {validators, asyncValidators} = this.getSaveValidators(record, viewField);
+        const {validators, asyncValidators, itemFormArraySaveValidators} = this.getSaveValidators(record, viewField);
 
-        return this.setupField(
+        const field = this.setupField(
             record.module,
             viewField,
             value,
@@ -94,6 +94,10 @@ export class FieldBuilder {
             asyncValidators,
             language
         );
+
+        field.itemFormArraySaveValidators = itemFormArraySaveValidators;
+
+        return field;
     }
 
     public getFieldLabel(label: string, module: string, language: LanguageStore): string {
@@ -300,11 +304,16 @@ export class FieldBuilder {
     protected getSaveValidators(
         record: Record,
         viewField: ViewFieldDefinition
-    ): { validators: ValidatorFn[]; asyncValidators: AsyncValidatorFn[] } {
+    ): {
+        validators: ValidatorFn[];
+        asyncValidators: AsyncValidatorFn[];
+        itemFormArraySaveValidators?: ValidatorFn[];
+    } {
 
         const validators = this.validationManager.getSaveValidations(record.module, viewField, record);
         const asyncValidators = this.validationManager.getAsyncSaveValidations(record.module, viewField, record);
-        return {validators, asyncValidators};
+        const itemFormArraySaveValidators = this.validationManager.getItemFormArraySaveValidations(record.module, viewField, record);
+        return {validators, asyncValidators, itemFormArraySaveValidators};
     }
 
     /**

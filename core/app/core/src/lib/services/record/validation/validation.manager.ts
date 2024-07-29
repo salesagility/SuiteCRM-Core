@@ -40,6 +40,7 @@ import {PhoneValidator} from './validators/phone.validator';
 import {RangeValidator} from './validators/range.validator';
 import {PrimaryEmailValidator} from './validators/primary-email.validator';
 import {DuplicateEmailValidator} from './validators/duplicate-email.validator';
+import {LineItemsRequiredValidator} from "./validators/line-items-required.validator";
 
 export interface ValidationManagerInterface {
     registerSaveValidator(module: string, key: string, validator: ValidatorInterface): void;
@@ -66,6 +67,7 @@ export interface ValidationManagerInterface {
 })
 export class ValidationManager implements ValidationManagerInterface {
     protected saveValidators: OverridableMap<ValidatorInterface>;
+    protected itemFormArraySaveValidators: OverridableMap<ValidatorInterface>;
     protected asyncSaveValidators: OverridableMap<AsyncValidatorInterface>;
     protected filterValidators: OverridableMap<ValidatorInterface>;
     protected filterFieldExclusion: StringMatrix = {
@@ -86,10 +88,12 @@ export class ValidationManager implements ValidationManagerInterface {
         protected intValidator: IntValidator,
         protected phoneValidator: PhoneValidator,
         protected primaryEmailValidator: PrimaryEmailValidator,
-        protected duplicateEmailValidator: DuplicateEmailValidator
+        protected duplicateEmailValidator: DuplicateEmailValidator,
+        protected lineItemsRequiredValidator: LineItemsRequiredValidator
     ) {
 
         this.saveValidators = new OverridableMap<ValidatorInterface>();
+        this.itemFormArraySaveValidators = new OverridableMap<ValidatorInterface>();
         this.asyncSaveValidators = new OverridableMap<AsyncValidatorInterface>();
         this.filterValidators = new OverridableMap<ValidatorInterface>();
 
@@ -102,8 +106,9 @@ export class ValidationManager implements ValidationManagerInterface {
         this.saveValidators.addEntry('default', this.getKey('float', 'all'), floatValidator);
         this.saveValidators.addEntry('default', this.getKey('int', 'all'), intValidator);
         this.saveValidators.addEntry('default', this.getKey('phone', 'all'), phoneValidator);
-        this.saveValidators.addEntry('default', this.getKey('primary-email', 'all'), primaryEmailValidator);
-        this.saveValidators.addEntry('default', this.getKey('duplicate-email', 'all'), duplicateEmailValidator);
+        this.itemFormArraySaveValidators.addEntry('default', this.getKey('primary-email', 'all'), primaryEmailValidator);
+        this.itemFormArraySaveValidators.addEntry('default', this.getKey('duplicate-email', 'all'), duplicateEmailValidator);
+        this.itemFormArraySaveValidators.addEntry('default', this.getKey('line-items-required', 'all'), lineItemsRequiredValidator);
 
         this.filterValidators.addEntry('default', this.getKey('date', 'all'), dateValidator);
         this.filterValidators.addEntry('default', this.getKey('datetime', 'all'), datetimeValidator);
@@ -162,6 +167,12 @@ export class ValidationManager implements ValidationManagerInterface {
 
     public getSaveValidations(module: string, viewField: ViewFieldDefinition, record: Record): ValidatorFn[] {
         const entries = this.saveValidators.getGroupEntries(module);
+        const exclusions = this.getExclusions(module, this.saveFieldExclusions);
+        return this.filterValidations(entries, exclusions, record, viewField);
+    }
+
+    public getItemFormArraySaveValidations(module: string, viewField: ViewFieldDefinition, record: Record): ValidatorFn[] {
+        const entries = this.itemFormArraySaveValidators.getGroupEntries(module);
         const exclusions = this.getExclusions(module, this.saveFieldExclusions);
         return this.filterValidations(entries, exclusions, record, viewField);
     }
