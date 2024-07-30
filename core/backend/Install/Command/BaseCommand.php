@@ -27,6 +27,7 @@
 
 namespace App\Install\Command;
 
+use App\Engine\LegacyHandler\DefaultLegacyHandler;
 use App\Engine\Model\Feedback;
 use App\Languages\LegacyHandler\AppStringsHandler;
 use Symfony\Component\Console\Command\Command;
@@ -67,6 +68,11 @@ abstract class BaseCommand extends Command
     protected $appStringsHandler;
 
     /**
+     * @var DefaultLegacyHandler
+     */
+    protected DefaultLegacyHandler $legacyHandler;
+
+    /**
      * @required
      * @param string $defaultSessionName
      */
@@ -100,6 +106,23 @@ abstract class BaseCommand extends Command
     public function setAppStringsHandler(AppStringsHandler $appStringsHandler): void
     {
         $this->appStringsHandler = $appStringsHandler;
+    }
+
+    /**
+     * @return DefaultLegacyHandler
+     */
+    public function getLegacyHandler(): DefaultLegacyHandler
+    {
+        return $this->legacyHandler;
+    }
+
+    /**
+     * @param DefaultLegacyHandler $legacyHandler
+     * @return void
+     */
+    public function setLegacyHandler(DefaultLegacyHandler $legacyHandler): void
+    {
+        $this->legacyHandler = $legacyHandler;
     }
 
     /**
@@ -163,13 +186,12 @@ abstract class BaseCommand extends Command
      */
     protected function startSession(): void
     {
-        if ($this->requestStack->getSession()->isStarted()) {
+        if (session_status() === PHP_SESSION_ACTIVE) {
             return;
         }
 
-        $this->requestStack->getSession()->setName($this->defaultSessionName);
-
-        $this->requestStack->getSession()->start();
+        $this->legacyHandler->init(); // will start session
+        $this->legacyHandler->close();
     }
 
     /**
@@ -251,7 +273,8 @@ abstract class BaseCommand extends Command
         }
     }
 
-    protected function writeFeedbackWarnings(OutputInterface $output, Feedback $feedback): void {
+    protected function writeFeedbackWarnings(OutputInterface $output, Feedback $feedback): void
+    {
         $warnings = $feedback->getWarnings() ?? [];
         foreach ($warnings as $warning) {
             $output->writeln('<fg=yellow>' . $warning . '</>');
