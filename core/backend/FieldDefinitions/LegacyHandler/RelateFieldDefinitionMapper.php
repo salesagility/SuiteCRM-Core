@@ -88,12 +88,9 @@ class RelateFieldDefinitionMapper implements FieldDefinitionMapperInterface {
         $showFullName = null;
 
         if (is_null($showFullName)) {
-            $sysPref = !empty($sugar_config['use_real_names']);
             $userPref = (is_object($current_user)) ? $current_user->getPreference('use_real_names') : null;
             if ($userPref != null && $userPref !== 'off') {
                 $showFullName = 1;
-            } else {
-                $showFullName = $sysPref;
             }
         }
         return $showFullName;

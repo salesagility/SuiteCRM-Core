@@ -319,7 +319,7 @@ class HistoryTimelineDataHandler extends SubpanelDataQueryHandler implements Pre
 
             /** @var User $user */
             $user = BeanFactory::getBean('Users', $record['assigned_user_id']);
-            $listData[$key]['assigned_user_name']['user_name'] = $user->user_name ?? '';
+            $listData[$key]['assigned_user_name']['user_name'] = showFullName() ? $user->full_name : ($user->user_name ?? '');
             $listData[$key]['assigned_user_name']['user_id'] = $record['assigned_user_id'];
             $listData[$key]['module_name'] = $panelToModuleName[$listData[$key]['panel_name']];
         }
