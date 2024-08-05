@@ -41,3 +41,4 @@ parameters:
     logout: true
     session-expired: true
     site_url: true
+    login_language: true

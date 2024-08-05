@@ -74,7 +74,7 @@ export class LoginUiComponent implements OnInit {
             let showLanguages = false;
             let showForgotPassword = false;
 
-            if (systemConfigs.languages && systemConfigs.languages.items) {
+            if (systemConfigs.languages && systemConfigs.languages.items && systemConfigs.login_language.value) {
                 showLanguages = Object.keys(systemConfigs.languages.items).length > 1;
             }
 
