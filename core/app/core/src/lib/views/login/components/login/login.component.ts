@@ -215,6 +215,8 @@ export class LoginUiComponent implements OnInit {
                 this.router.navigate(['/' + defaultModule]).then();
             });
 
+        this.languageStore.setUserLanguage().subscribe();
+
         return;
     }
 

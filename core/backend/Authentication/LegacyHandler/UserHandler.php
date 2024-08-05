@@ -146,6 +146,20 @@ class UserHandler extends LegacyHandler
     }
 
     /**
+     * @param $key
+     * @param $value
+     * @param string $category
+     */
+    public function setUserPreference($key, $value, string $category = 'global'): void
+    {
+        $currentUser = $this->getCurrentUser();
+
+        $this->init();
+        $currentUser->setPreference($key, $value, 0,$category);
+
+        $this->close();
+    }
+    /**
      * Get system default language
      * @return string
      */

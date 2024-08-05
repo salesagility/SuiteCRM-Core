@@ -534,6 +534,20 @@ export class LanguageStore implements StateStore {
         return this.processService.submit(processType, options).pipe(take(1));
     }
 
+    /**
+     * Set session language
+     */
+    public setUserLanguage(): Observable<Process> {
+
+        const processType = 'set-user-language';
+
+        const options = {
+            language: internalState.languageKey
+        };
+
+        return this.processService.submit(processType, options).pipe(take(1));
+    }
+
 
     /**
      * Internal API
