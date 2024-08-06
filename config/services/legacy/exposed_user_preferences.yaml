@@ -55,3 +55,4 @@ parameters:
             record_modal_max_height: true
             ui: true
             snooze_alert_timer: true
+            language: true

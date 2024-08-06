@@ -315,7 +315,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         }
 
         $sessionLanguage = $this->userHandler->getSessionLanguage();
-        if (!empty($sessionLanguage)) {
+        if (!empty($sessionLanguage) && empty($prefLanguage)) {
             $language = $sessionLanguage;
         }
 

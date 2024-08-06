@@ -1025,6 +1025,7 @@ class User extends Person implements EmailInterface
         $cacheManager = new CacheManager();
         $cacheManager->markAsNeedsUpdate('app-metadata-navigation-'.$this->id);
         $cacheManager->markAsNeedsUpdate('app-metadata-user-preferences-'.$this->id);
+        $cacheManager->markAsNeedsUpdate('app-metadata-language-strings-'.$_POST['language'] ?? $_SESSION['authenticated_user_language']);
         $cacheManager->markAsNeedsUpdate('app-metadata-theme-images');
     }
 

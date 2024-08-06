@@ -187,7 +187,7 @@ class UserHandler extends LegacyHandler
         $language = '';
         $languagePreference = $this->userPreferenceService->getUserPreference('global');
         if ($languagePreference !== null && !empty($languagePreference->getItems())) {
-            $language = $languagePreference->getItems()['user_language'] ?? '';
+            $language = $languagePreference->getItems()['language'] ?? '';
         }
 
         return $language ?? '';
