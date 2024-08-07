@@ -31,6 +31,7 @@ import {Record} from '../../../common/record/record.model';
 import {ViewMode} from '../../../common/views/view.model';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
 import {CurrencyService} from '../../../services/currency/currency.service';
+import {CurrencyFormatter} from "../../../services/formatters/currency/currency-formatter.service";
 
 @Injectable({
     providedIn: 'root'
@@ -40,7 +41,7 @@ export class UpdateCurrencyAction extends FieldLogicActionHandler {
     key = 'update-currency';
     modes = ['edit', 'create', 'massupdate', 'filter'] as ViewMode[];
 
-    constructor(protected currencyService: CurrencyService) {
+    constructor(protected currencyService: CurrencyService, protected currencyFormatter: CurrencyFormatter) {
         super();
     }
 
@@ -74,8 +75,12 @@ export class UpdateCurrencyAction extends FieldLogicActionHandler {
     }
 
     protected updateValue(field: Field, value: number, record: Record): void {
-        field.value = value.toString();
-        field.formControl.setValue(value.toString());
+        const options = {
+            mode: 'edit' as ViewMode
+        }
+        const formattedValue = this.currencyFormatter.toUserFormat(value.toString(), options)
+        field.value = formattedValue;
+        field.formControl.setValue(formattedValue);
         // re-validate the parent form-control after value update
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
     }
