@@ -398,13 +398,11 @@ class MassUpdatePort extends MassUpdate
 
             $parentenum_name = $field_name['parentenum'];
             // Updated parent field value.
-            $parentenum_value = $newbean->$parentenum_name;
+            $parentenum_value = $newbean->$parentenum_name ?? '';
 
             $dynamic_field_name = $field_name['name'];
-            // Dynamic field set value.
-            [$dynamic_field_value] = explode('_', $newbean->$dynamic_field_name);
 
-            if ($parentenum_value !== $dynamic_field_value) {
+            if (strpos($newbean->$dynamic_field_name, $parentenum_value) !== 0) {
 
                 // Change to the default value of the correct value set.
                 $defaultValue = '';
