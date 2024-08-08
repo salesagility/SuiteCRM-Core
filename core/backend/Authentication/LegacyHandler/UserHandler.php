@@ -190,6 +190,26 @@ class UserHandler extends LegacyHandler
             $language = $languagePreference->getItems()['language'] ?? '';
         }
 
+        $this->init();
+
+        global $sugar_config;
+
+        $languages = get_languages();
+
+        $enabled = false;
+
+        foreach ($languages as $key => $item){
+            if ($language === $key) {
+                $enabled = true;
+            }
+        }
+
+        if (!$enabled){
+            $language = $sugar_config['default_language'];
+        }
+
+        $this->close();
+
         return $language ?? '';
     }
 
