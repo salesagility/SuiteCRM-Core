@@ -163,11 +163,17 @@ class Authentication extends LegacyHandler
 
         global $mod_strings;
 
-        $mod_strings = return_module_language($language, 'Users');
-
         $authController = $this->getAuthenticationController();
 
         $result = $authController->initUserSession($username);
+
+        $userPrefLanguage = $this->userHandler->getUserPreferencesLanguage();
+
+        if (!empty($userPrefLanguage)){
+            $language = $userPrefLanguage;
+        }
+
+        $mod_strings = return_module_language($language, 'Users');
 
         $this->close();
 
