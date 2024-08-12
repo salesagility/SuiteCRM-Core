@@ -25,7 +25,7 @@
  */
 
 import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
-import {Action, ButtonInterface, Record, ScreenSizeMap} from 'common';
+import {ButtonInterface, Record, ScreenSizeMap} from 'common';
 import {Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {FilterConfig} from './list-filter.model';
@@ -54,12 +54,13 @@ export class ListFilterComponent implements OnInit, OnDestroy {
 
     protected subs: Subscription[] = [];
 
-    @HostListener('keydown.enter')
+    @HostListener('keydown.enter', ['$event'])
     onEnterKey() {
         if (!this.selectedActionButton) {
             return;
         }
         this.selectedActionButton.onClick();
+        event.preventDefault();
     }
 
     constructor(
