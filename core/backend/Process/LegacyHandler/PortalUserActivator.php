@@ -37,15 +37,19 @@ class PortalUserActivator extends LegacyHandler
         return self::PROCESS_TYPE;
     }
 
-    public function switchPortalUserStatus(string $contact_id, string $label, bool $activate): void
+    public function switchPortalUserStatus(string $contact_id, string $failLabel, string $successLabel, bool $activate): string
     {
         $this->init();
+
+        global $sugar_config, $mod_strings;
+
+        $msg = '';
+
         $action = $activate ? 'enable_user' : 'disable_user';
         require_once 'modules/AOP_Case_Updates/util.php';
         if (!isAOPEnabled()) {
-            return;
+            return $mod_strings['LBL_AOP_DISABLED'];
         }
-        global $sugar_config, $mod_strings;
 
 
         $contact = \BeanFactory::getBean('Contacts', $contact_id);
@@ -66,14 +70,17 @@ class PortalUserActivator extends LegacyHandler
             $decodedResponse = json_decode($apiResponse);
 
             if (empty($decodedResponse) || !$decodedResponse->success) {
-                $msg = $decodedResponse->error ?: $mod_strings[$label];
+                $msg = $decodedResponse->error ?: $mod_strings[$failLabel];
             } else {
+                $msg = $mod_strings[$successLabel];
                 $contact->portal_account_disabled = !$activate;
                 $contact->save();
             }
         }
 
         $this->close();
+
+        return $msg;
     }
 
 }

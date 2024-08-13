@@ -172,7 +172,8 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
 
         $options = $process->getOptions();
 
-        $this->portalUserActivator->switchPortalUserStatus($options['id'], 'LBL_DISABLE_PORTAL_USER_FAILED', false);
+        $msg = $this->portalUserActivator->switchPortalUserStatus($options['id'], 'LBL_DISABLE_PORTAL_USER_FAILED', 'LBL_DISABLE_PORTAL_USER_SUCCESS', false);
+        $process->setMessages([$msg]);
         $process->setData(['reload' => true]);
         $this->close();
     }

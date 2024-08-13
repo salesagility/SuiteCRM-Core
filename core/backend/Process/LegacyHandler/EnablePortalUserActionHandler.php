@@ -173,7 +173,8 @@ class EnablePortalUserActionHandler extends LegacyHandler implements ProcessHand
 
         $options = $process->getOptions();
 
-        $this->portalUserActivator->switchPortalUserStatus($options['id'], 'LBL_ENABLE_PORTAL_USER_FAILED', true);
+        $msg = $this->portalUserActivator->switchPortalUserStatus($options['id'], 'LBL_ENABLE_PORTAL_USER_FAILED', 'LBL_ENABLE_PORTAL_USER_SUCCESS', true);
+        $process->setMessages([$msg]);
         $process->setData(['reload' => true]);
         $this->close();
     }
