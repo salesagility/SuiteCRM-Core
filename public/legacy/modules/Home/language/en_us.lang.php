@@ -251,5 +251,14 @@ $mod_strings = array(
 
     'LBL_ELASTIC_SEARCH_DEFAULT' => 'No results matching your search criteria. Try broadening your search.',
 
+    // Portal Labels
+    'LBL_AOP_DISABLED' => 'AOP is disabled, please enable via settings',
+    'LBL_CREATE_PORTAL_USER_FAILED' => 'Failed to create portal user',
+    'LBL_ENABLE_PORTAL_USER_FAILED' => 'Failed to enable portal user',
+    'LBL_DISABLE_PORTAL_USER_FAILED' => 'Failed to disable portal user',
+    'LBL_CREATE_PORTAL_USER_SUCCESS' => 'Created portal user',
+    'LBL_ENABLE_PORTAL_USER_SUCCESS' => 'Enabled portal user',
+    'LBL_DISABLE_PORTAL_USER_SUCCESS' => 'Disabled portal user',
+
     'LNK_TASK_VIEW' => 'View Task',
 );

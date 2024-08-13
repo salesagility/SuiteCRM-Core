@@ -214,6 +214,7 @@ $mod_strings = array(
     'LBL_PORTAL_USER_TYPE' => 'Portal User Type',
     'LBL_PORTAL_ACCOUNT_DISABLED' => 'Account Disabled',
     'LBL_JOOMLA_ACCOUNT_ID' => 'Joomla Account ID',
+    'LBL_AOP_DISABLED' => 'AOP is disabled, please enable via settings',
 
     'LBL_AOS_CONTRACTS' => 'Contracts',
     'LBL_AOS_INVOICES' => 'Invoices',
