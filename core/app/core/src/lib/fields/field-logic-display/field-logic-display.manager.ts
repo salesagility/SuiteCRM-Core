@@ -55,6 +55,7 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
         });
 
         if (!validModeLogic || !validModeLogic.length) {
+            field.display = toDisplay;
             return;
         }
 
