@@ -99,10 +99,17 @@ export class CreateRecordComponent implements OnInit, OnDestroy {
         let recordId = this.route.snapshot.params.record;
 
         if (data.duplicate === true) {
-            params.originalDuplicateId = recordId;
+            params.originalId = recordId;
             params.isDuplicate = true;
             recordId = '';
         }
+
+        if (data.convert === true) {
+            params.originalId = recordId;
+            params.isConvert = true;
+            recordId = '';
+        }
+
         this.subs.push(this.recordStore.init(this.appState.getModule(), recordId, mode, params).subscribe());
         this.vm$ = this.recordStore.vm$;
         this.appState.removeAllPrevRoutes();

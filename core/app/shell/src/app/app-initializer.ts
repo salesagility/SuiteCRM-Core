@@ -269,6 +269,26 @@ export class AppInit {
                                     }
                                 });
                             }
+
+                            if (!isFalse(configRoutes[routeName].convert)) {
+                                routes.push({
+                                    path: routeName + '/convert/:record',
+                                    component: CreateRecordComponent,
+                                    canActivate: [AuthGuard],
+                                    runGuardsAndResolvers: 'always',
+                                    resolve: {
+                                        view: BaseModuleResolver,
+                                        metadata: BaseRecordResolver
+                                    },
+                                    data: {
+                                        reuseRoute: false,
+                                        checkSession: true,
+                                        module: routeName,
+                                        mode: 'create',
+                                        convert: true
+                                    }
+                                });
+                            }
                         }
 
                         if (configRoutes[routeName].record) {

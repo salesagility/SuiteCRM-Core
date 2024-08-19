@@ -291,6 +291,11 @@ export class ModuleNavigation {
         if (params.return_action) {
             returnAction = this.actionNameMapper.toFrontend(params.return_action);
         }
+
+        if (params.isConvert) {
+            returnAction = '';
+        }
+
         return returnAction;
     }
 

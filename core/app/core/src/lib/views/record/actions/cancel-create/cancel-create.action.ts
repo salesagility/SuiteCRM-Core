@@ -67,14 +67,18 @@ export class CancelCreateAction extends RecordActionHandler {
     protected cancel(data: RecordActionData): void {
         const store = data.store;
 
+        let returnAction = store.params.return_action || '';
+        let returnId = store.params.return_id || '';
         let returnModule = store.getModuleName();
 
         if (store.params.return_module) {
             returnModule = this.moduleNameMapper.toFrontend(store.params.return_module);
         }
 
-        let returnAction = store.params.return_action || '';
-        const returnId = store.params.return_id || '';
+        if (store.params.isConvert) {
+            returnModule = this.moduleNameMapper.toFrontend(store.params.convertModule);
+            returnId = store.params.originalId;
+        }
 
         let route = '/' + returnModule;
 

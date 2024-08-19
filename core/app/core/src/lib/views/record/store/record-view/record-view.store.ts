@@ -73,6 +73,7 @@ import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.ser
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {PanelLogicManager} from '../../../../components/panel-logic/panel-logic.manager';
+import {RecordConvertService} from "../../../../services/record/record-convert.service";
 
 const initialState: RecordViewState = {
     module: '',
@@ -148,6 +149,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         protected recordStoreFactory: RecordStoreFactory,
         protected preferences: UserPreferenceStore,
         protected panelLogicManager: PanelLogicManager,
+        protected recordConvertService: RecordConvertService
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);

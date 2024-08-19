@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {catchError, finalize, shareReplay, tap} from 'rxjs/operators';
+import {catchError, finalize, map, shareReplay, tap} from 'rxjs/operators';
 import {Params} from '@angular/router';
 import {StatisticsBatch} from '../../../../store/statistics/statistics-batch.service';
 import {RecordViewStore} from '../../../record/store/record-view/record-view.store';
@@ -46,6 +46,7 @@ import {Record, ViewMode} from 'common';
 import {RecordStoreFactory} from '../../../../store/record/record.store.factory';
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {PanelLogicManager} from '../../../../components/panel-logic/panel-logic.manager';
+import {RecordConvertService} from "../../../../services/record/record-convert.service";
 
 @Injectable()
 export class CreateViewStore extends RecordViewStore {
@@ -66,7 +67,8 @@ export class CreateViewStore extends RecordViewStore {
         protected auth: AuthService,
         protected recordStoreFactory: RecordStoreFactory,
         protected preferences: UserPreferenceStore,
-        protected panelLogicManager: PanelLogicManager
+        protected panelLogicManager: PanelLogicManager,
+        protected recordConvertService: RecordConvertService
     ) {
         super(
             recordFetchGQL,
@@ -83,7 +85,8 @@ export class CreateViewStore extends RecordViewStore {
             statisticsBatch,
             recordStoreFactory,
             preferences,
-            panelLogicManager
+            panelLogicManager,
+            recordConvertService
         );
     }
 
@@ -107,10 +110,16 @@ export class CreateViewStore extends RecordViewStore {
         this.showSubpanels = false;
 
         const isDuplicate = this.params.isDuplicate ?? false;
-        const isOriginalDuplicate = this.params.originalDuplicateId ?? false;
+        const isConvert = this.params.isConvert ?? false;
+        const isOriginalId = this.params.originalId ?? false;
+        const convertModule = this.params.convertModule ?? '';
 
-        if (!isDuplicate && !isOriginalDuplicate) {
+        if (!isDuplicate && !isConvert && !isOriginalId) {
             this.initRecord(params);
+        }
+
+        if (isConvert && isOriginalId && convertModule) {
+            return this.duplicateOnModule();
         }
 
         return this.load();
@@ -166,15 +175,14 @@ export class CreateViewStore extends RecordViewStore {
      * @returns {object} Observable<RecordViewState>
      */
     public load(): Observable<Record> {
-        if ((this.params.isDuplicate ?? false) && (this.params.originalDuplicateId ?? false)) {
+        if ((this.params.isDuplicate ?? false) && (this.params.originalId ?? false)) {
             this.updateState({
                 ...this.internalState,
                 loading: true
             });
-
             return this.recordStore.retrieveRecord(
                 this.internalState.module,
-                this.params.originalDuplicateId,
+                this.params.originalId,
                 false
             ).pipe(
                 tap((data: Record) => {
@@ -193,6 +201,34 @@ export class CreateViewStore extends RecordViewStore {
             );
         }
         return of(this.recordStore.getBaseRecord()).pipe(shareReplay());
+    }
+
+    public duplicateOnModule(): Observable<Record> {
+
+        this.initRecord();
+        const newRecord = this.getBaseRecord();
+        const moduleMetadata = this.metadataStore.getModuleMeta(this.params.convertModule);
+        const viewDefinitions$ = this.recordConvertService.getViewFieldsObservable(moduleMetadata);
+        const prevModuleRecordStore = this.recordStoreFactory.create(viewDefinitions$);
+        const prevRecord = prevModuleRecordStore.retrieveRecord(
+            this.params.convertModule,
+            this.params.originalId,
+            false
+        ).pipe(
+            map((record: Record) => {
+                return this.recordConvertService.duplicateOnModule(record, newRecord, this.getVardefs(), moduleMetadata)
+            }),
+            tap((record: Record) => {
+                this.recordStore.setRecord(record);
+                this.updateState({
+                    ...this.internalState,
+                    module: this.internalState.module,
+                    loading: false
+                })
+            })
+        );
+
+        return prevRecord;
     }
 
     /**
