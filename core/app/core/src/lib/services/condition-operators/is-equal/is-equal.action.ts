@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {ConditionOperatorActionHandler} from '../condition-operator.action';
-import {Record, Field, LogicRuleValues} from 'common';
+import {Record, Field, LogicRuleValues, isTrue, isFalse} from 'common';
 import {ConditionOperatorModel} from '../condition-operator.model';
 
 @Injectable({
@@ -41,10 +41,36 @@ export class IsEqualAction extends ConditionOperatorActionHandler implements Con
     }
 
     run(record: Record, field: Field, opsConfig: LogicRuleValues): boolean {
-        const comparisonValue = opsConfig.field ? [record.fields[opsConfig.field].value] : (Array.isArray(opsConfig.values) ? opsConfig.values : [opsConfig.value]).map(value => value.toString());
-        if(comparisonValue) {
+        let comparisonValue = null;
+
+        if (this.compareToField(opsConfig)) {
+            comparisonValue = this.getFieldComparisonValue(record, opsConfig);
+        } else {
+            comparisonValue = this.getStaticComparisonValue(opsConfig);
+        }
+
+        if (comparisonValue) {
             return comparisonValue.includes(field.value.toString());
         }
         return false;
+    }
+
+    protected getFieldComparisonValue(record: Record, opsConfig: LogicRuleValues): string[] {
+        return [record.fields[opsConfig.field]?.value];
+    }
+
+    protected getStaticComparisonValue(opsConfig: LogicRuleValues): any[] {
+        if (Array.isArray(opsConfig.values)) {
+            return opsConfig.values.map(value => value?.toString());
+        }
+
+        return [opsConfig.value].map(value => value?.toString());
+    }
+
+    protected compareToField(opsConfig: LogicRuleValues): boolean {
+        if (opsConfig?.field){
+            return !!opsConfig?.field;
+        }
+        return !!opsConfig;
     }
 }
