@@ -35,6 +35,7 @@ import {
     FieldDefinition,
     FieldLogic,
     FieldLogicMap,
+    isFalse,
     isTrue,
     ObjectMap,
     Record,
@@ -121,7 +122,7 @@ export class FieldBuilder {
         let value: string = null;
         let valueList: string[] = null;
 
-        if (!viewName || !record.attributes[viewName]) {
+        if (!viewName || (!record.attributes[viewName] && !isFalse(record.attributes[viewName]))) {
             value = '';
         } else if (type === 'relate' && source === 'non-db' && rname !== '') {
             value = record.attributes[viewName][rname];
