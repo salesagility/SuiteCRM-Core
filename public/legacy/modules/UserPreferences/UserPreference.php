@@ -98,9 +98,14 @@ class UserPreference extends SugarBean
         $name,
         $category = 'global'
         ) {
-        global $sugar_config;
+        global $sugar_config, $current_user;
 
         $user = $this->_userFocus;
+
+        if ($user->user_name !== $current_user->user_name){
+            $this->loadPreferences($category);
+            return $user->user_preferences[$category][$name] ?? $this->getDefaultPreference($name, $category);
+        }
 
         // if the unique key in session doesn't match the app or prefereces are empty
         if (!isset($_SESSION[$user->user_name.'_PREFERENCES'][$category]) || (!empty($_SESSION['unique_key']) && $_SESSION['unique_key'] != $sugar_config['unique_key'])) {
@@ -203,13 +208,18 @@ class UserPreference extends SugarBean
     public function loadPreferences(
         $category = 'global'
         ) {
-        global $sugar_config;
+        global $sugar_config, $current_user;
 
         $user = $this->_userFocus;
 
         if ($user->object_name != 'User') {
             return;
         }
+
+        if ($user->user_name !== $current_user->user_name) {
+            return $this->reloadPreferences($category);
+        }
+
         if (!empty($user->id) && (!isset($_SESSION[$user->user_name . '_PREFERENCES'][$category]) || (!empty($_SESSION['unique_key']) && $_SESSION['unique_key'] != $sugar_config['unique_key']))) {
             // cn: moving this to only log when valid - throwing errors on install
             return $this->reloadPreferences($category);
