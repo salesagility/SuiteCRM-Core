@@ -1,7 +1,10 @@
 parameters:
   legacy.cache_reset_actions:
+    Login:
+      - index
     users:
       - edit
+      - Wizard
     administration:
       - repair
       - UpgradeWizard
