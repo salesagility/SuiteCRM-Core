@@ -194,6 +194,10 @@ class UserHandler extends LegacyHandler
 
         global $sugar_config;
 
+        if (isset($_SESSION['authenticated_user_language'])){
+            return $_SESSION['authenticated_user_language'];
+        }
+
         $languages = get_languages();
 
         $enabled = false;
