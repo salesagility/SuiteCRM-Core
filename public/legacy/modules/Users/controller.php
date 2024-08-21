@@ -198,8 +198,8 @@ class UsersController extends SugarController
                 $_POST['default_locale_name_format'], 0, 'global');
         }
 
-        $current_user->setPreference('language', $_POST['user_language'], 0, 'global');
-        $_SESSION['authenticated_user_language'] = $_POST['user_language'];
+        $current_user->setPreference('language', $_POST['language'], 0, 'global');
+        $_SESSION['authenticated_user_language'] = $_POST['language'];
 
         $next = $_POST['whatnext'] ?? '';
 

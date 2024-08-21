@@ -213,7 +213,7 @@ eoq;
             $language = $sugar_config['default_language'];
         }
 
-        $this->ss->assign('user_language', get_select_options_with_id(get_languages(), $language));
+        $this->ss->assign('language', get_select_options_with_id(get_languages(), $language));
         $this->ss->assign('getNameJs', $locale->getNameJs());
 
         $this->ss->assign('TIMEOPTIONS', get_select_options_with_id($sugar_config['time_formats'], $current_user->_userPreferenceFocus->getDefaultPreference('default_time_format')));

@@ -142,7 +142,7 @@
             <div class="col">
                 <div class="left-side"><span>{$MOD.LBL_COUNTRY}:</span></div>
                 <div><span><input name='address_country' tabindex='10' size='10' maxlength='20' value='{$ADDRESS_COUNTRY}'></span></div>
-            </div>            
+            </div>
         </div>
     </div>
     <div class="nav-buttons">
@@ -232,7 +232,7 @@
                         </tr>
                         <tr>
                             <td nowrap="nowrap" scope="row" valign="top">{$MOD.LBL_USER_LANGUAGE}:&nbsp;</td>
-                            <td><span><select id="user_language" tabindex='14' name="user_language" >{$user_language}</select></span></td>
+                            <td><span><select id="language" tabindex='14' name="language">{$language}</select></span></td>
                         </tr>
                     </table>
                 </div>
