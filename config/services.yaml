@@ -23,16 +23,11 @@ services:
       - ldap
   Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
     arguments:
-      - host: '%env(LDAP_HOST)%'
-        port: '%env(LDAP_PORT)%'
-        encryption: '%env(LDAP_ENCRYPTION)%'
-        options:
-          protocol_version: '%env(LDAP_PROTOCOL_VERSION)%'
-          referrals: '%env(LDAP_REFERRALS)%'
-
+      - '%ldap.options%'
 
 imports:
   - { resource: services/**/*.yaml }
+  - { resource: services/**/*.php }
   - { resource: ../extensions/*/config/services/*.yaml }
   - { resource: ../extensions/*/config/services/*.php }
   - { resource: ../extensions/*/config/services/**/*.yaml }
