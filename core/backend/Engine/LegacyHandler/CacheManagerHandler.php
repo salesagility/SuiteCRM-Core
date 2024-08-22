@@ -114,14 +114,18 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
         if (empty($result)) {
             return;
         }
+        $processedKeys = [];
         while ($row = $db->fetchByAssoc($result)) {
             foreach ($keys as $key) {
                 if ($row['cache_key'] == $key && $row['rebuild'] == 1) {
-                    $this->cache->delete($key);
-                    $_SESSION[$current_user->user_name.'_PREFERENCES'] = [];
-                    $query = "DELETE FROM cache_rebuild ";
-                    $query .= "WHERE cache_key='$key'";
-                    $db->query($query);
+                    if (!in_array($key, $processedKeys)) {
+                        $this->cache->delete($key);
+                        $_SESSION[$current_user->user_name.'_PREFERENCES'] = [];
+                        $query = "DELETE FROM cache_rebuild ";
+                        $query .= "WHERE cache_key='$key'";
+                        $db->query($query);
+                        $processedKeys[] = $key;
+                    }
                 }
             }
         }
