@@ -27,14 +27,14 @@
 
 namespace App\UserPreferences\LegacyHandler;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Authentication\LegacyHandler\UserHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use Exception;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SetUserLanguage extends LegacyHandler implements ProcessHandlerInterface
 {
@@ -53,7 +53,7 @@ class SetUserLanguage extends LegacyHandler implements ProcessHandlerInterface
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      * @param UserHandler $userHandler
      */
     public function __construct(
@@ -62,7 +62,7 @@ class SetUserLanguage extends LegacyHandler implements ProcessHandlerInterface
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $requestStack,
         UserHandler $userHandler
     ) {
         parent::__construct(
@@ -71,7 +71,7 @@ class SetUserLanguage extends LegacyHandler implements ProcessHandlerInterface
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $session
+            $requestStack
         );
         $this->userHandler = $userHandler;
     }
