@@ -27,7 +27,7 @@
 
 namespace App\Process\Service\RecordThreadItemActions;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Data\LegacyHandler\RecordSnoozeHandler;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;

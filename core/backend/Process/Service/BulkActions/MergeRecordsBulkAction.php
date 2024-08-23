@@ -28,7 +28,7 @@
 
 namespace App\Process\Service\BulkActions;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;

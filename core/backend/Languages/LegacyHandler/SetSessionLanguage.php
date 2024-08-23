@@ -27,7 +27,7 @@
 
 namespace App\Languages\LegacyHandler;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Authentication\LegacyHandler\UserHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;

@@ -27,7 +27,7 @@
 
 namespace App\Process\Service\RecordThreadListActions;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Data\LegacyHandler\PresetDataHandlers\AlertsDataHandler;
 use App\Data\Service\RecordMarkAsReadServiceInterface;
 use App\Engine\LegacyHandler\LegacyHandler;

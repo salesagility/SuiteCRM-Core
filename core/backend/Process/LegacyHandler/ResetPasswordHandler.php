@@ -29,7 +29,7 @@
 namespace App\Process\LegacyHandler;
 
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;

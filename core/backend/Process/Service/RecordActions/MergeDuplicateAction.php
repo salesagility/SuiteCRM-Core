@@ -27,7 +27,7 @@
 
 namespace App\Process\Service\RecordActions;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Process\Entity\Process;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Service\ProcessHandlerInterface;

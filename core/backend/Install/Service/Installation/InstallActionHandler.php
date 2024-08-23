@@ -28,7 +28,7 @@
 
 namespace App\Install\Service\Installation;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Engine\Model\Feedback;
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Process\Entity\Process;

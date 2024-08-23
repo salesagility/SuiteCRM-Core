@@ -27,7 +27,7 @@
 
 namespace App\Process\Service\RecordThreadListActions;
 
-use ApiPlatform\Core\Exception\InvalidArgumentException;
+use ApiPlatform\Exception\InvalidArgumentException;
 use App\Data\Service\AlertProviderInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
