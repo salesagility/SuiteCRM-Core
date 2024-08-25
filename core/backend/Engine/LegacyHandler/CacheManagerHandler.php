@@ -98,6 +98,12 @@ class CacheManagerHandler extends LegacyHandler implements CacheManagerInterface
 
     public function checkForCacheUpdate($keys, $modules): void
     {
+        global $_ENV;
+        if (($_ENV['APP_ENV'] ?? '') === 'dev') {
+            $this->cachePool->clear();
+            return;
+        }
+
         $this->init();
 
         global $db, $current_user;
