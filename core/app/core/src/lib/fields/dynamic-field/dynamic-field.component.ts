@@ -24,7 +24,16 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {ChangeDetectorRef, Component, HostBinding, Input, OnInit, Type} from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    computed,
+    HostBinding,
+    Input,
+    OnInit, signal,
+    Signal,
+    Type
+} from '@angular/core';
 import {EDITABLE_VIEW_MODES, Field, Record, StringMap, ViewMode} from 'common';
 import {Router} from '@angular/router';
 import {ModuleNameMapper} from '../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -52,7 +61,8 @@ export class DynamicFieldComponent implements OnInit {
 
     @HostBinding('class') class = 'dynamic-field';
 
-    isValidated: boolean = false;
+    isInvalid: Signal<boolean> = signal(false);
+    validateOnlyOnSubmit: boolean = false;
 
     constructor(
         protected navigation: ModuleNavigation,
@@ -84,8 +94,17 @@ export class DynamicFieldComponent implements OnInit {
 
     ngOnInit(): void {
         this.setHostClass();
-        this.checkValidation();
         this.cd.detectChanges();
+        this.validateOnlyOnSubmit = this.record?.metadata?.validateOnlyOnSubmit;
+
+        if(this.record?.validationTriggered) {
+            this.isInvalid = computed(() => {
+                if(this.validateOnlyOnSubmit && this.record?.validationTriggered() && this.field.formControl?.invalid) {
+                    return true;
+                }
+                return false;
+            })
+        }
     }
 
     isLink(): boolean {
@@ -180,19 +199,4 @@ export class DynamicFieldComponent implements OnInit {
         this.class = classes.join(' ');
     }
 
-    checkValidation(): void {
-        if(!this.field.formControl.invalid) {
-            this.isValidated = false;
-        }
-
-        if(this.record?.metadata?.validateOnlyOnSubmit && this.record?.validationTriggered()) {
-            this.isValidated = true;
-        }
-
-        if(!this.record?.metadata?.validateOnlyOnSubmit && this.field.formControl.touched) {
-            this.isValidated = true;
-        }
-
-        this.isValidated = false;
-    }
 }

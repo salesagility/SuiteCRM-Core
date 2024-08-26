@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<input [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
+<input [class.is-invalid]="validateOnlyOnSubmit ? isInvalid() : (field.formControl.invalid && field.formControl.touched)"
        [formControl]="field.formControl"
        [value]="field.value"
        [ngClass]="klass"

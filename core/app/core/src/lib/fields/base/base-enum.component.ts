@@ -100,7 +100,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     }
 
     getInvalidClass(): string {
-        if (this.field.formControl && this.field.formControl.invalid && this.field.formControl.touched) {
+        if (this.validateOnlyOnSubmit ? this.isInvalid() : (this.field.formControl.invalid && this.field.formControl.touched)) {
             return 'is-invalid';
         }
         return '';

@@ -177,7 +177,7 @@ export class BaseRelateComponent extends BaseFieldComponent implements OnInit, O
     }
 
     getInvalidClass(): string {
-        if (this.field.formControl && this.field.formControl.invalid && this.field.formControl.touched) {
+        if (this.validateOnlyOnSubmit ? this.isInvalid() : (this.field.formControl.invalid && this.field.formControl.touched)) {
             return 'is-invalid';
         }
 

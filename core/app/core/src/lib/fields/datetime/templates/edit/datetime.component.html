@@ -31,7 +31,7 @@
     <input
         [ngClass]="klass"
         [placeholder]="getDateTimeFormat().toLowerCase()"
-        [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
+        [class.is-invalid]="validateOnlyOnSubmit ? isInvalid() : (field.formControl.invalid && field.formControl.touched)"
         [formControl]="field.formControl"
         (change)="onInputChange($event)"
         [ngbPopover]="calendarContent"

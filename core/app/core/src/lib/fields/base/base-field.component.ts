@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, computed, inject, Input, OnDestroy, OnInit, signal, Signal} from '@angular/core';
 import {FieldComponentInterface} from './field.interface';
 import {AttributeDependency, Field, isVoid, ObjectMap, Record, ViewMode} from 'common';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
@@ -62,6 +62,9 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
     protected mode$: Observable<string>;
     protected fieldHandlerRegistry: FieldHandlerRegistry;
 
+    validateOnlyOnSubmit: boolean = false;
+    isInvalid: Signal<boolean> = signal(false);
+
     constructor(
         protected typeFormatter: DataTypeFormatter,
         protected logic: FieldLogicManager,
@@ -92,6 +95,16 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
 
     protected baseInit(): void {
         this.initDependencyHandlers();
+
+        this.validateOnlyOnSubmit = this.record?.metadata?.validateOnlyOnSubmit;
+        if(this.record?.validationTriggered) {
+            this.isInvalid = computed(() => {
+                if(this.record?.metadata?.validateOnlyOnSubmit && this.record?.validationTriggered() && this.field.formControl?.invalid) {
+                    return true;
+                }
+                return false;
+            })
+        }
     }
 
     /**

@@ -30,7 +30,7 @@
            [ngClass]="klass"
            [placement]="getPlacement()"
            [placeholder]="getDateFormat().toLowerCase()"
-           [class.is-invalid]="field.formControl.invalid && field.formControl.touched"
+           [class.is-invalid]="validateOnlyOnSubmit ? isInvalid() : (field.formControl.invalid && field.formControl.touched)"
            [formControl]="field.formControl"
            [startDate]="dateModel"
            (ngModelChange)="setModel($event)"
