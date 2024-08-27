@@ -108,7 +108,6 @@ class AOR_ReportTest extends SuitePHPUnitFrameworkTestCase
         unset($GLOBALS['_SESSION']);
         unset($GLOBALS['objectList']);
         unset($GLOBALS['mod_strings']);
-        unset($GLOBALS['toHTML']);
         unset($GLOBALS['module']);
         unset($GLOBALS['action']);
         unset($GLOBALS['disable_date_format']);
