@@ -141,9 +141,8 @@ class ConvertRecordAction implements ProcessHandlerInterface
                 'queryParams' => [
                     'isConvert' => true,
                     'convertModule' => $options['module'],
-                    'return_module' => $options['module'],
-                    'return_action' => 'DetailView',
-                    'return_id' => $options['id'],
+                    'return_module' => $options['params']['convertModule'],
+                    'return_action' => 'record',
                 ]
             ]
         ];
