@@ -116,7 +116,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                     const types = this.dependentFields[fieldKey].type ?? [];
 
                     if (types.includes('logic')) {
-                        this.logic.runLogic(field, this.mode as ViewMode, this.record, 'onFieldInitialize');
+                        this.logic.runLogic(field, this.originalMode as ViewMode, this.record, 'onFieldInitialize');
                     }
 
                     if (types.includes('displayLogic')) {
@@ -138,7 +138,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                             const types = dependentField.type ?? [];
 
                             if (types.includes('logic')) {
-                                this.logic.runLogic(field, this.mode as ViewMode, this.record, 'onValueChange');
+                                this.logic.runLogic(field, this.originalMode as ViewMode, this.record, 'onValueChange');
                             }
 
                             if (types.includes('displayLogic')) {
