@@ -55,11 +55,11 @@ export class FilterAdapter {
                     const searchMeta = meta.search;
 
                     let type = 'advanced';
-                    if (!searchMeta.layout.advanced) {
+                    if (!searchMeta?.layout?.advanced) {
                         type = 'basic';
                     }
 
-                    return searchMeta.layout[type];
+                    return searchMeta?.layout[type];
                 })
             ),
             listFields: this.store.metadata.listView.fields,

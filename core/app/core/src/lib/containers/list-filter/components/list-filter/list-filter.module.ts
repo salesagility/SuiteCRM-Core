@@ -33,6 +33,7 @@ import {LabelModule} from '../../../../components/label/label.module';
 import {PanelModule} from '../../../../components/panel/panel.module';
 import {FieldGridModule} from '../../../../components/field-grid/field-grid.module';
 import {RecordGridModule} from '../../../../components/record-grid/record-grid.module';
+import {FieldModule} from "../../../../fields/field.module";
 
 @NgModule({
     declarations: [ListFilterComponent],
@@ -47,7 +48,8 @@ import {RecordGridModule} from '../../../../components/record-grid/record-grid.m
         DropdownButtonModule,
         LabelModule,
         RecordGridModule,
-        ButtonModule
+        ButtonModule,
+        FieldModule
     ]
 })
 export class ListFilterModule {
