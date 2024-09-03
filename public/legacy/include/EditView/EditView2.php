@@ -242,9 +242,13 @@ class EditView
         $this->metadataFile = $metadataFile;
 
         if (isset($GLOBALS['sugar_config']['enable_record_pagination'])) {
-            $this->showVCRControl = $GLOBALS['sugar_config']['enable_record_pagination'];
+            $this->showVCRControl = isTrue($GLOBALS['sugar_config']['enable_record_pagination']);
         } else {
-            $this->showVCRControl = !$GLOBALS['sugar_config']['disable_vcr'];
+            $this->showVCRControl = true;
+
+            if (isset($GLOBALS['sugar_config']['disable_vcr'])) {
+                $this->showVCRControl = !$GLOBALS['sugar_config']['disable_vcr'];
+            }
         }
 
         if (!empty($this->metadataFile) && file_exists($this->metadataFile)) {

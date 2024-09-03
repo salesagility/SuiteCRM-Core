@@ -40,6 +40,7 @@ export interface ButtonInterface {
     iconKlass?: string;
     labelModule?: string;
     section?: string;
+    disabled?: boolean;
 }
 
 export class Button implements ButtonInterface {

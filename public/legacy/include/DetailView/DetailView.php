@@ -81,7 +81,17 @@ class DetailView extends ListView
         global $list_view_row_count;
         global $current_offset;
 
-        $recordPaginationEnabled = isset($sugar_config['enable_record_pagination']) ? $sugar_config['enable_record_pagination'] : (!isset($sugar_config['disable_vcr']) || !$sugar_config['disable_vcr']);
+
+        if (array_key_exists('enable_record_pagination', $GLOBALS['sugar_config'])) {
+            $recordPaginationEnabled = isTrue($sugar_config['enable_record_pagination']);
+        } else {
+            $recordPaginationEnabled = true;
+
+            if (isset($sugar_config['disable_vcr']) && $sugar_config['disable_vcr']) {
+                $recordPaginationEnabled = !$sugar_config['disable_vcr'];
+            }
+        }
+
         if (!$recordPaginationEnabled) {
             $seed->retrieve($_REQUEST['record']);
             return $seed;

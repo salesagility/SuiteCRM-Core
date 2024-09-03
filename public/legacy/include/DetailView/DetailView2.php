@@ -92,11 +92,14 @@ class DetailView2 extends EditView
         $this->tpl = get_custom_file_if_exists($tpl);
         $this->module = $module;
         $this->metadataFile = $metadataFile;
-
-        if (isset($GLOBALS['sugar_config']['enable_record_pagination'])) {
-            $this->showVCRControl = $GLOBALS['sugar_config']['enable_record_pagination'];
+        if (array_key_exists('enable_record_pagination', $GLOBALS['sugar_config'])) {
+            $this->showVCRControl = isTrue($GLOBALS['sugar_config']['enable_record_pagination']);
         } else {
-            $this->showVCRControl = !$GLOBALS['sugar_config']['disable_vcr'];
+            $this->showVCRControl = true;
+
+            if (isset($GLOBALS['sugar_config']['disable_vcr'])) {
+                $this->showVCRControl = !$GLOBALS['sugar_config']['disable_vcr'];
+            }
         }
 
         if (!empty($this->metadataFile) && file_exists($this->metadataFile)) {

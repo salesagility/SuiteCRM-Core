@@ -46,14 +46,20 @@ class RecordPaginationConfigMapper implements SystemConfigMapperInterface
     public function map(SystemConfig $config): void
     {
         $isRecordPaginationEnabled = $config->getValue();
-        if($isRecordPaginationEnabled === "") {
+        if ($isRecordPaginationEnabled === null) {
+            $config->setValue(true);
+            return;
+        }
+
+        if ($isRecordPaginationEnabled === "" || is_array($isRecordPaginationEnabled)) {
             $config->setValue(false);
             return;
         }
-        if(is_array($isRecordPaginationEnabled)) {
+
+        if ($isRecordPaginationEnabled) {
+            $config->setValue(isTrue($isRecordPaginationEnabled));
+        } else {
             $config->setValue(false);
-            return;
         }
-        $config->setValue($isRecordPaginationEnabled);
     }
 }

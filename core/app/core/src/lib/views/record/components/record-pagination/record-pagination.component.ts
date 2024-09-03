@@ -27,7 +27,7 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {ActivatedRoute, Router} from "@angular/router";
-import {PaginationCount, PageSelection, PaginationType, ObjectMap, ViewMode, ModalButtonInterface} from "common";
+import {PaginationCount, PageSelection, PaginationType, ObjectMap, ViewMode, ButtonInterface, ModalButtonInterface} from "common";
 import {combineLatestWith, Observable, Subscription} from "rxjs";
 import {filter, map, tap} from "rxjs/operators";
 import {toNumber} from "lodash-es";
@@ -39,10 +39,10 @@ import {LocalStorageService} from "../../../../services/local-storage/local-stor
 import {LanguageStore, LanguageStringMap} from "../../../../store/language/language.store";
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 import {RecordViewStore} from "../../store/record-view/record-view.store";
-import {ImageModule} from "../../../../components/image/image.module";
 import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 import {RecordPaginationStore} from "../../store/record-pagination/record-pagination.store";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ButtonModule} from "../../../../components/button/button.module";
 
 interface RecordPaginationViewModel {
     appStrings: LanguageStringMap;
@@ -55,7 +55,7 @@ interface RecordPaginationViewModel {
     templateUrl: './record-pagination.component.html',
     styles: [],
     standalone: true,
-    imports: [CommonModule, ImageModule],
+    imports: [CommonModule, ButtonModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
@@ -71,6 +71,9 @@ export class RecordPaginationComponent implements OnInit, OnDestroy {
     paginationType: string = PaginationType.PAGINATION;
     recordIds: ObjectMap[];
     subs: Subscription[] = [];
+
+    prevButton: ButtonInterface = null;
+    nextButton: ButtonInterface = null;
 
     appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;
     recordIds$: Observable<ObjectMap[]> = this.recordPaginationStore.recordIds$;
@@ -109,6 +112,30 @@ export class RecordPaginationComponent implements OnInit, OnDestroy {
             this.mode = mode;
         }));
 
+        this.prevButton = {
+            klass: {
+                'record-pagination-button': true,
+                'pagination-previous': true,
+                disabled: this.currentIndex === 1
+            },
+            icon: 'paginate_previous',
+            iconKlass: 'sicon-2x',
+            disabled: this.currentIndex === 1 || this.isRecordsLoading,
+            onClick: () => this.prevRecord()
+        } as ButtonInterface;
+
+        this.nextButton = {
+            klass: {
+                'record-pagination-button': true,
+                'pagination-next': true,
+                disabled: this.currentIndex === this.totalRecordsCount
+            },
+            icon: 'paginate_next',
+            iconKlass: 'sicon-2x',
+            disabled: this.currentIndex === this.totalRecordsCount  || this.isRecordsLoading,
+            onClick: () => this.nextRecord()
+        } as ButtonInterface;
+
         this.vm$ = this.appStrings$.pipe(
             combineLatestWith(this.recordPaginationStore.pagination$, this.recordPaginationStore.paginationEnabled$),
             map(([appStrings, pageCount, paginationEnabled]: [LanguageStringMap, PaginationCount, boolean]) => {
@@ -120,6 +147,9 @@ export class RecordPaginationComponent implements OnInit, OnDestroy {
                 if (!isRecordPaginationExist || !isRecordValid || (this.currentIndex > this.totalRecordsCount)) {
                     paginationEnabled = false;
                 }
+                this.prevButton = { ...this.prevButton, titleKey: appStrings['LBL_SEARCH_PREV'] || '' } as ButtonInterface;
+                this.nextButton = { ...this.nextButton, titleKey: appStrings['LBL_SEARCH_NEXT'] || '' } as ButtonInterface;
+
                 return { appStrings, pageCount, paginationEnabled };
             })
         );
@@ -146,12 +176,12 @@ export class RecordPaginationComponent implements OnInit, OnDestroy {
         }));
     }
 
-    ngOnDestroy() : void {
+    ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
         this.recordPaginationStore.clear();
     }
 
-    prevRecord(): void {
+    protected prevRecord(): void {
         if (this.currentIndex <= 0) {
             return;
         }
@@ -170,7 +200,7 @@ export class RecordPaginationComponent implements OnInit, OnDestroy {
         }
     }
 
-    nextRecord(): void {
+    protected nextRecord(): void {
         if (this.currentIndex >= this.totalRecordsCount) {
             return;
         }

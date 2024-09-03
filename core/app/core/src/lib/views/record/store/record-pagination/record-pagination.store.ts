@@ -99,7 +99,7 @@ export class RecordPaginationStore  {
 
     protected enableRecordPagination(): void {
         let isEnabled = this.systemConfigStore.getConfigValue('enable_record_pagination');
-        if (isEnabled === "" || (Array.isArray(isEnabled) && isEnabled.length === 0)) {
+        if (isEnabled === "") {
             isEnabled = false;
         }
         this.updateState({...this.internalState, paginationEnabled: !!(isEnabled ?? false)});

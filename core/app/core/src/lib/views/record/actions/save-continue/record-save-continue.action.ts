@@ -33,6 +33,7 @@ import {ModuleNavigation} from '../../../../services/navigation/module-navigatio
 import {NotificationStore} from '../../../../store/notification/notification.store';
 import {RecentlyViewedService} from "../../../../services/navigation/recently-viewed/recently-viewed.service";
 import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
+import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 
 @Injectable({
     providedIn: 'root'
@@ -46,6 +47,7 @@ export class RecordSaveContinueAction extends RecordActionHandler {
         protected message: MessageService,
         protected navigation: ModuleNavigation,
         protected notificationStore: NotificationStore,
+        protected systemConfigStore: SystemConfigStore,
         protected recentlyViewedService: RecentlyViewedService,
         protected recordPaginationService: RecordPaginationService
     ) {
@@ -81,9 +83,13 @@ export class RecordSaveContinueAction extends RecordActionHandler {
     }
 
     shouldDisplay(data: RecordActionData): boolean {
+        const isEnabled = this.systemConfigStore.getConfigValue('enable_record_pagination');
+        if (!isEnabled) {
+            return false;
+        }
+
         const totalRecords = this.recordPaginationService.getTotalRecords();
         const offset = this.recordPaginationService.offset;
-
         if (!totalRecords || !offset ||
             (offset >= totalRecords) ||
             (offset <= 0) ) {

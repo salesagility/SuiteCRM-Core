@@ -27,24 +27,10 @@
 -->
 <div class="record-pagination-container d-flex align-items-center justify-content-end" *ngIf="(vm$ | async) as vm">
     <ng-container *ngIf="vm.paginationEnabled">
-        <button class="record-pagination-button pagination-previous"
-                [disabled]="currentIndex === 1 || isRecordsLoading"
-                [class.disabled]="currentIndex === 1"
-                aria-label="Previous page"
-                (click)="prevRecord()">
-            <scrm-image class="sicon-2x" image="paginate_previous" [title]="vm.appStrings['LBL_SEARCH_PREV'] || ''">
-            </scrm-image>
-        </button>
+        <scrm-button [config]="prevButton"></scrm-button>
         <span class="pagination-count">
             {{currentIndex}} {{vm.appStrings['LBL_LIST_OF'] || ''}} {{vm.pageCount.total}}
         </span>
-        <button class="record-pagination-button pagination-next"
-                [disabled]="currentIndex === totalRecordsCount  || isRecordsLoading"
-                [class.disabled]="currentIndex === totalRecordsCount"
-                aria-label="Navigate to last page"
-                (click)="nextRecord()">
-            <scrm-image class="sicon-2x" image="paginate_next" [title]="vm.appStrings['LBL_SEARCH_NEXT'] || ''">
-            </scrm-image>
-        </button>
+        <scrm-button [config]="nextButton"></scrm-button>
     </ng-container>
 </div>
