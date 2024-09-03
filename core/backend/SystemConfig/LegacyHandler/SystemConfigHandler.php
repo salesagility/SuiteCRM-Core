@@ -93,6 +93,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $systemConfigKeyMap
      * @param array $cacheResetActions
      * @param array $navigationTabLimits
+     * @param array $filterRangeSearchTypes
      * @param array $listViewColumnLimits
      * @param array $listViewSettingsLimits
      * @param array $listViewActionsLimits
@@ -127,6 +128,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $systemConfigKeyMap,
         array $cacheResetActions,
         array $navigationTabLimits,
+        array $filterRangeSearchTypes,
         array $listViewColumnLimits,
         array $listViewSettingsLimits,
         array $listViewActionsLimits,
@@ -161,6 +163,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['cache_reset_actions'] = $cacheResetActions;
         $this->injectedSystemConfigs['module_routing'] = $navigation->getModuleRouting();
         $this->injectedSystemConfigs['navigation_tab_limits'] = $navigationTabLimits;
+        $this->injectedSystemConfigs['filter_range_search_types'] = $filterRangeSearchTypes;
         $this->injectedSystemConfigs['listview_column_limits'] = $listViewColumnLimits;
         $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;
         $this->injectedSystemConfigs['listview_actions_limits'] = $listViewActionsLimits;

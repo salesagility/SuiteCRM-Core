@@ -30,15 +30,24 @@ namespace App\ViewDefinitions\LegacyHandler\SearchDefs;
 use App\FieldDefinitions\Entity\FieldDefinition;
 use App\ViewDefinitions\Entity\ViewDefinition;
 use App\ViewDefinitions\LegacyHandler\ViewDefinitionMapperInterface;
+use App\SystemConfig\Service\SystemConfigProviderInterface;
 
 class SearchDefsNumberTypeMapper implements ViewDefinitionMapperInterface
 {
 
     /**
-     * SearchDefsNumberTypeMapper constructor.
+     * @var SystemConfigProviderInterface
      */
-    public function __construct()
-    {
+    private $systemConfigProvider;
+
+    /**
+     * SearchDefsNumberTypeMapper constructor.
+     * @param SystemConfigProviderInterface $systemConfigProvider
+     */
+    public function __construct(
+        SystemConfigProviderInterface $systemConfigProvider,
+    ) {
+        $this->systemConfigProvider = $systemConfigProvider;
     }
 
     /**
@@ -55,6 +64,24 @@ class SearchDefsNumberTypeMapper implements ViewDefinitionMapperInterface
     public function getModule(): string
     {
         return 'default';
+    }
+
+    /**
+     * Returns an array of all supported field types.
+     *
+     * @return array
+     */
+    public function getAllSupportedTypes(): array
+    {
+        $supportedTypes = ['int', 'currency'];
+        $rangeSearchTypes = $this->systemConfigProvider->getSystemConfig('filter_range_search_types');
+        if($rangeSearchTypes !== null) {
+            $types = $rangeSearchTypes->getItems();
+            if(!empty($types)) {
+                $supportedTypes = $types;
+            }
+        }
+        return $supportedTypes;
     }
 
     /**
@@ -198,9 +225,11 @@ class SearchDefsNumberTypeMapper implements ViewDefinitionMapperInterface
             return;
         }
 
+        $supportedTypes = $this->getAllSupportedTypes();
         foreach ($advanced as $fieldKey => $field) {
             $type = $field['type'] ?? '';
-            if ($type !== 'int' && $type !== 'currency') {
+
+            if (!in_array($type, $supportedTypes, true)) {
                 continue;
             }
 
@@ -218,6 +247,7 @@ class SearchDefsNumberTypeMapper implements ViewDefinitionMapperInterface
      */
     public function mapSubPanelSearchDefs(ViewDefinition $definition): void
     {
+        $supportedTypes = $this->getAllSupportedTypes();
         $subpanel = $definition->getSubPanel() ?? [];
         if (empty($subpanel)){
             return;
@@ -230,7 +260,7 @@ class SearchDefsNumberTypeMapper implements ViewDefinitionMapperInterface
             foreach ($def['searchdefs'] as $fieldKey => $field){
                 $type = $field['type'] ?? '';
 
-                if ($type !== 'int' && $type !== 'currency') {
+                if (!in_array($type, $supportedTypes, true)) {
                     continue;
                 }
 

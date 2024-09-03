@@ -30,6 +30,7 @@ services:
       $cacheResetActions: '%legacy.cache_reset_actions%'
       $navigationTabLimits: '%themes.navigation_tab_limits%'
       $baseActions: '%module.base_actions%'
+      $filterRangeSearchTypes: '%module.filter.range_search_types%'
       $listViewBulkActions: '%module.listview.bulk_action%'
       $listViewLineActions: '%module.listview.line_action%'
       $listViewTableActions: '%module.listview.table_action%'

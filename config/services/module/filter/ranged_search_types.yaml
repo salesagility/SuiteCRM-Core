@@ -1,0 +1,12 @@
+parameters:
+  module.filter.range_search_types:
+    - int
+    - currency
+    - float
+    - double
+    - decimal
+    - uint
+    - ulong
+    - long
+    - short
+    - tinyint
