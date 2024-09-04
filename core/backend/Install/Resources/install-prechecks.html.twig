@@ -248,7 +248,7 @@
                                                                  id="down_arrow">
                                                         </div>
 
-                                                        <div class="flex-column results"
+                                                        <div class="flex-column results d-none"
                                                              id="{{ system_check.label }}_results">
                                                             {% for check in system_check.checks %}
                                                                 <div id="results-box_{{ counter }}"
@@ -505,13 +505,15 @@
 <script>
 
     function toggleResults(resultId, currentId) {
-        if (document.getElementById(resultId).style.display === 'none') {
+        if (document.getElementById(resultId).classList.contains('d-none')) {
             document.getElementById(currentId).style.marginBottom = 0;
-            document.getElementById(resultId).style.display = 'flex';
+            document.getElementById(resultId).classList.add('d-flex');
+            document.getElementById(resultId).classList.remove('d-none');
             return;
         }
         document.getElementById(currentId).style.marginBottom = '.5rem';
-        document.getElementById(resultId).style.display = 'none';
+        document.getElementById(resultId).classList.remove('d-flex');
+        document.getElementById(resultId).classList.add('d-none')
 
     }
 
