@@ -42,6 +42,14 @@ if (!defined('sugarEntry')) {
     define('sugarEntry', true);
 }
 
+if (!file_exists('./config.php') && file_exists('../../.installed_checked')) {
+    header('Location: ../#/install');
+}
+
+if (!file_exists('../../.installed_checked')){
+    header('Location: ../install.php');
+}
+
 // Set Globals
 global $sugar_version;
 global $current_user, $sugar_config;
