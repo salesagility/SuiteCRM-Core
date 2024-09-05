@@ -32,14 +32,16 @@ import {Injectable} from '@angular/core';
 import {PhoneFormatter} from '../../../formatters/phone/phone-formatter.service';
 import {StandardValidationErrors, StandardValidatorFn} from 'common';
 
-export const phoneValidator = (formatter: PhoneFormatter): StandardValidatorFn => (
+export const phoneValidator = (formatter: PhoneFormatter, customRegex?: string): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        const invalid = formatter.validateUserFormat(control.value);
+        const regexPattern = customRegex || formatter.getDefaultFormatPattern();
+        const invalid = formatter.validateUserFormat(control.value, regexPattern);
+
         return invalid ? {
             phoneValidator: {
                 valid: false,
-                format: formatter.getUserFormatPattern(),
+                format: regexPattern,
                 message: {
                     labelKey: 'LBL_VALIDATION_ERROR_PHONE_FORMAT',
                     context: {
@@ -73,6 +75,8 @@ export class PhoneValidator implements ValidatorInterface {
             return [];
         }
 
-        return [phoneValidator(this.formatter)];
+        const customRegex = viewField?.fieldDefinition?.validation?.regex.toString() ?? null;
+
+        return [phoneValidator(this.formatter, customRegex)];
     }
 }

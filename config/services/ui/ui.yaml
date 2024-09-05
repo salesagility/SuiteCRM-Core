@@ -80,4 +80,7 @@ parameters:
       minLength: 10
       mediumLength: 16
       maxLength: 22
+    validations:
+      regex:
+        phone: "^([\\+]?|00)((([(]{0,1}\\s*[0-9]{1,4}\\s*[)]{0,1})\\s*)*|([\\-\\s\\./#x0-9])*)+$"
 

@@ -27,14 +27,17 @@
 import {Injectable} from '@angular/core';
 import {Formatter} from '../formatter.model';
 import {FormControlUtils} from '../../record/field/form-control.utils';
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 @Injectable({
     providedIn: 'root'
 })
 export class PhoneFormatter implements Formatter {
 
-    constructor(protected formUtils: FormControlUtils) {
-    }
+    constructor(
+        protected formUtils: FormControlUtils,
+        protected systemConfigStore: SystemConfigStore
+    ) {}
 
     toUserFormat(value: string): string {
         return value;
@@ -44,17 +47,19 @@ export class PhoneFormatter implements Formatter {
         return value;
     }
 
-    getUserFormatPattern(): string {
-        return '^([\\+]?|00)((([(]{0,1}\\s*[0-9]{1,4}\\s*[)]{0,1})\\s*)*|([\\-\\s\\./0-9])*)+$';
+    getDefaultFormatPattern(): string {
+        const validations = this.systemConfigStore.getUi('validations');
+        const defaultRegex = validations?.regex?.phone || '';
+        return defaultRegex;
     }
 
-    validateUserFormat(inputValue: any): boolean {
+    validateUserFormat(inputValue: any, regexPattern: string): boolean {
 
         const trimmedInputValue = this.formUtils.getTrimmedInputValue(inputValue);
         if (this.formUtils.isEmptyInputValue(trimmedInputValue)) {
             return false;
         }
-        const regex = new RegExp(this.getUserFormatPattern());
+        const regex = new RegExp(regexPattern);
         return !regex.test(trimmedInputValue);
 
     }
