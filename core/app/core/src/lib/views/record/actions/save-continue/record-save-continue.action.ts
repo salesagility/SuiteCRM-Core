@@ -89,7 +89,7 @@ export class RecordSaveContinueAction extends RecordActionHandler {
         }
 
         const totalRecords = this.recordPaginationService.getTotalRecords();
-        const offset = this.recordPaginationService.offset;
+        const offset = this.recordPaginationService.getOffsetFromUrl();
         if (!totalRecords || !offset ||
             (offset >= totalRecords) ||
             (offset <= 0) ) {

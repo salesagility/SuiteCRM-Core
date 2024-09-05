@@ -42,9 +42,6 @@ export class RecordPaginationService {
     private nextRecordSubject = new BehaviorSubject<boolean>(false);
     nextRecord$ = this.nextRecordSubject.asObservable();
 
-    offset: number = 0;
-    recordIds: any[] = [];
-    pagination: Pagination;
     paginationType: string = PaginationType.PAGINATION;
     protected subs: Subscription[] = [];
 
@@ -53,13 +50,7 @@ export class RecordPaginationService {
         protected preferences: UserPreferenceStore,
         protected appStateStore: AppStateStore,
         protected route: ActivatedRoute,
-    ) {
-        this.subs.push(this.route.queryParamMap
-            .subscribe((params: any) => {
-                this.offset = toNumber(params.get('offset'));
-            })
-        );
-    }
+    ) {}
 
     public triggerNextRecord(value: boolean): void {
         this.nextRecordSubject.next(value);
@@ -69,7 +60,7 @@ export class RecordPaginationService {
         const module = this.getModule();
         const recordPaginationObj: RecordPaginationModel = {
             pagination: pagination,
-            recordIds: this.setRecordIds(records)
+            recordIds: this.mapRecordIds(records)
         };
         this.updatePaginationLocalStorage(pagination);
         this.savePreference(module, 'current-record-pagination', recordPaginationObj);
@@ -89,14 +80,8 @@ export class RecordPaginationService {
         return 'recordview-' + storageKey;
     }
 
-    public setRecordIds(records: Record[]): ObjectMap[] {
-        const recordIds = [];
-        records.forEach(record => {
-            recordIds.push({
-                id: record.id
-            })
-        });
-        return recordIds;
+    public mapRecordIds(records: Record[]): ObjectMap[] {
+        return records.map(record => ({ id: record.id }));
     }
 
     public getModule(): string {
@@ -110,40 +95,49 @@ export class RecordPaginationService {
     }
 
     public checkRecordValid(recordId: string): boolean {
-        this.loadRecordPagination(this.getModule());
-        if (!this.pagination) {
+        const paginationObj: RecordPaginationModel = this.getRecordPaginationObj(this.getModule());
+        const pagination: Pagination = paginationObj?.pagination;
+        const recordIds: ObjectMap[] = paginationObj?.recordIds;
+
+        if (!pagination) {
             return false;
         }
 
         const pageSize = this.getPageSize();
+        const offset = this.getOffsetFromUrl();
 
-        if (this.paginationType === PaginationType.LOAD_MORE && (this.offset > pageSize)) {
+        if (this.paginationType === PaginationType.LOAD_MORE && (offset > pageSize)) {
             return false;
         }
 
-        let index = (this.offset - 1) % pageSize;
+        let index = (offset - 1) % pageSize;
         if (this.paginationType === PaginationType.LOAD_MORE) {
-            index = this.offset  - 1;
+            index = offset  - 1;
         }
-        if (index >= 0 && index < this.recordIds.length) {
+        if (index >= 0 && index < recordIds.length) {
 
-            return this.recordIds[index]?.id === recordId;
+            return recordIds[index]?.id === recordId;
         }
 
         return false;
     }
 
     public getPageSize(): number {
-        return this.pagination?.pageSize;
+        const paginationObj: RecordPaginationModel = this.getRecordPaginationObj(this.getModule());
+        return paginationObj?.pagination?.pageSize;
     }
 
-    protected loadRecordPagination(module: string): void {
+    public getOffsetFromUrl(): number {
+        const queryParams = this.route.snapshot.queryParamMap;
+        return toNumber(queryParams.get('offset'));
+    }
+
+    public getRecordPaginationObj(module: string): RecordPaginationModel {
         const key = module + '-' + 'recordview-current-record-pagination';
         const data = this.localStorageService.get(key)[module];
         if (!data || emptyObject(data)) {
             return;
         }
-        this.pagination = data.pagination;
-        this.recordIds = data.recordIds;
+        return data;
     }
 }

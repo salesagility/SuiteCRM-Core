@@ -100,7 +100,7 @@ export abstract class RecordActionHandler extends ActionHandler<RecordActionData
         moduleName: string
     ) {
         const nextRoute = navigation.getRecordRouterLink(moduleName, id);
-        router.navigate([nextRoute], { queryParams: { offset: recordPaginationService.offset }});
+        router.navigate([nextRoute], { queryParams: { offset: recordPaginationService.getOffsetFromUrl() }});
     }
 
 }
