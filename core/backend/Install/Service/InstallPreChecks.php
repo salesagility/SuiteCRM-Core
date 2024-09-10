@@ -624,6 +624,8 @@ class InstallPreChecks
 
         $this->log->info('Running Permission Checks');
 
+        $results[] = $this->isRootWritable($labels);
+
         $results[] = $this->isWritableCustomDir($labels);
 
         $results[] = $this->isWritableUploadDir($labels);
@@ -635,6 +637,7 @@ class InstallPreChecks
         $results[] = $this->checkMbStringsModule($labels);
 
         $results[] = $this->isWritableSubDirFiles($labels);
+
 
         $results[] = $this->isWritableLogsFolder($labels);
 
@@ -1169,6 +1172,28 @@ class InstallPreChecks
     private function isWritableCacheFolder(&$labels): array
     {
         return $this->checkFolderIsWritable('cache', $labels);
+
+    }
+
+    protected function isRootWritable(&$labels): array
+    {
+        $this->modStrings = $this->getLanguageStrings();
+
+        $this->log->info('Checking if root is writable');
+
+        $labels[] = $this->modStrings['LBL_CHECKSYS_ROOT'];
+
+        $rootFolder = __DIR__ . '/../../../../';
+
+        if (!is_writable($rootFolder)){
+            $results['errors'][] = $this->modStrings['ERR_CHECKSYS_ROOT_NOT_WRITABLE'];
+            return $results;
+        }
+
+        $this->log->info('Root exists and is writable');
+        $results['result'] = $this->modStrings['LBL_CHECKSYS_OK'];
+
+        return $results;
 
     }
 
