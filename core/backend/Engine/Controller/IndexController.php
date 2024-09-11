@@ -106,6 +106,8 @@ class IndexController extends AbstractController
         $isActive = $this->authentication->checkSession();
 
         if ($isAppInstalled && !$isActive) {
+            $request->getSession()->invalidate();
+            $request->getSession()->start();
             $this->authentication->initLegacySystemSession();
         }
 
