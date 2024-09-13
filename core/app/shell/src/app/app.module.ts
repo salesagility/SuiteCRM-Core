@@ -139,9 +139,9 @@ export class AppModule {
         });
 
         const logoutLink = onError((err) => {
-
-            const networkError = (err.networkError ?? null) as any
-            if (networkError !== null && networkError.status === 403 && networkError.error.detail === 'Invalid CSRF token') {
+            appStore.removeActiveRequest();
+            const networkError = (err.networkError ?? null) as any;
+            if (networkError !== null && networkError?.status === 403 && networkError?.error?.detail === 'Invalid CSRF token') {
                 auth.handleInvalidSession('LBL_SESSION_EXPIRED');
             }
 
