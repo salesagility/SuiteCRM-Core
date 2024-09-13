@@ -24,11 +24,11 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { isEmpty } from 'lodash-es';
-import { BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, finalize, map, take, tap } from 'rxjs/operators';
-import {Injectable} from '@angular/core';
-import { Params } from '@angular/router';
+import {isEmpty} from 'lodash-es';
+import {BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
+import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
+import {inject, Injectable} from '@angular/core';
+import {Params} from '@angular/router';
 import {
     BooleanMap,
     deepClone,
@@ -37,6 +37,8 @@ import {
     FieldLogicMap,
     FieldMetadata,
     isVoid,
+    Panel,
+    PanelRow,
     Record,
     StatisticsMap,
     StatisticsQueryMap,
@@ -45,10 +47,8 @@ import {
     ViewFieldDefinition,
     ViewFieldDefinitionMap,
     ViewMode,
-    Panel,
-    PanelRow,
 } from 'common';
-import { RecordViewData, RecordViewModel, RecordViewState } from './record-view.store.model';
+import {RecordViewData, RecordViewModel, RecordViewState} from './record-view.store.model';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
 import {StateStore} from '../../../../store/state';
 import {RecordSaveGQL} from '../../../../store/record/graphql/api.record.save';
@@ -74,6 +74,7 @@ import {RecordStoreFactory} from '../../../../store/record/record.store.factory'
 import {UserPreferenceStore} from '../../../../store/user-preference/user-preference.store';
 import {PanelLogicManager} from '../../../../components/panel-logic/panel-logic.manager';
 import {RecordConvertService} from "../../../../services/record/record-convert.service";
+import {FieldActionsAdapterFactory} from "../../../../components/field-layout/adapters/field.actions.adapter.factory";
 
 const initialState: RecordViewState = {
     module: '',
@@ -132,6 +133,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     protected subs: Subscription[] = [];
     protected fieldSubs: Subscription[] = [];
     protected panelsSubject: BehaviorSubject<Panel[]> = new BehaviorSubject(this.panels);
+    protected actionAdaptorFactory: FieldActionsAdapterFactory;
 
     constructor(
         protected recordFetchGQL: RecordFetchGQL,
@@ -153,6 +155,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     ) {
 
         super(appStateStore, languageStore, navigationStore, moduleNavigation, metadataStore);
+
+        this.actionAdaptorFactory = inject(FieldActionsAdapterFactory);
 
         this.panels$ = this.panelsSubject.asObservable();
 
@@ -429,7 +433,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     initValidators(record: Record): void {
-        if(!record || !Object.keys(record?.fields).length) {
+        if (!record || !Object.keys(record?.fields).length) {
             return;
         }
 
@@ -465,8 +469,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
     }
 
     resetValidatorsForAllFields(record: Record): void {
-        if(!record || !record?.fields?.length) {
-            return ;
+        if (!record || !record?.fields?.length) {
+            return;
         }
         Object.keys(record.fields).forEach(fieldName => {
             const field = record.fields[fieldName];
@@ -622,17 +626,25 @@ export class RecordViewStore extends ViewStore implements StateStore {
                 const label = (panelDefinition.label)
                     ? panelDefinition.label.toUpperCase()
                     : this.languageStore.getFieldLabel(panelDefinition.key.toUpperCase(), module, languages);
-                const panel = { label, key: panelDefinition.key, rows: [] } as Panel;
+                const panel = {label, key: panelDefinition.key, rows: []} as Panel;
 
+
+                let adaptor = null;
                 const tabDef = meta.templateMeta.tabDefs[panelDefinition.key.toUpperCase()] ?? null;
                 if (tabDef) {
                     panel.meta = tabDef;
                 }
 
                 panelDefinition.rows.forEach(rowDefinition => {
-                    const row = { cols: [] } as PanelRow;
+                    const row = {cols: []} as PanelRow;
                     rowDefinition.cols.forEach(cellDefinition => {
-                        row.cols.push({ ...cellDefinition });
+                        const cellDef = {...cellDefinition};
+                        const fieldActions = cellDefinition.fieldActions || null;
+                        if (fieldActions) {
+                            adaptor = this.actionAdaptorFactory.create('recordView', cellDef.name, this);
+                            cellDef.adaptor = adaptor;
+                        }
+                        row.cols.push(cellDef);
                     });
                     panel.rows.push(row);
                 });
@@ -759,7 +771,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
                     return;
                 }
 
-                if (vardef.type == 'relate'){
+                if (vardef.type == 'relate') {
                     return;
                 }
 

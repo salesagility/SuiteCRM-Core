@@ -39,6 +39,7 @@ import {ConfirmationModalService} from '../../../services/modals/confirmation-mo
 import {BaseFieldActionsAdapter} from '../../../services/actions/base-field-action.adapter';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {RecordViewStore} from '../../../views/record/store/record-view/record-view.store';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable()
 export class FieldActionsAdapter extends BaseFieldActionsAdapter<FieldActionData> {
@@ -46,6 +47,7 @@ export class FieldActionsAdapter extends BaseFieldActionsAdapter<FieldActionData
     constructor(
         protected store: RecordViewStore,
         protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore,
         protected language: LanguageStore,
         protected actionManager: FieldActionManager,
         protected asyncActionService: AsyncActionService,
@@ -62,7 +64,8 @@ export class FieldActionsAdapter extends BaseFieldActionsAdapter<FieldActionData
             confirmation,
             language,
             selectModalService,
-            metadata
+            metadata,
+            appMetadataStore
         );
     }
 

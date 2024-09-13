@@ -34,6 +34,7 @@ import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {FieldActionsAdapter} from './field.actions.adapter';
 import {FieldActionManager} from '../actions/field-action-manager.service';
 import {RecordViewStore} from '../../../views/record/store/record-view/record-view.store';
+import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
 
 @Injectable({
     providedIn: 'root',
@@ -42,6 +43,7 @@ export class FieldActionsAdapterFactory {
 
     constructor(
         protected metadata: MetadataStore,
+        protected appMetadataStore: AppMetadataStore,
         protected language: LanguageStore,
         protected actionManager: FieldActionManager,
         protected asyncActionService: AsyncActionService,
@@ -55,6 +57,7 @@ export class FieldActionsAdapterFactory {
         const adapter = new FieldActionsAdapter(
             store,
             this.metadata,
+            this.appMetadataStore,
             this.language,
             this.actionManager,
             this.asyncActionService,
