@@ -27,7 +27,6 @@
 
 namespace App\Process\LegacyHandler;
 
-use AddContactsToTargetListService;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
@@ -36,7 +35,7 @@ use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
 {
@@ -65,7 +64,7 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param PortalUserActivator $portalUserActivator
      */
@@ -75,18 +74,17 @@ class DisablePortalUserActionHandler extends LegacyHandler implements ProcessHan
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $requestStack,
         ModuleNameMapperInterface $moduleNameMapper,
         PortalUserActivator $portalUserActivator
-    )
-    {
+    ) {
         parent::__construct(
             $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $session
+            $requestStack
         );
         $this->portalUserActivator = $portalUserActivator;
         $this->moduleNameMapper = $moduleNameMapper;

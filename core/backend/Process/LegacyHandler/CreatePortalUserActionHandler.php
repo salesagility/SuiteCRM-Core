@@ -35,7 +35,7 @@ use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
 {
@@ -59,26 +59,25 @@ class CreatePortalUserActionHandler extends LegacyHandler implements ProcessHand
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      * @param ModuleNameMapperInterface $moduleNameMapper
      */
     public function __construct(
-        string                    $projectDir,
-        string                    $legacyDir,
-        string                    $legacySessionName,
-        string                    $defaultSessionName,
-        LegacyScopeState          $legacyScopeState,
-        SessionInterface          $session,
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        RequestStack $requestStack,
         ModuleNameMapperInterface $moduleNameMapper
-    )
-    {
+    ) {
         parent::__construct(
             $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $session
+            $requestStack
         );
         $this->moduleNameMapper = $moduleNameMapper;
     }

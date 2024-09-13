@@ -33,11 +33,10 @@ use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
-use App\Process\LegacyHandler\PortalUserActivator;
 use App\Process\Service\ProcessHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class EnablePortalUserActionHandler extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
 {
@@ -66,7 +65,7 @@ class EnablePortalUserActionHandler extends LegacyHandler implements ProcessHand
      * @param string $legacySessionName
      * @param string $defaultSessionName
      * @param LegacyScopeState $legacyScopeState
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param PortalUserActivator $portalUserActivator
      */
@@ -76,18 +75,17 @@ class EnablePortalUserActionHandler extends LegacyHandler implements ProcessHand
         string $legacySessionName,
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
-        SessionInterface $session,
+        RequestStack $requestStack,
         ModuleNameMapperInterface $moduleNameMapper,
         PortalUserActivator $portalUserActivator
-    )
-    {
+    ) {
         parent::__construct(
             $projectDir,
             $legacyDir,
             $legacySessionName,
             $defaultSessionName,
             $legacyScopeState,
-            $session
+            $requestStack
         );
         $this->moduleNameMapper = $moduleNameMapper;
         $this->portalUserActivator = $portalUserActivator;
@@ -186,7 +184,6 @@ class EnablePortalUserActionHandler extends LegacyHandler implements ProcessHand
     {
         $this->logger = $logger;
     }
-
 
 
 }
