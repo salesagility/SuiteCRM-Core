@@ -33,6 +33,7 @@ import {StringArrayMap} from '../../../common/types/string-map';
 import {StringArrayMatrix} from '../../../common/types/string-matrix';
 import {ViewMode} from '../../../common/views/view.model';
 import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";
+import {CurrencyFormatter} from "../../../services/formatters/currency/currency-formatter.service";
 
 @Injectable({
     providedIn: 'root'
@@ -42,7 +43,7 @@ export class UpdateValueAction extends FieldLogicActionHandler {
     key = 'updateValue';
     modes = ['edit', 'detail', 'list', 'create', 'massupdate', 'filter'] as ViewMode[];
 
-    constructor(protected activeFieldsChecker: ActiveFieldsChecker) {
+    constructor(protected activeFieldsChecker: ActiveFieldsChecker,  protected currencyFormatter: CurrencyFormatter) {
         super();
     }
 
@@ -78,6 +79,13 @@ export class UpdateValueAction extends FieldLogicActionHandler {
             value = targetValue;
         }
 
+        if (this.isCurrencyField(field)) {
+            const options = {
+                mode: 'edit' as ViewMode
+            }
+            value = this.currencyFormatter.toUserFormat(value, options);
+        }
+
         this.updateValue(field, value.toString(), record);
 
     }
@@ -85,12 +93,18 @@ export class UpdateValueAction extends FieldLogicActionHandler {
     /**
      * Update the new value
      * @param {object} field
+     * @param value
      * @param {object} record
      */
     protected updateValue(field: Field, value: string, record: Record): void {
+
         field.value = value.toString();
         field.formControl.setValue(value);
         // re-validate the parent form-control after value update
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
+    }
+
+    protected isCurrencyField(field: Field): boolean {
+        return field.type === 'currency';
     }
 }

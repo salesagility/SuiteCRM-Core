@@ -75,10 +75,12 @@ export class UpdateCurrencyAction extends FieldLogicActionHandler {
     }
 
     protected updateValue(field: Field, value: number, record: Record): void {
+
         const options = {
             mode: 'edit' as ViewMode
         }
-        const formattedValue = this.currencyFormatter.toUserFormat(value.toString(), options)
+
+        const formattedValue = this.currencyFormatter.toUserFormat(value.toString(), options);
         field.value = formattedValue;
         field.formControl.setValue(formattedValue);
         // re-validate the parent form-control after value update
