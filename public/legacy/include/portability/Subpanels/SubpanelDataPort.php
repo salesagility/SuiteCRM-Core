@@ -148,6 +148,7 @@ class SubpanelDataPort
         $mappedBeans = [];
 
         foreach ($beanList as $key => $beanData) {
+            $this->setAdditionalFields($beanData);
             $this->addACLInfo($beanData, $lisData['pageData']);
             $mappedBeans[] = $this->apiBeanMapper->toApi($beanData);
         }
@@ -157,6 +158,28 @@ class SubpanelDataPort
 
         return $lisData;
     }
+
+    /**
+     * @param mixed $beanData
+     * @return void
+     */
+    protected function setAdditionalFields(mixed $beanData): void
+    {
+        $beanData->check_date_relationships_load();
+
+        $beanData->fill_in_additional_list_fields();
+
+        $beanData->call_custom_logic("process_record");
+
+        if (isset($parent_data[$beanData->id])) {
+            $beanData->parent_name = $parent_data[$beanData->id]['parent_name'];
+            if (!empty($parent_data[$beanData->id]['parent_name_owner'])) {
+                $beanData->parent_name_owner = $parent_data[$beanData->id]['parent_name_owner'];
+                $beanData->parent_name_mod = $parent_data[$beanData->id]['parent_name_mod'];
+            }
+        }
+    }
+
 
     /**
      * @param SugarBean $bean
