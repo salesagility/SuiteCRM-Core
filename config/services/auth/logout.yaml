@@ -2,6 +2,7 @@ parameters:
   auth.logout:
     path: "%auth.logout.path%"
     redirect: "%auth.logout.redirect%"
+    after_logout_path: "%auth.logout.after_logout_path%"
   auth.session-expired:
     path: "%auth.session-expired.path%"
     redirect: "%auth.session-expired.redirect%"

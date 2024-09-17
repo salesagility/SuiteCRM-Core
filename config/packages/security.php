@@ -107,6 +107,7 @@ return static function (ContainerConfigurator $containerConfig) {
 
     $containerConfig->parameters()->set('auth.logout.redirect', false);
     $containerConfig->parameters()->set('auth.logout.path', 'logout');
+    $containerConfig->parameters()->set('auth.logout.after_logout_path', './');
 
     $containerConfig->parameters()->set('auth.session-expired.redirect', false);
     $containerConfig->parameters()->set('auth.session-expired.path', 'Login');
@@ -301,7 +302,7 @@ return static function (ContainerConfigurator $containerConfig) {
                         'limiter' => 'app.login_rate_limiter',
                     ],
                     'logout' => [
-                        'path' => 'native_auth_logout'
+                        'path' => 'logged-out'
                     ]
                 ],
                 'logged-out' => [
@@ -327,6 +328,7 @@ return static function (ContainerConfigurator $containerConfig) {
 
         $containerConfig->parameters()->set('auth.logout.redirect', true);
         $containerConfig->parameters()->set('auth.logout.path', 'saml/logout');
+        $containerConfig->parameters()->set('auth.logout.after_logout_path', './auth#logged-out');
 
         $containerConfig->parameters()->set('auth.session-expired.redirect', true);
         $containerConfig->parameters()->set('auth.session-expired.path', 'logged-out');

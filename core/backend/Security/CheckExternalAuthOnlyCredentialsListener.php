@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2022 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,58 +25,62 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-namespace App\Security\Ldap;
+namespace App\Security;
 
 use App\Module\Users\Entity\User;
-use Symfony\Component\Ldap\Exception\ConnectionException;
-use Symfony\Component\Ldap\Exception\LdapException;
-use Symfony\Component\Ldap\Exception\NotBoundException;
-use Symfony\Component\Ldap\Security\CheckLdapCredentialsListener;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Ldap\Security\LdapBadge;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 
-class AppCheckLdapCredentialsListener extends CheckLdapCredentialsListener
+class CheckExternalAuthOnlyCredentialsListener implements EventSubscriberInterface
 {
 
+    /**
+     * @param CheckPassportEvent $event
+     * @return void
+     */
     public function onCheckPassport(CheckPassportEvent $event): void
     {
         $passport = $event->getPassport();
-        if (!$passport->hasBadge(LdapBadge::class)) {
-            return;
-        }
 
-        /** @var LdapBadge $ldapBadge */
-        $ldapBadge = $passport->getBadge(LdapBadge::class);
-        if ($ldapBadge->isResolved()) {
+        if ($passport->hasBadge(LdapBadge::class)) {
             return;
         }
 
         /** @var PasswordCredentials $passwordCredentials */
         $passwordCredentials = $passport->getBadge(PasswordCredentials::class);
 
+        if ($passwordCredentials === null) {
+            return;
+        }
+
         $presentedPassword = $passwordCredentials->getPassword();
         if (empty($presentedPassword)) {
             throw new BadCredentialsException('The presented password cannot be empty.');
         }
 
-        try {
-            parent::onCheckPassport($event);
-        } catch (BadCredentialsException|LdapException|NotBoundException|ConnectionException $e) {
-            $isExternalAuthOnly = !empty($this->getExternalAuthOnly($passport));
+        $user = $this->getUser($passport);
 
-            // If is external auth only, throw the exception because external auth failed
-            if ($isExternalAuthOnly) {
-                throw $e;
-            }
-
-            // If is NOT external auth only mark ldap resolved
-            // After the password badge is going to decide if it is authenticated or not
-            $ldapBadge->markResolved();
+        if ($user === null) {
+            return;
         }
+
+        $isExternalAuthOnly = !empty($this->getExternalAuthOnly($passport));
+
+        if ($isExternalAuthOnly) {
+            throw new AccessDeniedException();
+        }
+
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [CheckPassportEvent::class => ['onCheckPassport', 200]];
     }
 
     /**

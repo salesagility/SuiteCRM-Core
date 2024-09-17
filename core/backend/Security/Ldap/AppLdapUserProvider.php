@@ -29,8 +29,8 @@ namespace App\Security\Ldap;
 
 use App\Authentication\LegacyHandler\UserHandler;
 use App\Security\Exception\UserNotFoundException;
+use Exception;
 use Symfony\Component\Ldap\Security\LdapUser;
-use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -99,10 +99,7 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
         $ldapUser = null;
         try {
             $ldapUser = $this->proxy->getLdapUserProvider()->loadUserByIdentifier($username);
-        } catch (UserNotFoundException|InvalidArgumentException $e) {
-            if ($existsUser === false) {
-                throw $e;
-            }
+        } catch (Exception $e) {
         }
 
         return $ldapUser;
@@ -119,7 +116,7 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
         if ($existsUser === true) {
             try {
                 $entityUser = $this->proxy->getEntityUserProvider()->loadUserByIdentifier($username);
-            } catch (UserNotFoundException $e) {
+            } catch (\Symfony\Component\Security\Core\Exception\UserNotFoundException $e) {
             }
         }
 
@@ -141,7 +138,7 @@ class AppLdapUserProvider implements UserProviderInterface, PasswordUpgraderInte
         $entityUser = null;
         try {
             $entityUser = $this->proxy->getEntityUserProvider()->loadUserByIdentifier($username);
-        } catch (UserNotFoundException $e) {
+        } catch (\Symfony\Component\Security\Core\Exception\UserNotFoundException $e) {
         }
 
         return $entityUser;

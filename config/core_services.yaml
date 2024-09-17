@@ -163,15 +163,10 @@ services:
       - !abstract options
       - '@?property_accessor'
 
-  security.listener.json_login_ldap.main:
-    class: App\Security\Ldap\AppCheckLdapCredentialsListener
-    tags:
-      - name: 'kernel.event_subscriber'
-        dispatcher: security.event_dispatcher.main
-    arguments:
-      - '@security.ldap_locator'
+  security.listener.json_login_ldap.main: '@App\Security\Ldap\AppCheckLdapCredentialsListener'
 
   App\Security\Ldap\AppCheckLdapCredentialsListener:
+    class: App\Security\Ldap\AppCheckLdapCredentialsListener
     tags:
       - name: 'kernel.event_subscriber'
         dispatcher: security.event_dispatcher.main
