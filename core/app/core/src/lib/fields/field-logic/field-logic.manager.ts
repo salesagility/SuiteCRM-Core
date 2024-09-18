@@ -84,15 +84,16 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
      * @param {object} mode
      * @param {object} record
      * @param triggeringStatus
+     * @param dependentField
      */
-    runLogic(field: Field, mode: ViewMode, record: Record, triggeringStatus: string = ''): void {
+    runLogic(field: Field, mode: ViewMode, record: Record, triggeringStatus: string = '', dependentField: Field = {} as Field): void {
         if (!field.logic) {
             return;
         }
 
         const actions = Object.keys(field.logic).map(key => field.logic[key]);
 
-        const modeActions = this.parseModeActions(actions, mode, triggeringStatus);
+        const modeActions = this.parseModeActions(actions, mode, triggeringStatus, dependentField);
         const context = {
             record,
             field,
@@ -147,7 +148,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
      * @param mode
      * @param triggeringStatus
      */
-    protected parseModeActions(declaredActions: Action[], mode: ViewMode, triggeringStatus: string) {
+    protected parseModeActions(declaredActions: Action[], mode: ViewMode, triggeringStatus: string, fieldDependent: Field) {
         if (!declaredActions) {
             return [];
         }
@@ -181,10 +182,21 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
         availableActions[mode].forEach(action => {
 
-            const frontendActionTriggeringStatus = this?.actions[mode][action.key]?.getTriggeringStatus() ?? null;
-            const actionTriggeringStatus = action?.triggeringStatus ?? frontendActionTriggeringStatus ?? defaultTriggeringStatus;
+            const dependentFieldsKeys = Object.keys(action?.params?.activeOnFields ?? {});
 
-            if(triggeringStatus && !actionTriggeringStatus.includes(triggeringStatus)) {
+            const frontendActionTriggeringStatus = this?.actions[mode][action.key]?.getTriggeringStatus() ?? null;
+
+            let actionTriggeringStatus = action?.triggeringStatus ?? frontendActionTriggeringStatus ?? defaultTriggeringStatus;
+
+            if (triggeringStatus && !actionTriggeringStatus.includes(triggeringStatus)) {
+                return;
+            }
+
+            if (actionTriggeringStatus.includes('onValueChange')) {
+                actionTriggeringStatus = ['onAnyLogic'];
+            }
+
+            if (actionTriggeringStatus.includes('onDependencyChange') && !dependentFieldsKeys?.includes(fieldDependent.name)) {
                 return;
             }
 

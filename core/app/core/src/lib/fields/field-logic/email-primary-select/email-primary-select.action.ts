@@ -76,4 +76,9 @@ export class EmailPrimarySelectAction extends FieldLogicActionHandler {
             emailField.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
         }
     }
+
+    getTriggeringStatus(): string[] {
+        return ['onFieldInitialize'];
+    }
+
 }
