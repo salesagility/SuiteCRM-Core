@@ -123,6 +123,10 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
         }
     }
 
+    getTriggeringStatus(): string[] {
+        return ['onDependencyChange'];
+    }
+
     getBaseRecord(record: Record): Record {
         if (!record) {
             return null;

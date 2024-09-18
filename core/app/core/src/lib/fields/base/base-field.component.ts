@@ -174,7 +174,7 @@ export class BaseFieldComponent implements FieldComponentInterface, OnInit, OnDe
                             return;
                         }
 
-                        this.logic.runLogic(attribute, this.mode as ViewMode, this.record, 'onValueChange');
+                        this.logic.runLogic(attribute, this.mode as ViewMode, this.record, 'onDependencyChange');
                     });
 
                 }));

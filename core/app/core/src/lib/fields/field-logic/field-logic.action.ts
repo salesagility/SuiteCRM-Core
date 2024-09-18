@@ -46,6 +46,6 @@ export abstract class FieldLogicActionHandler extends ActionHandler<FieldLogicAc
     };
 
     getTriggeringStatus() : string[] {
-        return ['onValueChange'];
+        return ['onDependencyChange'];
     }
 }

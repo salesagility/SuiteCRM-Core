@@ -232,6 +232,6 @@ export class FieldLogicDisplayTypeAction extends FieldLogicActionHandler {
     }
 
     getTriggeringStatus() : string[] {
-        return ['onValueChange', 'onFieldInitialize'];
+        return ['onAnyLogic', 'onFieldInitialize'];
     }
 }

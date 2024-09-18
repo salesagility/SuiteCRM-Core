@@ -90,6 +90,10 @@ export class UpdateValueAction extends FieldLogicActionHandler {
 
     }
 
+    getTriggeringStatus(): string[] {
+        return ['onDependencyChange'];
+    }
+
     /**
      * Update the new value
      * @param {object} field

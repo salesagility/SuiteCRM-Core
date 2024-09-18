@@ -177,7 +177,7 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
         }
 
         const actions = [];
-        const defaultTriggeringStatus = ['onValueChange'];
+        const defaultTriggeringStatus = ['onDependencyChange'];
 
         availableActions[mode].forEach(action => {
 
