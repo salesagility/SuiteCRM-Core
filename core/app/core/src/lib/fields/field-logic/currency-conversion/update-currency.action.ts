@@ -86,4 +86,8 @@ export class UpdateCurrencyAction extends FieldLogicActionHandler {
         // re-validate the parent form-control after value update
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
     }
+
+    getTriggeringStatus(): string[] {
+        return ['onAnyLogic'];
+    }
 }

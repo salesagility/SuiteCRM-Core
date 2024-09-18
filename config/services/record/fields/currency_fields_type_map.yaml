@@ -14,6 +14,7 @@ parameters:
                 modes: ['edit', 'create', 'massupdate', 'filter']
                 params:
                   fieldDependencies: ['{currency_id}']
+                triggeringStatus: ['onAnyLogic']
           '{currency_id}':
             modes: ['edit', 'create', 'massupdate', 'filter']
             type: 'enum'
@@ -26,3 +27,4 @@ parameters:
                 modes: ['edit', 'create', 'massupdate', 'filter']
                 params:
                   fieldDependencies: ['{currency}']
+                triggeringStatus: ['onAnyLogic']
