@@ -1185,6 +1185,11 @@ class InstallPreChecks
 
         $rootFolder = __DIR__ . '/../../../../';
 
+        $results = [
+            'result' => '',
+            'errors' => []
+        ];
+
         if (!is_writable($rootFolder)){
             $results['errors'][] = $this->modStrings['ERR_CHECKSYS_ROOT_NOT_WRITABLE'];
             return $results;
