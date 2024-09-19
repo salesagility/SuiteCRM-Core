@@ -1211,6 +1211,11 @@ class InstallPreChecks
 
         $labels[] = $this->modStrings['LBL_CHECKSYS_' . strtoupper($folderName)];
 
+        $results = [
+            'result' => '',
+            'errors' => []
+        ];
+
         $folder = __DIR__ . '/../../../../' . $folderName;
 
         if (!empty($parentDir)) {
@@ -1245,6 +1250,11 @@ class InstallPreChecks
         $labels[] = $this->modStrings['LBL_CHECKSYS_ENV'];
 
         $env = __DIR__ . '/../../../../.env';
+
+        $results = [
+            'result' => '',
+            'errors' => []
+        ];
 
         if (file_exists($env) && is_writable($env) || !file_exists($env) && touch($env)) {
             $this->log->info('.env exists or is writable');
