@@ -27,6 +27,7 @@
 
 namespace App\Install\Command;
 
+use App\Engine\LegacyHandler\DefaultLegacyHandler;
 use App\Engine\Service\ProcessSteps\ProcessStepExecutorInterface;
 use App\Install\Service\Upgrade\UpgradeHandlerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -55,10 +56,14 @@ class UpgradeCommand extends BaseStepExecutorCommand
     /**
      * UpgradeCommand constructor.
      * @param UpgradeHandlerInterface $handler
+     * @param DefaultLegacyHandler $legacyHandler
      */
-    public function __construct(UpgradeHandlerInterface $handler)
-    {
+    public function __construct(
+        UpgradeHandlerInterface $handler,
+        DefaultLegacyHandler $legacyHandler
+    ) {
         $this->handler = $handler;
+        $this->legacyHandler = $legacyHandler;
 
         $this->inputConfig['target-version'] = [
             'question' => new Question('Please enter the version to move to: '),
@@ -80,7 +85,7 @@ class UpgradeCommand extends BaseStepExecutorCommand
         parent::configure();
 
         $this->setDescription('Upgrade the application')
-            ->setHelp('This command will upgrade SuiteCRM 8 and legacy application');
+             ->setHelp('This command will upgrade SuiteCRM 8 and legacy application');
     }
 
     /**

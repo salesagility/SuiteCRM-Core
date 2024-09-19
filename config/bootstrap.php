@@ -32,7 +32,7 @@ if (!defined('sugarEntry')) {
 
 use Symfony\Component\Dotenv\Dotenv;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 // Load cached env vars if the .env.local.php file exists
 // Run "composer dump-env prod" to create it (requires symfony/flex >=1.2)
@@ -53,10 +53,12 @@ $_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? 'prod' !=
 $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = (int)$_SERVER['APP_DEBUG'] || filter_var($_SERVER['APP_DEBUG'],
     FILTER_VALIDATE_BOOLEAN) ? '1' : '0';
 
-// Set working directory for legacy
-chdir(__DIR__ . '/../public/legacy');
+$currentExecutionDirectoryOnBootstrap = getcwd();
 
-if (!file_exists(__DIR__ . '/../public/legacy/config.php')) {
+// Set working directory for legacy
+chdir(dirname(__DIR__) . '/public/legacy');
+
+if (!file_exists(dirname(__DIR__) . '/public/legacy/config.php')) {
     global $installing;
     $installing = true;
 }
@@ -67,4 +69,5 @@ require_once 'include/MVC/preDispatch.php';
 /* @noinspection PhpIncludeInspection */
 require_once 'include/entryPoint.php';
 
-chdir(__DIR__ . '/../public/');
+chdir($currentExecutionDirectoryOnBootstrap);
+unset($currentExecutionDirectoryOnBootstrap);
