@@ -366,6 +366,8 @@ export * from './fields/boolean/templates/detail/boolean.component';
 export * from './fields/boolean/templates/detail/boolean.module';
 export * from './fields/boolean/templates/edit/boolean.component';
 export * from './fields/boolean/templates/edit/boolean.module';
+export * from './fields/boolean/templates/checkbox-filter/boolean-checkbox.component';
+export * from './fields/boolean/templates/checkbox-filter/boolean-checkbox.module';
 export * from './fields/composite/composite.component';
 export * from './fields/composite/composite.module';
 export * from './fields/currency/templates/detail/currency.component';

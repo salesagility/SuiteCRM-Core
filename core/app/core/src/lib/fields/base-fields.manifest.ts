@@ -77,6 +77,8 @@ import {MultiEnumEditFieldModule} from './multienum/templates/edit/multienum.mod
 import {IntDetailFieldModule} from './int/templates/detail/int.module';
 import {FullNameDetailFieldsComponent} from './fullname/templates/detail/fullname.component';
 import {BooleanEditFieldComponent} from './boolean/templates/edit/boolean.component';
+import {BooleanCheckboxFilterFieldComponent} from "./boolean/templates/checkbox-filter/boolean-checkbox.component";
+import {BooleanCheckboxFilterFieldModule} from "./boolean/templates/checkbox-filter/boolean-checkbox.module";
 import {DateTimeEditFieldComponent} from './datetime/templates/edit/datetime.component';
 import {VarcharDetailFieldModule} from './varchar/templates/detail/varchar.module';
 import {FieldComponentMap} from './field.model';
@@ -144,6 +146,7 @@ export const baseFieldModules = [
     MultiEnumFilterFieldModule,
     BooleanDetailFieldModule,
     BooleanEditFieldModule,
+    BooleanCheckboxFilterFieldModule,
     HtmlDetailFieldModule,
     TinymceDetailFieldModule,
     TinymceEditFieldModule
@@ -186,6 +189,7 @@ export const baseFieldComponents = [
     MultiEnumFilterFieldComponent,
     BooleanDetailFieldComponent,
     BooleanEditFieldComponent,
+    BooleanCheckboxFilterFieldComponent,
     HtmlDetailFieldComponent,
     TinymceDetailFieldComponent,
     TinymceEditFieldComponent
@@ -269,6 +273,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'bool.detail': BooleanDetailFieldComponent,
     'bool.edit': BooleanEditFieldComponent,
     'bool.filter': MultiEnumFilterFieldComponent,
+    'bool-checkbox.filter': BooleanCheckboxFilterFieldComponent,
     'html.detail': TinymceDetailFieldComponent,
     'html.edit': TinymceEditFieldComponent
 };
