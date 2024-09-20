@@ -204,6 +204,10 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
                 action.status = actionHandler.getStatus(data) || '';
             }
 
+            if (!actionHandler && !action?.asyncProcess) {
+                return;
+            }
+
             const module = (context && context.module) || '';
             const label = this.language.getFieldLabel(action.labelKey, module);
             actions.push({
