@@ -143,6 +143,12 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
             index
         );
 
+        const activeItems = this.getActiveItems();
+        const itemCount = activeItems?.length ?? 0;
+        if (itemCount) {
+            this.setAttributeLabelOnItem(0, activeItems);
+        }
+
         this.updateItems(this.field.items);
 
         this.triggerLineActionEvents(LineActionEvent.onLineItemRemove);
@@ -161,6 +167,13 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
             this.record,
             this.field
         );
+
+        const activeItems = this.getActiveItems();
+        const itemCount = activeItems?.length ?? 0;
+        if (itemCount) {
+            this.setAttributeLabelOnItem(0, activeItems);
+            this.setAttributeLabelOnItem(itemCount - 1, activeItems);
+        }
 
         this.recordValidationHandler.initLineItemsValidators(this.field);
 
@@ -273,6 +286,26 @@ export class BaseLineItemsComponent extends BaseFieldComponent implements OnInit
      */
     getMessageLabelKey(item: any): string {
         return (item && item.message && item.message.labelKey) || '';
+    }
+
+    /**
+     * Get active items
+     */
+    protected getActiveItems(): Record[] {
+        const items = this?.field?.items ?? [];
+        return items.filter(item => !(item?.attributes?.deleted ?? false));
+    }
+
+    /**
+     * Calculate if items' attribute label should show or hide
+     * @param index on the element
+     * @param items list
+     */
+    protected setAttributeLabelOnItem(index: number, items: Record[]): void {
+        const labelOnFirstLine = !!(this.field?.definition?.lineItems?.labelOnFirstLine ?? false);
+
+        const show = !labelOnFirstLine || (index <= 0);
+        this.setAttributeLabelDisplay(items[index], show);
     }
 
     /**
