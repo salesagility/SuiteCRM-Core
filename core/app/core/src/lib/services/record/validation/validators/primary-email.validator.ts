@@ -52,9 +52,18 @@ export const primaryEmailValidator = (viewField: ViewFieldDefinition, record: Re
             return null;
         }
 
+        let nonEmpty = 0;
+
         activeItems.some(item => {
             const emailField = (item.fields && item.fields['email-fields']) || {} as Field;
             const primary = (emailField.attributes && emailField.attributes['primary_address']) || null;
+            const emailAddress = (emailField.attributes && emailField.attributes['email_address']) || null;
+
+            if(!emailAddress?.value) {
+                return false;
+            }
+
+            nonEmpty++;
 
             if (!primary) {
                 return false;
@@ -68,6 +77,10 @@ export const primaryEmailValidator = (viewField: ViewFieldDefinition, record: Re
         });
 
         if (count == 1) {
+            return null;
+        }
+
+        if (count == 0 && nonEmpty === 0) {
             return null;
         }
 
