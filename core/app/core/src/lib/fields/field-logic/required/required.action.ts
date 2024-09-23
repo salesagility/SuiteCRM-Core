@@ -69,7 +69,7 @@ export class RequiredAction extends FieldLogicActionHandler {
         let validators = [...data.field.validators || []];
         if (isActive) {
             required = true;
-            validators = validators.concat(this.requiredValidator.getValidator(field));
+            validators = validators.concat(this.requiredValidator.getValidator(field, record));
         }
 
         data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
