@@ -194,7 +194,9 @@ class UserHandler extends LegacyHandler
 
         global $sugar_config;
 
-        if (isset($_SESSION['authenticated_user_language'])){
+        $loginLanguage = $this->systemConfigProvider->getSystemConfig('login_language')->getValue() ?? false;
+
+        if (isset($_SESSION['authenticated_user_language']) && isTrue($loginLanguage)) {
             return $_SESSION['authenticated_user_language'];
         }
 
