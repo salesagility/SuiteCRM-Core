@@ -50,6 +50,9 @@ export class BaseSaveRecordMapper implements RecordMapper {
             if (field.items) {
                 record.attributes[fieldName] = [];
                 field.items.forEach(item => {
+                    if(!item?.id && item?.attributes?.deleted){
+                        return;
+                    }
                     record.attributes[fieldName].push({
                         id: item.id,
                         module: item.module,

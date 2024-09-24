@@ -199,14 +199,7 @@ export class FieldManager {
             return;
         }
 
-        if (item.id) {
-            item.attributes.deleted = 1;
-        } else {
-            parentField.items = (index > -1) ? [
-                ...parentField.items.slice(0, index),
-                ...parentField.items.slice(index + 1)
-            ] : parentField.items;
-        }
+        item.attributes.deleted = 1;
 
         parentField.itemFormArray.clear();
 
