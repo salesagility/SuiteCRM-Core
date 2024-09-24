@@ -27,13 +27,17 @@
 import {Injectable} from '@angular/core';
 import {Formatter} from '../formatter.model';
 import {FormControlUtils} from '../../record/field/form-control.utils';
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 @Injectable({
     providedIn: 'root'
 })
 export class EmailFormatter implements Formatter {
 
-    constructor(protected formUtils: FormControlUtils) {
+    constructor(
+        protected formUtils: FormControlUtils,
+        protected configs: SystemConfigStore
+    ) {
     }
 
     toUserFormat(value: string): string {
@@ -44,18 +48,25 @@ export class EmailFormatter implements Formatter {
         return value;
     }
 
-    getUserFormatPattern(): RegExp {
-        // eslint-disable-next-line max-len
-        return /^(?=.{1,254}$)(?=.{1,64}@)[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    getUserFormatPattern(): string {
+        const validations = this.configs.getUi('validations');
+        let defaultRegex = validations?.regex?.email || '';
+
+        if (!defaultRegex) {
+            // eslint-disable-next-line max-len
+            defaultRegex = "^(?:[\\.\\-\\+&#!\\$\\*=\\?\\^_`\\{\\}~\\/\\w]+)@(?:(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|\\w+(?:[\\.-]*\\w+)*(?:\\.[\\w-]{2,})+)$";
+        }
+
+        return defaultRegex;
     }
 
-    validateUserFormat(inputValue: any): boolean {
+    validateUserFormat(inputValue: any, validationRegexPattern: string = ''): boolean {
 
         const trimmedInputValue = this.formUtils.getTrimmedInputValue(inputValue);
         if (this.formUtils.isEmptyInputValue(trimmedInputValue)) {
             return false;
         }
-        const regex = new RegExp(this.getUserFormatPattern());
+        const regex = new RegExp(validationRegexPattern);
         return !regex.test(trimmedInputValue);
 
     }

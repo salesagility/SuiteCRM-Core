@@ -26,20 +26,19 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Record} from 'common';
-import {ViewFieldDefinition} from 'common';
+import {Record, StandardValidationErrors, StandardValidatorFn, ViewFieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
-import {StandardValidationErrors, StandardValidatorFn} from 'common';
 import {EmailFormatter} from '../../../formatters/email/email-formatter.service';
 
-export const emailValidator = (formatter: EmailFormatter): StandardValidatorFn => (
+export const emailValidator = (formatter: EmailFormatter, customValidationRegex?: string): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
 
-        const invalid = formatter.validateUserFormat(control.value);
+        const validationRegex = customValidationRegex || formatter.getUserFormatPattern();
+        const invalid = formatter.validateUserFormat(control.value, validationRegex);
         return invalid ? {
             emailValidator: {
                 valid: false,
-                format: formatter.getUserFormatPattern(),
+                format: new RegExp(validationRegex),
                 message: {
                     labelKey: 'LBL_VALIDATION_ERROR_EMAIL_FORMAT',
                     context: {
@@ -74,7 +73,8 @@ export class EmailValidator implements ValidatorInterface {
         if (!viewField || !viewField.fieldDefinition) {
             return [];
         }
+        const customValidationRegex = viewField?.fieldDefinition?.validation?.regex.toString() ?? null;
 
-        return [emailValidator(this.formatter)];
+        return [emailValidator(this.formatter, customValidationRegex)];
     }
 }
