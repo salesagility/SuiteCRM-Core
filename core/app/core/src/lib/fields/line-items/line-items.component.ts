@@ -55,15 +55,12 @@ export class LineItemsComponent extends BaseLineItemsComponent {
     ngOnInit(): void {
         super.ngOnInit();
 
-        if (EDITABLE_VIEW_MODES.includes(this.mode as ViewMode)) {
+        this.field.metadata = this?.field?.metadata ?? {};
+        const emptyItemInitialized = this?.field?.metadata?.emptyItemInitialized ?? false;
+        if (['create'].includes(this.originalMode as ViewMode) && !emptyItemInitialized) {
             this.initEmptyItem();
+            this.field.metadata.emptyItemInitialized = true;
         }
-
-        this.subs.push(this.mode$.subscribe((mode: string) => {
-            if (EDITABLE_VIEW_MODES.includes(mode as ViewMode)) {
-                this.initEmptyItem();
-            }
-        }));
     }
 
     /**
