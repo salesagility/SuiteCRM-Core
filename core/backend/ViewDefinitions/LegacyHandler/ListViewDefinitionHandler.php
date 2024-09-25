@@ -224,7 +224,7 @@ class ListViewDefinitionHandler extends LegacyHandler
         $data = [];
         foreach ($displayColumns as $key => $column) {
             if (!isset($vardefs[strtolower($key)])) {
-                $this->logger->warning("ListViewDefinitions: '$key' not set on vardefs. Ignoring.");
+                $this->logger->debug("ListViewDefinitions: '$key' not set on vardefs. Ignoring.");
                 continue;
             }
 

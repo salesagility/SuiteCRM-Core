@@ -562,7 +562,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
 
         if (!isset($vardefs[$fieldName])) {
             $message = "RecordViewDefinitions: '$fieldName' not set on vardefs. Ignoring.";
-            $this->logger->warning($message);
+            $this->logger->debug($message);
 
             return;
         }
