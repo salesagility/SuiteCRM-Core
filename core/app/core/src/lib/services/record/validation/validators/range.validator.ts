@@ -26,11 +26,16 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl, Validators} from '@angular/forms';
-import {Record} from 'common';
-import {ViewFieldDefinition} from 'common';
-import {FieldDefinition, ValidationDefinition} from 'common';
+import {
+    FieldDefinition,
+    Record,
+    StandardValidationErrors,
+    StandardValidatorFn,
+    ValidationDefinition,
+    ViewFieldDefinition
+} from 'common';
 import {Injectable} from '@angular/core';
-import {StandardValidationErrors, StandardValidatorFn} from 'common';
+import {isNumber} from "lodash-es";
 
 export const minValidator = (min: number): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {
@@ -107,15 +112,23 @@ export class RangeValidator implements ValidatorInterface {
             return [];
         }
 
-        const min = validation.min && parseInt('' + validation.min, 10);
-        const max = validation.max && parseInt('' + validation.max, 10);
+        let max = null;
+        if (isNumber(validation?.max)) {
+            max = parseInt('' + validation.max, 10);
+        }
+
+        let min = null;
+        if (isNumber(validation?.min)) {
+            min = parseInt('' + validation.min, 10);
+        }
+
         const validations = [];
 
-        if (isFinite(min)) {
+        if (isNumber(min) && isFinite(min)) {
             validations.push(minValidator(min));
         }
 
-        if (isFinite(max)) {
+        if (isNumber(max) && isFinite(max)) {
             validations.push(maxValidator(max));
         }
 
