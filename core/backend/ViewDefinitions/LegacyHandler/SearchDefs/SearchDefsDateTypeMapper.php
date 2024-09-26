@@ -132,7 +132,7 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
                             'targetDisplayType' => 'default',
                             'activeOnAttributes' => $dateActiveOnAttributes
                         ]
-                    ]
+                    ],
                 ]
             ],
             'start' => [
@@ -205,6 +205,12 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
             $type = $field['type'] ?? '';
 
             if ($type !== 'date' && $type !== 'datetime') {
+                continue;
+            }
+
+            $enableRangeSearch = $field['enable_range_search'] ?? false;
+
+            if ($enableRangeSearch === 0 || $enableRangeSearch === false || $enableRangeSearch === '0' || $enableRangeSearch === 'false') {
                 continue;
             }
 

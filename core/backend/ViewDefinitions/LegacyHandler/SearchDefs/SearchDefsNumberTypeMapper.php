@@ -233,6 +233,12 @@ class SearchDefsNumberTypeMapper implements ViewDefinitionMapperInterface
                 continue;
             }
 
+            $enableRangeSearch = $field['enable_range_search'] ?? false;
+
+            if ($enableRangeSearch === 0 || $enableRangeSearch === false || $enableRangeSearch === '0' || $enableRangeSearch === 'false') {
+                continue;
+            }
+
             $field = $this->mapField($type, $field);
 
             $search['layout']['advanced'][$fieldKey] = $field;
