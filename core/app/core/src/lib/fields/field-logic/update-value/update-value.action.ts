@@ -81,7 +81,8 @@ export class UpdateValueAction extends FieldLogicActionHandler {
 
         if (this.isCurrencyField(field)) {
             const options = {
-                mode: 'edit' as ViewMode
+                mode: 'edit' as ViewMode,
+                fromFormat: 'system'
             }
             value = this.currencyFormatter.toUserFormat(value, options);
         }

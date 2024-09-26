@@ -29,7 +29,8 @@ import {UserPreferenceStore} from '../../../store/user-preference/user-preferenc
 import {formatCurrency, formatNumber} from '@angular/common';
 import {NumberFormatter} from '../number/number-formatter.service';
 import {FormatOptions, Formatter} from '../formatter.model';
-import {isVoid} from '../../../common/utils/value-utils';
+import {isVoid} from 'common';
+import {SystemConfigStore} from "../../../store/system-config/system-config.store";
 
 export interface CurrencyFormat {
     iso4217: string;
@@ -44,6 +45,7 @@ export class CurrencyFormatter implements Formatter {
 
     constructor(
         protected preferences: UserPreferenceStore,
+        protected configs: SystemConfigStore,
         protected numberFormatter: NumberFormatter,
         @Inject(LOCALE_ID) public locale: string
     ) {
@@ -57,6 +59,7 @@ export class CurrencyFormatter implements Formatter {
 
         const symbol = (options && options.symbol) || this.getSymbol();
         const code = (options && options.code) || this.getCode();
+        const defaultGroup = this.configs.getConfigValue('default_number_grouping_seperator');
         let digits = null;
         if (options && options.digits !== null && isFinite(options.digits)) {
             digits = options.digits;
@@ -64,7 +67,12 @@ export class CurrencyFormatter implements Formatter {
 
         const digitsInfo = this.getDigitsInfo(digits);
         let formatted: string;
-        value = this.replaceSeparatorsToInternalFormat(value);
+
+        if (options?.fromFormat === 'system' && value.includes(defaultGroup)){
+            value = value.replace(defaultGroup, '');
+        } else {
+            value = this.replaceSeparatorsToInternalFormat(value);
+        }
 
         if (options && options.mode === 'edit') {
             formatted = formatNumber(Number(value), this.locale, digitsInfo);
