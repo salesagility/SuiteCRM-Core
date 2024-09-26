@@ -25,7 +25,7 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Field, Record, StringArrayMap, StringArrayMatrix, isFalse, isTrue} from "common";
+import {Field, Record, StringArrayMap, StringArrayMatrix, isFalse, isTrue, LogicRuleValues} from "common";
 import {isEmpty} from "lodash-es";
 import {ConditionOperatorManager} from "./condition-operator.manager";
 
@@ -151,6 +151,13 @@ export class ActiveFieldsChecker {
             }
 
             const operatorKey = activeValue?.operator ?? 'is-equal';
+
+            if (typeof activeValue === 'string') {
+                activeValue = {
+                    operator: operatorKey,
+                    values: [activeValue]
+                } as LogicRuleValues;
+            }
 
             const operator = this.operatorManager.get(operatorKey);
             opsArr.push(operator.run(record, field, activeValue))

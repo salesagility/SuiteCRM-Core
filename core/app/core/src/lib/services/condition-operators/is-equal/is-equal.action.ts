@@ -69,8 +69,8 @@ export class IsEqualAction extends ConditionOperatorActionHandler implements Con
 
     protected compareToField(opsConfig: LogicRuleValues): boolean {
         if (opsConfig?.field){
-            return !!opsConfig?.field;
+            return true;
         }
-        return !!opsConfig;
+        return false;
     }
 }
