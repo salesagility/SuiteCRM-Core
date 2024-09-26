@@ -75,6 +75,6 @@ export class UpdateFlexRelateModuleAction extends FieldLogicActionHandler {
     }
 
     getTriggeringStatus(): string[] {
-        return ['onDependencyChange'];
+        return ['onAttributeChange'];
     }
 }
