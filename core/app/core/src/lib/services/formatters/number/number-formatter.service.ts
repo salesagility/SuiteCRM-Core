@@ -158,9 +158,7 @@ export class NumberFormatter implements Formatter {
             return false;
         }
         const regex = new RegExp(this.getIntUserFormatPattern());
-        if (regex.test(trimmedInputValue)) {
-            return false;
-        }
+        return !regex.test(trimmedInputValue);
     }
 
     validateFloatUserFormat(inputValue: any): boolean {

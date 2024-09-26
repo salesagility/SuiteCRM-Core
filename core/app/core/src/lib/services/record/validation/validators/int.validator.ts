@@ -61,16 +61,13 @@ export class IntValidator implements ValidatorInterface {
     }
 
     applies(record: Record, viewField: ViewFieldDefinition): boolean {
-        if (!viewField || !viewField.fieldDefinition) {
-            return false;
-        }
 
-        return viewField.type === 'int';
+        return (viewField?.type ?? viewField?.fieldDefinition?.type) === 'int' ;
     }
 
     getValidator(viewField: ViewFieldDefinition): StandardValidatorFn[] {
 
-        if (!viewField || !viewField.fieldDefinition) {
+        if (!(viewField?.type ?? viewField?.fieldDefinition?.type)) {
             return [];
         }
 
