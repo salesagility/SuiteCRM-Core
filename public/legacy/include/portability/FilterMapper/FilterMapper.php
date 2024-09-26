@@ -139,17 +139,26 @@ class FilterMapper
             return $mapped;
         }
 
+
         foreach ($criteria['filters'] as $key => $item) {
             if (empty($item['operator'])) {
                 continue;
             }
 
+            $isRangeSearch = $item['rangeSearch'] ?? false;
+
             $fieldType = $item['fieldType'] ?? '';
             $operator = $item['operator'] ?? '';
+
+            if ($operator === '=' && $isRangeSearch) {
+                $operator = 'range_search_equals';
+            }
+
             $typeConfig = $this->filterOperatorMap[$fieldType] ?? [];
 
             $mergedConfig = array_merge($this->filterOperatorMap['default'], $typeConfig);
             $mapConfig = $mergedConfig[$operator];
+
 
             if (empty($mapConfig)) {
                 continue;
@@ -161,6 +170,7 @@ class FilterMapper
 
                 $mapped[$legacyKey] = $legacyValue;
             }
+
             $mapped['field_type_' . $key] = $fieldType;
         }
 

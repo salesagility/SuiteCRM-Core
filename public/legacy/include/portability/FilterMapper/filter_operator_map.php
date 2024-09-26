@@ -29,6 +29,10 @@ $filter_operator_map = [
     'default' => [
         '=' => [
             '{field}_{type}' => 'values',
+            '{field}_{type}_range_choice' => '',
+        ],
+        'range_search_equals' => [
+            '{field}_{type}' => '',
             '{field}_{type}_range_choice' => '{operator}',
             'range_{field}_{type}' => '{target}'
         ],
