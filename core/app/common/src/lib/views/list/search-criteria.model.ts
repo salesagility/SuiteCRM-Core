@@ -35,6 +35,7 @@ export interface SearchCriteriaFieldFilter {
     start?: string;
     end?: string;
     valueObjectArray?: ObjectMap[];
+    rangeSearch?: boolean;
 }
 
 export interface SearchCriteriaFilter {
