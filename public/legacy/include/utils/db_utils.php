@@ -66,15 +66,6 @@ function from_db_convert($string, $type)
     return DBManagerFactory::getInstance()->fromConvert($string, $type);
 }
 
-$toHTML = array(
-    '"' => '&quot;',
-    '<' => '&lt;',
-    '>' => '&gt;',
-    "'" => '&#039;',
-);
-$GLOBALS['toHTML_keys'] = array_keys($toHTML);
-$GLOBALS['toHTML_values'] = array_values($toHTML);
-$GLOBALS['toHTML_keys_set'] = implode("", $GLOBALS['toHTML_keys']);
 /**
  * Replaces specific characters with their HTML entity values
  * @param string $string String to check/replace
@@ -93,14 +84,8 @@ function to_html($string, $encode=true)
         return $string;
     }
 
-    global $toHTML;
-
     if ($encode && is_string($string)) {
-        if (is_array($toHTML)) {
-            $string = str_ireplace($GLOBALS['toHTML_keys'], $GLOBALS['toHTML_values'] ?? [], $string);
-        } else {
-            $string = htmlentities($string, ENT_HTML401|ENT_QUOTES, 'UTF-8');
-        }
+        $string = htmlspecialchars($string, ENT_HTML401|ENT_QUOTES, 'UTF-8');
     }
 
     return $string;
@@ -123,22 +108,8 @@ function from_html($string, $encode=true)
         return $string;
     }
 
-    global $toHTML;
-    static $toHTML_values = null;
-    static $toHTML_keys = null;
-    static $cache = array();
-    if (!empty($toHTML) && is_array($toHTML) && (!isset($toHTML_values) || !empty($GLOBALS['from_html_cache_clear']))) {
-        $toHTML_values = array_values($toHTML);
-        $toHTML_keys = array_keys($toHTML);
-    }
-
     // Bug 36261 - Decode &amp; so we can handle double encoded entities
-    $string = html_entity_decode($string, ENT_HTML401|ENT_QUOTES, 'UTF-8') ?? '';
-
-    if (!isset($cache[$string])) {
-        $cache[$string] = str_ireplace($toHTML_values ?? '', $toHTML_keys ?? '', $string);
-    }
-    return $cache[$string] ?? '';
+    return html_entity_decode($string, ENT_HTML401|ENT_QUOTES, 'UTF-8') ?? '';
 }
 
 /*

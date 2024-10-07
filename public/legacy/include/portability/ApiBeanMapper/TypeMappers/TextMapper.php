@@ -62,7 +62,8 @@ class TextMapper implements TypeMapperInterface
             $value = html_entity_decode($value);
         }
 
-        $container[$newName] = $this->purify($bean, $name, $value);
+        // Some characters get double encoded when purifying, so need double decoding to get correct output
+        $container[$newName] = html_entity_decode(html_entity_decode($this->purify($bean, $name, $value)));
     }
 
     /**
