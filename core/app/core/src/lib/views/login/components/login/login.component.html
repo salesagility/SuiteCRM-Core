@@ -35,7 +35,7 @@
                 <scrm-logo-ui></scrm-logo-ui>
             </div>
         </div>
-        <div class="form-row" *ngIf="vm.showLanguages">
+        <div class="form-row" *ngIf="vm.showLanguages && cardState !== '2fa'">
             <div class="col">
                 <label class="" for="languages">{{vm.appStrings['LBL_LANGUAGE']}}</label>
             </div>
@@ -147,6 +147,20 @@
                 </button>
                 <div>
                     <a class="back-link forgotten-password-link" (click)="flipCard()">
+                        {{vm.appStrings['LBL_BACK']}}
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2fa Card-->
+            <div class="fade-card-back col"
+                 *ngIf="cardState ==='2fa'"
+                 [@fade]>
+                <div class="inner-addon left-addon">
+                    <scrm-2fa-check [class]="'login-button'"></scrm-2fa-check>
+                </div>
+                <div>
+                    <a class="back-link forgotten-password-link" (click)="returnToLogin()">
                         {{vm.appStrings['LBL_BACK']}}
                     </a>
                 </div>

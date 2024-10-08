@@ -35,6 +35,10 @@ use App\Module\Users\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -55,7 +59,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     name: "idx_user_name",
     options: ['lengths' => [null, null, null, 30, 30]]
 )]
-class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface, BackupCodeInterface
 {
     #[ApiProperty(
         identifier: true,
@@ -659,6 +663,28 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
     )]
     private ?string $factorAuthInterface;
 
+    #[ApiProperty(
+        openapiContext: [
+            'type' => 'string',
+            'description' => 'totp secret',
+        ]
+    )]
+    #[ORM\Column(name: "totp_secret", type: 'string', length: 255, nullable: true, options: ["collation" => "utf8_general_ci"])]
+    private ?string $totpSecret;
+
+    #[ORM\Column(
+        name: "is_totp_enabled",
+        type: "boolean",
+        nullable: true
+    )]
+    private ?bool $isTotpEnabled = false;
+
+    #[ORM\Column(
+        name: "backup_codes",
+        type: "json",
+    )]
+    private ?array $backupCodes = [];
+
     /**
      * @see UserInterface
      */
@@ -1218,4 +1244,82 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
     {
         return $this->getUserName();
     }
+
+    public function isTotpAuthenticationEnabled(): bool
+    {
+        return $this->totpSecret ? true : false;
+    }
+
+    public function getTotpAuthenticationUsername(): string
+    {
+        return $this->getUserName();
+    }
+
+    public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
+    {
+        error_log('inside getTotpAuthenticationconfig');
+        error_log($this->getTotpSecret());
+
+        // You could persist the other configuration options in the user entity to make it individual per user.
+        return new TotpConfiguration($this->getTotpSecret(), TotpConfiguration::ALGORITHM_SHA1, 30, 6);
+    }
+
+    public function getTotpSecret(): ?string
+    {
+        return $this->totpSecret;
+    }
+
+    public function setTotpSecret(?string $totpSecret): self
+    {
+        $this->totpSecret = $totpSecret;
+
+        return $this;
+    }
+
+    public function getIsTotpEnabled(): ?bool
+    {
+        return $this->isTotpEnabled;
+    }
+
+    public function setIsTotpEnabled(?bool $isTotpEnabled): self
+    {
+        $this->isTotpEnabled = $isTotpEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Check if it is a valid backup code.
+     */
+    public function isBackupCode(string $code): bool
+    {
+        $correctCode = false;
+        if (in_array($code, $backup)){
+            $correctCode = true;
+            $this->invalidateBackupCode($code);
+        }
+        return $correctCode;
+    }
+
+    /**
+     * Invalidate a backup code
+     */
+    public function invalidateBackupCode(string $code): void
+    {
+        $key = array_search($code, $this->backupCodes);
+        if ($key !== false){
+            unset($this->backupCodes[$key]);
+        }
+    }
+
+    /**
+     * Add a backup code
+     */
+    public function addBackUpCode(string $backUpCode): void
+    {
+        if (!in_array($backUpCode, $this->backupCodes)) {
+            $this->backupCodes[] = $backUpCode;
+        }
+    }
+
 }

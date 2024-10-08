@@ -1,0 +1,11 @@
+#two-factor {
+  .two-factor-border {
+    border-right: 0.03em solid grey;
+  }
+
+  .backup-codes {
+    background-color: $midnight-blue;
+    color: white;
+    border: 2px solid black;
+  }
+}

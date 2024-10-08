@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -24,35 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
-import {LoginUiComponent} from './login.component';
-import {LoginUiRoutes} from './login.routes';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {ButtonLoadingUiModule} from '../../../../directives/button-loading/button-loading.module';
-import {LogoUiModule} from '../../../../components/logo/logo.module';
-import {ImageModule} from '../../../../components/image/image.module';
-import {TwoFactorCheckModule} from "../../../2fa/components/2fa-check/2fa-check.module";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AuthService} from './auth.service';
 
-@NgModule({
-    declarations: [
-        LoginUiComponent
-    ],
-    exports: [
-        LoginUiComponent
-    ],
-    imports: [
-        FormsModule,
-        LogoUiModule,
-        RouterModule.forChild(LoginUiRoutes),
-        CommonModule,
-        AngularSvgIconModule,
-        ImageModule,
-        ButtonLoadingUiModule,
-        TwoFactorCheckModule
-    ]
+@Injectable({
+    providedIn: 'root'
 })
-export class LoginUiModule {
+export class TwoFactorAuthGuard  {
+    constructor(
+        private authService: AuthService,
+    ) {
+    }
+
+    canActivate(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        return this.authService.authorizeUserSession(route, snapshot);
+    }
 }

@@ -68,7 +68,7 @@ export class AuthGuard  {
     protected authorizeUser(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         // Note: this session and acl are not always booleans
         return forkJoin([
-            this.authorizeUserSession(route, snapshot),
+            this.authService.authorizeUserSession(route, snapshot),
             this.authorizeUserACL(route)
         ]).pipe(map(([session, acl]: any) => {
 
@@ -139,87 +139,6 @@ export class AuthGuard  {
                     return false;
                 }),
                 catchError(() => of(homeUrlTree))
-            );
-    }
-
-    /**
-     * Authorize user session
-     *
-     * @returns {object} Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
-     * @param {ActivatedRouteSnapshot} route information about the current route
-     * @param snapshot
-     */
-    protected authorizeUserSession(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
-        Observable<boolean | UrlTree> {
-
-        if (this.authService.isUserLoggedIn.value && route.data.checkSession !== true) {
-            return of(true);
-        }
-
-        let sessionExpiredUrl = this.authService.getSessionExpiredRoute();
-        const redirect = this.authService.sessionExpiredRedirect();
-
-        const sessionExpiredUrlTree: UrlTree = this.router.parseUrl(sessionExpiredUrl);
-
-        return this.authService.fetchSessionStatus()
-            .pipe(
-                take(1),
-                map((user: SessionStatus) => {
-
-                    if (user && user.appStatus.installed === false) {
-                        return this.router.parseUrl('install');
-                    }
-
-                    if (user && user.active === true) {
-                        const wasLoggedIn = !!this.appState.getCurrentUser();
-                        this.authService.setCurrentUser(user);
-
-                        if (!wasLoggedIn) {
-                            this.language.appStrings$.pipe(
-                                filter(appStrings => appStrings && !emptyObject(appStrings)),
-                                tap(() => {
-                                    setTimeout(() => {
-                                        this.notificationStore.enableNotifications();
-                                        this.notificationStore.refreshNotifications();
-                                    }, 2000);
-                                }),
-                                take(1)
-                            ).subscribe();
-                        }
-
-                        if (user?.redirect?.route && (!snapshot.url.includes(user.redirect.route))) {
-                            const redirectUrlTree: UrlTree = this.router.parseUrl(user.redirect.route);
-                            redirectUrlTree.queryParams = user?.redirect?.queryParams ?? {}
-                            return redirectUrlTree;
-                        }
-
-                        return true;
-                    }
-                    this.appState.setPreLoginUrl(snapshot.url);
-                    this.authService.resetState();
-
-                    if (redirect) {
-                        this.authService.handleSessionExpiredRedirect();
-                        return false;
-                    }
-
-                    // Re-direct to login
-                    return sessionExpiredUrlTree;
-                }),
-                catchError(() => {
-                    if (redirect) {
-                        this.authService.handleSessionExpiredRedirect();
-                        return of(false);
-                    }
-
-                    this.authService.logout('LBL_SESSION_EXPIRED', false);
-                    return of(sessionExpiredUrlTree);
-                }),
-                tap((result: boolean | UrlTree) => {
-                    if (result === true) {
-                        this.authService.isUserLoggedIn.next(true);
-                    }
-                })
             );
     }
 }

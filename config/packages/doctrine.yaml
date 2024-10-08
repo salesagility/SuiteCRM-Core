@@ -3,7 +3,7 @@ doctrine:
     url: '%env(resolve:DATABASE_URL)%'
     driver: pdo_mysql
     charset: UTF8
-    auto_commit: false
+    auto_commit: true
     schema_filter: '/^(users|migration_versions|)$/'
     default_table_options:
       charset: utf8

@@ -491,6 +491,7 @@ export * from './services/auth/auth.service';
 export * from './services/auth/error.interceptor';
 export * from './services/auth/install-auth-guard.service';
 export * from './services/auth/login-auth-guard.service';
+export * from './services/auth/two-factor-auth-guard.service';
 export * from './services/base-route/base-route.service';
 export * from './services/condition-operators/active-fields-checker.service';
 export * from './services/condition-operators/condition-operator.action';
@@ -720,3 +721,7 @@ export * from './views/record/store/record-pagination/record-pagination.service'
 export * from './views/record/store/record-pagination/record-pagination.store';
 export * from './views/record/store/record-view/record-view.store.model';
 export * from './views/record/store/record-view/record-view.store';
+export * from './views/2fa/components/2fa/2fa.component';
+export * from './views/2fa/components/2fa/2fa.module';
+export * from './views/2fa/components/2fa-check/2fa-check.component';
+export * from './views/2fa/components/2fa-check/2fa-check.module';

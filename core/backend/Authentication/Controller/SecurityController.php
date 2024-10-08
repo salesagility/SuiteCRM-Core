@@ -28,17 +28,29 @@
 
 namespace App\Authentication\Controller;
 
+use App\Data\LegacyHandler\PreparedStatementHandler;
+use App\Security\TwoFactor\BackupCodeGenerator;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
 use App\Authentication\LegacyHandler\Authentication;
 use App\Module\Users\Entity\User;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\SvgWriter;
 use RuntimeException;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -58,19 +70,40 @@ class SecurityController extends AbstractController
     private $requestStack;
 
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    private PreparedStatementHandler $preparedStatementHandler;
+
+    private BackupCodeGenerator $backupCodeGenerator;
+
+    /**
      * SecurityController constructor.
      * @param Authentication $authentication
      * @param RequestStack $requestStack
      */
-    public function __construct(Authentication $authentication, RequestStack $requestStack)
+    public function __construct(
+        Authentication           $authentication,
+        RequestStack             $requestStack,
+        EntityManagerInterface   $entityManager,
+        PreparedStatementHandler $preparedStatementHandler,
+        BackupCodeGenerator $backupCodeGenerator
+    )
     {
         $this->authentication = $authentication;
         $this->requestStack = $requestStack;
+        $this->entityManager = $entityManager;
+        $this->preparedStatementHandler = $preparedStatementHandler;
+        $this->backupCodeGenerator = $backupCodeGenerator;
     }
 
     #[Route('/login', name: 'app_login', methods: ["GET", "POST"])]
     public function login(AuthenticationUtils $authenticationUtils, #[CurrentUser] ?User $user): JsonResponse
     {
+//        if ($user->getIsTotpEnabled()) {
+//                return new Response('{"login_success": "true", "two_factor_complete": "false"}');
+//        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $isAppInstalled = $this->authentication->getAppInstallStatus();
         $isAppInstallerLocked = $this->authentication->getAppInstallerLockStatus();
@@ -103,6 +136,108 @@ class SecurityController extends AbstractController
         $data['user'] = $user->getUserIdentifier();
 
         return $this->json($data, Response::HTTP_OK);
+    }
+
+
+    /**
+     * @throws Exception
+     */
+    #[Route('/profile-auth/2fa/enable', name: 'app_2fa_enable', methods: ["GET", "POST"])]
+    #[isGranted('IS_AUTHENTICATED_FULLY')]
+    public function enable2fa(#[CurrentUser] ?User $user, TotpAuthenticatorInterface $totpAuthenticator): Response
+    {
+//        if ($user->getIsTotpEnabled()){
+//            return new Response('');
+//        }
+        $secret = $totpAuthenticator->generateSecret();
+
+        $user->setTotpSecret($secret);
+
+        $backupCodes = $this->backupCodeGenerator->generate();
+
+        $this->setupBackupCodes($user,$backupCodes);
+
+        $this->preparedStatementHandler->update(
+            'UPDATE users SET totp_secret = :totp_secret WHERE id = :id',
+            ['totp_secret' => $secret, 'id' => $user->getId()],
+            [['param' => 'totp_secret', 'type' => 'string'], ['param' => 'id', 'type' => 'string']]
+        );
+
+        $this->entityManager->flush();
+
+        $qrCodeUrl = $totpAuthenticator->getQRContent($user);
+
+        $response = [
+            'url' => $qrCodeUrl,
+            'svg' => $this->displayQRCode($qrCodeUrl),
+            'backupCodes' => $backupCodes
+        ];
+
+        return new Response(json_encode($response), Response::HTTP_OK);
+    }
+
+    #[Route('/profile-auth/2fa/disable', name: 'app_2fa_disable', methods: ["GET"])]
+    public function disable2fa(#[CurrentUser] ?User $user, TotpAuthenticatorInterface $totpAuthenticator): Response
+    {
+        error_log('inside disable 2fa');
+
+        $id = $user->getId();
+
+        $this->preparedStatementHandler->update(
+            'UPDATE users SET totp_secret = NULL WHERE id = :id',
+            ['id' => $id],
+            [['param' => 'id', 'type' => 'string']]
+        );
+
+        return $this->redirect('../#/users/edit/'.$id);
+    }
+
+    #[Route('/profile-auth/2fa/enable-finalize', name: 'app_2fa_enable_finalize', methods: ["GET", "POST"])]
+    public function enableFinalize2fa(#[CurrentUser] ?User $user, Security $security, Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
+    {
+        error_log('inside enableFinalize2fa');
+
+        $maybe = $this->getUser();
+
+        $auth_code = $request->getPayload()->get('auth_code') ?? '';
+
+        $user_no = $security->getToken()->getUser();
+
+        $user_diff = $security->getUser();
+//        $auth_code = $_POST['auth_code'] ?? null;
+
+        $correctCode = $totpAuthenticator->checkCode($user, $auth_code);
+
+
+        if ($correctCode){
+            $this->preparedStatementHandler->update(
+                'UPDATE users SET is_totp_enabled = true WHERE id = :id',
+                ['id' => $user->getId()],
+                [['param' => 'id', 'type' => 'string']]
+            );
+        }
+
+        $response = ['two_factor_setup_complete' => $correctCode];
+
+        return new Response(json_encode($response), Response::HTTP_OK);
+    }
+
+    #[Route('/profile-auth/2fa/check', name: 'app_2fa_check', methods: ["GET", "POST"])]
+    public function check2fa(#[CurrentUser] ?User $user, Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
+    {
+        error_log('inside 2fa check');
+        // request
+        $auth_code = $request->getPayload()->get('auth_code') ?? '';
+
+        $correctCode = $totpAuthenticator->checkCode($user, $auth_code);
+
+        if (!$correctCode){
+            $correctCode = $user->isBackupCode($auth_code);
+        }
+
+        $response = ['two_factor_complete' => $correctCode];
+
+        return new Response(json_encode($response), Response::HTTP_OK);
     }
 
     #[Route('/logout', name: 'app_logout', methods: ["GET", "POST"])]
@@ -209,5 +344,35 @@ class SecurityController extends AbstractController
             'lastName' => $lastName,
             'userName' => $userName
         ];
+    }
+
+    private function displayQrCode(string $qrCodeContent): string
+    {
+        // ErrorCorrectionLevelHigh
+        $result = Builder::create()
+            ->writer(new SvgWriter())
+            ->writerOptions(['exclude_xml_declaration' => true])
+            ->data($qrCodeContent)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+            ->size(200)
+            ->margin(0)
+            ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+            ->build();
+
+        return $result->getString();
+    }
+
+    protected function setupBackupCodes($user, $backupCodes): void
+    {
+        error_log(print_r($backupCodes, true));
+        error_log(print_r(array_keys($backupCodes), true));
+
+//        $backupCodes = json_encode();
+
+        $this->preparedStatementHandler->update("UPDATE users SET backup_codes = '{':backup_codes'}' WHERE id = :id",
+            ['id' => $user->getId(), 'backup_codes' => $backupCodes],
+            [['param' => 'id', 'type' => 'string'], ['param' => 'backup_codes', 'type' => 'array']]
+        );
     }
 }

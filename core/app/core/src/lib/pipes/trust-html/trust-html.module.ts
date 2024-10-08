@@ -26,33 +26,19 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {RouterModule} from '@angular/router';
-import {LoginUiComponent} from './login.component';
-import {LoginUiRoutes} from './login.routes';
-import {AngularSvgIconModule} from 'angular-svg-icon';
-import {ButtonLoadingUiModule} from '../../../../directives/button-loading/button-loading.module';
-import {LogoUiModule} from '../../../../components/logo/logo.module';
-import {ImageModule} from '../../../../components/image/image.module';
-import {TwoFactorCheckModule} from "../../../2fa/components/2fa-check/2fa-check.module";
+import {TrustHtmlPipe} from './trust-html.pipe';
+
 
 @NgModule({
     declarations: [
-        LoginUiComponent
+        TrustHtmlPipe
     ],
     exports: [
-        LoginUiComponent
+        TrustHtmlPipe
     ],
     imports: [
-        FormsModule,
-        LogoUiModule,
-        RouterModule.forChild(LoginUiRoutes),
-        CommonModule,
-        AngularSvgIconModule,
-        ImageModule,
-        ButtonLoadingUiModule,
-        TwoFactorCheckModule
+        CommonModule
     ]
 })
-export class LoginUiModule {
+export class TrustHtmlModule {
 }

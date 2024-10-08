@@ -214,7 +214,7 @@ services:
     tags: [ { name: kernel.event_listener, event: kernel.response, method: onKernelResponse } ]
     arguments:
       $routes:
-        - path: '(/login$|/$|/auth$|/logout$|/logged-out$|/session-status|/auth/logout|/auth/login|/auth/session-status)'
+        - path: '(/login$|/profile-auth/2fa/enable|/profile-auth/2fa/enable-finalize|/profile-auth|/2fa|/$|/auth$|/logout$|/logged-out$|/session-status|/auth/logout|/auth/login|/auth/session-status)'
       $cookieName: 'XSRF-TOKEN'
       $cookieExpire: 0
       $cookiePath: /
@@ -328,6 +328,22 @@ services:
 
   security.app_secret_generator:
     alias: App\Security\AppSecretGenerator
+    public: true
+
+  api_success_handler:
+    alias: App\Security\TwoFactor\AuthenticationSuccessHandler
+    public: true
+
+  2fa_required:
+    alias: App\Security\TwoFactor\TwoFactorAuthenticationRequiredHandler
+    public: true
+
+  2fa_success:
+    alias: App\Security\TwoFactor\TwoFactorAuthenticationSuccessHandler
+    public: true
+
+  2fa_failed:
+    alias: App\Security\TwoFactor\TwoFactorAuthenticationFailureHandler
     public: true
 
   App\Process\Service\ActionNameMapperInterface: '@App\Engine\LegacyHandler\ActionNameMapperHandler'

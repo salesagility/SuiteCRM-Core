@@ -96,4 +96,25 @@ class PreparedStatementHandler
 
         return $stmt->executeQuery($params)->fetchAssociative();
     }
+
+    /**
+     * @throws Exception
+     */
+    public function update (
+        string $query,
+        array  $params,
+        array  $binds
+    ): int {
+        $stmt = $this->entityManager->getConnection()->prepare($query);
+
+        if (!empty($binds)) {
+            foreach ($binds as $bind) {
+                $stmt->bindValue($bind['param'], $params[$bind['param']], $bind['type']);
+            }
+        }
+        $result =  $stmt->executeStatement();
+        $this->entityManager->flush();
+
+        return $result;
+    }
 }

@@ -157,9 +157,14 @@ export class LoginUiComponent implements OnInit {
         }
     }
 
+    returnToLogin(): void {
+        this.cardState = 'front';
+        return;
+    }
+
     doLogin(): void {
         this.loading = true;
-        this.auth.doLogin(this.uname, this.passw, this.onLoginSuccess.bind(this), this.onLoginError.bind(this));
+        this.auth.doLogin(this.uname, this.passw, this.onLoginSuccess.bind(this), this.onLoginError.bind(this), this.onTwoFactor.bind(this));
     }
 
     recoverPassword(): void {
@@ -192,32 +197,7 @@ export class LoginUiComponent implements OnInit {
         this.message.log('Login success');
         this.message.removeMessages();
 
-        this.languageStore.setSessionLanguage()
-            .pipe(catchError(() => of({})))
-            .subscribe(() => {
-                if (result && result.redirect && result.redirect.route) {
-                    this.router.navigate(
-                        [result.redirect.route],
-                        {
-                         queryParams: result.redirect.queryParams ?? {}
-                        }).then();
-                    return;
-                }
-
-                if (this.appState.getPreLoginUrl()) {
-                    this.router.navigateByUrl(this.appState.getPreLoginUrl()).then(() => {
-                        this.appState.setPreLoginUrl('');
-                    });
-                    return;
-                }
-
-                const defaultModule = this.configs.getHomePage();
-                this.router.navigate(['/' + defaultModule]).then();
-            });
-
-        if (this.configs.getConfigValue('login_language')) {
-            this.languageStore.setUserLanguage().subscribe();
-        }
+        this.auth.setLanguage(result);
         return;
     }
 
@@ -239,6 +219,10 @@ export class LoginUiComponent implements OnInit {
             message = defaultMessage
         }
         this.message.addDangerMessage(message);
+    }
+
+    onTwoFactor(result: any): void {
+        this.cardState = '2fa';
     }
 
     protected getTooManyFailedMessage(defaultTooManyFailedMessage: string): string {
