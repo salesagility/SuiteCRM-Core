@@ -47,7 +47,9 @@ import {
     SystemNameService,
     BaseRouteService,
     LogoutComponent,
-    AdminPanelComponent
+    TwoFactorAuthGuard,
+    AdminPanelComponent,
+    TwoFactorComponent
 } from 'core';
 import {take} from 'rxjs/operators';
 
@@ -164,6 +166,32 @@ export class AppInit {
                         ]
                     });
 
+                    routes.push({
+                        path: 'profile-auth',
+                        component: TwoFactorComponent,
+                        canActivate: [TwoFactorAuthGuard],
+                        runGuardsAndResolvers: 'always',
+                        resolve: {
+                            metadata: BaseMetadataResolver
+                        },
+                        data: {
+                            reuseRoute: false,
+                            checkSession: true,
+                            load: {
+                                navigation: false,
+                                preferences: false,
+                                languageStrings: ['appStrings']
+                            }
+                        },
+                        children: [
+                            {
+                                path: '2fa/enable',
+                            },
+                            {
+                                path: '2fa/disable',
+                            }
+                        ]
+                    });
                     routes.push(loggedOutConfig);
 
                     Object.keys(configRoutes).forEach(routeName => {
