@@ -2293,7 +2293,21 @@ $app_strings = array(
     'LBL_COLUMN_SELECTOR_HIDDEN_COLS' => 'HIDDEN',
     'LBL_COLUMN_SELECTOR_CLOSE_BUTTON' => 'Close',
     'LBL_COLUMN_SELECTOR_SAVE_BUTTON' => 'Save Changes',
-    'LBL_COLUMN_SELECTOR_MODAL_TITLE' => 'Choose Columns'
+    'LBL_COLUMN_SELECTOR_MODAL_TITLE' => 'Choose Columns',
+
+    // Two-Factor Authentication
+    'LBL_ENTER_2FA_CODE' => 'Provide the 6 digit code from authenticator app',
+    'LBL_ENABLE_2FA_LABEL' => 'Enable Two-Factor Authentication',
+    'LBL_BACKUP_CODES' => 'SuiteCRM Two Factor Backup Codes',
+    'LBL_BACKUP_CODES_INFO' => 'Backup codes are one time passcodes to use when you are unable to verify via your Authenticator app.',
+    'LBL_OTP_SETUP' => 'Use a OTP (one time password) authenticator on your mobile or computer to enable 2FA (Two-Factor Authentication)',
+    'LBL_QR_CODE_HELP' => "If you haven't already, please download an Authenticator Application (such as FreeOTP or Google Authenticator). Use that app to scan the QR code.",
+
+    'LBL_FACTOR_AUTH_DISABLE' => 'Two Factor Authentication was Disabled',
+    'LBL_FACTOR_AUTH_SUCCESS' => 'Two Factor Authentication was Successful',
+    'LBL_FACTOR_AUTH_FAIL' => "Two Factor Authentication failed. Try again.",
+
+    'LBL_VERIFY_2FA' => 'Verify Two-Factor Code',
 
 );
 

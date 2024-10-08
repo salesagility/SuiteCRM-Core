@@ -270,6 +270,16 @@ EOD
         $this->ss->assign('SUBTHEMES', $this->bean->getSubThemes());
         $this->ss->assign('SUBTHEME', $this->bean->getSubTheme());
 
+        $isTotpEnabled = (bool)$current_user->is_totp_enabled;
+        $status = $isTotpEnabled ? $mod_strings['LBL_ENABLED'] : $mod_strings['LBL_DISABLED'];
+
+        $this->ss->assign('TOTP_SECRET', $isTotpEnabled);
+        $this->ss->assign('STATUS', $status);
+
+        $isCurrentUser = $this->bean->id === $current_user->id;
+
+        $this->ss->assign('CURRENT_USER', $isCurrentUser);
+
 
         require_once('modules/Emails/EmailUI.php');
         $efocus = BeanFactory::newBean('Emails');

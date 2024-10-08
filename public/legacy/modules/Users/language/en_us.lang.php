@@ -686,7 +686,6 @@ $mod_strings = array(
     'LBL_PROJECT_USERS_1_FROM_PROJECT_TITLE' => 'Project Users from Project Title',
     'LBL_ROLES' => 'Roles',
     'LBL_SECURITYGROUPS' => 'Security Groups',
-    'LBL_FACTOR_AUTH' => 'Two Factor Authentication:',
     'LBL_FACTOR_AUTH_INTERFACE' => 'Two Factor Authentication Interface:',
     'ERR_USER_FACTOR_SMTP_REQUIRED' => 'SMTP server settings required first.',
     'ERR_USER_FACTOR_CHANGE_DISABLED' => 'Current user is not able to change two factor authentication settings.',
@@ -702,5 +701,12 @@ $mod_strings = array(
     'LNK_LIST_OUTBOUND_EMAIL_ACCOUNTS' => 'Outbound Email Accounts',
     'LNK_LIST_INBOUND_EMAIL_ACCOUNTS' => 'Inbound Email Accounts',
     'LNK_EXTERNAL_OAUTH_CONNECTIONS' => 'External OAuth Connections',
+
+    // 2FA
+    'LBL_FACTOR_AUTH' => 'Two Factor Authentication',
+    'LBL_DISABLED' => 'Disabled',
+    'LBL_ENABLED' => 'Enabled',
+    'LBL_ENABLE_2FA' => 'Enable 2FA',
+    'LBL_DISABLE_2FA' => 'Disable 2FA',
 
 ); // END STRINGS DEFS

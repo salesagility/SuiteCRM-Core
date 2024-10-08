@@ -127,6 +127,10 @@ class User extends Person implements EmailInterface
      */
     public $factor_auth_interface;
 
+    public $totp_secret;
+
+    public $is_totp_enabled;
+
     /**
      * Normally a bean returns ID from save() method if it was
      * success and false (or maybe null) is something went wrong.
