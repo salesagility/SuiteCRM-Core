@@ -82,7 +82,6 @@ export class InstallAuthGuard  {
 
                     if (user && user.active === true) {
                         this.authService.logout('', false);
-                        this.authService.isUserLoggedIn.next(false);
                     }
 
                     return true;
