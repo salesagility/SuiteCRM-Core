@@ -141,7 +141,7 @@ export class RecordContentComponent implements OnInit, OnDestroy {
             let isCollapsed = false;
             panel.label = panel?.label?.toUpperCase() ?? '';
             const panelKey = panel?.key?.toUpperCase() ?? '';
-            if (panel.meta.panelDefault === 'collapsed') {
+            if (panel.meta?.panelDefault === 'collapsed') {
                 isCollapsed = true;
             }
             panel.isCollapsed = isCollapsed;
