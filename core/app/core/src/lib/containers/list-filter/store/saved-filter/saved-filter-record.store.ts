@@ -43,6 +43,7 @@ import {RecordManager} from '../../../../services/record/record.manager';
 import {FieldManager} from '../../../../services/record/field/field.manager';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {signal} from "@angular/core";
+import {ObjectMap} from "../../../../common/types/object-map";
 
 const initialState = {
     id: '',
@@ -179,11 +180,11 @@ export class SavedFilterRecordStore extends RecordStore {
      */
     protected initRecord(record: SavedFilter): void {
 
-        if(this.metadata) {
+        if (this.metadata) {
             record.metadata = this.metadata;
         }
 
-        if(!record?.validationTriggered) {
+        if (!record?.validationTriggered) {
             record.validationTriggered = signal(false);
         }
 

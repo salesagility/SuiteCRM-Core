@@ -37,6 +37,7 @@ import {RecordMapperRegistry} from '../../common/record/record-mappers/record-ma
 import {ViewFieldDefinition} from '../../common/metadata/metadata.model';
 import {MapEntry} from '../../common/types/overridable-map';
 import {signal} from "@angular/core";
+import {ObjectMap} from "../../common/types/object-map";
 
 const initialState = {
     id: '',
@@ -95,7 +96,7 @@ export class RecordStore {
             this.init(this.internalState);
         }));
 
-        if(metadata$) {
+        if (metadata$) {
             this.subs.push(metadata$.subscribe(metadata => {
                 this.setMetadata(metadata);
             }));
@@ -305,11 +306,11 @@ export class RecordStore {
      */
     protected initRecord(record: Record, initDefaultValues: boolean = false): void {
 
-        if(this.metadata) {
+        if (this.metadata) {
             record.metadata = this.metadata;
         }
 
-        if(!record?.validationTriggered) {
+        if (!record?.validationTriggered) {
             record.validationTriggered = signal(false);
         }
 
@@ -366,7 +367,7 @@ export class RecordStore {
     }
 
     public setMetadata(metadata: ObjectMap): void {
-        if(!metadata) {
+        if (!metadata) {
             return;
         }
         this.metadata = metadata;

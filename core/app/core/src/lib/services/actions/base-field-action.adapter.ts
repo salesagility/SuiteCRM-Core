@@ -25,7 +25,6 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext, ActionManager} from 'common';
 import {AsyncActionInput, AsyncActionService} from '../process/processes/async-action/async-action';
 import {MessageService} from '../message/message.service';
 import {ConfirmationModalService} from '../modals/confirmation-modal.service';
@@ -34,6 +33,7 @@ import {LanguageStore} from '../../store/language/language.store';
 import {SelectModalService} from '../modals/select-modal.service';
 import {MetadataStore} from '../../store/metadata/metadata.store.service';
 import {AppMetadataStore} from "../../store/app-metadata/app-metadata.store.service";
+import {Action, ActionContext, ActionManager} from "../../common/actions/action.model";
 
 @Injectable()
 export abstract class BaseFieldActionsAdapter<D> extends BaseActionsAdapter<D> {

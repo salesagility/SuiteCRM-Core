@@ -25,7 +25,6 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
 import {take} from 'rxjs/operators';
 import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageService} from '../../../../services/message/message.service';
@@ -34,6 +33,7 @@ import {NotificationStore} from '../../../../store/notification/notification.sto
 import {RecentlyViewedService} from "../../../../services/navigation/recently-viewed/recently-viewed.service";
 import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
+import {ViewMode} from "../../../../common/views/view.model";
 
 @Injectable({
     providedIn: 'root'

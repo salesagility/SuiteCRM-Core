@@ -23,8 +23,9 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
+import {ObjectMap} from "../../../../common/types/object-map";
+import {Pagination} from "../../../../common/views/list/list-navigation.model";
 
-import {Pagination, ObjectMap} from 'common';
 
 export interface RecordPaginationModel {
     recordIds: ObjectMap[],

@@ -27,7 +27,7 @@
 import {Injectable} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
-import {isTrue} from '../../../common/utils/value-utils';
+import {isFalse, isTrue} from '../../../common/utils/value-utils';
 import {ObjectMap} from '../../../common/types/object-map';
 import {AttributeDependency, BaseField, DisplayType, Field, FieldDefinition} from '../../../common/record/field.model';
 import {FieldLogic, FieldLogicMap} from '../../../common/actions/field-logic-action.model';

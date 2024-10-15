@@ -25,9 +25,9 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ALL_VIEW_MODES} from 'common';
 import {FieldActionData, FieldActionHandler} from '../field.action';
-import { Clipboard } from '@angular/cdk/clipboard';
+import {Clipboard} from '@angular/cdk/clipboard';
+import {ALL_VIEW_MODES} from "../../../../common/views/view.model";
 
 @Injectable({
     providedIn: 'root'
@@ -37,7 +37,7 @@ export class FieldCopyAction extends FieldActionHandler {
     key = 'copy';
     modes = ALL_VIEW_MODES;
 
-    constructor( private clipboard: Clipboard) {
+    constructor(private clipboard: Clipboard) {
         super();
     }
 

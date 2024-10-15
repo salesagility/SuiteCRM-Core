@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Action, ActionContext, ActionDataSource} from '../../common/actions/action.model';
+import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, signal} from '@angular/core';
+import {Action, ActionContext, ActionDataSource, ActiveLineAction} from '../../common/actions/action.model';
 import {Button, ButtonInterface} from '../../common/components/button/button.model';
 import {ButtonGroupInterface} from '../../common/components/button/button-group.model';
 import {isFalse} from '../../common/utils/value-utils';
@@ -60,7 +60,7 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
     configState = new BehaviorSubject<ButtonGroupInterface>({buttons: []});
     config$ = this.configState.asObservable();
     actions: Action[];
-    isActive:boolean = false;
+    isActive: boolean = false;
 
     isClickedOutside = signal<boolean>(false)
 
@@ -88,7 +88,8 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
         protected screenSize: ScreenSizeObserverService,
         protected systemConfigStore: SystemConfigStore,
         private el: ElementRef
-    ) {}
+    ) {
+    }
 
     ngOnInit(): void {
         this.subs.push(this.config.getActions({record: this.record}).pipe(
@@ -203,7 +204,7 @@ export class LineActionMenuComponent implements OnInit, OnDestroy {
 
     toggleExpand(recordId: string) {
         const activeId = this.activeLineAction.getActiveAction();
-        if(activeId === recordId && !this.isClickedOutside()){
+        if (activeId === recordId && !this.isClickedOutside()) {
             this.activeLineAction.resetActiveAction();
         } else {
             this.activeLineAction.setActiveAction(recordId);

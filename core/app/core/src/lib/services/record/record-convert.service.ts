@@ -25,25 +25,23 @@
  */
 import {Injectable} from "@angular/core";
 import {Observable, of} from "rxjs";
-import {
-    FieldDefinitionMap,
-    isVoid,
-    Record,
-    ViewFieldDefinition,
-    ViewFieldDefinitionMap,
-    FieldMetadata,
-    FieldLogicMap} from "common";
 import {map} from "rxjs/operators";
 import {SystemConfigStore} from "../../store/system-config/system-config.store";
 import {Metadata, RecordViewMetadata} from "../../store/metadata/metadata.store.service";
 import {isEmpty} from "lodash-es";
+import {FieldDefinitionMap, FieldMetadata} from "../../common/record/field.model";
+import {Record} from "../../common/record/record.model";
+import {isVoid} from "../../common/utils/value-utils";
+import {ViewFieldDefinition, ViewFieldDefinitionMap} from "../../common/metadata/metadata.model";
+import {FieldLogicMap} from "../../common/actions/field-logic-action.model";
 
 @Injectable({
     providedIn: 'root'
 })
 export class RecordConvertService {
 
-    constructor(protected systemConfigStore: SystemConfigStore) { }
+    constructor(protected systemConfigStore: SystemConfigStore) {
+    }
 
     public duplicateOnModule(prevRecord: Record, newRecord: Record, vardefs: FieldDefinitionMap, moduleMetadata: Metadata): Record {
 
@@ -96,7 +94,7 @@ export class RecordConvertService {
                     return;
                 }
 
-                if (vardef.type == 'relate'){
+                if (vardef.type == 'relate') {
                     return;
                 }
 

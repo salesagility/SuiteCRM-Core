@@ -36,6 +36,7 @@ import {MessageService} from '../../../../services/message/message.service';
 import {RecordManager} from '../../../../services/record/record.manager';
 import {BaseSaveRecordMapper} from '../../../../store/record/record-mappers/base-save.record-mapper';
 import {Observable} from 'rxjs';
+import {ObjectMap} from "../../../../common/types/object-map";
 
 @Injectable({
     providedIn: 'root',

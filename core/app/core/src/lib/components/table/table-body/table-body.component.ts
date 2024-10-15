@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {combineLatestWith, BehaviorSubject, Observable, of, Subscription} from 'rxjs';
+import {BehaviorSubject, combineLatestWith, Observable, of, Subscription} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {ColumnDefinition} from '../../../common/metadata/list.metadata.model';
 import {Field} from '../../../common/record/field.model';
@@ -37,6 +37,7 @@ import {TableConfig} from '../table.model';
 import {SortDirectionDataSource} from '../../sort-button/sort-button.model';
 import {LoadingBufferFactory} from '../../../services/ui/loading-buffer/loading-buffer.factory';
 import {LoadingBuffer} from '../../../services/ui/loading-buffer/loading-buffer.service';
+import {ActiveLineAction} from "../../../common/actions/action.model";
 
 interface TableViewModel {
     columns: ColumnDefinition[];
@@ -56,9 +57,9 @@ export class TableBodyComponent implements OnInit, OnDestroy {
     @Input() config: TableConfig;
 
     private activeAction: BehaviorSubject<string> = new BehaviorSubject<string>('');
-    protected activeAction$: Observable<string> =this.activeAction.asObservable();
+    protected activeAction$: Observable<string> = this.activeAction.asObservable();
 
-    activeLineAction: ActiveLineAction
+    activeLineAction: ActiveLineAction;
 
     maxColumns = 4;
     popoverColumns: ColumnDefinition[];
@@ -143,7 +144,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
                     }
 
                     record.metadata.queryParams = {
-                        offset: (index + 1 ) + ((this.currentPage - 1) * this.pageSize)
+                        offset: (index + 1) + ((this.currentPage - 1) * this.pageSize)
                     };
                 });
 
@@ -200,7 +201,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
         return displayedColumns;
     }
 
-    buildHiddenColumns(metaFields: ColumnDefinition[], displayedColumns:string[]): ColumnDefinition[] {
+    buildHiddenColumns(metaFields: ColumnDefinition[], displayedColumns: string[]): ColumnDefinition[] {
         const fields = metaFields.filter(function (field) {
             return !field.hasOwnProperty('default')
                 || (field.hasOwnProperty('default') && field.default === true);
@@ -214,7 +215,7 @@ export class TableBodyComponent implements OnInit, OnDestroy {
             }
         }
 
-        let hiddenColumns= fields.filter(obj => missingFields.includes(obj.name));
+        let hiddenColumns = fields.filter(obj => missingFields.includes(obj.name));
 
         return hiddenColumns;
     }

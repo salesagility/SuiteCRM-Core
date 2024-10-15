@@ -34,6 +34,7 @@ import {ButtonInterface} from '../../common/components/button/button.model';
 import {FieldManager} from '../../services/record/field/field.manager';
 import {FieldRegistry} from '../field.registry';
 import {FieldLogicDisplayManager} from '../field-logic-display/field-logic-display.manager';
+import {ViewMode} from "../../common/views/view.model";
 
 @Component({
     selector: 'scrm-line-items-field',

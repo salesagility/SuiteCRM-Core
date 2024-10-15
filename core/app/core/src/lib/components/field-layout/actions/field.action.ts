@@ -24,8 +24,8 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Action, ActionData, ActionHandler} from 'common';
 import {RecordViewStore} from '../../../views/record/store/record-view/record-view.store';
+import {Action, ActionData, ActionHandler} from "../../../common/actions/action.model";
 
 export interface FieldActionData extends ActionData {
     store: RecordViewStore;
@@ -36,7 +36,7 @@ export abstract class FieldActionHandler extends ActionHandler<FieldActionData> 
 
     abstract run(data: FieldActionData): void;
 
-    shouldDisplay(data: FieldActionData): boolean{
+    shouldDisplay(data: FieldActionData): boolean {
         return true
     };
 

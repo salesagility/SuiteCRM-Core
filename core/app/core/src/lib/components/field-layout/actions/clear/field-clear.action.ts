@@ -25,8 +25,8 @@
  */
 
 import {Injectable} from '@angular/core';
-import {ViewMode} from 'common';
 import {FieldActionData, FieldActionHandler} from '../field.action';
+import {ViewMode} from "../../../../common/views/view.model";
 
 @Injectable({
     providedIn: 'root'

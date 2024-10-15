@@ -24,23 +24,21 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import { isEmpty } from 'lodash-es';
-import { BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription } from 'rxjs';
-import { catchError, distinctUntilChanged, finalize, map, take, tap } from 'rxjs/operators';
-import {Injectable} from '@angular/core';
-import { Params } from '@angular/router';
+import {isEmpty} from 'lodash-es';
+import {BehaviorSubject, combineLatest, combineLatestWith, Observable, of, Subscription} from 'rxjs';
+import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
+import {inject, Injectable} from '@angular/core';
+import {Params} from '@angular/router';
 import {isVoid} from '../../../../common/utils/value-utils';
 import {deepClone} from '../../../../common/utils/object-utils';
 import {BooleanMap} from '../../../../common/types/boolean-map';
-import {Field, FieldDefinitionMap, FieldMetadata} from '../../../../common/record/field.model';
+import {FieldDefinitionMap, FieldMetadata} from '../../../../common/record/field.model';
 import {FieldLogicMap} from '../../../../common/actions/field-logic-action.model';
 import {Record} from '../../../../common/record/record.model';
-import {Panel, PanelRow} from '../../../../common/metadata/metadata.model';
+import {Panel, PanelRow, ViewFieldDefinition, ViewFieldDefinitionMap} from '../../../../common/metadata/metadata.model';
 import {StatisticsMap, StatisticsQueryMap} from '../../../../common/statistics/statistics.model';
 import {SubPanelMeta} from '../../../../common/metadata/subpanel.metadata.model';
-import {ViewContext} from '../../../../common/views/view.model';
-import {ViewFieldDefinition, ViewFieldDefinitionMap} from '../../../../common/metadata/metadata.model';
-import {ViewMode} from '../../../../common/views/view.model';
+import {ViewContext, ViewMode} from '../../../../common/views/view.model';
 import {RecordViewData, RecordViewModel, RecordViewState} from './record-view.store.model';
 import {NavigationStore} from '../../../../store/navigation/navigation.store';
 import {StateStore} from '../../../../store/state';
@@ -69,6 +67,7 @@ import {PanelLogicManager} from '../../../../components/panel-logic/panel-logic.
 import {RecordConvertService} from "../../../../services/record/record-convert.service";
 import {FieldActionsAdapterFactory} from "../../../../components/field-layout/adapters/field.actions.adapter.factory";
 import {RecordValidationHandler} from "../../../../services/record/validation/record-validation.handler";
+import {ObjectMap} from "../../../../common/types/object-map";
 
 const initialState: RecordViewState = {
     module: '',

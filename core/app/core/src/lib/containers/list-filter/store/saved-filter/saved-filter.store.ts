@@ -29,8 +29,7 @@ import {BehaviorSubject, combineLatestWith, forkJoin, Observable, of, Subscripti
 import {Record} from '../../../../common/record/record.model';
 import {SearchCriteria} from '../../../../common/views/list/search-criteria.model';
 import {ColumnDefinition, SearchMetaFieldMap} from '../../../../common/metadata/list.metadata.model';
-import {ViewContext} from '../../../../common/views/view.model';
-import {ViewMode} from '../../../../common/views/view.model';
+import {ViewContext, ViewMode} from '../../../../common/views/view.model';
 import {ViewFieldDefinition} from '../../../../common/metadata/metadata.model';
 import {deepClone} from '../../../../common/utils/object-utils';
 import {catchError, distinctUntilChanged, filter, finalize, map, startWith, take, tap} from 'rxjs/operators';
@@ -45,6 +44,7 @@ import {LanguageStore} from '../../../../store/language/language.store';
 import {SavedFilterRecordStore} from './saved-filter-record.store';
 import {SavedFilterRecordStoreFactory} from './saved-filter-record.store.factory';
 import {RecordValidationHandler} from "../../../../services/record/validation/record-validation.handler";
+import {ObjectMap} from "../../../../common/types/object-map";
 
 const initialState: FilterContainerState = {
     module: '',

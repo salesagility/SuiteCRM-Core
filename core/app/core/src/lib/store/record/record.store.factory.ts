@@ -25,7 +25,6 @@
  */
 
 import {Injectable} from '@angular/core';
-import {RecordMapperRegistry, ViewFieldDefinition} from 'common';
 import {RecordStore} from './record.store';
 import {Observable} from 'rxjs';
 import {RecordFetchGQL} from './graphql/api.record.get';
@@ -35,6 +34,7 @@ import {RecordManager} from '../../services/record/record.manager';
 import {BaseSaveRecordMapper} from './record-mappers/base-save.record-mapper';
 import {RecordMapperRegistry} from '../../common/record/record-mappers/record-mapper.registry';
 import {ViewFieldDefinition} from '../../common/metadata/metadata.model';
+import {ObjectMap} from "../../common/types/object-map";
 
 @Injectable({
     providedIn: 'root',

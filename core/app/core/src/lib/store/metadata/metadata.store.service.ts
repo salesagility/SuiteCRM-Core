@@ -34,11 +34,12 @@ import {FieldDefinitionMap} from '../../common/record/field.model';
 import {deepClone} from '../../common/utils/object-utils';
 import {RecentlyViewed} from '../../common/record/recently-viewed.model';
 import {Favorite} from '../../common/record/favorites.model';
-import {Panel, TabDefinitions} from '../../common/metadata/metadata.model';
+import {FieldActions, Panel, TabDefinitions} from '../../common/metadata/metadata.model';
 import {SubPanelMeta} from '../../common/metadata/subpanel.metadata.model';
 import {WidgetMetadata} from '../../common/metadata/widget.metadata';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
+import {ObjectMap} from "../../common/types/object-map";
 
 export interface SummaryTemplates {
     [key: string]: string;

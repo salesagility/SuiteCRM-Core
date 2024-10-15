@@ -23,9 +23,10 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
-import {Field, FieldAttributeMap, FieldMap, Record} from "common";
 import {AsyncValidatorFn, ValidatorFn} from "@angular/forms";
 import {Injectable} from "@angular/core";
+import {Record} from "../../../common/record/record.model";
+import {Field, FieldAttributeMap, FieldMap} from "../../../common/record/field.model";
 
 @Injectable({
     providedIn: 'root'

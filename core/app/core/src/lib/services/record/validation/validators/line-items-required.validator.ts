@@ -26,9 +26,13 @@
 
 import {ValidatorInterface} from '../validator.Interface';
 import {AbstractControl} from '@angular/forms';
-import {Field, isTrue, Record, StandardValidationErrors, StandardValidatorFn, ViewFieldDefinition} from 'common';
 import {Injectable} from '@angular/core';
 import {FormControlUtils} from "../../field/form-control.utils";
+import {ViewFieldDefinition} from "../../../../common/metadata/metadata.model";
+import {StandardValidationErrors, StandardValidatorFn} from "../../../../common/services/validators/validators.model";
+import {Field} from "../../../../common/record/field.model";
+import {Record} from "../../../../common/record/record.model";
+import {isTrue} from "../../../../common/utils/value-utils";
 
 export const lineItemsRequiredValidator = (viewField: ViewFieldDefinition, record: Record, utils: FormControlUtils): StandardValidatorFn => (
     (control: AbstractControl): StandardValidationErrors | null => {

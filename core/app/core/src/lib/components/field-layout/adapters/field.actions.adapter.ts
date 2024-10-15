@@ -25,7 +25,6 @@
  */
 
 import {Injectable} from '@angular/core';
-import {Action, ActionContext, ViewMode} from 'common';
 import {combineLatest, Observable} from 'rxjs';
 import {map, take} from 'rxjs/operators';
 import {MetadataStore} from '../../../store/metadata/metadata.store.service';
@@ -40,6 +39,8 @@ import {BaseFieldActionsAdapter} from '../../../services/actions/base-field-acti
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {RecordViewStore} from '../../../views/record/store/record-view/record-view.store';
 import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
+import {Action, ActionContext} from "../../../common/actions/action.model";
+import {ViewMode} from "../../../common/views/view.model";
 
 @Injectable()
 export class FieldActionsAdapter extends BaseFieldActionsAdapter<FieldActionData> {

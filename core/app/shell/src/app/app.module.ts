@@ -26,7 +26,12 @@
 
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi, withXsrfConfiguration } from '@angular/common/http';
+import {
+    HTTP_INTERCEPTORS,
+    provideHttpClient,
+    withInterceptorsFromDi,
+    withXsrfConfiguration
+} from '@angular/common/http';
 
 import {Apollo, ApolloModule} from 'apollo-angular';
 import {HttpLink} from 'apollo-angular/http';
@@ -58,8 +63,8 @@ import {
     NavbarUiModule,
     RecordListModalModule,
     RecordModule,
-    TableModule,
-    SidebarComponent
+    SidebarComponent,
+    TableModule
 } from 'core';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -68,16 +73,19 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {environment} from '../environments/environment';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
-import {AppInit} from '@app/app-initializer';
+import {AppInit} from './app-initializer';
 import {GraphQLError} from 'graphql';
 import {AngularSvgIconModule} from 'angular-svg-icon';
+import {APP_BASE_HREF} from "@angular/common";
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent], imports: [
+        BrowserModule,
         AppRoutingModule,
         FooterUiModule,
         NavbarUiModule,
@@ -100,9 +108,11 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
         MessageModalModule,
         RecordListModalModule,
         ApolloModule,
-        SidebarComponent], providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        { provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy },
+        SidebarComponent
+    ],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
         AppInit,
         {
             provide: APP_INITIALIZER,
@@ -114,9 +124,10 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
             withXsrfConfiguration({
                 cookieName: 'XSRF-TOKEN',
                 headerName: 'X-XSRF-TOKEN'
-               })
+            })
         )
-    ] })
+    ],
+})
 export class AppModule {
     constructor(apollo: Apollo, httpLink: HttpLink, protected auth: AuthService, protected appStore: AppStateStore, protected baseRoute: BaseRouteService) {
 
