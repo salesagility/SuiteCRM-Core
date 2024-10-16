@@ -4942,21 +4942,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jasmine@npm:*":
+"@types/jasmine@npm:*, @types/jasmine@npm:~5.1.4":
   version: 5.1.4
   resolution: "@types/jasmine@npm:5.1.4"
   checksum: 10c0/4b8d27182e62f5003db1f1f174a810ace704e411cbfd0bc41edbaacf307246aec1f9bd20812846700198fc881268834ffde1d5301f819b1ba7caac9662534ceb
   languageName: node
   linkType: hard
 
-"@types/jasmine@npm:~3.6.0":
-  version: 3.6.11
-  resolution: "@types/jasmine@npm:3.6.11"
-  checksum: 10c0/a9a5b3c7e40a3853209b1c60bf2b2835d4257b9ac8bce52e162125b578bf64057bbacc163fc7e04b443f4863fbe111aaa0be41c570a148359b36c10981a6accc
-  languageName: node
-  linkType: hard
-
-"@types/jasminewd2@npm:^2.0.6":
+"@types/jasminewd2@npm:^2.0.13":
   version: 2.0.13
   resolution: "@types/jasminewd2@npm:2.0.13"
   dependencies:
@@ -6773,10 +6766,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:~0.4.1":
-  version: 0.4.2
-  resolution: "cookie@npm:0.4.2"
-  checksum: 10c0/beab41fbd7c20175e3a2799ba948c1dcc71ef69f23fe14eeeff59fc09f50c517b0f77098db87dbb4c55da802f9d86ee86cdc1cd3efd87760341551838d53fca2
+"cookie@npm:~0.7.2":
+  version: 0.7.2
+  resolution: "cookie@npm:0.7.2"
+  checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
   languageName: node
   linkType: hard
 
@@ -7636,21 +7629,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"engine.io@npm:~6.5.2":
-  version: 6.5.4
-  resolution: "engine.io@npm:6.5.4"
+"engine.io@npm:~6.6.0":
+  version: 6.6.2
+  resolution: "engine.io@npm:6.6.2"
   dependencies:
     "@types/cookie": "npm:^0.4.1"
     "@types/cors": "npm:^2.8.12"
     "@types/node": "npm:>=10.0.0"
     accepts: "npm:~1.3.4"
     base64id: "npm:2.0.0"
-    cookie: "npm:~0.4.1"
+    cookie: "npm:~0.7.2"
     cors: "npm:~2.8.5"
     debug: "npm:~4.3.1"
     engine.io-parser: "npm:~5.2.1"
-    ws: "npm:~8.11.0"
-  checksum: 10c0/1e90c46d682badf0c0a13c671a78ce3f6590f7e6b74b081804eb6e5103be11806015e3cde7eb7c1657c4866edcf069ea40ef1c66386a6befe30f0f1f30d3b2f2
+    ws: "npm:~8.17.1"
+  checksum: 10c0/e9ac3cba49badb6905259df3b019fbcbe53e2a389c930fb9fbc10eebc8839554b189706206bba2509a4a3a7d78a32f7e027f73230f31662c7efd215276432dad
   languageName: node
   linkType: hard
 
@@ -9911,7 +9904,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-wsl@npm:^2.1.0, is-wsl@npm:^2.2.0":
+"is-wsl@npm:^2.2.0":
   version: 2.2.0
   resolution: "is-wsl@npm:2.2.0"
   dependencies:
@@ -10115,26 +10108,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-core@npm:^3.6.0":
-  version: 3.99.1
-  resolution: "jasmine-core@npm:3.99.1"
-  checksum: 10c0/f89721874e2af19a098e214b8f3f201a644d625339c010733b6b0dba4ff9149f16997712a639c2bb427e7533526f82e0477b7927e175d3a2b2f9ff92928a5329
+"jasmine-core@npm:^4.1.0":
+  version: 4.6.1
+  resolution: "jasmine-core@npm:4.6.1"
+  checksum: 10c0/3d038b7f6f6f0d3cb56cdb4d2f0323a9d84f3a64a03746f9329a2d5a5166ec5e0ad3232d72ceb4f357cf2f120fdb86310715eaeb174f325833515fd0792a6860
   languageName: node
   linkType: hard
 
-"jasmine-core@npm:~3.6.0":
-  version: 3.6.0
-  resolution: "jasmine-core@npm:3.6.0"
-  checksum: 10c0/cc10049ecd2cacca17e174b91c2b8137ac03d493667570fc2beab38912027947bb7388302ad812d984cd5749d8f38aaa891e4ab54543db31c96a8a41bc01d40a
+"jasmine-core@npm:~5.4.0":
+  version: 5.4.0
+  resolution: "jasmine-core@npm:5.4.0"
+  checksum: 10c0/d936de0df50a69bb269c734d5efc73d124c3051037d55609c30fcc146736ae281b1c2d658e7da583eee96a4eb2c240a3b672b70375e51d6c28c5626639eda292
   languageName: node
   linkType: hard
 
-"jasmine-spec-reporter@npm:~5.0.0":
-  version: 5.0.2
-  resolution: "jasmine-spec-reporter@npm:5.0.2"
+"jasmine-spec-reporter@npm:~7.0.0":
+  version: 7.0.0
+  resolution: "jasmine-spec-reporter@npm:7.0.0"
   dependencies:
     colors: "npm:1.4.0"
-  checksum: 10c0/18b5ce95c4de29b0bd3fe095021e39ffbbfd36e3feb29ba8d5d4d7653fc6474f9340b22acf74d5dac876890df15cd5420eae6b44472da0f01be4733b78881227
+  checksum: 10c0/0b69660100264c62ad19d8010056a94de6db853b7f468b6e94ef106776dce6eabf695260a790c79a6d94a46396d4b1cb595de449de477fa11478a833205cd6c3
   languageName: node
   linkType: hard
 
@@ -10407,12 +10400,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-chrome-launcher@npm:~3.1.0":
-  version: 3.1.1
-  resolution: "karma-chrome-launcher@npm:3.1.1"
+"karma-chrome-launcher@npm:~3.2.0":
+  version: 3.2.0
+  resolution: "karma-chrome-launcher@npm:3.2.0"
   dependencies:
     which: "npm:^1.2.1"
-  checksum: 10c0/eed6046c7c7fb08912ef5f82beff58072c4b06bea6936cacb4d820a4ee5d207b902420aff370cbcef27a0344c36bed2505883a49b3fe246b58965fc54ba16a94
+  checksum: 10c0/0cec1ae7d922110dc29cee36389d597157c82f019c8917259f9fa93d1f5ee8e19141c2eb74bfe30797cdb3adbc51a6b65fd18a9ebc1527c725c4acf62cd46d04
   languageName: node
   linkType: hard
 
@@ -10427,7 +10420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-coverage-istanbul-reporter@npm:~3.0.2":
+"karma-coverage-istanbul-reporter@npm:~3.0.3":
   version: 3.0.3
   resolution: "karma-coverage-istanbul-reporter@npm:3.0.3"
   dependencies:
@@ -10440,34 +10433,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-firefox-launcher@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "karma-firefox-launcher@npm:1.3.0"
+"karma-firefox-launcher@npm:^2.1.3":
+  version: 2.1.3
+  resolution: "karma-firefox-launcher@npm:2.1.3"
   dependencies:
-    is-wsl: "npm:^2.1.0"
-  checksum: 10c0/bd4122150787125203c43c2e44bdf3d2536c3ff9a94686a4db28cabd36264a1f4adff13c15d58f27ae700d5ab1750f56c404132ef871b98c21fef5e5b72ba6c6
+    is-wsl: "npm:^2.2.0"
+    which: "npm:^3.0.0"
+  checksum: 10c0/a01e40349c04d38686c1aec61a118e9d76ce7345ee1f14c947599b4678dd83d3a54059ec9ec4e40ac4a1872b6b2c3925ba89e8db19cabb7564060857b14b790c
   languageName: node
   linkType: hard
 
-"karma-jasmine-html-reporter@npm:^1.5.0":
-  version: 1.7.0
-  resolution: "karma-jasmine-html-reporter@npm:1.7.0"
+"karma-jasmine-html-reporter@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "karma-jasmine-html-reporter@npm:2.1.0"
   peerDependencies:
-    jasmine-core: ">=3.8"
-    karma: ">=0.9"
-    karma-jasmine: ">=1.1"
-  checksum: 10c0/d37bbc8fb435ecf1a3bd50e63cc0782e9d8a2736c30a814c6928fae51562caf97e3710a2005a2dfd0aeaefa67cf876c4f593eb16faa3f4adecb38db2d6d079bf
+    jasmine-core: ^4.0.0 || ^5.0.0
+    karma: ^6.0.0
+    karma-jasmine: ^5.0.0
+  checksum: 10c0/c20b0b52eada370d66fb06eda1a767f2043fecc6c4647691c889f4f62aa0f8948811dc64f033ebab02085a2e27e79099034ebe1699facf4e24e6bbc5ad0c203f
   languageName: node
   linkType: hard
 
-"karma-jasmine@npm:~4.0.0":
-  version: 4.0.2
-  resolution: "karma-jasmine@npm:4.0.2"
+"karma-jasmine@npm:~5.1.0":
+  version: 5.1.0
+  resolution: "karma-jasmine@npm:5.1.0"
   dependencies:
-    jasmine-core: "npm:^3.6.0"
+    jasmine-core: "npm:^4.1.0"
   peerDependencies:
-    karma: "*"
-  checksum: 10c0/4cc4e812130898e59ae125fa9bf5cada2e228b246c7612175906ec44beb41725f6bab01097b08f642c3a1f99c3e0c1780aaec786fb383c33e9b4f2669dea521e
+    karma: ^6.0.0
+  checksum: 10c0/827843d2b4af5396c35de6911d15304955bd7376f96527f46285beb0178510aa401ff123a010a9ee3f13aeeeb56f64a9a3e22d7d61fb58ee76a2845b153a9d20
   languageName: node
   linkType: hard
 
@@ -10480,9 +10474,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma@npm:~6.3.4":
-  version: 6.3.20
-  resolution: "karma@npm:6.3.20"
+"karma@npm:~6.4.4":
+  version: 6.4.4
+  resolution: "karma@npm:6.4.4"
   dependencies:
     "@colors/colors": "npm:1.5.0"
     body-parser: "npm:^1.19.0"
@@ -10503,14 +10497,14 @@ __metadata:
     qjobs: "npm:^1.2.0"
     range-parser: "npm:^1.2.1"
     rimraf: "npm:^3.0.2"
-    socket.io: "npm:^4.4.1"
+    socket.io: "npm:^4.7.2"
     source-map: "npm:^0.6.1"
     tmp: "npm:^0.2.1"
     ua-parser-js: "npm:^0.7.30"
     yargs: "npm:^16.1.1"
   bin:
     karma: bin/karma
-  checksum: 10c0/5dbe6258008103b256b9f5f054cf45487f16de81fea8c80d5da5ec5fbeb61dbc10b101bb1230f2277047317a916d5517083bb5a4df9cde8cda4a9013cdb45d0c
+  checksum: 10c0/1658c4b7396c0edf6f048289182e075b561902e02992e1a3eb72f56f67090ff0c7ad7c91ab099e88a790c60f9500c5a6f974d75f1769e3ea2dfccda52876ec0b
   languageName: node
   linkType: hard
 
@@ -14064,18 +14058,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socket.io@npm:^4.4.1":
-  version: 4.7.5
-  resolution: "socket.io@npm:4.7.5"
+"socket.io@npm:^4.7.2":
+  version: 4.8.0
+  resolution: "socket.io@npm:4.8.0"
   dependencies:
     accepts: "npm:~1.3.4"
     base64id: "npm:~2.0.0"
     cors: "npm:~2.8.5"
     debug: "npm:~4.3.2"
-    engine.io: "npm:~6.5.2"
+    engine.io: "npm:~6.6.0"
     socket.io-adapter: "npm:~2.5.2"
     socket.io-parser: "npm:~4.2.4"
-  checksum: 10c0/221a2cd25f6077d6672cb8b19921336e1acf06788d4bade74953dc96dbfd8b788a5f721b051341a34ee81ef8e1b2028d39ad5257516776400a3f8f3f01255c5e
+  checksum: 10c0/eab8a0da617f2583a0003883155f252f814c59324f4b174b5e940fcce2bd3a553ab9c6d7f128c7b515a537f776b1b4e34293b8324ec048c4b8df2bf8930ce8bf
   languageName: node
   linkType: hard
 
@@ -14490,8 +14484,8 @@ __metadata:
     "@popperjs/core": "npm:^2.11.8"
     "@swimlane/ngx-charts": "npm:^20.5.0"
     "@tinymce/tinymce-angular": "npm:^8.0.0"
-    "@types/jasmine": "npm:~3.6.0"
-    "@types/jasminewd2": "npm:^2.0.6"
+    "@types/jasmine": "npm:~5.1.4"
+    "@types/jasminewd2": "npm:^2.0.13"
     "@types/lodash-es": "npm:^4.17.4"
     "@types/luxon": "npm:3.0.0"
     "@types/node": "npm:^12.19.15"
@@ -14516,16 +14510,16 @@ __metadata:
     eslint-plugin-prefer-arrow: "npm:^1.2.3"
     glob: "npm:^11.0.0"
     graphql: "npm:^16.9.0"
-    jasmine-core: "npm:~3.6.0"
-    jasmine-spec-reporter: "npm:~5.0.0"
+    jasmine-core: "npm:~5.4.0"
+    jasmine-spec-reporter: "npm:~7.0.0"
     json-merger: "npm:^1.1.10"
-    karma: "npm:~6.3.4"
-    karma-chrome-launcher: "npm:~3.1.0"
+    karma: "npm:~6.4.4"
+    karma-chrome-launcher: "npm:~3.2.0"
     karma-cli: "npm:^2.0.0"
-    karma-coverage-istanbul-reporter: "npm:~3.0.2"
-    karma-firefox-launcher: "npm:^1.3.0"
-    karma-jasmine: "npm:~4.0.0"
-    karma-jasmine-html-reporter: "npm:^1.5.0"
+    karma-coverage-istanbul-reporter: "npm:~3.0.3"
+    karma-firefox-launcher: "npm:^2.1.3"
+    karma-jasmine: "npm:~5.1.0"
+    karma-jasmine-html-reporter: "npm:^2.1.0"
     lodash-es: "npm:^4.17.21"
     luxon: "npm:3.4.4"
     mathjs: "npm:^13.0.2"
@@ -15734,6 +15728,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"which@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "which@npm:3.0.1"
+  dependencies:
+    isexe: "npm:^2.0.0"
+  bin:
+    node-which: bin/which.js
+  checksum: 10c0/15263b06161a7c377328fd2066cb1f093f5e8a8f429618b63212b5b8847489be7bcab0ab3eb07f3ecc0eda99a5a7ea52105cf5fa8266bedd083cc5a9f6da24f1
+  languageName: node
+  linkType: hard
+
 "which@npm:^4.0.0":
   version: 4.0.0
   resolution: "which@npm:4.0.0"
@@ -15858,6 +15863,21 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10c0/b672b312f357afba8568b9dbb9e08b9e8a20845659b35fa6b340dc848efe371379f5e22bb1dc89c4b2940d5e2dc52dd1de85dde41776875fce115a448f94754f
+  languageName: node
+  linkType: hard
+
+"ws@npm:~8.17.1":
+  version: 8.17.1
+  resolution: "ws@npm:8.17.1"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ">=5.0.2"
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 10c0/f4a49064afae4500be772abdc2211c8518f39e1c959640457dcee15d4488628620625c783902a52af2dd02f68558da2868fd06e6fd0e67ebcd09e6881b1b5bfe
   languageName: node
   linkType: hard
 
