@@ -6212,7 +6212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"barrelsby@npm:^2.2.0":
+"barrelsby@npm:^2.8.1":
   version: 2.8.1
   resolution: "barrelsby@npm:2.8.1"
   dependencies:
@@ -14605,7 +14605,7 @@ __metadata:
     ajv: "npm:~8.17.1"
     angular-svg-icon: "npm:^17.0.0"
     apollo-angular: "npm:^6.0.0"
-    barrelsby: "npm:^2.2.0"
+    barrelsby: "npm:^2.8.1"
     bootstrap: "npm:^5.3.3"
     bootstrap-css-only: "npm:^4.4.1"
     concurrently: "npm:^8.2.2"

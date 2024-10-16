@@ -11,7 +11,7 @@
     "build:shell": "ng build shell --configuration production",
     "build:core": "ng build core --configuration production",
     "build:extension": "ng build \"$@\" --configuration production",
-    "gen-index:core": "barrelsby --delete -e '.*\\.spec.*' -q -d core/app/core/src/lib/ -n core",
+    "gen-index:core": "barrelsby --noHeader --delete -e '.*\\.spec.*' -q -d  core/app/core/src/lib/ -n core",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -78,7 +78,7 @@
     "@types/node": "^12.19.15",
     "@typescript-eslint/eslint-plugin": "^8.9.0",
     "@typescript-eslint/parser": "^8.9.0",
-    "barrelsby": "^2.2.0",
+    "barrelsby": "^2.8.1",
     "eslint": "^9.12.0",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-typescript": "^3.6.3",
