@@ -4064,7 +4064,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/workspace@npm:18.3.5, @nrwl/workspace@npm:^18.2.0":
+"@nrwl/workspace@npm:18.3.5, @nrwl/workspace@npm:^18.3.5":
   version: 18.3.5
   resolution: "@nrwl/workspace@npm:18.3.5"
   dependencies:
@@ -14219,7 +14219,7 @@ __metadata:
     "@angular/router": "npm:18.2.8"
     "@apollo/client": "npm:^3.11.8"
     "@ng-bootstrap/ng-bootstrap": "npm:17.0.1"
-    "@nrwl/workspace": "npm:^18.2.0"
+    "@nrwl/workspace": "npm:^18.3.5"
     "@popperjs/core": "npm:^2.11.8"
     "@swimlane/ngx-charts": "npm:^20.5.0"
     "@tinymce/tinymce-angular": "npm:^8.0.1"
