@@ -12906,9 +12906,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"primeng@npm:^17.18.4":
-  version: 17.18.4
-  resolution: "primeng@npm:17.18.4"
+"primeng@npm:^17.18.11":
+  version: 17.18.11
+  resolution: "primeng@npm:17.18.11"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
@@ -12917,7 +12917,7 @@ __metadata:
     "@angular/forms": ^17.0.0 || ^18.0.0
     rxjs: ^6.0.0 || ^7.8.1
     zone.js: ~0.14.0
-  checksum: 10c0/b6b3e8d6c9dfbde7c0fb8b1fce0e04f4c397f911fb296ec1ac5abd67169f4a07c0a382079e925abc01c7be1e199f59388f02a1a75d2b73fd337499661984d83a
+  checksum: 10c0/2f0eb92e9ce2a8046e984981d88c85a65f7698ce455da276593d304cf9c5eb2638b871c1f477664fdc0192ec463d5bde10b08e32417dd20cd75c5fadb91ea48a
   languageName: node
   linkType: hard
 
@@ -14641,7 +14641,7 @@ __metadata:
     nyc: "npm:~17.0.0"
     object-hash: "npm:^3.0.0"
     prettier: "npm:^2.8.8"
-    primeng: "npm:^17.18.4"
+    primeng: "npm:^17.18.11"
     rxjs: "npm:^7.8.1"
     tinymce: "npm:^7.2.1"
     ts-node: "npm:^8.10.1"
