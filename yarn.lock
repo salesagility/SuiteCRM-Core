@@ -15,28 +15,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-architects/module-federation-runtime@npm:17.0.8":
-  version: 17.0.8
-  resolution: "@angular-architects/module-federation-runtime@npm:17.0.8"
+"@angular-architects/module-federation-runtime@npm:18.0.6":
+  version: 18.0.6
+  resolution: "@angular-architects/module-federation-runtime@npm:18.0.6"
   dependencies:
     tslib: "npm:^2.0.0"
   peerDependencies:
-    "@angular/common": ">=17.0.0"
-    "@angular/core": ">=17.0.0"
-  checksum: 10c0/4bc6d1d97784ac5819b2078882dc2181d93a8f10bc0f47c16eb4488b0275fba616c696aac4e37eaf15dfb232645989fa4ccdceb3fc2cbcf5fe75c1cd99825287
+    "@angular/common": ">=18.0.0"
+    "@angular/core": ">=18.0.0"
+  checksum: 10c0/1c0e9a4ef7739b5be13a6129a7842720e351bff179dabb144341ebfc27a4301f083237b0385a5340a93d7e4a0933c2694302434d6f6c2d8c2908bf7d6c4c8654
   languageName: node
   linkType: hard
 
-"@angular-architects/module-federation@npm:^17.0.8":
-  version: 17.0.8
-  resolution: "@angular-architects/module-federation@npm:17.0.8"
+"@angular-architects/module-federation@npm:^18.0.6":
+  version: 18.0.6
+  resolution: "@angular-architects/module-federation@npm:18.0.6"
   dependencies:
-    "@angular-architects/module-federation-runtime": "npm:17.0.8"
+    "@angular-architects/module-federation-runtime": "npm:18.0.6"
     callsite: "npm:^1.0.0"
     node-fetch: "npm:^2.6.7"
     semver: "npm:^7.3.5"
     word-wrap: "npm:^1.2.3"
-  checksum: 10c0/10484bb8a2acd6c1ba73ff71045da449cf34946902a09078d84de56f974adfde860888ae4b866da5fb264cbd04933aefe5fee85d62eb85742664ae847c68c89a
+  checksum: 10c0/8967b9c2bebd68a1540184d299bb90846202fae77a2f75fd6a9ba258a94dc241c94a2be94401e980585bf77b4703c927dd057ca3589f122c2f97846ffcb6a51c
   languageName: node
   linkType: hard
 
@@ -12858,7 +12858,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "suitecrm@workspace:."
   dependencies:
-    "@angular-architects/module-federation": "npm:^17.0.8"
+    "@angular-architects/module-federation": "npm:^18.0.6"
     "@angular-devkit/build-angular": "npm:18.1.1"
     "@angular-eslint/builder": "npm:0.0.1-alpha.18"
     "@angular/animations": "npm:18.1.1"
