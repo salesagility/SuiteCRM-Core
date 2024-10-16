@@ -14268,7 +14268,7 @@ __metadata:
     object-hash: "npm:^3.0.0"
     primeng: "npm:^17.18.11"
     rxjs: "npm:^7.8.1"
-    tinymce: "npm:^7.2.1"
+    tinymce: "npm:^7.4.1"
     tslib: "npm:^2.8.0"
     typescript: "npm:~5.4.5"
     webpack: "npm:^5.95.0"
@@ -14462,10 +14462,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinymce@npm:^7.0.0 || ^6.0.0 || ^5.5.0, tinymce@npm:^7.2.1":
+"tinymce@npm:^7.0.0 || ^6.0.0 || ^5.5.0":
   version: 7.2.1
   resolution: "tinymce@npm:7.2.1"
   checksum: 10c0/092d6f9f054e0301112c623eaaf07896c7d17e14bc1b38ea315eeb0fc42cbed47ed94dcc3d36b2e42001bff41dd408765368cda34b82889c9f54ca121cdb77d1
+  languageName: node
+  linkType: hard
+
+"tinymce@npm:^7.4.1":
+  version: 7.4.1
+  resolution: "tinymce@npm:7.4.1"
+  checksum: 10c0/d5520751a2ba061bbcfa61e703ff6e735a11303783b4261d1d15963f5829e6900f852461be7104ab44854b024f4e2cf6fe33054b053d4da8d4c3ad6bf75510e8
   languageName: node
   linkType: hard
 
