@@ -4872,7 +4872,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tinymce/tinymce-angular@npm:^8.0.0":
+"@tinymce/tinymce-angular@npm:^8.0.1":
   version: 8.0.1
   resolution: "@tinymce/tinymce-angular@npm:8.0.1"
   dependencies:
@@ -14593,7 +14593,7 @@ __metadata:
     "@nrwl/workspace": "npm:^18.2.0"
     "@popperjs/core": "npm:^2.11.8"
     "@swimlane/ngx-charts": "npm:^20.5.0"
-    "@tinymce/tinymce-angular": "npm:^8.0.0"
+    "@tinymce/tinymce-angular": "npm:^8.0.1"
     "@types/jasmine": "npm:~5.1.4"
     "@types/jasminewd2": "npm:^2.0.13"
     "@types/lodash-es": "npm:^4.17.12"

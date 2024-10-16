@@ -39,7 +39,7 @@
     "@nrwl/workspace": "^18.2.0",
     "@popperjs/core": "^2.11.8",
     "@swimlane/ngx-charts": "^20.5.0",
-    "@tinymce/tinymce-angular": "^8.0.0",
+    "@tinymce/tinymce-angular": "^8.0.1",
     "@types/object-hash": "^3.0.6",
     "ajv": "~8.17.1",
     "angular-svg-icon": "^17.0.0",
