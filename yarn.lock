@@ -5160,7 +5160,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^12.19.15":
+"@types/node@npm:^12.20.55":
   version: 12.20.55
   resolution: "@types/node@npm:12.20.55"
   checksum: 10c0/3b190bb0410047d489c49bbaab592d2e6630de6a50f00ba3d7d513d59401d279972a8f5a598b5bb8ddc1702f8a2f4ec57a65d93852f9c329639738e7053637d1
@@ -14598,7 +14598,7 @@ __metadata:
     "@types/jasminewd2": "npm:^2.0.13"
     "@types/lodash-es": "npm:^4.17.12"
     "@types/luxon": "npm:3.4.2"
-    "@types/node": "npm:^12.19.15"
+    "@types/node": "npm:^12.20.55"
     "@types/object-hash": "npm:^3.0.6"
     "@typescript-eslint/eslint-plugin": "npm:^8.9.0"
     "@typescript-eslint/parser": "npm:^8.9.0"
