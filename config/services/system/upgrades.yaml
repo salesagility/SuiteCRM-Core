@@ -25,6 +25,7 @@ parameters:
       - '.env.prod.local.php'
       - '.env.dev.local'
       - '.env.dev.local.php'
+      - 'angular.json'
       - 'tmp'
     toKeepIgnore:
       - 'public/legacy/modules/Accounts'
