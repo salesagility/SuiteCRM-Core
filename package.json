@@ -63,7 +63,7 @@
     "tinymce": "^7.2.1",
     "tslib": "^2.6.3",
     "webpack": "^5.93.0",
-    "zone.js": "~0.14.7"
+    "zone.js": "~0.14.10"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "18.2.8",
