@@ -5103,7 +5103,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash-es@npm:^4.17.4":
+"@types/lodash-es@npm:^4.17.12":
   version: 4.17.12
   resolution: "@types/lodash-es@npm:4.17.12"
   dependencies:
@@ -14596,7 +14596,7 @@ __metadata:
     "@tinymce/tinymce-angular": "npm:^8.0.0"
     "@types/jasmine": "npm:~5.1.4"
     "@types/jasminewd2": "npm:^2.0.13"
-    "@types/lodash-es": "npm:^4.17.4"
+    "@types/lodash-es": "npm:^4.17.12"
     "@types/luxon": "npm:3.4.2"
     "@types/node": "npm:^12.19.15"
     "@types/object-hash": "npm:^3.0.6"
