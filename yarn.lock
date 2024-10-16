@@ -12598,15 +12598,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.8":
-  version: 2.8.8
-  resolution: "prettier@npm:2.8.8"
-  bin:
-    prettier: bin-prettier.js
-  checksum: 10c0/463ea8f9a0946cd5b828d8cf27bd8b567345cf02f56562d5ecde198b91f47a76b7ac9eae0facd247ace70e927143af6135e8cf411986b8cb8478784a4d6d724a
-  languageName: node
-  linkType: hard
-
 "pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
@@ -14283,7 +14274,6 @@ __metadata:
     ngx-build-plus: "npm:18.0.0"
     ngx-chips: "npm:^3.0.0"
     object-hash: "npm:^3.0.0"
-    prettier: "npm:^2.8.8"
     primeng: "npm:^17.18.11"
     rxjs: "npm:^7.8.1"
     tinymce: "npm:^7.2.1"
