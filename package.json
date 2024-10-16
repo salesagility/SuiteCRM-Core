@@ -62,7 +62,7 @@
     "rxjs": "^7.8.1",
     "tinymce": "^7.2.1",
     "tslib": "^2.6.3",
-    "webpack": "^5.93.0",
+    "webpack": "^5.95.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
