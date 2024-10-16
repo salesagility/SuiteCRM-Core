@@ -756,9 +756,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.10.8":
-  version: 3.10.8
-  resolution: "@apollo/client@npm:3.10.8"
+"@apollo/client@npm:^3.11.8":
+  version: 3.11.8
+  resolution: "@apollo/client@npm:3.11.8"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
@@ -777,8 +777,8 @@ __metadata:
   peerDependencies:
     graphql: ^15.0.0 || ^16.0.0
     graphql-ws: ^5.5.5
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc <19.0.0
     subscriptions-transport-ws: ^0.9.0 || ^0.11.0
   peerDependenciesMeta:
     graphql-ws:
@@ -789,7 +789,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10c0/38f69040c8bbed78dc3b7c18de8ede1aacdf0501e5a7340171d95d4c339b72857c6ef3cb233038cc3e69bc44f1917c4c1a01cfaae3a130285eafbf89f96b290a
+  checksum: 10c0/a9b697460aa6a5d7e59685132509871675995af14b5fc69213ca22f973600cfe3391b27b7b871579c5b4e18a0d6755ffd1076a2d8dd970a54a43973feaa99ffa
   languageName: node
   linkType: hard
 
@@ -5932,17 +5932,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-angular@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "apollo-angular@npm:6.0.0"
+"apollo-angular@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "apollo-angular@npm:7.2.0"
   dependencies:
     tslib: "npm:^2.6.2"
   peerDependencies:
-    "@angular/core": ^17.0.0
+    "@angular/core": ^17.0.0 || ^18.0.0
     "@apollo/client": ^3.0.0
     graphql: ^15.0.0 || ^16.0.0
     rxjs: ^6.0.0 || ^7.0.0
-  checksum: 10c0/2dc831907dd463752f402bca45a2d979fc6d0a2a782ea7ce56a6ec34ad7bf01e2773498416a1e82f68a75f772f1834e8a74fd677e9526411aa889d92e7facfa0
+  checksum: 10c0/9ebef51f54b89a0c7f9d39d0a2e9d75321d9e1e58b12ad0111bfbfbd9874d2fe72e7b26c21a5cebffeb64453ff3e37fd94c54ccf4694bb4a2f829bb74d2aa5d8
   languageName: node
   linkType: hard
 
@@ -14588,7 +14588,7 @@ __metadata:
     "@angular/platform-browser": "npm:18.2.8"
     "@angular/platform-browser-dynamic": "npm:18.2.8"
     "@angular/router": "npm:18.2.8"
-    "@apollo/client": "npm:^3.10.8"
+    "@apollo/client": "npm:^3.11.8"
     "@ng-bootstrap/ng-bootstrap": "npm:17.0.1"
     "@nrwl/workspace": "npm:^18.2.0"
     "@popperjs/core": "npm:^2.11.8"
@@ -14604,7 +14604,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.9.0"
     ajv: "npm:~8.17.1"
     angular-svg-icon: "npm:^17.0.0"
-    apollo-angular: "npm:^6.0.0"
+    apollo-angular: "npm:^7.2.0"
     barrelsby: "npm:^2.8.1"
     bootstrap: "npm:^5.3.3"
     bootstrap-css-only: "npm:^4.4.1"
