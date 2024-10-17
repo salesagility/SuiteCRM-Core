@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {BulkActionsMap} from '../../common/actions/bulk-action.model';
 import {DropdownButtonInterface} from '../../common/components/button/dropdown-button.model';
@@ -57,7 +57,8 @@ export class BulkActionMenuComponent implements OnInit, OnDestroy {
     dropdownSmallConfig: DropdownButtonInterface;
     subs: Subscription[] = [];
     status: SelectionStatus = SelectionStatus.NONE;
-    count: number = 0;
+    count: WritableSignal<number> = signal(0);
+
 
     constructor(protected languageStore: LanguageStore) {
     }
@@ -65,7 +66,7 @@ export class BulkActionMenuComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
         this.subs = [];
-        this.count = 0;
+        this.count = signal(0);
         this.status = SelectionStatus.NONE;
     }
 
@@ -73,7 +74,7 @@ export class BulkActionMenuComponent implements OnInit, OnDestroy {
         this.subs = [];
 
         this.subs.push(this.selectionSource.getSelectionStatus().subscribe(status => this.status = status));
-        this.subs.push(this.selectionSource.getSelectedCount().subscribe(count => this.count = count));
+        this.subs.push(this.selectionSource.getSelectedCount().subscribe(count => this.count.set(count)));
 
         this.subs.push(this.actionSource.getBulkActions().subscribe(actions => {
             const dropdownConfig = {
