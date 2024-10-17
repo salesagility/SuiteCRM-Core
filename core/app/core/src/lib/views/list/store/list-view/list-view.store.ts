@@ -94,7 +94,7 @@ const initialFilters: SavedFilterMap = {
 
 const initialState: ListViewState = {
     module: '',
-    widgets: true,
+    widgets: false,
     actionPanel: '',
     showSidebarWidgets: false,
     recordPanelConfig: {} as RecordPanelMetadata,

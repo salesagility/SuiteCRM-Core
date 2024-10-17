@@ -95,7 +95,10 @@ export class ClassicViewResolver extends BaseMetadataResolver {
                     const action = info.action ?? 'index';
                     this.appStateStore.setView(action);
 
-                    this.recentlyViewed.onNavigationAdd(this.appStateStore.getModule(), route);
+                    setTimeout(() => {
+                        this.recentlyViewed.onNavigationAdd(this.appStateStore.getModule(), route);
+                    }, 800);
+
                 },
                 () => {
                     this.addMetadataLoadErrorMessage();

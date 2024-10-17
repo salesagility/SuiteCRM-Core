@@ -178,8 +178,10 @@ export class AuthGuard  {
                             this.language.appStrings$.pipe(
                                 filter(appStrings => appStrings && !emptyObject(appStrings)),
                                 tap(() => {
-                                    this.notificationStore.enableNotifications();
-                                    this.notificationStore.refreshNotifications();
+                                    setTimeout(() => {
+                                        this.notificationStore.enableNotifications();
+                                        this.notificationStore.refreshNotifications();
+                                    }, 2000);
                                 }),
                                 take(1)
                             ).subscribe();

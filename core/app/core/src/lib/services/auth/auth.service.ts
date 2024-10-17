@@ -39,6 +39,7 @@ import {LocalStorageService} from '../local-storage/local-storage.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {BaseRouteService} from "../base-route/base-route.service";
 import {NotificationStore} from '../../store/notification/notification.store';
+import {AsyncActionInput} from "../process/processes/async-action/async-action";
 
 export interface SessionStatus {
     appStatus?: AppStatus;
@@ -122,8 +123,11 @@ export class AuthService {
             onSuccess(response);
             this.isUserLoggedIn.next(true);
             this.setCurrentUser(response);
-            this.notificationStore.enableNotifications();
-            this.notificationStore.refreshNotifications();
+            setTimeout(() => {
+                this.notificationStore.enableNotifications();
+                this.notificationStore.refreshNotifications();
+            }, 2000);
+
         }, (error: HttpErrorResponse) => {
             onError(error);
         });

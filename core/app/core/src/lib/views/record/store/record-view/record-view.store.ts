@@ -295,7 +295,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         return this.load().pipe(
             tap(() => {
                 this.showTopWidget = true;
-                this.loadSubpanelStatistics(module);
+                setTimeout(() => this.loadSubpanelStatistics(module), 1500);
                 this.parseParams(params);
             })
         );

@@ -95,7 +95,9 @@ export class BaseRecordResolver extends BaseModuleResolver {
             }),
             tap(() => {
                 if (this.auth.isLoggedIn()) {
-                    this.recentlyViewed.onNavigationAdd(this.appStateStore.getModule(), route);
+                    setTimeout(() => {
+                        this.recentlyViewed.onNavigationAdd(this.appStateStore.getModule(), route);
+                    }, 800);
                 }
             })
         );

@@ -62,8 +62,10 @@ export class AppComponent {
         if (routerEvent instanceof NavigationStart) {
             this.appStateStore.updateLoading('router-navigation', true);
             this.conditionalCacheReset();
-            this.notificationStore.conditionalNotificationRefresh();
-            this.recentlyViewed.conditionalGlobalRefresh()
+            setTimeout(() => {
+                this.notificationStore.conditionalNotificationRefresh();
+                this.recentlyViewed.conditionalGlobalRefresh()
+            }, 1000);
         }
 
         if (routerEvent instanceof NavigationEnd) {
