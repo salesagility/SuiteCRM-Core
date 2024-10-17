@@ -31,7 +31,7 @@ import '@angular/localize/init';
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js'; // Included with Angular CLI.
+// import 'zone.js'; // Included with Angular CLI.
 // tslint:disable
 /**
  * This file includes polyfills needed by Angular and is loaded before the app.

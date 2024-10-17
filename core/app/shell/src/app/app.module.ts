@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule, provideExperimentalZonelessChangeDetection} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {
     HTTP_INTERCEPTORS,
@@ -113,6 +113,7 @@ export const initializeApp = (appInitService: AppInit) => (): Promise<any> => ap
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
+        provideExperimentalZonelessChangeDetection(),
         AppInit,
         {
             provide: APP_INITIALIZER,
