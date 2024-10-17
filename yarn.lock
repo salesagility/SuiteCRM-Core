@@ -5785,7 +5785,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:8.17.1, ajv@npm:^8.12.0, ajv@npm:~8.17.1":
+"ajv@npm:8.17.1, ajv@npm:^8.12.0":
   version: 8.17.1
   resolution: "ajv@npm:8.17.1"
   dependencies:
@@ -14223,7 +14223,6 @@ __metadata:
     "@types/object-hash": "npm:^3.0.6"
     "@typescript-eslint/eslint-plugin": "npm:^8.9.0"
     "@typescript-eslint/parser": "npm:^8.9.0"
-    ajv: "npm:~8.17.1"
     angular-svg-icon: "npm:^17.0.0"
     apollo-angular: "npm:^7.2.0"
     barrelsby: "npm:^2.8.1"
