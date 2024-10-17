@@ -54,7 +54,12 @@
             "allowedCommonJsDependencies": [
               "graphql-tag",
               "zen-observable",
-              "seedrandom"
+              "seedrandom",
+              "rfdc",
+              "typed-function",
+              "javascript-natural-sort",
+              "complex.js",
+              "escape-latex"
             ],
             "extraWebpackConfig": "core/app/shell/webpack.config.js"
           },
@@ -91,8 +96,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "9mb",
+                  "maximumError": "12mb"
                 },
                 {
                   "type": "anyComponentStyle",

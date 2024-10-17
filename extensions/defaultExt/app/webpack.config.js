@@ -25,106 +25,121 @@ module.exports = {
       },
 
       shared: {
-        '@angular/core': {
-          singleton: true,
-          requiredVersion: '^17.3.11'
-        },
-        '@angular/common': {
-          singleton: true,
-          requiredVersion: '^17.3.11'
-        },
-        '@angular/common/http': {
-          singleton: true,
-          requiredVersion: '^17.3.11'
-        },
-        '@angular/router': {
-          singleton: true,
-          requiredVersion: '^17.3.11'
-        },
         '@angular/animations': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: 'auto'
         },
         '@angular/cdk': {
           singleton: true,
-          requiredVersion: '^17.3.10'
+          requiredVersion: 'auto'
         },
         '@angular/cdk/table': {
           singleton: true,
-          requiredVersion: '^17.3.10'
+          requiredVersion: 'auto'
         },
         '@angular/cdk/observers': {
           singleton: true,
-          requiredVersion: '^17.3.10'
+          requiredVersion: 'auto'
+        },
+        '@angular/common': {
+          singleton: true,
+          requiredVersion: 'auto'
+        },
+        '@angular/common/http': {
+          singleton: true,
+          requiredVersion: 'auto'
+        },
+        '@angular/core': {
+          singleton: true,
+          requiredVersion: 'auto'
         },
         '@angular/forms': {
           singleton: true,
-          requiredVersion: '^17.3.11'
+          requiredVersion: 'auto'
+        },
+        '@angular/router': {
+          singleton: true,
+          requiredVersion: 'auto'
         },
         '@apollo/client': {
           singleton: true,
-          requiredVersion: '^3.10.8'
+          requiredVersion: 'auto'
+        },
+        '@ng-bootstrap/ng-bootstrap': {
+          singleton: true,
+          requiredVersion: 'auto'
+        },
+
+        '@popperjs/core': {
+          singleton: true,
+          requiredVersion: 'auto'
+        },
+        '@swimlane/ngx-charts': {
+          singleton: true,
+          requiredVersion: 'auto'
+        },
+        '@tinymce/tinymce-angular': {
+          singleton: true,
+          requiredVersion: 'auto'
         },
         'angular-svg-icon': {
           singleton: true,
-          requiredVersion: '^17.0.0'
+          requiredVersion: 'auto'
         },
         'apollo-angular': {
           singleton: true,
-          requiredVersion: '^6.0.0'
+          requiredVersion: 'auto'
         },
         graphql: {
           singleton: true,
-          requiredVersion: '^16.9.0'
+          requiredVersion: 'auto'
         },
         'lodash-es': {
           singleton: true,
-          requiredVersion: '^4.17.21'
+          requiredVersion: 'auto'
         },
+
         luxon: {
           singleton: true,
-          requiredVersion: '3.4.4'
+          requiredVersion: 'auto'
         },
+
+        mathjs: {
+          singleton: true,
+          requiredVersion: 'auto'
+        },
+
         'ng-animate': {
           singleton: true,
-          requiredVersion: '^2.0.1'
+          requiredVersion: 'auto'
         },
         'ngx-chips': {
           singleton: true,
-          requiredVersion: '^3.0.0'
+          requiredVersion: 'auto'
         },
 
-        '@swimlane/ngx-charts': {
+        'primeng': {
           singleton: true,
-          requiredVersion: '^20.5.0'
-        },
+          requiredVersion: 'auto'
 
-        '@ng-bootstrap/ng-bootstrap': {
-          singleton: true,
-          requiredVersion: '^16.0.0'
         },
 
         'rxjs': {
           singleton: true,
-          requiredVersion: '^7.8.1'
+          requiredVersion: 'auto'
         },
 
         'rxjs/operators': {
           singleton: true,
-          requiredVersion: '^7.8.1'
-        },
-
-        common: {
-          singleton: true,
-          import: 'dist/common',
-          requiredVersion: false
+          requiredVersion: 'auto'
         },
 
         core: {
           singleton: true,
           import: 'dist/core',
-          requiredVersion: false
+          requiredVersion: 'auto'
         },
+
       }
 
     }),
