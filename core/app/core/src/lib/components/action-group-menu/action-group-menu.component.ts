@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, signal, WritableSignal} from '@angular/core';
 import {Action, ActionContext, ActionDataSource} from '../../common/actions/action.model';
 import {Button, ButtonInterface} from '../../common/components/button/button.model';
 import {ButtonGroupInterface} from '../../common/components/button/button-group.model';
@@ -37,6 +37,7 @@ import {
     ScreenSizeObserverService
 } from '../../services/ui/screen-size-observer/screen-size-observer.service';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
+import {sign} from "mathjs";
 
 export interface ActionGroupMenuViewModel {
     actions: Action[];
@@ -61,12 +62,12 @@ export class ActionGroupMenuComponent implements OnInit {
 
     vm$: Observable<ActionGroupMenuViewModel>;
 
-    inlineConfirmationEnabled = false;
+    inlineConfirmationEnabled: WritableSignal<boolean> =  signal(false);
     confirmationLabel = '';
     confirmationDynamicLabel = '';
     inlineCancelButton: ButtonInterface = null;
     inlineConfirmButton: ButtonInterface = null;
-    loading = false;
+    loading: WritableSignal<boolean> = signal(false);
 
     protected buttonGroupDropdownClass = 'dropdown-button-secondary';
 
@@ -216,10 +217,10 @@ export class ActionGroupMenuComponent implements OnInit {
     }
 
     protected triggerTemporaryLoading() {
-        this.loading = true;
+        this.loading.set(true);
         const delay = parseInt(this.systemConfigStore.getUi('inline_confirmation_loading_delay')) ?? 200;
         setTimeout(() => {
-            this.loading = false;
+            this.loading.set(false);
         }, delay);
     }
 
@@ -231,7 +232,7 @@ export class ActionGroupMenuComponent implements OnInit {
 
         this.inlineCancelButton = this.buildInlineCancelButton(cancelConfig)
         this.inlineConfirmButton = this.buildInlineConfirmButton(confirmConfig, callback)
-        this.inlineConfirmationEnabled = true;
+        this.inlineConfirmationEnabled.set(true);
     }
 
     protected buildInlineCancelButton(config: ButtonInterface): ButtonInterface {
@@ -268,7 +269,7 @@ export class ActionGroupMenuComponent implements OnInit {
     }
 
     protected resetInlineConfirmation(): void {
-        this.inlineConfirmationEnabled = false;
+        this.inlineConfirmationEnabled.set(false);
         this.confirmationDynamicLabel = '';
         this.confirmationLabel = '';
         this.inlineConfirmButton = null;
