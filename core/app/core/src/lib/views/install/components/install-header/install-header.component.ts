@@ -29,7 +29,6 @@ import {map} from 'rxjs/operators';
 import {InstallActionsAdapter} from '../../adapters/actions.adapter';
 import {ActionContext} from '../../../../common/actions/action.model';
 import {Record} from '../../../../common/record/record.model';
-
 import {InstallViewStore} from '../../store/install-view/install-view.store';
 
 @Component({

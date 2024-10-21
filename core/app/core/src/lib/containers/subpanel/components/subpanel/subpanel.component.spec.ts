@@ -25,7 +25,7 @@
  */
 
 import {CommonModule} from '@angular/common';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterModule} from '@angular/router';
@@ -42,7 +42,7 @@ import {PanelModule} from '../../../../components/panel/panel.module';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {metadataStoreMock} from '../../../../store/metadata/metadata.store.spec.mock';
 import {ImageModule} from '../../../../components/image/image.module';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 const store = recordviewStoreMock.getSubpanels().contacts;
 

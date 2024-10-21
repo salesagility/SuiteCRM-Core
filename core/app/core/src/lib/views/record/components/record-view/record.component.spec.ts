@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ApolloTestingModule} from 'apollo-angular/testing';
@@ -59,7 +59,7 @@ import {MetadataStore} from '../../../../store/metadata/metadata.store.service';
 import {mockModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service.spec.mock';
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 @Component({
     selector: 'record-test-host-component',

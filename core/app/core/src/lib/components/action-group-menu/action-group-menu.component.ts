@@ -37,7 +37,6 @@ import {
     ScreenSizeObserverService
 } from '../../services/ui/screen-size-observer/screen-size-observer.service';
 import {LanguageStore, LanguageStrings} from '../../store/language/language.store';
-import {sign} from "mathjs";
 
 export interface ActionGroupMenuViewModel {
     actions: Action[];

@@ -25,9 +25,8 @@
  */
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-
 import {SettingsMenuComponent} from './settings-menu.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -38,7 +37,7 @@ import {themeImagesMockData} from '../../../../store/theme-images/theme-images.s
 import {ImageModule} from '../../../../components/image/image.module';
 import {listviewStoreMock} from '../../store/list-view/list-view.store.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 describe('SettingsmenuUiComponent', () => {
     let component: SettingsMenuComponent;

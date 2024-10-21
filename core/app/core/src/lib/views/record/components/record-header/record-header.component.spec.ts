@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {RecordHeaderComponent} from './record-header.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -54,7 +54,7 @@ import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spe
 import {recordActionsMock} from '../../adapters/actions.adapter.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
 import {ActionGroupMenuModule} from '../../../../components/action-group-menu/action-group-menu.module';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 @Component({
     selector: 'record-header-test-host-component',

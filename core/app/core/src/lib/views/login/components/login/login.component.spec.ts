@@ -28,8 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RouterTestingModule} from '@angular/router/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {LoginUiComponent} from './login.component';
 import {By} from '@angular/platform-browser';
@@ -41,7 +40,7 @@ import {recoverPasswordMock} from '../../../../services/process/processes/recove
 import {languageStoreMock} from '../../../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 describe('LoginComponent', () => {
     let component: LoginUiComponent;

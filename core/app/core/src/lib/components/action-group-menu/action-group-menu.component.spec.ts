@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ActionGroupMenuComponent} from './action-group-menu.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {Observable, of} from 'rxjs';
 import {shareReplay, take} from 'rxjs/operators';
@@ -56,7 +56,7 @@ import {recordActionsMock} from '../../views/record/adapters/actions.adapter.spe
 import {RecordActionsAdapter} from '../../views/record/adapters/actions.adapter';
 import {ImageModule} from '../image/image.module';
 import {Action, ActionDataSource} from '../../common/actions/action.model';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 @Component({
     selector: 'action-group-menu-test-host-component',

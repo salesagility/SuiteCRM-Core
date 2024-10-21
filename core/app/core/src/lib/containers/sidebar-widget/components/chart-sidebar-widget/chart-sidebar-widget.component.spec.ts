@@ -28,10 +28,10 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 
 import {ChartSidebarWidgetComponent} from './chart-sidebar-widget.component';
 import {RouterTestingModule} from '@angular/router/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 describe('ChartSidebarWidgetComponent', () => {
     let component: ChartSidebarWidgetComponent;

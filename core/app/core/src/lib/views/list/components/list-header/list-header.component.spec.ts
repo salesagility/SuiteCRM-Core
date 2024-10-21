@@ -28,9 +28,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {take} from 'rxjs/operators';
 import {of} from 'rxjs';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-
 import {ListHeaderComponent} from './list-header.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
@@ -58,7 +57,7 @@ import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spe
 import {listviewStoreMock} from '../../store/list-view/list-view.store.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
 import {SettingsMenuModule} from '../settings-menu/settings-menu.module';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 @Component({
     selector: 'list-header-test-host-component',

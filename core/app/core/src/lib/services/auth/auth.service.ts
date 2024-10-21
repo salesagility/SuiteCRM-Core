@@ -26,7 +26,7 @@
 
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, filter, finalize, take} from 'rxjs/operators';
 import {User} from '../../common/types/user';
@@ -39,7 +39,6 @@ import {LocalStorageService} from '../local-storage/local-storage.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {BaseRouteService} from "../base-route/base-route.service";
 import {NotificationStore} from '../../store/notification/notification.store';
-import {AsyncActionInput} from "../process/processes/async-action/async-action";
 
 export interface SessionStatus {
     appStatus?: AppStatus;

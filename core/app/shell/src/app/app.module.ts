@@ -38,10 +38,8 @@ import {HttpLink} from 'apollo-angular/http';
 import {ApolloLink, InMemoryCache} from '@apollo/client/core';
 import {FetchPolicy} from '@apollo/client/core/watchQueryOptions';
 import {onError} from '@apollo/client/link/error';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-
 import {
     AppStateStore,
     AuthService,
@@ -69,14 +67,12 @@ import {
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 import {environment} from '../environments/environment';
 import {RouteReuseStrategy} from '@angular/router';
 import {AppRouteReuseStrategy} from './app-router-reuse-strategy';
 import {AppInit} from './app-initializer';
 import {GraphQLError} from 'graphql';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import {APP_BASE_HREF} from "@angular/common";
 
 export const initializeApp = (appInitService: AppInit) => (): Promise<any> => appInitService.init();
 

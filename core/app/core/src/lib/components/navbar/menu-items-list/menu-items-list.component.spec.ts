@@ -29,7 +29,7 @@ import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -40,7 +40,7 @@ import {themeImagesMockData} from '../../../store/theme-images/theme-images.stor
 import {MenuItemComponent} from '../menu-item/menu-item.component';
 import {ImageModule} from '../../image/image.module';
 import {ThemeImagesStore} from '../../../store/theme-images/theme-images.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 
 const mockMenuItems = [

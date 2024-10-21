@@ -27,19 +27,19 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {NavbarUiComponent} from './navbar.component';
+import {NavbarUiComponent} from '../navbar.component';
 import {ApolloTestingModule} from 'apollo-angular/testing';
-import {navigationMock} from '../../store/navigation/navigation.store.spec.mock';
-import {NavigationStore} from '../../store/navigation/navigation.store';
-import {UserPreferenceStore} from '../../store/user-preference/user-preference.store';
-import {languageStoreMock} from '../../store/language/language.store.spec.mock';
-import {LanguageStore} from '../../store/language/language.store';
-import {userPreferenceStoreMock} from '../../store/user-preference/user-preference.store.spec.mock';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {navigationMock} from '../../../store/navigation/navigation.store.spec.mock';
+import {NavigationStore} from '../../../store/navigation/navigation.store';
+import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
+import {languageStoreMock} from '../../../store/language/language.store.spec.mock';
+import {LanguageStore} from '../../../store/language/language.store';
+import {userPreferenceStoreMock} from '../../../store/user-preference/user-preference.store.spec.mock';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 describe('NavbarUiComponent', () => {
 

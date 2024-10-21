@@ -26,7 +26,7 @@
 
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {StatusBarComponent} from './status-bar.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -35,7 +35,7 @@ import {RecordViewStore} from '../../views/record/store/record-view/record-view.
 import {ActionMenuModule} from '../../views/list/components/action-menu/action-menu.module';
 import {ImageModule} from '../image/image.module';
 import {SettingsMenuModule} from '../../views/list/components/settings-menu/settings-menu.module';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 @Component({
     selector: 'status-bar-test-host-component',

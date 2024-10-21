@@ -34,13 +34,13 @@ import {PaginationDataSource} from '../../common/components/pagination/paginatio
 import {PageSelection, PaginationCount} from '../../common/views/list/list-navigation.model';
 import {By} from '@angular/platform-browser';
 import {AngularSvgIconModule} from 'angular-svg-icon';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {LanguageStore} from '../../store/language/language.store';
 import {languageMockData} from '../../store/language/language.store.spec.mock';
 import {themeImagesMockData} from '../../store/theme-images/theme-images.store.spec.mock';
 import {ImageModule} from '../image/image.module';
 import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 const pageSubject = new BehaviorSubject<PageSelection>(PageSelection.LAST);
 const countSubject = new BehaviorSubject<PaginationCount>({

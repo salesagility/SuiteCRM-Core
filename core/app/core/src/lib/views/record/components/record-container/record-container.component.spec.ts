@@ -28,7 +28,7 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ApolloTestingModule} from 'apollo-angular/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {RecordContainerComponent} from './record-container.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
@@ -56,7 +56,7 @@ import {languageStoreMock} from '../../../../store/language/language.store.spec.
 import {systemConfigStoreMock} from '../../../../store/system-config/system-config.store.spec.mock';
 import {appStateStoreMock} from '../../../../store/app-state/app-state.store.spec.mock';
 import {ThemeImagesStore} from '../../../../store/theme-images/theme-images.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 describe('RecordContainerComponent', () => {
     let component: RecordContainerComponent;

@@ -27,7 +27,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -39,7 +39,7 @@ import {UserPreferenceStore} from '../../store/user-preference/user-preference.s
 import {languageStoreMock} from '../../store/language/language.store.spec.mock';
 import {LanguageStore} from '../../store/language/language.store';
 import {userPreferenceStoreMock} from '../../store/user-preference/user-preference.store.spec.mock';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 describe('NavbarUiComponent', () => {
 

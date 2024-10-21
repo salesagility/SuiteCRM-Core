@@ -27,14 +27,14 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ImageComponent} from './image.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 import {of} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Component} from '@angular/core';
 import {themeImagesMockData} from '../../store/theme-images/theme-images.store.spec.mock';
 import {ThemeImagesStore} from '../../store/theme-images/theme-images.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 @Component({
     selector: 'host-component',

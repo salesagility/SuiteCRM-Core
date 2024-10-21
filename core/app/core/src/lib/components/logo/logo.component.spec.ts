@@ -27,11 +27,9 @@
 import { ComponentFixture, TestBed, inject, waitForAsync } from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-
-
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {LogoUiComponent} from './logo.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 
 describe('LogoComponent', () => {
     let component: LogoUiComponent;
