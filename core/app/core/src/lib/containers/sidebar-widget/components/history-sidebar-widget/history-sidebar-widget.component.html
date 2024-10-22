@@ -30,7 +30,7 @@
 
         <div class="widget-background history-timeline p-2 pt-2">
 
-            <div *ngIf="adapter?.loading" class="d-flex record-thread-loading justify-content-center">
+            <div *ngIf="adapter?.initializing() || adapter?.loading()" class="d-flex record-thread-loading justify-content-center">
                 <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
             </div>
 
@@ -39,7 +39,7 @@
                                          [ngClass]="[vm.length <= 0 ? 'history-timeline-viewport-no-data' : 'history-timeline-viewport']"
                                          (scroll)="onScroll()">
 
-                <scrm-chart-message-area *ngIf="!adapter?.loading && vm.length <= 0"
+                <scrm-chart-message-area *ngIf="!adapter?.initializing() && !adapter?.loading() && vm.length <= 0"
                                          labelKey="LBL_NO_DATA"></scrm-chart-message-area>
 
                 <div *ngFor="let entry of vm;">

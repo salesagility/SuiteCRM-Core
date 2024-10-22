@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import {HistoryTimelineEntry} from './history-sidebar-widget.model';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HistoryTimelineStore} from '../../store/history-timeline/history-timeline.store';
@@ -38,7 +38,8 @@ export type ActivityTypes = 'calls' | 'tasks' | 'meetings' | 'history' | 'audit'
 
 @Injectable()
 export class HistoryTimelineAdapter {
-    loading = false;
+    loading: WritableSignal<boolean> = signal(false);
+    initializing: WritableSignal<boolean> = signal(true);
 
     cache: HistoryTimelineEntry[] = [];
     dataStream = new BehaviorSubject<HistoryTimelineEntry[]>(this.cache);
@@ -70,7 +71,7 @@ export class HistoryTimelineAdapter {
      */
     fetchTimelineEntries(reload: boolean): Observable<HistoryTimelineEntry[]> {
 
-        if (this.loading === true) {
+        if (this.loading() === true) {
             return;
         }
 
@@ -79,9 +80,10 @@ export class HistoryTimelineAdapter {
         }
         this.store.initSearchCriteria(this.cache.length, this.defaultPageSize);
 
-        this.loading = true;
+        this.loading.set(true);
+        this.initializing.set(false)
         this.store.load(false).pipe(take(1)).subscribe(value => {
-            this.loading = false;
+            this.loading.set(false);
             const records: Record [] = value.records;
 
             if (!emptyObject(records)) {
