@@ -52,7 +52,7 @@ require_once('include/externalAPI/ExternalAPIFactory.php');
 class UploadStream
 {
     public const STREAM_NAME = "upload";
-    private static $is_registered = false;
+    private static $isRegistered = false;
     protected static $upload_dir;
 
     /**
@@ -149,9 +149,9 @@ class UploadStream
      */
     public static function register()
     {
-        if (!self::$is_registered) {
+        if (!self::isRegistered) {
             stream_wrapper_register(self::STREAM_NAME, self::class);
-            self::$is_registered = true;
+            self::isRegistered = true;
         }
     }
 
