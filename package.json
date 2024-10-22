@@ -96,5 +96,5 @@
     "ng-packagr": "^18.2.1",
     "typescript": "~5.4.5"
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.5.1"
 }
