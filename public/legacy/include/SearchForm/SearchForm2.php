@@ -960,7 +960,7 @@ class SearchForm
 
                         $this->searchFields[$real_field]['value'] = $this->searchFields[$field]['value'];
                         $this->searchFields[$real_field]['operator'] = $this->searchFields[$field]['operator'];
-                        $params['value'] = $this->searchFields[$field]['value'];
+                        $params['value'] = $db->quote($this->searchFields[$field]['value']);
                         $params['operator'] = $this->searchFields[$field]['operator'];
                         unset($this->searchFields[$field]['value']);
                         $field = $real_field;
@@ -1060,7 +1060,7 @@ class SearchForm
                         }
                     }
                 } else {
-                    $field_value = $parms['value'];
+                    $field_value = $db->quote($parms['value']);
                 }
 
                 //set db_fields array.
