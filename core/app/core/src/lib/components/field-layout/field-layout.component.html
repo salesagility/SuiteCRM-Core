@@ -51,6 +51,10 @@
                                     [field]="col.field"
                                     [record]="record">
                         </scrm-field>
+                        <div 
+                            *ngIf="col.field.definition.comment && (['edit','create'].includes(config.mode))">
+                            <small class="form-text text-muted">{{col.field.definition.comment}}</small>
+                        </div>
                     </div>
 
                     <ng-container *ngIf="col?.fieldActions && ((col?.fieldActions?.position ?? 'inline') === 'inline')">
