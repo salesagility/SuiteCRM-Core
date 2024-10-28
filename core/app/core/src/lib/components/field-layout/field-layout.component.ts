@@ -122,9 +122,7 @@ export class FieldLayoutComponent extends BaseFieldGridComponent {
                 }
             });
 
-            if (row.cols.length < this.colNumber) {
-                this.fillRow(row);
-            }
+
 
 
             grid.push(row);
