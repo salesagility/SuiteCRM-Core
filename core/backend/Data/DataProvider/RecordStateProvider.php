@@ -31,26 +31,29 @@ namespace App\Data\DataProvider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Data\Entity\Record;
+use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
 use App\Data\Service\RecordProviderInterface;
 use Exception;
 
 /**
  * Class RecordStateProvider
  */
-final class RecordStateProvider implements ProviderInterface
+class RecordStateProvider implements ProviderInterface
 {
-    /**
-     * @var RecordProviderInterface
-     */
-    private $recordHandler;
+    protected RecordProviderInterface $recordHandler;
+    protected RecordMapperRunnerInterface $apiRecordMapperRunner;
 
     /**
      * RecordStateProvider constructor.
      * @param RecordProviderInterface $recordHandler
+     * @param RecordMapperRunnerInterface $apiRecordMapperRunner
      */
-    public function __construct(RecordProviderInterface $recordHandler)
-    {
+    public function __construct(
+        RecordProviderInterface $recordHandler,
+        RecordMapperRunnerInterface $apiRecordMapperRunner
+    ) {
         $this->recordHandler = $recordHandler;
+        $this->apiRecordMapperRunner = $apiRecordMapperRunner;
     }
 
     /**
@@ -71,6 +74,9 @@ final class RecordStateProvider implements ProviderInterface
             $module = $context['filters']['module'];
         }
 
-        return $this->recordHandler->getRecord($module, $uriVariables['id'] ?? '');
+        $record = $this->recordHandler->getRecord($module, $uriVariables['id'] ?? '');
+        $this->apiRecordMapperRunner->toOutbound($record);
+
+        return $record;
     }
 }
