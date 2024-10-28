@@ -29,6 +29,8 @@ namespace App\Data\LegacyHandler;
 
 use ApiBeanMapper;
 use App\Data\Entity\Record;
+use App\Data\Service\Record\Mappers\RecordMapperRunner;
+use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
 use App\Data\Service\RecordProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
@@ -37,7 +39,6 @@ use App\Module\Service\FavoriteProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use BeanFactory;
 use InvalidArgumentException;
-use RelateToFieldMapper;
 use SugarBean;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -53,17 +54,19 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     /**
      * @var ModuleNameMapperInterface
      */
-    private $moduleNameMapper;
+    protected $moduleNameMapper;
 
     /**
      * @var AclManagerInterface
      */
-    private $acl;
+    protected $acl;
 
     /**
      * @var FavoriteProviderInterface
      */
-    private $favorites;
+    protected $favorites;
+
+    protected RecordMapperRunner $entityRecordMapperRunner;
 
     /**
      * RecordViewHandler constructor.
@@ -76,6 +79,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param RequestStack $session
      * @param AclManagerInterface $aclHandler
      * @param FavoriteProviderInterface $favorites
+     * @param RecordMapperRunnerInterface $entityRecordMapperRunner
      */
     public function __construct(
         string $projectDir,
@@ -86,7 +90,8 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         ModuleNameMapperInterface $moduleNameMapper,
         RequestStack $session,
         AclManagerInterface $aclHandler,
-        FavoriteProviderInterface $favorites
+        FavoriteProviderInterface $favorites,
+        RecordMapperRunnerInterface $entityRecordMapperRunner
     ) {
         parent::__construct(
             $projectDir,
@@ -99,6 +104,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $this->moduleNameMapper = $moduleNameMapper;
         $this->acl = $aclHandler;
         $this->favorites = $favorites;
+        $this->entityRecordMapperRunner = $entityRecordMapperRunner;
     }
 
     /**
@@ -219,6 +225,8 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $record->setAcls($this->acl->getRecordAcls($bean));
         $record->setFavorite($this->favorites->isFavorite($module, $id));
 
+        $this->entityRecordMapperRunner->toOutbound($record);
+
         return $record;
     }
 
@@ -243,6 +251,8 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         if (!$bean->ACLAccess('save')) {
             throw new AccessDeniedHttpException();
         }
+
+        $this->entityRecordMapperRunner->toInbound($record);
 
         $this->setFields($bean, $record->getAttributes());
         $this->setUpdatedFields($bean, $record->getAttributes());
@@ -310,8 +320,9 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
             return;
         }
 
-        foreach ($attributes as $key => $attribute){
+        foreach ($attributes as $key => $attribute) {
             $bean->updated_fields[] = $key;
         }
     }
+
 }
