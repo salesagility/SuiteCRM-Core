@@ -71,6 +71,14 @@ services:
       $navbarAdministrationOverrides: '%navbar.administration_override%'
       $quickActions: '%quick_actions%'
       $graphqlShowDocs: '%graphql.graphql_show_docs%'
+      $apiRecordMapperRunner: '@api.record.mapper.runner'
+      $apiRecordMapperRegistry: '@api.record.mapper.registry'
+      $apiFieldMapperRegistry: '@api.field.mapper.registry'
+      $apiFieldTypeMapperRegistry: '@api.fieldType.mapper.registry'
+      $entityRecordMapperRunner: '@entity.record.mapper.runner'
+      $entityRecordMapperRegistry: '@entity.record.mapper.registry'
+      $entityFieldMapperRegistry: '@entity.field.mapper.registry'
+      $entityFieldTypeMapperRegistry: '@entity.fieldType.mapper.registry'
 
   _instanceof:
     App\Process\Service\ProcessHandlerInterface:
@@ -104,6 +112,18 @@ services:
       tags: ['cli.install.step']
     App\ViewDefinitions\Service\MassUpdateDefinitionMapperInterface:
       tags: [ 'massupdate.definition.mapper' ]
+    App\Data\Service\Record\ApiRecordMappers\ApiRecordFieldMapperInterface:
+      tags: [ 'mappers.api.record.field' ]
+    App\Data\Service\Record\ApiRecordMappers\ApiRecordFieldTypeMapperInterface:
+      tags: [ 'mappers.api.record.fieldType' ]
+    App\Data\Service\Record\ApiRecordMappers\ApiRecordMapperInterface:
+      tags: [ 'mappers.api.record.record' ]
+    App\Data\Service\Record\EntityRecordMappers\EntityRecordFieldMapperInterface:
+      tags: [ 'mappers.entity.record.field' ]
+    App\Data\Service\Record\EntityRecordMappers\EntityRecordFieldTypeMapperInterface:
+      tags: [ 'mappers.entity.record.fieldType' ]
+    App\Data\Service\Record\EntityRecordMappers\EntityRecordMapperInterface:
+      tags: [ 'mappers.entity.record.record' ]
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
@@ -305,6 +325,72 @@ services:
     # inject all services tagged with massupdate.definition.mapper as first argument
     arguments:
       - !tagged { tag: 'massupdate.definition.mapper' }
+
+  mapper.runner.factory:
+    alias: App\Data\Service\Record\Mappers\RecordMapperRunnerFactoryInterface
+    public: true
+
+  api.record.mapper.registry:
+    class: 'App\Data\Service\Record\Mappers\BaseRecordMapperRegistry'
+    factory: 'App\Data\Service\Record\Mappers\BaseRecordMapperRegistryFactory::create'
+    arguments:
+      - !tagged { tag: 'mappers.api.record.record' }
+
+  api.field.mapper.registry:
+    class: 'App\Data\Service\Record\Mappers\BaseFieldMapperRegistry'
+    factory: 'App\Data\Service\Record\Mappers\BaseFieldMapperRegistryFactory::create'
+    arguments:
+      - !tagged { tag: 'mappers.api.record.field' }
+
+  api.fieldType.mapper.registry:
+    class: 'App\Data\Service\Record\Mappers\BaseFieldTypeMapperRegistry'
+    factory: 'App\Data\Service\Record\Mappers\BaseFieldTypeMapperRegistryFactory::create'
+    arguments:
+      - !tagged { tag: 'mappers.api.record.fieldType' }
+
+  api.mapper.runner.factory:
+    alias: 'mapper.runner.factory'
+    public: true
+
+  api.record.mapper.runner:
+    class: 'App\Data\Service\Record\Mappers\RecordMapperRunner'
+    factory: ['@api.mapper.runner.factory', 'create']
+    arguments:
+      - '@api.field.mapper.registry'
+      - '@api.fieldType.mapper.registry'
+      - '@api.record.mapper.registry'
+      - '@App\FieldDefinitions\Service\FieldDefinitionsProviderInterface'
+
+  entity.record.mapper.registry:
+    class: 'App\Data\Service\Record\Mappers\BaseRecordMapperRegistry'
+    factory: 'App\Data\Service\Record\Mappers\BaseRecordMapperRegistryFactory::create'
+    arguments:
+      - !tagged { tag: 'mappers.entity.record.record' }
+
+  entity.field.mapper.registry:
+    class: 'App\Data\Service\Record\Mappers\BaseFieldMapperRegistry'
+    factory: 'App\Data\Service\Record\Mappers\BaseFieldMapperRegistryFactory::create'
+    arguments:
+      - !tagged { tag: 'mappers.entity.record.field' }
+
+  entity.fieldType.mapper.registry:
+    class: 'App\Data\Service\Record\Mappers\BaseFieldTypeMapperRegistry'
+    factory: 'App\Data\Service\Record\Mappers\BaseFieldTypeMapperRegistryFactory::create'
+    arguments:
+      - !tagged { tag: 'mappers.entity.record.fieldType' }
+
+  entity.mapper.runner.factory:
+    alias: 'mapper.runner.factory'
+    public: true
+
+  entity.record.mapper.runner:
+    class: 'App\Data\Service\Record\Mappers\RecordMapperRunner'
+    factory: [ '@entity.mapper.runner.factory', 'create']
+    arguments:
+      - '@entity.field.mapper.registry'
+      - '@entity.fieldType.mapper.registry'
+      - '@entity.record.mapper.registry'
+      - '@App\FieldDefinitions\Service\FieldDefinitionsProviderInterface'
 
   App\Security\Ldap\AppLdapUserProviderProxy:
     $ldapUserProvider: '@security.user.provider.concrete.ldap_users'
