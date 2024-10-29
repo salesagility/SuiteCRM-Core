@@ -31,6 +31,7 @@ use ApiBeanMapper;
 use App\Data\Entity\Record;
 use App\Data\Service\Record\Mappers\RecordMapperRunner;
 use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerRunnerInterface;
 use App\Data\Service\RecordProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
@@ -67,6 +68,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
     protected $favorites;
 
     protected RecordMapperRunner $entityRecordMapperRunner;
+    private RecordSaveHandlerRunnerInterface $saveHandlerRunner;
 
     /**
      * RecordViewHandler constructor.
@@ -80,6 +82,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param AclManagerInterface $aclHandler
      * @param FavoriteProviderInterface $favorites
      * @param RecordMapperRunnerInterface $entityRecordMapperRunner
+     * @param RecordSaveHandlerRunnerInterface $saveHandlerRunner
      */
     public function __construct(
         string $projectDir,
@@ -91,7 +94,8 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         RequestStack $session,
         AclManagerInterface $aclHandler,
         FavoriteProviderInterface $favorites,
-        RecordMapperRunnerInterface $entityRecordMapperRunner
+        RecordMapperRunnerInterface $entityRecordMapperRunner,
+        RecordSaveHandlerRunnerInterface $saveHandlerRunner
     ) {
         parent::__construct(
             $projectDir,
@@ -105,6 +109,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $this->acl = $aclHandler;
         $this->favorites = $favorites;
         $this->entityRecordMapperRunner = $entityRecordMapperRunner;
+        $this->saveHandlerRunner = $saveHandlerRunner;
     }
 
     /**
@@ -252,16 +257,25 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
             throw new AccessDeniedHttpException();
         }
 
+        $previousVersion =  null;
+        if (!empty($bean->id) && empty($bean->new_with_id)) {
+            $previousVersion = $this->buildRecord($bean->id, $record->getModule(), $bean);
+        }
+
         $this->entityRecordMapperRunner->toInbound($record);
+        $this->saveHandlerRunner->beforeSave($previousVersion, $record);
 
         $this->setFields($bean, $record->getAttributes());
         $this->setUpdatedFields($bean, $record->getAttributes());
+
         $this->save($bean);
 
 
         $refreshedBean = $this->retrieveRecord($record->getModule(), $bean->id);
 
         $savedRecord = $this->buildRecord($bean->id, $record->getModule(), $refreshedBean);
+
+        $this->saveHandlerRunner->afterSave($previousVersion, $savedRecord);
 
         $this->close();
 

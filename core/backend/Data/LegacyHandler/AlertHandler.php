@@ -28,6 +28,8 @@
 namespace App\Data\LegacyHandler;
 
 use App\Data\Service\AlertProviderInterface;
+use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerRunnerInterface;
 use App\Data\Service\RecordDeletionServiceInterface;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Service\AclManagerInterface;
@@ -71,7 +73,9 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
         RequestStack $session,
         AclManagerInterface $aclHandler,
         FavoriteProviderInterface $favorites,
-        RecordDeletionServiceInterface $recordDeletionProvider
+        RecordDeletionServiceInterface $recordDeletionProvider,
+        RecordMapperRunnerInterface $entityRecordMapperRunner,
+        RecordSaveHandlerRunnerInterface $saveHandlerRunner
     ) {
         parent::__construct(
             $projectDir,
@@ -82,7 +86,9 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
             $moduleNameMapper,
             $session,
             $aclHandler,
-            $favorites
+            $favorites,
+            $entityRecordMapperRunner,
+            $saveHandlerRunner
         );
         $this->recordDeletionProvider = $recordDeletionProvider;
     }
