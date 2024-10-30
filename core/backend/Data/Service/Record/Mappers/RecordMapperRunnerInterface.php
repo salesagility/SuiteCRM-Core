@@ -32,7 +32,7 @@ use App\Data\Entity\Record;
 
 interface RecordMapperRunnerInterface
 {
-    public function toInbound(Record $record): void;
+    public function toInternal(Record $record): void;
 
-    public function toOutbound(Record $record): void;
+    public function toExternal(Record $record): void;
 }

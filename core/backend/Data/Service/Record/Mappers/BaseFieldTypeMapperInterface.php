@@ -40,18 +40,18 @@ interface BaseFieldTypeMapperInterface extends BaseModuleMapperInterface
     public function getFieldType(): string;
 
     /**
-     * Map value to inbound
+     * Map value to internal format
      * @param Record $record
      * @param FieldDefinition $fieldDefinitions
      * @param string $field
      */
-    public function toInbound(Record $record, FieldDefinition $fieldDefinitions, string $field): void;
+    public function toInternal(Record $record, FieldDefinition $fieldDefinitions, string $field): void;
 
     /**
-     * Map value to outbound
+     * Map value to external format
      * @param Record $record
      * @param FieldDefinition $fieldDefinitions
      * @param string $field
      */
-    public function toOutbound(Record $record, FieldDefinition $fieldDefinitions, string $field): void;
+    public function toExternal(Record $record, FieldDefinition $fieldDefinitions, string $field): void;
 }

@@ -58,14 +58,14 @@ class RecordMapperRunner implements RecordMapperRunnerInterface
         $this->fieldDefinitions = $fieldDefinitions;
     }
 
-    public function toInbound(Record $record): void
+    public function toInternal(Record $record): void
     {
-        $this->runMappers($record, 'toInbound');
+        $this->runMappers($record, 'toInternal');
     }
 
-    public function toOutbound(Record $record): void
+    public function toExternal(Record $record): void
     {
-        $this->runMappers($record, 'toOutbound');
+        $this->runMappers($record, 'toExternal');
     }
 
     protected function runMappers(Record $record, string $direction): void

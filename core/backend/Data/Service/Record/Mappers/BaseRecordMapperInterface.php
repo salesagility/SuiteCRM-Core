@@ -34,16 +34,16 @@ interface BaseRecordMapperInterface extends BaseModuleMapperInterface
 {
 
     /**
-     * Map value to inbound
+     * Map value to internal format
      * @param Record $record
      * @param FieldDefinition $fieldDefinitions
      */
-    public function toInbound(Record $record, FieldDefinition $fieldDefinitions): void;
+    public function toInternal(Record $record, FieldDefinition $fieldDefinitions): void;
 
     /**
-     * Map value to outbound
+     * Map value to external format
      * @param Record $record
      * @param FieldDefinition $fieldDefinitions
      */
-    public function toOutbound(Record $record, FieldDefinition $fieldDefinitions): void;
+    public function toExternal(Record $record, FieldDefinition $fieldDefinitions): void;
 }
