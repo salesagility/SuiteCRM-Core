@@ -75,7 +75,7 @@ class RecordStateProvider implements ProviderInterface
         }
 
         $record = $this->recordHandler->getRecord($module, $uriVariables['id'] ?? '');
-        $this->apiRecordMapperRunner->toOutbound($record);
+        $this->apiRecordMapperRunner->toExternal($record);
 
         return $record;
     }

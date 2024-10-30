@@ -71,9 +71,9 @@ class RecordProcessor implements ProcessorInterface
      */
     public function process(mixed $record, Operation $operation, array $uriVariables = [], array $context = []): ?Record
     {
-        $this->apiRecordMapperRunner->toInbound($record);
+        $this->apiRecordMapperRunner->toInternal($record);
         $resultingRecord = $this->recordProvider->saveRecord($record);
-        $this->apiRecordMapperRunner->toOutbound($resultingRecord);
+        $this->apiRecordMapperRunner->toExternal($resultingRecord);
 
         return $resultingRecord;
     }

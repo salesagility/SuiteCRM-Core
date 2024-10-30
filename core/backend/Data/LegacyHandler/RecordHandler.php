@@ -230,7 +230,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $record->setAcls($this->acl->getRecordAcls($bean));
         $record->setFavorite($this->favorites->isFavorite($module, $id));
 
-        $this->entityRecordMapperRunner->toOutbound($record);
+        $this->entityRecordMapperRunner->toExternal($record);
 
         return $record;
     }
@@ -262,7 +262,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
             $previousVersion = $this->buildRecord($bean->id, $record->getModule(), $bean);
         }
 
-        $this->entityRecordMapperRunner->toInbound($record);
+        $this->entityRecordMapperRunner->toInternal($record);
         $this->saveHandlerRunner->beforeSave($previousVersion, $record);
 
         $this->setFields($bean, $record->getAttributes());
