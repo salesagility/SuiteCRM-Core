@@ -44,9 +44,18 @@ final class Version20240619160606 extends BaseMigration implements ContainerAwar
 
     public function up(Schema $schema): void
     {
-        $envLocalFile = $this->getProjectDir() . "/.env.local";
-
         $env = $_ENV ?? [];
+
+        $appEnv = $_ENV['APP_ENV'] ?? 'prod';
+
+        $envAppEnvLocalFile = $this->getProjectDir() . "/.env.$appEnv.local";
+
+        if (file_exists($envAppEnvLocalFile)) {
+            $this->log("File .env.$appEnv.local exists, skipping.");
+            return;
+        }
+
+        $envLocalFile = $this->getProjectDir() . "/.env.local";
 
         if (!empty($env['APP_SECRET'])) {
             $this->log('APP_SECRET already set in ENV, skipping.');
@@ -77,8 +86,10 @@ final class Version20240619160606 extends BaseMigration implements ContainerAwar
         /** @var AppSecretGenerator $entityManager */
         $appSecretGenerator = $this->container->get('security.app_secret_generator');
 
+        $appSecret = $appSecretGenerator->generate();
+
         $properties = [
-            'APP_SECRET' => $appSecretGenerator->generate()
+            'APP_SECRET' => $appSecret
         ];
 
         $wrapperStart = '';
@@ -89,6 +100,7 @@ final class Version20240619160606 extends BaseMigration implements ContainerAwar
             $envContents .= $propertiesToAdd;
             file_put_contents($envFile, $envContents);
             $this->log('Added randomly generated APP secret');
+            $_ENV['APP_SECRET'] = $appSecret;
 
             return;
         }
