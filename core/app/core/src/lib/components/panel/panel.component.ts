@@ -29,6 +29,8 @@ import {Button, ButtonInterface} from '../../common/components/button/button.mod
 import {Observable, Subscription} from 'rxjs';
 import {MinimiseButtonStatus} from '../minimise-button/minimise-button.component';
 
+export type PanelCollapseMode = 'collapsible' | 'closable' | 'none';
+
 @Component({
     selector: 'scrm-panel',
     templateUrl: './panel.component.html',
@@ -40,7 +42,7 @@ export class PanelComponent implements OnInit, OnDestroy {
     @Input() bodyPadding = 2;
     @Input() title: string;
     @Input() titleKey: string;
-    @Input() mode: 'collapsible' | 'closable' | 'none' = 'closable';
+    @Input() mode: PanelCollapseMode = 'closable';
     @Input() isCollapsed$: Observable<boolean>;
     @Input() close: ButtonInterface = {
         klass: ['btn', 'btn-outline-light', 'btn-sm']
