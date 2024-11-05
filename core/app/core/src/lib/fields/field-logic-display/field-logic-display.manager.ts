@@ -43,55 +43,42 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
     }
 
     runAll(field: Field, record: Record, mode: ViewMode): void {
-        let toDisplay: DisplayType = 'show';
-
-        if(!field.displayLogic) {
+        if (!field.displayLogic) {
             return;
         }
 
-        const validModeLogic = Object.values(field.displayLogic).filter(logic => {
+        // 1. Set default display 
+        const defaultDisplay: DisplayType = (field.defaultDisplay ?? "show") as DisplayType;
+
+        // 2. Set target display
+        let targetDisplay: DisplayType = null;
+
+        // 2-1. Get valid mode logics - only the mode logics relevant to the current 'mode'
+        const validModeLogics = Object.values(field.displayLogic).filter(logic => {
             const allowedModes = logic['modes'] ?? [];
             return !!(allowedModes.length && allowedModes.includes(mode));
         });
-
-        if (!validModeLogic || !validModeLogic.length) {
-            field.display = toDisplay;
+        if (validModeLogics.length === 0) {
             return;
         }
 
-        let defaultDisplay = field.defaultDisplay ?? 'show';
-
-        let targetDisplay: DisplayType = 'none';
-
-        if (defaultDisplay === 'none') {
-            targetDisplay = 'show';
-        }
-
+        // 2-2. Set target display by applying the valid mode logics
         const context = {
             record,
             field,
             module: record.module
-        } as ActionContext;
-
-
-        const isActive = validModeLogic.some(logic => {
-            const data: FieldLogicDisplayActionData = this.buildActionData(logic, context);
-            return this.actions[mode][logic.key].run(data, logic);
-        });
-
-        if (isActive) {
-            defaultDisplay = targetDisplay;
-
+        } as ActionContext;        
+        for (const modeLogic of validModeLogics) {
+            const data: FieldLogicDisplayActionData = this.buildActionData(modeLogic, context);
+            const isModeLogicActive: boolean = Boolean(this.actions[mode][modeLogic.key].run(data, modeLogic));
+            // Take targetDisplayType of the last mode logic by overwriting targetDisplay in case there are multiple active mode logics
+            if (isModeLogicActive) {
+                targetDisplay = modeLogic['params']['targetDisplayType'];
+            }
         }
 
-        toDisplay = defaultDisplay as DisplayType;
-
-        if (defaultDisplay === 'show') {
-            toDisplay = 'show';
-        }
-
-        field.display = toDisplay;
-
+        // 3. Set field display
+        field.display = targetDisplay === null ? defaultDisplay : targetDisplay; 
     }
 
     protected buildActionData(action: Action, context?: ActionContext): FieldLogicDisplayActionData {
