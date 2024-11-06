@@ -30,17 +30,23 @@ import {HistorySidebarWidgetModule} from '../history-sidebar-widget/history-side
 import {StatisticsSidebarWidgetComponent} from '../statistics-sidebar-widget/statistics-sidebar-widget.component';
 import {ChartSidebarWidgetModule} from '../chart-sidebar-widget/chart-sidebar-widget.module';
 import {ChartSidebarWidgetComponent} from '../chart-sidebar-widget/chart-sidebar-widget.component';
-import {RecordThreadSidebarWidgetComponent} from '../record-thread-sidebar-widget/record-thread-sidebar-widget.component';
+import {
+    RecordThreadSidebarWidgetComponent
+} from '../record-thread-sidebar-widget/record-thread-sidebar-widget.component';
+import {RecordTableWidgetComponent} from "../record-table-widget/record-table-widget.component";
+import {RecordTableWidgetModule} from "../record-table-widget/record-table-widget.module";
 
 export const sidebarWidgetModules = [
     HistorySidebarWidgetModule,
     ChartSidebarWidgetModule,
-    StatisticsSidebarWidgetModule
+    StatisticsSidebarWidgetModule,
+    RecordTableWidgetModule
 ];
 
 export const componentTypeMap = {
     'history-timeline': HistorySidebarWidgetComponent,
     chart: ChartSidebarWidgetComponent,
     statistics: StatisticsSidebarWidgetComponent,
-    'record-thread': RecordThreadSidebarWidgetComponent
+    'record-thread': RecordThreadSidebarWidgetComponent,
+    'record-table': RecordTableWidgetComponent
 };
