@@ -55,6 +55,7 @@ export class SubpanelComponent implements OnInit {
     @Input() maxColumns$: Observable<number>;
     @Input() onClose: Function;
     @Input() filterConfig: FilterConfig;
+    @Input() panelHeaderButtonClass: string = 'btn btn-sm btn-outline-light';
 
     closeButton: ButtonInterface;
     adapter: SubpanelTableAdapter;

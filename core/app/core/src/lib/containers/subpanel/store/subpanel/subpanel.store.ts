@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import {StateStore} from '../../../../store/state';
 import {RecordList, RecordListStore} from '../../../../store/record-list/record-list.store';
 import {BehaviorSubject, forkJoin, Observable, Subscription} from 'rxjs';
@@ -47,6 +47,7 @@ import {map, take, tap} from "rxjs/operators";
 import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
 import {SavedFilter, SavedFilterMap} from "../../../../store/saved-filters/saved-filter.model";
 import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
+import {PanelCollapseMode} from "../../../../components/panel/panel.component";
 
 export interface SubpanelStoreMap {
     [key: string]: SubpanelStore;
@@ -71,6 +72,7 @@ export class SubpanelStore implements StateStore {
     columns$: Observable<ColumnDefinition[]>;
     metadata: SubPanelDefinition;
     loading$: Observable<boolean>;
+    panelCollapseMode: WritableSignal<PanelCollapseMode> = signal('closable');
 
     // Filter variables
     filterList: FilterListStore;

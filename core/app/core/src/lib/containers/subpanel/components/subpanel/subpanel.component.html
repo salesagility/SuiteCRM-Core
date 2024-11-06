@@ -26,15 +26,15 @@
 */
 -->
 <ng-container>
-    <scrm-panel [title]="store.getTitle()" mode="closable" [close]="closeButton" bodyPadding="0" [klass]="'subpanel-' + store?.metadata?.name ?? ''">
-        <span class="subpanel-icon pl-1" panel-icon-area>
+    <scrm-panel [title]="store.getTitle()" [mode]="store?.panelCollapseMode() ?? 'closable'" [close]="closeButton" bodyPadding="0" [klass]="'subpanel-' + store?.metadata?.name ?? ''">
+        <span class="subpanel-icon pl-1" panel-icon-area *ngIf="store.getIcon()">
             <scrm-image [image]="store.getIcon()"></scrm-image>
         </span>
         <span panel-header-button>
             <scrm-action-group-menu [config]="actionsAdapter"
                                     [actionContext]="getActionContext()"
                                     [actionLimitConfig]="'subpanelview_actions_limits'"
-                                    buttonClass="btn btn-sm btn-outline-light"
+                                    [buttonClass]="panelHeaderButtonClass"
             ></scrm-action-group-menu>
         </span>
         <div panel-body>
