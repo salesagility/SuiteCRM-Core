@@ -27,6 +27,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {LanguageStore} from '../../store/language/language.store';
+import {PanelCollapseMode} from "../panel/panel.component";
+
 
 @Component({
     selector: 'scrm-widget-panel',
@@ -57,7 +59,9 @@ import {LanguageStore} from '../../store/language/language.store';
 
 export class WidgetPanelComponent implements OnInit {
     @Input() title = '';
-    @Input() mode: 'collapsible' | 'closable' | 'none' = 'none';
+    @Input() titleKey = '';
+    @Input() showHeader = true;
+    @Input() mode: PanelCollapseMode;
 
     displayContent = true;
 
