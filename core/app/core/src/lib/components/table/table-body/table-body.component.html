@@ -27,7 +27,7 @@
 -->
 
 <ng-container *ngIf="(vm$ | async) as vm">
-    <div class="position-relative d-flex flex-column">
+    <div class="position-relative d-flex flex-column table-body-wrapper">
         <table cdk-table [dataSource]="config.dataSource" [trackBy]="trackRecord"
                aria-describedby="table-body"
                class="list-view-table striped-table table">
