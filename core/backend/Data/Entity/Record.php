@@ -154,6 +154,19 @@ class Record
     }
 
     /**
+     * @param array $recordData
+     * @return void
+     */
+    public function fromArray(array $recordData): void
+    {
+        $this->setId($recordData['id'] ?? '');
+        $this->setModule($recordData['module']?? '');
+        $this->setType($recordData['type']?? '');
+        $this->setAttributes($recordData['attributes'] ?? []);
+        $this->setAcls($recordData['acls'] ?? []);
+    }
+
+    /**
      * @return string|null
      */
     public function getId(): ?string
