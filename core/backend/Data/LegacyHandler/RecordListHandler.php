@@ -27,6 +27,7 @@
 
 namespace App\Data\LegacyHandler;
 
+use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Data\Entity\RecordList;
@@ -57,6 +58,7 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
      * @var PresetListDataHandlers
      */
     private $presetHandlers;
+    protected RecordMapperRunnerInterface $entityRecordMapperRunner;
 
     /**
      * SystemConfigHandler constructor.
@@ -68,6 +70,7 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ListDataHandler $listDataHandler
      * @param PresetListDataHandlers $presetHandlers
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -78,13 +81,15 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         ModuleNameMapperInterface $moduleNameMapper,
         ListDataHandler $listDataHandler,
         PresetListDataHandlers $presetHandlers,
-        RequestStack $session
+        RequestStack $session,
+        RecordMapperRunnerInterface $entityRecordMapperRunner,
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
             $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->listDataHandler = $listDataHandler;
         $this->presetHandlers = $presetHandlers;
+        $this->entityRecordMapperRunner = $entityRecordMapperRunner;
     }
 
     /**
@@ -126,6 +131,7 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
 
         $records = [];
         foreach ($listData->getRecords() as $record) {
+            $this->entityRecordMapperRunner->toExternal($record, 'list');
             $records[] = $record->toArray();
         }
 
