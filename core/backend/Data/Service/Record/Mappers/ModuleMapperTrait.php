@@ -44,5 +44,43 @@ trait ModuleMapperTrait
         $parentMap[$order] = $mappersByOrder;
     }
 
+    /**
+     * @param array $mappers
+     * @param string $mode
+     * @return array
+     */
+    protected function filterMappersByModes(array $mappers, string $mode): array
+    {
+        if (empty($mode)) {
+            return $mappers;
+        }
+
+        $modeMappers = [];
+        foreach ($mappers as $mapper) {
+            $mapperModes = $mapper->getModes();
+
+            $modeEnabled = $this->isModeEnabled($mapperModes, $mode);
+
+            if ($modeEnabled) {
+                $modeMappers[] = $mapper;
+            }
+        }
+        return $modeMappers;
+    }
+
+    /**
+     * @param array $mapperModes
+     * @param string $mode
+     * @return bool
+     */
+    protected function isModeEnabled(array $mapperModes, string $mode): bool
+    {
+        $modeEnabled = false;
+        if (in_array($mode, $mapperModes, true)) {
+            $modeEnabled = true;
+        }
+        return $modeEnabled;
+    }
+
 
 }

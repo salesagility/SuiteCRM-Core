@@ -55,11 +55,14 @@ class BaseFieldMapperRegistry
      * Get the field type mappers for the module and type
      * @param string $module
      * @param string $field
+     * @param string|null $mode
      * @return BaseFieldMapperInterface[]
      */
-    public function getMappers(string $module, string $field): array
+    public function getMappers(string $module, string $field, ?string $mode = ''): array
     {
-        return $this->getOrderedMappers($this->registry, $module, $field);
+        $mappers = $this->getOrderedMappers($this->registry, $module, $field);
+
+        return $this->filterMappersByModes($mappers, $mode);
     }
 
     /**

@@ -132,7 +132,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
         $bean = $this->retrieveRecord($module, $id);
 
-        $record = $this->buildRecord($id, $module, $bean);
+        $record = $this->buildRecord($id, $module, $bean, 'retrieve');
 
         $this->close();
 
@@ -206,9 +206,10 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param string $id
      * @param string $module
      * @param SugarBean $bean
+     * @param string|null $mode
      * @return Record
      */
-    public function buildRecord(string $id, string $module, SugarBean $bean): Record
+    public function buildRecord(string $id, string $module, SugarBean $bean, ?string $mode = ''): Record
     {
         $record = new Record();
         /* @noinspection PhpIncludeInspection */
@@ -230,7 +231,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $record->setAcls($this->acl->getRecordAcls($bean));
         $record->setFavorite($this->favorites->isFavorite($module, $id));
 
-        $this->entityRecordMapperRunner->toExternal($record);
+        $this->entityRecordMapperRunner->toExternal($record, $mode);
 
         return $record;
     }
@@ -259,10 +260,10 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
         $previousVersion =  null;
         if (!empty($bean->id) && empty($bean->new_with_id)) {
-            $previousVersion = $this->buildRecord($bean->id, $record->getModule(), $bean);
+            $previousVersion = $this->buildRecord($bean->id, $record->getModule(), $bean, 'retrieve');
         }
 
-        $this->entityRecordMapperRunner->toInternal($record);
+        $this->entityRecordMapperRunner->toInternal($record, 'save');
         $this->saveHandlerRunner->beforeSave($previousVersion, $record);
 
         $this->setFields($bean, $record->getAttributes());
@@ -273,7 +274,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
         $refreshedBean = $this->retrieveRecord($record->getModule(), $bean->id);
 
-        $savedRecord = $this->buildRecord($bean->id, $record->getModule(), $refreshedBean);
+        $savedRecord = $this->buildRecord($bean->id, $record->getModule(), $refreshedBean, 'save');
 
         $this->saveHandlerRunner->afterSave($previousVersion, $savedRecord);
 
@@ -287,7 +288,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param SugarBean $bean
      * @param array $values
      */
-    public function setFields(SugarBean $bean, array $values)
+    public function setFields(SugarBean $bean, array $values): void
     {
         if ($this->isToNotifyOnSave($bean, $values)) {
             $bean->notify_on_save = true;

@@ -58,17 +58,17 @@ class RecordMapperRunner implements RecordMapperRunnerInterface
         $this->fieldDefinitions = $fieldDefinitions;
     }
 
-    public function toInternal(Record $record): void
+    public function toInternal(Record $record, ?string $mode = ''): void
     {
-        $this->runMappers($record, 'toInternal');
+        $this->runMappers($record, 'toInternal', $mode);
     }
 
-    public function toExternal(Record $record): void
+    public function toExternal(Record $record, ?string $mode = ''): void
     {
-        $this->runMappers($record, 'toExternal');
+        $this->runMappers($record, 'toExternal', $mode);
     }
 
-    protected function runMappers(Record $record, string $direction): void
+    protected function runMappers(Record $record, string $direction, ?string $mode = ''): void
     {
         $attributes = $record->getAttributes() ?? [];
         $module = $record->getModule();
@@ -80,7 +80,7 @@ class RecordMapperRunner implements RecordMapperRunnerInterface
         $fieldDefinitions = $this->fieldDefinitions->getVardef($module);
         $vardefs = $fieldDefinitions->getVardef();
 
-        $recordMappers = $this->recordMapperRegistry->getMappers($module);
+        $recordMappers = $this->recordMapperRegistry->getMappers($module, $mode);
         foreach ($recordMappers as $recordMapper) {
             $recordMapper->$direction($record, $fieldDefinitions);
         }
@@ -90,14 +90,14 @@ class RecordMapperRunner implements RecordMapperRunnerInterface
         foreach ($vardefs as $field => $vardef) {
             $mappedFields[$field] = true;
 
-            $this->runMappersForField($vardef, $field, $direction, $record, $fieldDefinitions);
+            $this->runMappersForField($vardef, $field, $direction, $record, $fieldDefinitions, $mode);
         }
 
         foreach ($attributes as $field => $attribute) {
             if (!empty($mappedFields[$field])) {
                 continue;
             }
-            $this->runMappersForField($vardefs[$field] ?? null, $field, $direction, $record, $fieldDefinitions);
+            $this->runMappersForField($vardefs[$field] ?? null, $field, $direction, $record, $fieldDefinitions, $mode);
         }
     }
 
@@ -107,6 +107,7 @@ class RecordMapperRunner implements RecordMapperRunnerInterface
      * @param string $direction
      * @param Record $record
      * @param FieldDefinition $fieldDefinitions
+     * @param string|null $mode
      * @return void
      */
     protected function runMappersForField(
@@ -114,20 +115,20 @@ class RecordMapperRunner implements RecordMapperRunnerInterface
         string $field,
         string $direction,
         Record $record,
-        FieldDefinition $fieldDefinitions
-    ): void
-    {
+        FieldDefinition $fieldDefinitions,
+        ?string $mode = ''
+    ): void {
         $fieldVardefs = $vardefs ?? [];
         $type = $fieldVardefs['type'] ?? '';
 
         if ($type !== '') {
-            $fieldTypeMappers = $this->fieldTypeMapperRegistry->getMappers($record->getModule(), $type);
+            $fieldTypeMappers = $this->fieldTypeMapperRegistry->getMappers($record->getModule(), $type, $mode);
             foreach ($fieldTypeMappers as $fieldTypeMapper) {
                 $fieldTypeMapper->$direction($record, $fieldDefinitions, $field);
             }
         }
 
-        $fieldMappers = $this->fieldMapperRegistry->getMappers($record->getModule(), $field);
+        $fieldMappers = $this->fieldMapperRegistry->getMappers($record->getModule(), $field, $mode);
         foreach ($fieldMappers as $fieldMapper) {
             $fieldMapper->$direction($record, $fieldDefinitions);
         }

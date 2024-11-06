@@ -47,4 +47,10 @@ interface BaseModuleMapperInterface
      * @return int
      */
     public function getOrder(): int;
+
+    /**
+     * Get modes where mapper should run
+     * @return string[]
+     */
+    public function getModes(): array;
 }
