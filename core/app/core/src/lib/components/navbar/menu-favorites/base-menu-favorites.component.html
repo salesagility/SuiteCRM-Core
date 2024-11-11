@@ -25,14 +25,14 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="records && records.length">
+<ng-container *ngIf="records() && records().length">
     <h4 (click)="toggleCollapse()"
         class="favorite-header mt-0 pb-1 pl-2 pr-2">
         <scrm-label labelKey="LBL_FAVORITES"></scrm-label>
     </h4>
     <ng-container *ngIf="!collapsed">
         <div (click)="onClick && onClick()"
-             *ngFor="let favorite of records | slice:0:maxDisplayed"
+             *ngFor="let favorite of records() | slice:0:maxDisplayed"
              class="nav-item"
         >
             <a [routerLink]="this.buildRoute(favorite)"

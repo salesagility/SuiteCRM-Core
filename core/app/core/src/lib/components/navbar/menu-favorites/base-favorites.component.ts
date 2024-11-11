@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, signal, SimpleChanges, WritableSignal} from '@angular/core';
 import {Favorite} from '../../../common/record/favorites.model';
 import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 import {ModuleNameMapper} from '../../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -37,7 +37,7 @@ import {Subscription} from 'rxjs';
 export class BaseFavoritesComponent implements OnInit, OnDestroy, OnChanges {
     @Input() module: string;
     maxDisplayed: number = 5;
-    records: Favorite[];
+    records: WritableSignal<Favorite[]> = signal([]);
     protected subs: Subscription[] = [];
 
     constructor(
@@ -92,7 +92,7 @@ export class BaseFavoritesComponent implements OnInit, OnDestroy, OnChanges {
         const moduleMeta$ = this.metadata.allModuleMetadata$.pipe(map(value => value[this.module] ?? null));
 
         this.subs.push(moduleMeta$.subscribe(meta => {
-            this.records = meta?.favorites ?? null;
+            this.records.set(meta?.favorites ?? null);
         }));
     }
 
@@ -101,7 +101,7 @@ export class BaseFavoritesComponent implements OnInit, OnDestroy, OnChanges {
      * @protected
      */
     protected clear() {
-        this.records = null;
+        this.records.set(null);
         this.subs.forEach(sub => sub.unsubscribe());
     }
 }

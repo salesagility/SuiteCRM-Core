@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="records && records.length">
+<ng-container *ngIf="records() && records().length">
     <li class="nav-item dropdown-submenu submenu submenu-extra">
 
         <a class="sub-nav-link nav-link action-link dropdown-item dropdown-toggle pr-4"
@@ -38,7 +38,7 @@
         <ul class="dropdown-menu submenu"
             [class.active]="showDropdown()"
         >
-            <li *ngFor="let favorite of records | slice:0:maxDisplayed"
+            <li *ngFor="let favorite of records() | slice:0:maxDisplayed"
                 class="nav-item"
                 (click)="onItemClick($event)"
                 (touchstart)="onItemTouchStart($event)"
