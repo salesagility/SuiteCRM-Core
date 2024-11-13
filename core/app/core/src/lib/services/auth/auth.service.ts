@@ -30,7 +30,8 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/c
 import {BehaviorSubject, Observable, of, Subscription, throwError} from 'rxjs';
 import {catchError, distinctUntilChanged, filter, finalize, map, take, tap} from 'rxjs/operators';
 import {User} from '../../common/types/user';
-import {emptyObject, isEmptyString, isTrue} from '../../common/utils/value-utils';
+import {emptyObject} from '../../common/utils/object-utils';
+import {isEmptyString, isTrue} from '../../common/utils/value-utils';
 import {MessageService} from '../message/message.service';
 import {StateManager} from '../../store/state-manager';
 import {LanguageStore} from '../../store/language/language.store';
@@ -38,7 +39,7 @@ import {AppStateStore} from '../../store/app-state/app-state.store';
 import {LocalStorageService} from '../local-storage/local-storage.service';
 import {SystemConfigStore} from '../../store/system-config/system-config.store';
 import {BaseRouteService} from "../base-route/base-route.service";
-import {NotificationStore} from '../../store/notification/notification.store';
+import {NotificationStore} from "../../store/notification/notification.store";
 
 export interface SessionStatus {
     appStatus?: AppStatus;
@@ -340,8 +341,7 @@ export class AuthService {
      * @param {ActivatedRouteSnapshot} route information about the current route
      * @param snapshot
      */
-    public authorizeUserSession(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot):
-        Observable<boolean | UrlTree> {
+    public authorizeUserSession(route: ActivatedRouteSnapshot, snapshot: RouterStateSnapshot): Observable<boolean | UrlTree> {
 
         if (this.isUserLoggedIn.value && route.data.checkSession !== true) {
             return of(true);
@@ -369,8 +369,10 @@ export class AuthService {
                             this.languageStore.appStrings$.pipe(
                                 filter(appStrings => appStrings && !emptyObject(appStrings)),
                                 tap(() => {
-                                    this.notificationStore.enableNotifications();
-                                    this.notificationStore.refreshNotifications();
+                                    setTimeout(() => {
+                                        this.notificationStore.enableNotifications();
+                                        this.notificationStore.refreshNotifications();
+                                    }, 2000);
                                 }),
                                 take(1)
                             ).subscribe();
