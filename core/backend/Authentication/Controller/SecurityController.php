@@ -142,7 +142,7 @@ class SecurityController extends AbstractController
     /**
      * @throws Exception
      */
-    #[Route('/profile-auth/2fa/enable', name: 'app_2fa_enable', methods: ["GET", "POST"])]
+    #[Route('/2fa/enable', name: 'app_2fa_enable', methods: ["GET", "POST"])]
     #[isGranted('IS_AUTHENTICATED_FULLY')]
     public function enable2fa(#[CurrentUser] ?User $user, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
@@ -176,7 +176,7 @@ class SecurityController extends AbstractController
         return new Response(json_encode($response), Response::HTTP_OK);
     }
 
-    #[Route('/profile-auth/2fa/disable', name: 'app_2fa_disable', methods: ["GET"])]
+    #[Route('/2fa/disable', name: 'app_2fa_disable', methods: ["GET"])]
     public function disable2fa(#[CurrentUser] ?User $user, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         error_log('inside disable 2fa');
@@ -192,7 +192,7 @@ class SecurityController extends AbstractController
         return $this->redirect('../#/users/edit/'.$id);
     }
 
-    #[Route('/profile-auth/2fa/enable-finalize', name: 'app_2fa_enable_finalize', methods: ["GET", "POST"])]
+    #[Route('/2fa/enable-finalize', name: 'app_2fa_enable_finalize', methods: ["GET", "POST"])]
     public function enableFinalize2fa(#[CurrentUser] ?User $user, Security $security, Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         error_log('inside enableFinalize2fa');

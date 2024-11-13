@@ -214,7 +214,7 @@ services:
     tags: [ { name: kernel.event_listener, event: kernel.response, method: onKernelResponse } ]
     arguments:
       $routes:
-        - path: '(/login$|/profile-auth/2fa/enable|/profile-auth/2fa/enable-finalize|/profile-auth|/2fa|/$|/auth$|/logout$|/logged-out$|/session-status|/auth/logout|/auth/login|/auth/session-status)'
+        - path: '(/login$|/2fa/enable|/2fa/enable-finalize|/2fa|/$|/auth$|/logout$|/logged-out$|/session-status|/auth/logout|/auth/login|/auth/session-status)'
       $cookieName: 'XSRF-TOKEN'
       $cookieExpire: 0
       $cookiePath: /

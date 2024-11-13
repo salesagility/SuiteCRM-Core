@@ -179,7 +179,7 @@ export class AuthService {
     }
 
     public enable2fa(): Observable<any> {
-        let route = './profile-auth/2fa/enable';
+        let route = './2fa/enable';
         route = this.baseRoute.appendNativeAuth(route);
 
         route = this.baseRoute.calculateRoute(route);
@@ -207,7 +207,7 @@ export class AuthService {
 
     public finalize2fa(code: string): Observable<any> {
 
-        let route = './profile-auth/2fa/enable-finalize';
+        let route = './2fa/enable-finalize';
 
         route = this.baseRoute.appendNativeAuth(route);
         route = this.baseRoute.calculateRoute(route);
