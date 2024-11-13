@@ -24,10 +24,10 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal, WritableSignal} from '@angular/core';
 import {Router} from '@angular/router';
-import {combineLatestWith, Observable, of} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import {combineLatestWith, Observable} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 import {transition, trigger, useAnimation} from '@angular/animations';
 import {fadeIn} from 'ng-animate';
 import {RecoverPasswordService} from '../../../../services/process/processes/recover-password/recover-password';
@@ -61,7 +61,7 @@ export class LoginUiComponent implements OnInit {
     passw = '';
     email = '';
 
-    cardState = 'front';
+    cardState: WritableSignal<string> = signal('front');
 
     systemConfigs$: Observable<SystemConfigMap> = this.configs.configs$;
     appStrings$: Observable<LanguageStringMap> = this.languageStore.appStrings$;
@@ -150,15 +150,15 @@ export class LoginUiComponent implements OnInit {
     }
 
     flipCard(): void {
-        if (this.cardState === 'front') {
-            this.cardState = 'back';
+        if (this.cardState() === 'front') {
+            this.cardState.set('back');
         } else {
-            this.cardState = 'front';
+            this.cardState.set('front');
         }
     }
 
     returnToLogin(): void {
-        this.cardState = 'front';
+        this.cardState.set('front');
         return;
     }
 
@@ -222,7 +222,7 @@ export class LoginUiComponent implements OnInit {
     }
 
     onTwoFactor(result: any): void {
-        this.cardState = '2fa';
+        this.cardState.set('2fa');
     }
 
     protected getTooManyFailedMessage(defaultTooManyFailedMessage: string): string {

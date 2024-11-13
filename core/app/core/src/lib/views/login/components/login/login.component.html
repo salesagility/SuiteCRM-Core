@@ -35,7 +35,7 @@
                 <scrm-logo-ui></scrm-logo-ui>
             </div>
         </div>
-        <div class="form-row" *ngIf="vm.showLanguages && cardState !== '2fa'">
+        <div class="form-row" *ngIf="vm.showLanguages && cardState() !== '2fa'">
             <div class="col">
                 <label class="" for="languages">{{vm.appStrings['LBL_LANGUAGE']}}</label>
             </div>
@@ -59,7 +59,7 @@
 
             <!-- Card front -->
             <div class="fade-card-front col"
-                 *ngIf="cardState==='front'"
+                 *ngIf="cardState() === 'front'"
                  [@fade]>
 
                 <div class="inner-addon left-addon">
@@ -108,7 +108,7 @@
 
             <!-- Card back-->
             <div class="fade-card-back col"
-                 *ngIf="cardState==='back'"
+                 *ngIf="cardState() === 'back'"
                  [@fade]>
                 <div class="inner-addon left-addon">
                     <scrm-image image="login_user"></scrm-image>
@@ -154,7 +154,7 @@
 
             <!-- 2fa Card-->
             <div class="fade-card-back col"
-                 *ngIf="cardState ==='2fa'"
+                 *ngIf="cardState() === '2fa'"
                  [@fade]>
                 <div class="inner-addon left-addon">
                     <scrm-2fa-check [class]="'login-button'"></scrm-2fa-check>
