@@ -673,7 +673,7 @@
         <div class="left-col label-txt pt-1">
             <div>{$MOD.LBL_FACTOR_AUTH}:</div>
             <div class='dataField'>
-                <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href = './#/profile-auth/2fa/enable'">{$MOD.LBL_ENABLE_2FA}</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href = './#/users/2fa-config'">{$MOD.LBL_ENABLE_2FA}</button>
             </div>
             <div class="edit-dotted-border"></div>
         </div>
