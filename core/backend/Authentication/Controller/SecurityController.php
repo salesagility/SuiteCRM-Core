@@ -179,8 +179,6 @@ class SecurityController extends AbstractController
     #[Route('/2fa/disable', name: 'app_2fa_disable', methods: ["GET"])]
     public function disable2fa(#[CurrentUser] ?User $user, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
-        error_log('inside disable 2fa');
-
         $id = $user->getId();
 
         $this->preparedStatementHandler->update(
@@ -195,8 +193,6 @@ class SecurityController extends AbstractController
     #[Route('/2fa/enable-finalize', name: 'app_2fa_enable_finalize', methods: ["GET", "POST"])]
     public function enableFinalize2fa(#[CurrentUser] ?User $user, Security $security, Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
-        error_log('inside enableFinalize2fa');
-
         $maybe = $this->getUser();
 
         $auth_code = $request->getPayload()->get('auth_code') ?? '';
@@ -204,8 +200,6 @@ class SecurityController extends AbstractController
         $user_no = $security->getToken()->getUser();
 
         $user_diff = $security->getUser();
-//        $auth_code = $_POST['auth_code'] ?? null;
-
         $correctCode = $totpAuthenticator->checkCode($user, $auth_code);
 
 
@@ -347,11 +341,6 @@ class SecurityController extends AbstractController
 
     protected function setupBackupCodes($user, $backupCodes): void
     {
-        error_log(print_r($backupCodes, true));
-        error_log(print_r(array_keys($backupCodes), true));
-
-//        $backupCodes = json_encode();
-
         $this->preparedStatementHandler->update("UPDATE users SET backup_codes = :backup_codes WHERE id = :id",
             ['id' => $user->getId(), 'backup_codes' => $backupCodes],
             [['param' => 'id', 'type' => 'string'], ['param' => 'backup_codes', 'type' => 'json']]

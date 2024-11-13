@@ -11,7 +11,6 @@ class TwoFactorAuthenticationFailureHandler implements AuthenticationFailureHand
 {
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        error_log(' in onAuthenticationFailure');
         // Return the response to tell the client that 2fa failed. You may want to add more details
         // from the $exception.
         return new Response('{"error": "2fa_failed", "two_factor_complete": false}');

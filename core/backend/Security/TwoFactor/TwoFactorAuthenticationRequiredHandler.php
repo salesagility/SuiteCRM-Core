@@ -11,7 +11,6 @@ class TwoFactorAuthenticationRequiredHandler implements AuthenticationRequiredHa
 {
     public function onAuthenticationRequired(Request $request, TokenInterface $token): Response
     {
-        error_log(' in onAuthenticationRequired');
         // Return the response to tell the client that authentication hasn't completed yet and
         // two-factor authentication is required.
         return new Response('{"error": "access_denied", "two_factor_complete": false}');

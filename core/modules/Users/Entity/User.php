@@ -1269,9 +1269,6 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
     {
-        error_log('inside getTotpAuthenticationconfig');
-        error_log($this->getTotpSecret());
-
         // You could persist the other configuration options in the user entity to make it individual per user.
         return new TotpConfiguration($this->getTotpSecret(), TotpConfiguration::ALGORITHM_SHA1, 30, 6);
     }
