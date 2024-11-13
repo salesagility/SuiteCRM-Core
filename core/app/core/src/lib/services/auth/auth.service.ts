@@ -191,6 +191,19 @@ export class AuthService {
         return this.http.get(route, {headers});
     }
 
+    public disable2fa(): Observable<any> {
+        let route = './2fa/disable';
+        route = this.baseRoute.appendNativeAuth(route);
+
+        route = this.baseRoute.calculateRoute(route);
+
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+        });
+
+        return this.http.get(route, {headers});
+    }
+
     public check2fa(code: string): Observable<any> {
 
         let route = './2fa_check';
