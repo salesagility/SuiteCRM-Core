@@ -100,10 +100,6 @@ class SecurityController extends AbstractController
     #[Route('/login', name: 'app_login', methods: ["GET", "POST"])]
     public function login(AuthenticationUtils $authenticationUtils, #[CurrentUser] ?User $user): JsonResponse
     {
-//        if ($user->getIsTotpEnabled()) {
-//                return new Response('{"login_success": "true", "two_factor_complete": "false"}');
-//        }
-
         $error = $authenticationUtils->getLastAuthenticationError();
         $isAppInstalled = $this->authentication->getAppInstallStatus();
         $isAppInstallerLocked = $this->authentication->getAppInstallerLockStatus();
@@ -146,9 +142,6 @@ class SecurityController extends AbstractController
     #[isGranted('IS_AUTHENTICATED_FULLY')]
     public function enable2fa(#[CurrentUser] ?User $user, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
-//        if ($user->getIsTotpEnabled()){
-//            return new Response('');
-//        }
         $secret = $totpAuthenticator->generateSecret();
 
         $user->setTotpSecret($secret);
@@ -193,15 +186,9 @@ class SecurityController extends AbstractController
     #[Route('/2fa/enable-finalize', name: 'app_2fa_enable_finalize', methods: ["GET", "POST"])]
     public function enableFinalize2fa(#[CurrentUser] ?User $user, Security $security, Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
-        $maybe = $this->getUser();
-
         $auth_code = $request->getPayload()->get('auth_code') ?? '';
 
-        $user_no = $security->getToken()->getUser();
-
-        $user_diff = $security->getUser();
         $correctCode = $totpAuthenticator->checkCode($user, $auth_code);
-
 
         if ($correctCode){
             $this->preparedStatementHandler->update(
