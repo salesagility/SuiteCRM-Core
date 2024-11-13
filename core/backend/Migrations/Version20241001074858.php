@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\Migrations\AbstractMigration;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241001074858 extends AbstractMigration
+final class Version20241001074858 extends BaseMigration implements ContainerAwareInterface
 {
     public function getDescription(): string
     {
@@ -24,8 +24,21 @@ final class Version20241001074858 extends AbstractMigration
         $entityManager = $this->container->get('entity_manager');
 
         try {
-            $entityManager->getConnection()->executeQuery('ALTER TABLE users ADD COLUMN `totp_secret` varchar  NULL');
+            $entityManager->getConnection()->executeQuery('ALTER TABLE users ADD COLUMN `totp_secret` varchar(255) NULL');
         } catch (\Exception $e) {
+            $this->log('Failed to add column totp_secret to users. Error: ' . $e->getMessage());
+        }
+
+        try {
+            $entityManager->getConnection()->executeQuery('ALTER TABLE users ADD COLUMN `is_totp_enabled` tinyint(1) NULL');
+        } catch (\Exception $e) {
+            $this->log('Failed to add column is_totp_enabled to users. Error: ' . $e->getMessage());
+        }
+
+        try {
+            $entityManager->getConnection()->executeQuery('ALTER TABLE users ADD COLUMN `backup_codes` text NULL');
+        } catch (\Exception $e) {
+            $this->log('Failed to add column $backupCodes to users. Error: ' . $e->getMessage());
         }
 
     }
