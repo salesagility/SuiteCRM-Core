@@ -40,53 +40,103 @@
             </div>
         </div>
 
-        <ng-container *ngIf="!isEnabled() && qrCodeSvg">
-            <div class="d-flex col-md-12">
-                <div class="col-md-3 pt-3 d-flex flex-column two-factor-border">
-                    <scrm-label labelKey="LBL_ENABLE_2FA_LABEL"></scrm-label>
-                    <scrm-label labelKey="LBL_OTP_SETUP" class="pt-2"></scrm-label>
-                </div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <scrm-widget-panel [title]="appMethodHeaderLabel">
+                        <span widget-header-icon-area>
+                            <scrm-image image="mobile-phone"></scrm-image>
+                        </span>
+                        <span widget-header-status-area>
+                            <span *ngIf="isAppMethodEnabled()" class="badge badge-pill badge-success">
+                                <scrm-label labelKey="LBL_ENABLED"></scrm-label>
+                            </span>
+                        </span>
+                        <span widget-header-button>
+                            <scrm-button *ngIf="!isAppMethodEnabled()" [config]="enableAppMethodButtonConfig"></scrm-button>
+                            <scrm-button *ngIf="isAppMethodEnabled()" [config]="disableAppMethodTButtonConfig"></scrm-button>
+                        </span>
+                        <div widget-body>
+                            <div class="d-flex col-md-12 pl-4 pr-4 pt-2 pb-2">
+                                <scrm-label labelKey="LBL_OTP_SETUP" class="small"></scrm-label>
+                            </div>
 
-                <div class="d-flex flex-column pt-3 col-md-5 two-factor-border">
-                    <div class="d-flex">
-                        <div class="pt-2 pr-3" [innerHTML]="qrCodeSvg | trustHtml">
+                            <ng-container *ngIf="isAppMethodEnabled()">
+                                <div class="d-flex col-md-12 pl-4 pr-4 pt-3 pb-2">
+
+                                    <div class="d-flex flex-column">
+                                        <div *ngIf="qrCodeSvg" class="d-flex">
+                                            <div class="pt-2 pr-3" [innerHTML]="qrCodeSvg | trustHtml">
+                                            </div>
+                                            <div>
+                                                <scrm-label labelKey="LBL_QR_CODE_HELP"
+                                                            class="pl-3 d-inline-block">
+                                                </scrm-label>
+                                                <div class="d-flex flex-column pt-4 align-items-center">
+                                                    <scrm-label labelKey="LBL_ENTER_2FA_CODE"></scrm-label>
+                                                    <input [(ngModel)]="authCode"
+                                                           id="auth_code"
+                                                           type="text"
+                                                           name="auth_code"
+                                                           class="mb-3 mt-3"
+                                                           maxlength="6"/>
+
+                                                    <button id="submit-2fa-code"
+                                                            (click)="finalize2fa()"
+                                                            type="submit"
+                                                            class="button-group-button settings-button">
+                                                        <scrm-label labelKey="LBL_VERIFY_2FA"></scrm-label>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+
                         </div>
-                        <div>
-                            <scrm-label labelKey="LBL_QR_CODE_HELP" class="pl-3 d-inline-block"></scrm-label>
-                            <div class="d-flex flex-column pt-4 align-items-center">
-                                <scrm-label labelKey="LBL_ENTER_2FA_CODE"></scrm-label>
-                                <input [(ngModel)]="_auth_code"
-                                       id="auth_code"
-                                       type="text"
-                                       name="auth_code"
-                                       class="mb-3 mt-3"
-                                       maxlength="6">
-
-                                <button id="submit-2fa-code" (click)="finalize2fa()" type="submit" class="button-group-button settings-button">
-                                    <scrm-label labelKey="LBL_VERIFY_2FA"></scrm-label>
-                                </button>
-                            </div>                        </div>
-                    </div>
+                    </scrm-widget-panel>
                 </div>
 
-                <div *ngIf="backupCodes" class="pl-3">
-                    <div class="d-flex pt-3">
-                        <scrm-label labelKey="LBL_BACKUP_CODES"></scrm-label>
-                    </div>
+            </div>
+            <div class="row pt-3">
+                <div class="col">
+                    <scrm-widget-panel [title]="recoveryCodesHeaderLabel">
+                        <span widget-header-icon-area>
+                            <scrm-image image="key"></scrm-image>
+                        </span>
+                        <span widget-header-status-area>
+                            <span *ngIf="areRecoveryCodesGenerated()" class="badge badge-pill badge-success">
+                                <scrm-label labelKey="LBL_GENERATED"></scrm-label>
+                            </span>
+                        </span>
+                        <span widget-header-button>
+                        </span>
+                        <div widget-body>
+                            <div class="d-flex col-md-12 pl-4 pr-4 pt-2 pb-2">
+                                <scrm-label class="small" labelKey="LBL_BACKUP_CODES_INFO"></scrm-label>
+                            </div>
 
-                    <div class="backup-codes w-50">
-                        <ng-container *ngFor="let codes of backupCodes;">
-                            <div>{{ codes }}</div>
-                        </ng-container>
-                    </div>
+                            <ng-container *ngIf="areRecoveryCodesGenerated()">
+                                <div class="d-flex col-md-12 pl-4 pr-4 pt-3 pb-2">
 
-                    <div class="d-flex pt-3">
-                        <scrm-label labelKey="LBL_BACKUP_CODES_INFO"></scrm-label>
-                    </div>
+                                    <div class="">
+                                        <pre *ngIf="backupCodes" class="w-50">
+                                            <ng-container *ngFor="let codes of backupCodes;">
+                                                <div>{{ codes }}</div>
+                                            </ng-container>
+                                        </pre>
+                                    </div>
+                                </div>
+                            </ng-container>
 
+                        </div>
+                    </scrm-widget-panel>
                 </div>
             </div>
-        </ng-container>
+        </div>
+
+
     </div>
 
 </ng-container>

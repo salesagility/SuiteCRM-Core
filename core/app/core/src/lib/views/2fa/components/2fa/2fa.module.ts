@@ -41,6 +41,8 @@ import {HtmlSanitizeModule} from "../../../../pipes/html-sanitize/html-sanitize.
 import {TrustHtmlModule} from "../../../../pipes/trust-html/trust-html.module";
 import {PaginatorModule} from "primeng/paginator";
 import {TwoFactorCheckModule} from "../2fa-check/2fa-check.module";
+import {RecordThreadModule} from "../../../../containers/record-thread/components/record-thread/record-thread.module";
+import {WidgetPanelModule} from "../../../../components/widget-panel/widget-panel.module";
 
 @NgModule({
     declarations: [
@@ -64,7 +66,9 @@ import {TwoFactorCheckModule} from "../2fa-check/2fa-check.module";
         HtmlSanitizeModule,
         TrustHtmlModule,
         PaginatorModule,
-        TwoFactorCheckModule
+        TwoFactorCheckModule,
+        RecordThreadModule,
+        WidgetPanelModule
     ]
 })
 export class TwoFactorModule {

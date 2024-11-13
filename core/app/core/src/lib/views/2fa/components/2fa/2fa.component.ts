@@ -24,11 +24,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, signal, WritableSignal} from "@angular/core";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {MessageService} from "../../../../services/message/message.service";
 import {isTrue} from "common";
+import {LanguageStore} from "../../../../store/language/language.store";
+import {ButtonCallback, ButtonInterface} from "../../../../common/components/button/button.model";
 
 
 @Component({
@@ -41,31 +43,81 @@ export class TwoFactorComponent implements OnInit {
     qrCodeUrl: string;
     qrCodeSvg: string;
     backupCodes: any;
-    _auth_code: string;
-    isTwoFAEnabled: boolean = false;
+    authCode: string;
+    isAppMethodEnabled: WritableSignal<boolean> = signal(true);
+    areRecoveryCodesGenerated: WritableSignal<boolean> = signal(true);
 
-    title = 'Two Factor Authentication';
+    title: string = '';
+    appMethodHeaderLabel: string = '';
+    enableAppMethodButtonConfig: ButtonInterface;
+    disableAppMethodTButtonConfig: ButtonInterface;
+    recoveryCodesHeaderLabel: string = '';
 
-    constructor(protected authService: AuthService, protected router: Router,
-                protected message: MessageService) {
+    constructor(
+        protected authService: AuthService,
+        protected router: Router,
+        protected message: MessageService,
+        protected language: LanguageStore
+    ) {
     }
 
     ngOnInit() {
-        this.enable2fa();
+        this.title = this.language.getAppString('LBL_TWO_FACTOR_AUTH');
+        this.appMethodHeaderLabel = this.language.getAppString('LBL_TWO_FACTOR_AUTH_APP_METHOD');
+        this.recoveryCodesHeaderLabel = this.language.getAppString('LBL_BACKUP_CODES');
+
+        this.enableAppMethodButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.enable2FactorAuth()
+            }) as ButtonCallback,
+            debounceClick: true,
+            clickDebounceTime: 500,
+            labelKey: 'LBL_ENABLE',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.disableAppMethodTButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.disable2FactorAuth()
+            }) as ButtonCallback,
+            debounceClick: true,
+            clickDebounceTime: 500,
+            labelKey: 'LBL_DISABLE',
+            titleKey: ''
+        } as ButtonInterface;
     }
 
-    public isEnabled(): boolean {
-        return this.isTwoFAEnabled;
+    public enable2FactorAuth(): void {
+
+        this.authService.enable2fa().subscribe({
+            next: (response) => {
+                this.qrCodeUrl = response?.url;
+                this.qrCodeSvg = response?.svg;
+                this.backupCodes = response?.backupCodes;
+                this.isAppMethodEnabled.set(true);
+                this.areRecoveryCodesGenerated.set(true);
+            },
+            error: () => {
+                this.isAppMethodEnabled.set(false);
+                this.areRecoveryCodesGenerated.set(false);
+            }
+        });
     }
 
-    public enable2fa() {
-        this.authService.enable2fa().subscribe(response => {
-            this.qrCodeUrl = response?.url;
-            this.qrCodeSvg = response?.svg;
-            console.log(response.backupCodes);
-            this.backupCodes = response?.backupCodes;
-            console.log(this.backupCodes);
-        })
+    public disable2FactorAuth(): void {
+        this.authService.disable2fa().subscribe({
+            next: (response) => {
+                this.isAppMethodEnabled.set(false);
+                this.areRecoveryCodesGenerated.set(false);
+            },
+            error: () => {
+                this.isAppMethodEnabled.set(true);
+                this.areRecoveryCodesGenerated.set(true);
+            }
+        });
+        return;
     }
 
     getTitle(): string {
@@ -73,11 +125,10 @@ export class TwoFactorComponent implements OnInit {
     }
 
     public finalize2fa() {
-        const _auth_code = this._auth_code;
-        this.authService.finalize2fa(_auth_code).subscribe(response => {
-            const verified = response?.two_factor_setup_complete ?? false
-            if (isTrue(verified)){
-                console.log('Two Factor Authentication Successful');
+        this.authService.finalize2fa(this.authCode).subscribe(response => {
+            const verified = response?.two_factor_setup_complete ?? false;
+
+            if (isTrue(verified)) {
                 this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_SUCCESS');
 
                 const userId = this.authService?.getCurrentUser()?.id;
@@ -86,7 +137,6 @@ export class TwoFactorComponent implements OnInit {
                 return;
             }
 
-            console.log('Two Factor Authentication Failed.');
             this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
         })
     }
