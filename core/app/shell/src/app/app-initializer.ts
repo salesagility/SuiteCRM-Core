@@ -167,7 +167,7 @@ export class AppInit {
                     });
 
                     routes.push({
-                        path: 'profile-auth',
+                        path: 'users/2fa-config',
                         component: TwoFactorComponent,
                         canActivate: [TwoFactorAuthGuard],
                         runGuardsAndResolvers: 'always',
@@ -182,15 +182,7 @@ export class AppInit {
                                 preferences: false,
                                 languageStrings: ['appStrings']
                             }
-                        },
-                        children: [
-                            {
-                                path: '2fa/enable',
-                            },
-                            {
-                                path: '2fa/disable',
-                            }
-                        ]
+                        }
                     });
                     routes.push(loggedOutConfig);
 
