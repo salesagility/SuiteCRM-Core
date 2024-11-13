@@ -193,7 +193,7 @@ export class AuthService {
 
     public check2fa(code: string): Observable<any> {
 
-        let route = './profile-auth/2fa/check';
+        let route = './2fa_check';
 
         route = this.baseRoute.appendNativeAuth(route);
         route = this.baseRoute.calculateRoute(route);

@@ -222,24 +222,6 @@ class SecurityController extends AbstractController
         return new Response(json_encode($response), Response::HTTP_OK);
     }
 
-    #[Route('/profile-auth/2fa/check', name: 'app_2fa_check', methods: ["GET", "POST"])]
-    public function check2fa(#[CurrentUser] ?User $user, Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
-    {
-        error_log('inside 2fa check');
-        // request
-        $auth_code = $request->getPayload()->get('auth_code') ?? '';
-
-        $correctCode = $totpAuthenticator->checkCode($user, $auth_code);
-
-        if (!$correctCode){
-            $correctCode = $user->isBackupCode($auth_code);
-        }
-
-        $response = ['two_factor_complete' => $correctCode];
-
-        return new Response(json_encode($response), Response::HTTP_OK);
-    }
-
     #[Route('/logout', name: 'app_logout', methods: ["GET", "POST"])]
     public function logout(): void
     {
