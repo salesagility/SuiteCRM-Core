@@ -40,7 +40,7 @@
                 <ng-content select="[panel-icon-area]"></ng-content>
             </div>
 
-            <div *ngIf="title" class="pl-1 panel-title">{{title}}</div>
+            <div *ngIf="title" class="pl-1 panel-title d-flex align-items-center"><div class="lh-100">{{title}}</div></div>
             <div *ngIf="titleKey" class="pl-1 panel-title">
                 <scrm-label [labelKey]="titleKey"></scrm-label>
             </div>
