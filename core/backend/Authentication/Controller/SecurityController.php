@@ -370,9 +370,9 @@ class SecurityController extends AbstractController
 
 //        $backupCodes = json_encode();
 
-        $this->preparedStatementHandler->update("UPDATE users SET backup_codes = '{':backup_codes'}' WHERE id = :id",
+        $this->preparedStatementHandler->update("UPDATE users SET backup_codes = :backup_codes WHERE id = :id",
             ['id' => $user->getId(), 'backup_codes' => $backupCodes],
-            [['param' => 'id', 'type' => 'string'], ['param' => 'backup_codes', 'type' => 'array']]
+            [['param' => 'id', 'type' => 'string'], ['param' => 'backup_codes', 'type' => 'json']]
         );
     }
 }

@@ -682,6 +682,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
     #[ORM\Column(
         name: "backup_codes",
         type: "json",
+        nullable: true
     )]
     private ?array $backupCodes = [];
 
@@ -1167,6 +1168,17 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
         return $this;
     }
 
+    public function getBackupCodes(): array
+    {
+        return $this->backupCodes;
+    }
+
+    public function setBackupCodes(?array $backupCodes): self
+    {
+        $this->backupCodes = $backupCodes ?? [];
+        return $this;
+    }
+
     /**
      * @inheritDoc
      */
@@ -1294,7 +1306,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
     public function isBackupCode(string $code): bool
     {
         $correctCode = false;
-        if (in_array($code, $backup)){
+        if (in_array($code, $this->getBackupCodes())){
             $correctCode = true;
             $this->invalidateBackupCode($code);
         }
