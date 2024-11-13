@@ -44,6 +44,9 @@
             <div *ngIf="titleKey" class="pl-1 panel-title">
                 <scrm-label [labelKey]="titleKey"></scrm-label>
             </div>
+            <div class="pl-1">
+                <ng-content select="[panel-status-area]"></ng-content>
+            </div>
         </div>
 
 
