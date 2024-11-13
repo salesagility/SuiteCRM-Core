@@ -132,7 +132,6 @@ return static function (ContainerConfigurator $containerConfig) {
                         'path' => 'app_logout',
                     ],
                     'two_factor' => [
-                        'auth_form_path' => 'app_2fa_enable',
                         'check_path' => 'app_2fa_check',
                         'prepare_on_login' => true,
                         'prepare_on_access_denied' => true,
