@@ -27,7 +27,14 @@
 -->
 <div class="accordion widget-panel mr-0 shadow-sm">
     <scrm-panel [mode]="mode" [title]="title" bodyPadding="0">
+        <span panel-icon-area>
+            <ng-content select="[widget-header-icon-area]"></ng-content>
+        </span>
+        <span panel-status-area>
+            <ng-content select="[widget-header-status-area]"></ng-content>
+        </span>
         <span panel-header-button>
+            <ng-content select="[widget-header-button]"></ng-content>
         </span>
         <div panel-body>
             <div *ngIf="displayContent"
