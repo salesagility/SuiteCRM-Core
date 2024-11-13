@@ -2298,7 +2298,7 @@ $app_strings = array(
     // Two-Factor Authentication
     'LBL_ENTER_AUTH_APP_2FA_CODE' => 'Please enter the verification code from your authenticator app',
     'LBL_ENABLE_2FA_LABEL' => 'Enable Two-Factor Authentication',
-    'LBL_BACKUP_CODES' => 'SuiteCRM Two Factor Backup Codes',
+    'LBL_BACKUP_CODES' => 'Recovery/Backup Codes',
     'LBL_BACKUP_CODES_INFO' => 'Backup codes are one time passcodes to use when you are unable to verify via your Authenticator app.',
     'LBL_PROBLEMS_GENERATING_CODE' => 'Problems generating the code?',
     'LBL_BACKUP_CODES_FALLBACK_INSTRUCTIONS' => 'Use one of the backup codes (it expires after being used)',
@@ -2310,6 +2310,13 @@ $app_strings = array(
     'LBL_FACTOR_AUTH_FAIL' => "Two Factor Authentication failed. Try again.",
 
     'LBL_VERIFY_2FA' => 'Verify Code',
+    'LBL_TWO_FACTOR_AUTH' => 'Two Factor Authentication',
+    'LBL_TWO_FACTOR_AUTH_APP_METHOD' => 'Authenticator app',
+    'LBL_TWO_FACTOR_AUTH_APP_METHOD_DESCRIPTION' => 'Use an authentication app to generate 2-factor authentication codes when prompted',
+    'LBL_ENABLE' => 'Enable',
+    'LBL_ENABLED' => 'Enabled',
+    'LBL_DISABLE' => 'Disable',
+    'LBL_GENERATED' => 'Generated'
 
 );
 
