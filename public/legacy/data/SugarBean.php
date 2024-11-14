@@ -2644,6 +2644,11 @@ class SugarBean
                     $type .= $def['dbType'];
                 }
 
+                $purifyHtml = $def['metadata']['purifyHtml'] ?? true;
+                if ($purifyHtml === false) {
+                    return;
+                }
+
                 // Trim name & varchar type values on save when the value is not null
                 if (isset($def['type']) && in_array($def['type'], ['name', 'varchar']) && !is_null($this->$key ?? null)) {
                     $this->$key = trim($this->$key);
