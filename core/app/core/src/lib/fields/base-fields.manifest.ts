@@ -274,6 +274,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'bool.edit': BooleanEditFieldComponent,
     'bool.filter': MultiEnumFilterFieldComponent,
     'bool-checkbox.filter': BooleanCheckboxFilterFieldComponent,
+    'html-native.detail': HtmlDetailFieldComponent,
     'html.detail': TinymceDetailFieldComponent,
     'html.edit': TinymceEditFieldComponent
 };

@@ -134,6 +134,7 @@ export interface FieldMetadata {
     extraOptions?: Option[];
     onClick?: FieldClickCallback;
     tinymce?: any;
+    trustHTML?: boolean;
     date_time_format?: string;
     displayLogicResetOn?: string;
     relateSearchField?: string;

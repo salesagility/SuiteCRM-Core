@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2023 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -26,18 +26,19 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {HtmlDetailFieldComponent} from './html.component';
-import {SafeHtmlModule} from '../../../../pipes/safe-html/safe-html.module'
+import {SafeHtmlPipe} from './safe-html.pipe';
+
 
 @NgModule({
-    declarations: [HtmlDetailFieldComponent],
-    exports: [HtmlDetailFieldComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
-        SafeHtmlModule,
+    declarations: [
+        SafeHtmlPipe
     ],
+    exports: [
+        SafeHtmlPipe
+    ],
+    imports: [
+        CommonModule
+    ]
 })
-export class HtmlDetailFieldModule {
+export class SafeHtmlModule {
 }

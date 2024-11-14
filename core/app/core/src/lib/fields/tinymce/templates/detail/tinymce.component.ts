@@ -1,6 +1,6 @@
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,7 +41,7 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
 export class TinymceDetailFieldComponent extends BaseFieldComponent {
 
     settings: any = {};
-    initialValue: string = '';
+    initialValue = '';
 
     constructor(
         protected typeFormatter: DataTypeFormatter,
