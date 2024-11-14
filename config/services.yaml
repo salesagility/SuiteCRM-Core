@@ -44,6 +44,10 @@ imports:
   - { resource: ../extensions/*/config/modules/*.php }
   - { resource: ../extensions/*/config/modules/**/*.yaml }
   - { resource: ../extensions/*/config/modules/**/*.php }
+  - { resource: ../extensions/*/modules/*/config/*.php }
+  - { resource: ../extensions/*/modules/*/config/*.yaml }
+  - { resource: ../extensions/*/modules/*/config/**/*.php }
+  - { resource: ../extensions/*/modules/*/config/**/*.yaml }
   - { resource: core_services.yaml }
   - { resource: ../extensions/*/config/*.yaml }
   - { resource: ../extensions/*/config/*.php }

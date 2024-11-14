@@ -25,18 +25,40 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-
 namespace App\Languages\LegacyHandler;
 
-
-use ApiPlatform\Core\Exception\ItemNotFoundException;
+use ApiPlatform\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Languages\Entity\AppListStrings;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AppListStringsHandler extends LegacyHandler implements AppListStringsProviderInterface
 {
     protected const MSG_LANGUAGE_NOT_FOUND = 'Not able to get language: ';
     public const HANDLER_KEY = 'app-list-strings';
+    protected array $language;
+
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        RequestStack $requestStack,
+        array $language
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $requestStack
+        );
+
+        $this->language = $language;
+    }
 
     /**
      * @inheritDoc
@@ -48,7 +70,7 @@ class AppListStringsHandler extends LegacyHandler implements AppListStringsProvi
 
     /**
      * Get app list strings for given $language
-     * @param $language
+     * @param string $language
      * @return AppListStrings|null
      */
     public function getAppListStrings(string $language): ?AppListStrings
@@ -68,6 +90,8 @@ class AppListStringsHandler extends LegacyHandler implements AppListStringsProvi
         $appListStringsArray = return_app_list_strings_language($language);
         $appListStringsArray = $this->decodeLabels($appListStringsArray);
 
+        $appListStringsArray = $this->injectPluginAppListStrings($language, $appListStringsArray);
+
         if (empty($appListStringsArray)) {
             throw new ItemNotFoundException(self::MSG_LANGUAGE_NOT_FOUND . "'$language'");
         }
@@ -83,7 +107,7 @@ class AppListStringsHandler extends LegacyHandler implements AppListStringsProvi
 
     protected function decodeLabels(array $appListStringsArray): array
     {
-        foreach($appListStringsArray as $key => $string){
+        foreach ($appListStringsArray as $key => $string) {
             if (!is_array($string)) {
                 $string = html_entity_decode($string ?? '', ENT_QUOTES);
             }
@@ -91,5 +115,16 @@ class AppListStringsHandler extends LegacyHandler implements AppListStringsProvi
         }
 
         return $appListStringsArray;
+    }
+
+    /**
+     * @param string $language
+     * @param array $appListStringsArray
+     * @return array
+     */
+    protected function injectPluginAppListStrings(string $language, array $appListStringsArray): array
+    {
+        $aooListStrings = $this->language[$language]['lists'] ?? [];
+        return array_merge($appListStringsArray, $aooListStrings);
     }
 }

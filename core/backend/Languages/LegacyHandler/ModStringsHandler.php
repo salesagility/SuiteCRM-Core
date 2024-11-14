@@ -29,7 +29,7 @@
 namespace App\Languages\LegacyHandler;
 
 
-use ApiPlatform\Core\Exception\ItemNotFoundException;
+use ApiPlatform\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Languages\Entity\ModStrings;
@@ -59,6 +59,8 @@ class ModStringsHandler extends LegacyHandler
      */
     private $moduleRegistry;
 
+    protected array $language;
+
     /**
      * SystemConfigHandler constructor.
      * @param string $projectDir
@@ -69,6 +71,7 @@ class ModStringsHandler extends LegacyHandler
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param ModuleRegistryInterface $moduleRegistry
      * @param RequestStack $session
+     * @param array $language
      */
     public function __construct(
         string $projectDir,
@@ -78,11 +81,13 @@ class ModStringsHandler extends LegacyHandler
         LegacyScopeState $legacyScopeState,
         ModuleNameMapperInterface $moduleNameMapper,
         ModuleRegistryInterface $moduleRegistry,
-        RequestStack $session
+        RequestStack $session,
+        array $language
     ) {
         parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState, $session);
         $this->moduleNameMapper = $moduleNameMapper;
         $this->moduleRegistry = $moduleRegistry;
+        $this->language = $language;
     }
 
     /**
@@ -95,7 +100,7 @@ class ModStringsHandler extends LegacyHandler
 
     /**
      * Get mod strings for given $language
-     * @param $language
+     * @param string $language
      * @return ModStrings|null
      */
     public function getModStrings(string $language): ?ModStrings
@@ -121,6 +126,9 @@ class ModStringsHandler extends LegacyHandler
             $frontendName = $this->moduleNameMapper->toFrontEnd($module);
             $moduleStrings = return_module_language($language, $module) ?? [];
             $moduleStrings = $this->decodeLabels($moduleStrings);
+
+            $moduleStrings = $this->injectPluginModStrings($language, $moduleStrings);
+
             if (!empty($moduleStrings)) {
                 $moduleStrings = $this->removeEndingColon($moduleStrings);
             }
@@ -147,20 +155,22 @@ class ModStringsHandler extends LegacyHandler
      */
     protected function removeEndingColon(array $stringArray): array
     {
-        $stringArray = array_map(static function ($label) {
-            if (is_string($label)) {
-                return preg_replace('/:$/', '', $label);
-            }
+        $stringArray = array_map(
+            static function ($label) {
+                if (is_string($label)) {
+                    return preg_replace('/:$/', '', $label);
+                }
 
-            return $label;
-        }, $stringArray);
+                return $label;
+            }, $stringArray
+        );
 
         return $stringArray;
     }
 
     protected function decodeLabels(array $moduleStrings): array
     {
-        foreach($moduleStrings as $key => $string){
+        foreach ($moduleStrings as $key => $string) {
             if (!is_array($string)) {
                 $string = html_entity_decode($string ?? '', ENT_QUOTES);
             }
@@ -169,4 +179,16 @@ class ModStringsHandler extends LegacyHandler
 
         return $moduleStrings;
     }
+
+    /**
+     * @param string $language
+     * @param array $modStringsArray
+     * @return array
+     */
+    protected function injectPluginModStrings(string $language, array $modStringsArray): array
+    {
+        $modStrings = $this->language[$language]['module']['accounts'] ?? [];
+        return array_merge($modStringsArray, $modStrings);
+    }
+
 }

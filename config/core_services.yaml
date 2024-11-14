@@ -71,6 +71,7 @@ services:
       $navbarAdministrationOverrides: '%navbar.administration_override%'
       $quickActions: '%quick_actions%'
       $graphqlShowDocs: '%graphql.graphql_show_docs%'
+      $language: '%language%'
       $apiRecordMapperRunner: '@api.record.mapper.runner'
       $apiRecordMapperRegistry: '@api.record.mapper.registry'
       $apiFieldMapperRegistry: '@api.field.mapper.registry'
@@ -144,7 +145,7 @@ services:
   # this creates a service per class whose id is the fully-qualified class name
   App\Extension\:
     resource: '../extensions/*'
-    exclude: '../extensions/**/{config,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    exclude: '../extensions/**/{config,language,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class

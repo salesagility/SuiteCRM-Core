@@ -27,7 +27,7 @@
 
 namespace App\Languages\LegacyHandler;
 
-use ApiPlatform\Core\Exception\ItemNotFoundException;
+use ApiPlatform\Exception\ItemNotFoundException;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Install\LegacyHandler\InstallHandler;
@@ -64,6 +64,8 @@ class AppStringsHandler extends LegacyHandler
      */
     private $installHandler;
 
+    protected array $language;
+
     /**
      * LegacyHandler constructor.
      * @param string $projectDir
@@ -73,6 +75,7 @@ class AppStringsHandler extends LegacyHandler
      * @param LegacyScopeState $legacyScopeState
      * @param RequestStack $session
      * @param InstallHandler $installHandler
+     * @param array $language
      */
     public function __construct(
         string $projectDir,
@@ -81,7 +84,8 @@ class AppStringsHandler extends LegacyHandler
         string $defaultSessionName,
         LegacyScopeState $legacyScopeState,
         RequestStack $session,
-        InstallHandler $installHandler
+        InstallHandler $installHandler,
+        array $language
     ) {
         parent::__construct(
             $projectDir,
@@ -93,6 +97,7 @@ class AppStringsHandler extends LegacyHandler
         );
 
         $this->installHandler = $installHandler;
+        $this->language = $language;
     }
 
     /**
@@ -114,6 +119,9 @@ class AppStringsHandler extends LegacyHandler
             return null;
         }
 
+        error_log('Language');
+        error_log(json_encode($this->language));
+
         if (!$this->isInstalled()) {
             return $this->getInstallAppStrings($language);
         }
@@ -133,6 +141,8 @@ class AppStringsHandler extends LegacyHandler
         if (empty($appStringsArray)) {
             throw new ItemNotFoundException(self::MSG_LANGUAGE_NOT_FOUND . "'$language'");
         }
+
+        $appStringsArray = $this->injectPluginAppStrings($language, $appStringsArray);
 
         foreach ($this->injectedModuleLanguages as $module => $languageKeys) {
             $this->injectModuleLanguage($language, $module, $languageKeys, $appStringsArray);
@@ -192,6 +202,8 @@ class AppStringsHandler extends LegacyHandler
 
         $this->injectLicense($appStringsArray);
 
+        $appStringsArray = $this->injectPluginAppStrings($language, $appStringsArray);
+
         $appStrings = new AppStrings();
         $appStrings->setId($language);
         $appStrings->setItems($appStringsArray);
@@ -231,13 +243,15 @@ class AppStringsHandler extends LegacyHandler
      */
     protected function removeEndingColon(array $appStringsArray): array
     {
-        $appStringsArray = array_map(static function ($label) {
-            if (is_string($label)) {
-                return preg_replace('/:$/', '', $label);
-            }
+        $appStringsArray = array_map(
+            static function ($label) {
+                if (is_string($label)) {
+                    return preg_replace('/:$/', '', $label);
+                }
 
-            return $label;
-        }, $appStringsArray);
+                return $label;
+            }, $appStringsArray
+        );
 
         return $appStringsArray;
     }
@@ -275,7 +289,7 @@ class AppStringsHandler extends LegacyHandler
 
     protected function decodeLabels(array $appStringsArray): array
     {
-        foreach($appStringsArray as $key => $string){
+        foreach ($appStringsArray as $key => $string) {
             if (!is_array($string)) {
                 $string = html_entity_decode($string ?? '', ENT_QUOTES);
             }
@@ -283,5 +297,16 @@ class AppStringsHandler extends LegacyHandler
         }
 
         return $appStringsArray;
+    }
+
+    /**
+     * @param string $language
+     * @param array $appStringsArray
+     * @return array
+     */
+    protected function injectPluginAppStrings(string $language, array $appStringsArray): array
+    {
+        $applicationStrings = $this->language[$language]['application'] ?? [];
+        return array_merge($appStringsArray, $applicationStrings);
     }
 }
