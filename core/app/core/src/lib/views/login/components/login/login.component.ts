@@ -159,6 +159,8 @@ export class LoginUiComponent implements OnInit {
 
     returnToLogin(): void {
         this.cardState.set('front');
+        this.auth.isUserLoggedIn.next(false);
+        this.auth.handleInvalidSession('LBL_2FA_LOGIN_CANCEL');
         return;
     }
 
