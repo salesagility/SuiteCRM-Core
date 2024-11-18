@@ -60,10 +60,14 @@ class LoginSuccessEventListener implements EventSubscriberInterface
 
         $user = $event->getUser();
 
-        $result = $this->authentication->initLegacyUserSession($user->getUsername());
+        if (!$user->isTotpAuthenticationEnabled()) {
+            $result = $this->authentication->initLegacyUserSession($user->getUsername());
 
-        if ($result === false) {
-            throw new CustomUserMessageAuthenticationException('Authentication: Invalid login credentials');
+            if ($result === false) {
+                throw new CustomUserMessageAuthenticationException('Authentication: Invalid login credentials');
+            }
         }
+
+
     }
 }
