@@ -1,11 +1,122 @@
-#two-factor {
-  .two-factor-border {
-    border-right: 0.03em solid grey;
-  }
+@media (min-width: 768px) {
+  #two-factor {
 
-  .backup-codes {
-    background-color: $midnight-blue;
-    color: white;
-    border: 2px solid black;
+    .container {
+      .row {
+        .col {
+          .backup-code-warning {
+            width: fit-content;
+            margin-left: 1.5rem;
+          }
+          .qr-code-container {
+            display: flex;
+            padding: .25rem 1.5rem .5rem 1.5rem;
+            position: relative;
+            width: 100%;
+          }
+
+          .qr-code {
+            display: flex;
+          }
+
+          .auth-input {
+            border: .03em solid $nepal-grey;
+            padding: .45em;
+            margin: 0 1em 0 0;
+            color: #666;
+            font-size: .8em;
+            background-color: #fff;
+            width: 30%;
+          }
+
+          .qr-code-label {
+            font-size: 95%;
+            font-weight: 500;
+          }
+        }
+
+      }
+    }
+
+    .backup-codes-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+
+      .backup-codes {
+        padding: 10px;
+        border: 1px solid lightgrey;
+        border-radius: .25rem;
+      }
+    }
+
+    .copy-button {
+      margin-left: 1.5rem;
+      width: fit-content;
+    }
+  }
+}
+
+@media(max-width: 767px) {
+  #two-factor {
+
+    .container {
+      .row {
+        .col {
+          .backup-code-warning {
+            margin-left: 1.5rem;
+            margin-right: 2rem;
+          }
+          .qr-code-container {
+            display: flex;
+            flex-direction: column;
+            padding: .25rem 1.5rem .5rem 1.5rem;
+            position: relative;
+            width: 100%;
+
+            .auth-input {
+              border: .03em solid $nepal-grey;
+              padding: .75rem .5rem;
+              margin: 0 1em 0 0;
+              color: #666;
+              font-size: .8em;
+              background-color: #fff;
+              width: 75%;
+            }
+
+            .qr-code {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              padding-bottom: .25rem;
+            }
+
+            .qr-code-label {
+              font-size: 80%;
+              font-weight: 400;
+            }
+          }
+        }
+
+      }
+    }
+
+    .backup-codes-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+
+      .backup-codes {
+        padding: 5px;
+        border: 1px solid lightgrey;
+        border-radius: .25rem;
+      }
+    }
+
+    .copy-button {
+      margin-left: 1.5rem;
+      margin-bottom: .5rem;
+      width: fit-content;
+    }
   }
 }
