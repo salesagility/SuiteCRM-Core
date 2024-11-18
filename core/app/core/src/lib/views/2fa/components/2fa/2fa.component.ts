@@ -31,6 +31,8 @@ import {MessageService} from "../../../../services/message/message.service";
 import {isTrue} from "common";
 import {LanguageStore} from "../../../../store/language/language.store";
 import {ButtonCallback, ButtonInterface} from "../../../../common/components/button/button.model";
+import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
+import {Clipboard} from '@angular/cdk/clipboard';
 
 
 @Component({
@@ -44,8 +46,9 @@ export class TwoFactorComponent implements OnInit {
     qrCodeSvg: string;
     backupCodes: any;
     authCode: string;
-    isAppMethodEnabled: WritableSignal<boolean> = signal(true);
-    areRecoveryCodesGenerated: WritableSignal<boolean> = signal(true);
+    isAppMethodEnabled: WritableSignal<boolean> = signal(false);
+    areRecoveryCodesGenerated: WritableSignal<boolean> = signal(false);
+    isQrCodeGenerated: WritableSignal<boolean> = signal(false);
 
     title: string = '';
     appMethodHeaderLabel: string = '';
@@ -57,7 +60,9 @@ export class TwoFactorComponent implements OnInit {
         protected authService: AuthService,
         protected router: Router,
         protected message: MessageService,
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected userPreference: UserPreferenceStore,
+        protected clipboard: Clipboard
     ) {
     }
 
@@ -66,13 +71,16 @@ export class TwoFactorComponent implements OnInit {
         this.appMethodHeaderLabel = this.language.getAppString('LBL_TWO_FACTOR_AUTH_APP_METHOD');
         this.recoveryCodesHeaderLabel = this.language.getAppString('LBL_BACKUP_CODES');
 
+        const isEnabled = this.userPreference.getUserPreference('is_two_factor_enabled') ?? false;
+
+        this.isAppMethodEnabled.set(isEnabled);
+        this.areRecoveryCodesGenerated.set(isEnabled);
+
         this.enableAppMethodButtonConfig = {
             klass: 'btn btn-sm btn-main',
             onClick: ((): void => {
                 this.enable2FactorAuth()
             }) as ButtonCallback,
-            debounceClick: true,
-            clickDebounceTime: 500,
             labelKey: 'LBL_ENABLE',
             titleKey: ''
         } as ButtonInterface;
@@ -82,8 +90,6 @@ export class TwoFactorComponent implements OnInit {
             onClick: ((): void => {
                 this.disable2FactorAuth()
             }) as ButtonCallback,
-            debounceClick: true,
-            clickDebounceTime: 500,
             labelKey: 'LBL_DISABLE',
             titleKey: ''
         } as ButtonInterface;
@@ -96,8 +102,8 @@ export class TwoFactorComponent implements OnInit {
                 this.qrCodeUrl = response?.url;
                 this.qrCodeSvg = response?.svg;
                 this.backupCodes = response?.backupCodes;
-                this.isAppMethodEnabled.set(true);
                 this.areRecoveryCodesGenerated.set(true);
+                this.isQrCodeGenerated.set(true);
             },
             error: () => {
                 this.isAppMethodEnabled.set(false);
@@ -111,6 +117,7 @@ export class TwoFactorComponent implements OnInit {
             next: (response) => {
                 this.isAppMethodEnabled.set(false);
                 this.areRecoveryCodesGenerated.set(false);
+                this.isQrCodeGenerated.set(false);
             },
             error: () => {
                 this.isAppMethodEnabled.set(true);
@@ -131,13 +138,18 @@ export class TwoFactorComponent implements OnInit {
             if (isTrue(verified)) {
                 this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_SUCCESS');
 
-                const userId = this.authService?.getCurrentUser()?.id;
-                const route = `/users/edit/${userId}`;
-                this.router.navigate([route]).then();
+                this.isAppMethodEnabled.set(true);
+                this.isQrCodeGenerated.set(false);
+                this.authCode = '';
+
                 return;
             }
 
             this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
         })
+    }
+
+    public copyBackupCodes() {
+        this.clipboard.copy(this.backupCodes);
     }
 }
