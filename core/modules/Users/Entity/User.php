@@ -1259,7 +1259,10 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function isTotpAuthenticationEnabled(): bool
     {
-        return $this->totpSecret ? true : false;
+        if (!empty($this->getTotpSecret()) && $this->getIsTotpEnabled()){
+            return true;
+        }
+        return false;
     }
 
     public function getTotpAuthenticationUsername(): string
