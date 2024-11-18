@@ -56,3 +56,4 @@ parameters:
             ui: true
             snooze_alert_timer: true
             language: true
+            is_two_factor_enabled: true
