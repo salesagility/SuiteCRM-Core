@@ -28,7 +28,9 @@
 
 namespace App\Authentication\Controller;
 
+use App\Authentication\LegacyHandler\UserHandler;
 use App\Data\LegacyHandler\PreparedStatementHandler;
+use App\Engine\LegacyHandler\CacheManagerHandler;
 use App\Security\TwoFactor\BackupCodeGenerator;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -77,6 +79,9 @@ class SecurityController extends AbstractController
 
     private BackupCodeGenerator $backupCodeGenerator;
 
+    private UserHandler $userHandler;
+
+    private CacheManagerHandler $cacheManagerHandler;
     /**
      * SecurityController constructor.
      * @param Authentication $authentication
@@ -87,7 +92,9 @@ class SecurityController extends AbstractController
         RequestStack             $requestStack,
         EntityManagerInterface   $entityManager,
         PreparedStatementHandler $preparedStatementHandler,
-        BackupCodeGenerator $backupCodeGenerator
+        BackupCodeGenerator $backupCodeGenerator,
+        UserHandler $userHandler,
+        CacheManagerHandler $cacheManagerHandler
     )
     {
         $this->authentication = $authentication;
@@ -95,6 +102,8 @@ class SecurityController extends AbstractController
         $this->entityManager = $entityManager;
         $this->preparedStatementHandler = $preparedStatementHandler;
         $this->backupCodeGenerator = $backupCodeGenerator;
+        $this->userHandler = $userHandler;
+        $this->cacheManagerHandler = $cacheManagerHandler;
     }
 
     #[Route('/login', name: 'app_login', methods: ["GET", "POST"])]
@@ -174,13 +183,21 @@ class SecurityController extends AbstractController
     {
         $id = $user->getId();
 
+        $this->userHandler->setUserPreference('is_two_factor_enabled', false);
+
         $this->preparedStatementHandler->update(
-            'UPDATE users SET totp_secret = NULL WHERE id = :id',
+            'UPDATE users SET totp_secret = NULL, is_totp_enabled = 0 WHERE id = :id',
             ['id' => $id],
             [['param' => 'id', 'type' => 'string']]
         );
 
-        return $this->redirect('../#/users/edit/'.$id);
+        $this->cacheManagerHandler->markAsNeedsUpdate('app-metadata-user-preferences-' . $user->getId());
+
+        $response = [
+            'two_factor_disabled' => true
+        ];
+
+        return new Response(json_encode($response), Response::HTTP_OK);
     }
 
     #[Route('/2fa/enable-finalize', name: 'app_2fa_enable_finalize', methods: ["GET", "POST"])]
@@ -190,13 +207,16 @@ class SecurityController extends AbstractController
 
         $correctCode = $totpAuthenticator->checkCode($user, $auth_code);
 
-        if ($correctCode){
+        if ($correctCode) {
+            $this->userHandler->setUserPreference('is_two_factor_enabled', true);
             $this->preparedStatementHandler->update(
                 'UPDATE users SET is_totp_enabled = true WHERE id = :id',
                 ['id' => $user->getId()],
                 [['param' => 'id', 'type' => 'string']]
             );
         }
+
+        $this->cacheManagerHandler->markAsNeedsUpdate('app-metadata-user-preferences-' . $user->getId());
 
         $response = ['two_factor_setup_complete' => $correctCode];
 
