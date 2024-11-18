@@ -337,7 +337,7 @@
                 </div>
             </div>
             <!--Notifications-->
-            <div *ngIf="notificationsEnabled && checkAppStrings(vm.appStrings) && arePreferencesInitialized(vm.userPreferences)"
+            <div *ngIf="notificationsEnabled() && checkAppStrings(vm.appStrings) && arePreferencesInitialized(vm.userPreferences)"
                  class="action-alert action-dropdown" ngbDropdown #alertDropdown="ngbDropdown">
                 <ul class="navbar-nav border-0">
                     <li class="global-link-item">
