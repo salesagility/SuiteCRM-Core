@@ -2300,10 +2300,12 @@ $app_strings = array(
     'LBL_ENABLE_2FA_LABEL' => 'Enable Two-Factor Authentication',
     'LBL_BACKUP_CODES' => 'Recovery/Backup Codes',
     'LBL_BACKUP_CODES_INFO' => 'Backup codes are one time passcodes to use when you are unable to verify via your Authenticator app.',
+    'LBL_BACKUP_CODES_WARN' => ' WARNING: These codes are only generated once. Please copy BEFORE verifying as these will not be displayed again.',
     'LBL_PROBLEMS_GENERATING_CODE' => 'Problems generating the code?',
     'LBL_BACKUP_CODES_FALLBACK_INSTRUCTIONS' => 'Use one of the backup codes (it expires after being used)',
     'LBL_OTP_SETUP' => 'Use a OTP (one time password) authenticator on your mobile or computer to enable 2FA (Two-Factor Authentication)',
     'LBL_QR_CODE_HELP' => "If you haven't already, please download an Authenticator Application (such as FreeOTP or Google Authenticator). Use that app to scan the QR code.",
+    'LBL_2FA_LOGIN_CANCEL' => 'Two Factor Authentication cancelled',
 
     'LBL_FACTOR_AUTH_DISABLE' => 'Two Factor Authentication was Disabled',
     'LBL_FACTOR_AUTH_SUCCESS' => 'Two Factor Authentication was Successful',

@@ -707,6 +707,7 @@ $mod_strings = array(
     'LBL_DISABLED' => 'Disabled',
     'LBL_ENABLED' => 'Enabled',
     'LBL_ENABLE_2FA' => 'Enable 2FA',
+    'LBL_2FA_CONFIG' => 'Two Factor Configuration',
     'LBL_DISABLE_2FA' => 'Disable 2FA',
 
 ); // END STRINGS DEFS
