@@ -28,7 +28,7 @@ import {Component, OnInit, signal, WritableSignal} from "@angular/core";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {MessageService} from "../../../../services/message/message.service";
-import {isTrue} from "common";
+import {isTrue} from '../../../../common/utils/value-utils';
 import {LanguageStore} from "../../../../store/language/language.store";
 import {ButtonCallback, ButtonInterface} from "../../../../common/components/button/button.model";
 import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";

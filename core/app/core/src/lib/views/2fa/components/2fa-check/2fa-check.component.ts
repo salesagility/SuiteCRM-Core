@@ -29,7 +29,7 @@ import {NotificationStore} from "../../../../store/notification/notification.sto
 import {Router} from "@angular/router";
 import {MessageService} from "../../../../services/message/message.service";
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
-import { isTrue } from "common";
+import {isTrue} from '../../../../common/utils/value-utils';
 
 @Component({
     selector: 'scrm-2fa-check',
