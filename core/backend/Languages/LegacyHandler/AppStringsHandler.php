@@ -55,7 +55,8 @@ class AppStringsHandler extends LegacyHandler
             'ERR_MISSING_REQUIRED_FIELDS',
             'LBL_RECOVER_PASSWORD_SUCCESS',
             'LBL_SESSION_EXPIRED',
-            'LBL_LOGOUT_SUCCESS'
+            'LBL_LOGOUT_SUCCESS',
+            'LBL_2FA_LOGIN_CANCEL'
         ]
     ];
     /**
