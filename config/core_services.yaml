@@ -139,13 +139,13 @@ services:
 
   App\Module\:
     resource: '../core/modules/*'
-    exclude: '../core/modules/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    exclude: '../core/modules/{language,Language,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
   # makes classes in extensions/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
   App\Extension\:
     resource: '../extensions/*'
-    exclude: '../extensions/**/{config,language,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    exclude: '../extensions/**/{config,language,Language,DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
