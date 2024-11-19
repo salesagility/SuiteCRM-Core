@@ -754,6 +754,10 @@ $dictionary['User'] = array(
         'is_totp_enabled' => array(
             'name' => 'is_totp_enabled',
             'type' => 'bool'
+        ),
+        'backup_codes' => array(
+            'name' => 'backup_codes',
+            'type' => 'text'
         )
     ),
     'indices' => array(
