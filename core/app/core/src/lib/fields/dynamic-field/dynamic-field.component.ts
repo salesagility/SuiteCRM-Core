@@ -25,7 +25,6 @@
  */
 
 import {
-    ChangeDetectorRef,
     Component,
     computed,
     HostBinding,
@@ -73,7 +72,6 @@ export class DynamicFieldComponent implements OnInit {
         protected router: Router,
         protected dynamicLabelService: DynamicLabelService,
         protected linkRouteAsyncActionService: LinkRouteAsyncActionService,
-        private cd: ChangeDetectorRef
     ) {
     }
 
@@ -97,7 +95,6 @@ export class DynamicFieldComponent implements OnInit {
 
     ngOnInit(): void {
         this.setHostClass();
-        this.cd.detectChanges();
         this.validateOnlyOnSubmit = this.record?.metadata?.validateOnlyOnSubmit;
 
         if(this.record?.validationTriggered) {

@@ -74,12 +74,12 @@ export class DateFieldHandler extends BaseFieldHandler<BaseField> {
             displayDefault: displayDefault
         } as AsyncActionInput;
 
-        field.loading = true;
+        field.loading.set(true)
 
         this.processService.submit(processType, options).pipe(take(1)).subscribe((result) => {
 
             const value = result?.data?.value ?? null;
-            field.loading = false;
+            field.loading.set(false)
 
             if (value === null) {
                 this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");

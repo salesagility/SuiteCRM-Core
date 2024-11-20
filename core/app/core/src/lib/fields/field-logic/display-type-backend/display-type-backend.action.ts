@@ -96,12 +96,12 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
                 module: record.module ?? '',
                 record: baseRecord
             } as AsyncActionInput;
-            field.loading = true;
+            field.loading.set(true)
 
             this.processService.submit(processType, options).subscribe((result) => {
 
                 const targetDisplay = result?.data?.value ?? null;
-                field.loading = false;
+                field.loading.set(false)
 
                 if (targetDisplay === null) {
                     this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
@@ -111,7 +111,7 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
                 data.field.display = display as DisplayType;
 
             }, (error) => {
-                field.loading = false;
+                field.loading.set(false)
                 this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
             });
         }

@@ -101,22 +101,24 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
                 record: baseRecord
             } as AsyncActionInput;
 
-            field.loading = true;
+            field.loading.set(true)
 
-            this.processService.submit(processType, options).pipe(take(1)).subscribe((result) => {
+            this.processService.submit(processType, options).pipe(take(1)).subscribe({
+                next: (result) => {
 
-                const value = result?.data?.value ?? null;
-                field.loading = false;
+                    const value = result?.data?.value ?? null;
+                    field.loading.set(false)
 
-                if (value === null) {
+                    if (value === null) {
+                        this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
+                        return;
+                    }
+                    this.updateValue(field, value.toString(), record);
+                },
+                error: (error) => {
+                    field.loading.set(false)
                     this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
-                    return;
                 }
-                this.updateValue(field, value.toString(), record);
-
-            }, (error) => {
-                field.loading = false;
-                this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
             });
         }
     }

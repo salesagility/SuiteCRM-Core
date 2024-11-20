@@ -31,7 +31,7 @@
 
 <ng-container *ngIf="isConfigured()">
 
-    <ng-container *ngIf="!field.loading">
+    <ng-container *ngIf="!field?.loading()">
         <div class="line-items d-flex flex-column {{field.type}} {{field.name}}">
 
             <div class="d-flex {{getDirection()}} justify-content-start align-items-end line-item h-100">
@@ -83,7 +83,7 @@
     </ng-container>
 
 
-    <ng-container *ngIf="field.loading">
+    <ng-container *ngIf="field?.loading()">
         <div class= "dynamic-field">
             <div class="flex-grow-1 text-break rounded box-loading skeleton-field-content"></div>
         </div>

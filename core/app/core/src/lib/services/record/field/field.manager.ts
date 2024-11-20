@@ -29,7 +29,7 @@ import {Field, FieldDefinition} from '../../../common/record/field.model';
 import {Record} from '../../../common/record/record.model';
 import {ViewFieldDefinition} from '../../../common/metadata/metadata.model';
 import {LanguageStore} from '../../../store/language/language.store';
-import {Injectable} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
 import {FieldBuilder} from './field.builder';
 import {GroupFieldBuilder} from './group-field.builder';
@@ -68,7 +68,8 @@ export class FieldManager {
             value,
             definition: {
                 type
-            }
+            },
+            loading: signal(false)
         } as Field;
     }
 

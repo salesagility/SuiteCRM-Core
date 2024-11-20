@@ -31,6 +31,7 @@ import {Record} from './record.model';
 import {FieldLogicMap} from '../actions/field-logic-action.model';
 import {ObjectMap} from '../types/object-map';
 import {ViewMode} from '../views/view.model';
+import {signal, WritableSignal} from "@angular/core";
 
 export type DisplayType = 'none' | 'show' | 'readonly' | 'inline' | 'disabled' | 'default';
 
@@ -174,7 +175,7 @@ export interface Field {
     vardefBased?: boolean;
     label?: string;
     labelKey?: string;
-    loading?: boolean;
+    loading?: WritableSignal<boolean>;
     dynamicLabelKey?: string;
     parentKey?: string;
     attributes?: FieldAttributeMap;
@@ -211,7 +212,7 @@ export class BaseField implements Field {
     vardefBased?: boolean;
     label?: string;
     labelKey?: string;
-    loading?: boolean;
+    loading?: WritableSignal<boolean> = signal(false);
     dynamicLabelKey?: string;
     readonly?: boolean;
     display?: DisplayType;
@@ -244,7 +245,6 @@ export class BaseField implements Field {
     constructor() {
         this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
         this.valueChanges$ = this.valueSubject.asObservable();
-        this.loading = false;
     }
 
     get value(): string {

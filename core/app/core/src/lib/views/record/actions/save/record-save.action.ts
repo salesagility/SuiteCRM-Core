@@ -57,7 +57,7 @@ export class RecordSaveAction extends RecordActionHandler {
     run(data: RecordActionData): void {
         const isFieldLoading = Object.keys(data.store.recordStore.getStaging().fields).some(fieldKey => {
             const field = data.store.recordStore.getStaging().fields[fieldKey];
-            return field.loading ?? false;
+            return field?.loading() ?? false;
         });
 
         if(isFieldLoading) {
