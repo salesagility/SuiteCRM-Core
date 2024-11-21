@@ -123,10 +123,12 @@ services:
       tags: [ 'mappers.entity.record.fieldType' ]
     App\Data\Service\Record\EntityRecordMappers\EntityRecordMapperInterface:
       tags: [ 'mappers.entity.record.record' ]
-    App\Data\Service\Record\RecordSaveHandlers\RecordBeforeSaveHandlerInterface:
-      tags: [ 'record.saveHandlers.beforeSave' ]
-    App\Data\Service\Record\RecordSaveHandlers\RecordAfterSaveHandlerInterface:
-      tags: [ 'record.saveHandlers.afterSave' ]
+    App\Data\Service\Record\RecordSaveHandlers\RecordFieldSaveHandlerInterface:
+      tags: [ 'record.saveHandlers.field' ]
+    App\Data\Service\Record\RecordSaveHandlers\RecordFieldTypeSaveHandlerInterface:
+      tags: [ 'record.saveHandlers.fieldType' ]
+    \App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerInterface:
+      tags: [ 'record.saveHandlers.record' ]
 
 
   # makes classes in src/ available to be used as services
@@ -382,10 +384,17 @@ services:
       - '@entity.record.mapper.registry'
       - '@App\FieldDefinitions\Service\FieldDefinitionsProviderInterface'
 
+  App\Data\Service\Record\RecordSaveHandlers\RecordFieldSaveHandlerRegistry:
+    arguments:
+      - !tagged { tag: 'record.saveHandlers.field' }
+
+  App\Data\Service\Record\RecordSaveHandlers\RecordFieldTypeSaveHandlerRegistry:
+    arguments:
+      - !tagged { tag: 'record.saveHandlers.fieldType' }
+
   App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerRegistry:
     arguments:
-      - !tagged { tag: 'record.saveHandlers.beforeSave' }
-      - !tagged { tag: 'record.saveHandlers.afterSave' }
+      - !tagged { tag: 'record.saveHandlers.record' }
 
   App\Security\Ldap\AppLdapUserProviderProxy:
     $ldapUserProvider: '@security.user.provider.concrete.ldap_users'

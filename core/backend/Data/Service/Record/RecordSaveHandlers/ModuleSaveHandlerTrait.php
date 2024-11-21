@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -28,19 +28,59 @@
 
 namespace App\Data\Service\Record\RecordSaveHandlers;
 
-use App\Data\Entity\Record;
-use App\FieldDefinitions\Entity\FieldDefinition;
-
-interface RecordSaveHandlerInterface extends BaseModuleSaveHandlerInterface
+trait ModuleSaveHandlerTrait
 {
+
     /**
-     * Run save handler
-     * @param Record|null $previousVersion
-     * @param Record $inputRecord
-     * @param Record|null $savedRecord
-     * @param FieldDefinition $fieldDefinition
+     * @param array $parentMap
+     * @param int $order
+     * @param BaseModuleSaveHandlerInterface $handler
      * @return void
      */
-    public function run(?Record $previousVersion, Record $inputRecord, ?Record $savedRecord,  FieldDefinition $fieldDefinition): void;
+    protected function addHandlerByOrder(array &$parentMap, int $order, BaseModuleSaveHandlerInterface $handler): void
+    {
+        $handlersByOrder = $parentMap[$order] ?? [];
+        $handlersByOrder[] = $handler;
+        $parentMap[$order] = $handlersByOrder;
+    }
+
+    /**
+     * @param array $handlerModes
+     * @param string $mode
+     * @return bool
+     */
+    protected function isModeEnabled(array $handlerModes, string $mode): bool
+    {
+        $modeEnabled = false;
+        if (in_array($mode, $handlerModes, true)) {
+            $modeEnabled = true;
+        }
+        return $modeEnabled;
+    }
+
+    /**
+     * @param array $handlers
+     * @param string $mode
+     * @return array
+     */
+    protected function filterByModes(array $handlers, string $mode): array
+    {
+        if (empty($mode)) {
+            return $handlers;
+        }
+
+        $modeHandlers = [];
+        foreach ($handlers as $handler) {
+            $handlerModes = $handler->getModes();
+
+            $modeEnabled = $this->isModeEnabled($handlerModes, $mode);
+
+            if ($modeEnabled) {
+                $modeHandlers[] = $handler;
+            }
+        }
+        return $modeHandlers;
+    }
+
 
 }

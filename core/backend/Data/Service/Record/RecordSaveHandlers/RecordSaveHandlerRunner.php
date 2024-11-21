@@ -28,68 +28,137 @@
 namespace App\Data\Service\Record\RecordSaveHandlers;
 
 use App\Data\Entity\Record;
+use App\FieldDefinitions\Entity\FieldDefinition;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 
 class RecordSaveHandlerRunner implements RecordSaveHandlerRunnerInterface
 {
-    protected RecordSaveHandlerRegistryInterface $registry;
+    protected RecordFieldSaveHandlerRegistry $fieldSaveHandlerRegistry;
+    protected RecordFieldTypeSaveHandlerRegistry $fieldTypeSaveHandlerRegistry;
+    protected RecordSaveHandlerRegistry $recordSaveHandlerRegistry;
     protected FieldDefinitionsProviderInterface $fieldDefinitions;
-
 
     /**
      * RecordSaveHandlerRunner constructor.
-     * @param RecordSaveHandlerRegistryInterface $registry
+     * @param RecordFieldSaveHandlerRegistry $fieldSaveHandlerRegistry
+     * @param RecordFieldTypeSaveHandlerRegistry $fieldTypeSaveHandlerRegistry
+     * @param RecordSaveHandlerRegistry $recordSaveHandlerRegistry
      * @param FieldDefinitionsProviderInterface $fieldDefinitions
      */
     public function __construct(
-        RecordSaveHandlerRegistryInterface $registry,
+        RecordFieldSaveHandlerRegistry $fieldSaveHandlerRegistry,
+        RecordFieldTypeSaveHandlerRegistry $fieldTypeSaveHandlerRegistry,
+        RecordSaveHandlerRegistry $recordSaveHandlerRegistry,
         FieldDefinitionsProviderInterface $fieldDefinitions
     ) {
-        $this->registry = $registry;
+        $this->fieldSaveHandlerRegistry = $fieldSaveHandlerRegistry;
+        $this->fieldTypeSaveHandlerRegistry = $fieldTypeSaveHandlerRegistry;
+        $this->recordSaveHandlerRegistry = $recordSaveHandlerRegistry;
         $this->fieldDefinitions = $fieldDefinitions;
     }
 
-    public function beforeSave(?Record $previousVersion, Record $record): void
+    public function run(?Record $previousVersion, Record $inputRecord, ?Record $savedRecord, string $mode): void
     {
-        $this->runBeforeSaveHandlers($previousVersion, $record);
+        $this->runHandlers($previousVersion, $inputRecord, $savedRecord, $mode);
     }
 
-    public function afterSave(?Record $previousVersion, Record $record): void
+    protected function runHandlers(?Record $previousVersion, Record $inputRecord, ?Record $savedRecord, string $mode): void
     {
-        $this->runAfterSaveHandlers($previousVersion, $record);
-    }
+        $attributes = $inputRecord->getAttributes() ?? [];
+        $module = $inputRecord->getModule();
 
-    protected function runBeforeSaveHandlers(?Record $previousVersion, Record $record): void
-    {
-        $module = $record->getModule();
-
-        if (empty($module)) {
+        if (empty($attributes) || empty($module)) {
             return;
         }
 
         $fieldDefinitions = $this->fieldDefinitions->getVardef($module);
+        $vardefs = $fieldDefinitions->getVardef();
 
-        $saveHandlers = $this->registry->getBeforeSaveHandlers($module);
+        $recordSaveHandlers = $this->recordSaveHandlerRegistry->getHandlers($module, $mode);
+        foreach ($recordSaveHandlers as $recordSaveHandler) {
+            $recordSaveHandler->run($previousVersion, $inputRecord, $savedRecord, $fieldDefinitions);
+        }
 
-        foreach ($saveHandlers as $saveHandler) {
-            $saveHandler->run($previousVersion, $record, $fieldDefinitions);
+        $handledFields = [];
+
+        foreach ($vardefs as $field => $vardef) {
+            $handledFields[$field] = true;
+
+            $this->runHandlersForField($vardef, $field, $previousVersion, $inputRecord, $savedRecord, $fieldDefinitions, $mode);
+        }
+
+        foreach ($attributes as $field => $attribute) {
+            if (!empty($handledFields[$field])) {
+                continue;
+            }
+            $this->runHandlersForField($vardefs[$field] ?? null, $field, $previousVersion, $inputRecord, $savedRecord, $fieldDefinitions, $mode);
         }
     }
 
-    protected function runAfterSaveHandlers(?Record $previousVersion, Record $record): void
-    {
-        $module = $record->getModule();
+    /**
+     * @param array|null $vardefs
+     * @param string $field
+     * @param Record|null $previousVersion
+     * @param Record $inputRecord
+     * @param Record|null $savedRecord
+     * @param FieldDefinition $fieldDefinitions
+     * @param string|null $mode
+     * @return void
+     */
+    protected function runHandlersForField(
+        ?array $vardefs,
+        string $field,
+        ?Record $previousVersion,
+        Record $inputRecord,
+        ?Record $savedRecord,
+        FieldDefinition $fieldDefinitions,
+        ?string $mode = ''
+    ): void {
+        $fieldVardefs = $vardefs ?? [];
+        $type = $fieldVardefs['type'] ?? '';
+        $fieldSaveHandlers = $this->fieldSaveHandlerRegistry->getSaveHandlers($inputRecord->getModule(), $field, $mode);
 
-        if (empty($module)) {
-            return;
+        if ($type !== '') {
+            $this->runDefaultHandler($inputRecord, $savedRecord, $type, $mode, $field, $previousVersion, $fieldDefinitions);
+
+            $fieldTypeSaveHandlers = $this->fieldTypeSaveHandlerRegistry->getHandlers($inputRecord->getModule(), $type, $mode);
+            foreach ($fieldTypeSaveHandlers as $fieldTypeSaveHandler) {
+                $fieldTypeSaveHandler->run($previousVersion, $inputRecord, $savedRecord, $fieldDefinitions, $field);
+            }
         }
 
-        $fieldDefinitions = $this->fieldDefinitions->getVardef($module);
-
-        $saveHandlers = $this->registry->getAfterSaveHandlers($module);
-
-        foreach ($saveHandlers as $saveHandler) {
-            $saveHandler->run($previousVersion, $record, $fieldDefinitions);
+        foreach ($fieldSaveHandlers as $fieldSaveHandler) {
+            $fieldSaveHandler->run($previousVersion, $inputRecord, $savedRecord, $fieldDefinitions);
         }
     }
+
+    /**
+     * @param Record $inputRecord
+     * @param Record|null $savedRecord
+     * @param string $type
+     * @param string|null $mode
+     * @param string $field
+     * @param Record|null $previousVersion
+     * @param FieldDefinition $fieldDefinitions
+     * @return void
+     */
+    protected function runDefaultHandler(
+        Record $inputRecord,
+        ?Record $savedRecord,
+        string $type,
+        ?string $mode,
+        string $field,
+        ?Record $previousVersion,
+        FieldDefinition $fieldDefinitions
+    ): void {
+        $default = $this->fieldTypeSaveHandlerRegistry->getDefaultHandler($inputRecord->getModule(), $type, $mode);
+        $defaultOverride = $this->fieldSaveHandlerRegistry->getTypeDefaultOverride($inputRecord->getModule(), $field, $mode);
+
+        if ($defaultOverride !== null) {
+            $defaultOverride->run($previousVersion, $inputRecord, $savedRecord, $fieldDefinitions);
+        } elseif ($default !== null) {
+            $default->run($previousVersion, $inputRecord, $savedRecord, $fieldDefinitions, $field);
+        }
+    }
+
 }

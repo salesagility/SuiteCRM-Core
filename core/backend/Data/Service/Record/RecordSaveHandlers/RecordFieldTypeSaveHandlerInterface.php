@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -31,16 +31,22 @@ namespace App\Data\Service\Record\RecordSaveHandlers;
 use App\Data\Entity\Record;
 use App\FieldDefinitions\Entity\FieldDefinition;
 
-interface RecordSaveHandlerInterface extends BaseModuleSaveHandlerInterface
+interface RecordFieldTypeSaveHandlerInterface extends BaseModuleSaveHandlerInterface
 {
+    /**
+     * Get the field type
+     * @return string
+     */
+    public function getFieldType(): string;
+
     /**
      * Run save handler
      * @param Record|null $previousVersion
      * @param Record $inputRecord
      * @param Record|null $savedRecord
      * @param FieldDefinition $fieldDefinition
+     * @param string $field
      * @return void
      */
-    public function run(?Record $previousVersion, Record $inputRecord, ?Record $savedRecord,  FieldDefinition $fieldDefinition): void;
-
+    public function run(?Record $previousVersion, Record $inputRecord, ?Record $savedRecord, FieldDefinition $fieldDefinition, string $field): void;
 }

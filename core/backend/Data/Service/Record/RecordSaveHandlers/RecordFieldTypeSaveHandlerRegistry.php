@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -25,26 +25,32 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+
 namespace App\Data\Service\Record\RecordSaveHandlers;
 
 use Traversable;
 
-class RecordSaveHandlerRegistry
+class RecordFieldTypeSaveHandlerRegistry
 {
-    use RecordSaveHandlerTrait;
+    use RecordFieldSaveHandlerTrait;
 
     /**
-     * @var RecordSaveHandlerInterface[]
+     * @var RecordFieldTypeSaveHandlerInterface[]
      */
     protected array $registry = [];
 
     /**
-     * RecordSaveHandlerRegistry constructor.
+     * @var RecordFieldTypeSaveHandlerInterface[]
+     */
+    protected array $defaultHandlers = [];
+
+    /**
+     * RecordFieldTypeSaveHandlerRegistry constructor.
      * @param Traversable $handlers
      */
     public function __construct(Traversable $handlers)
     {
-        /** @var RecordSaveHandlerInterface[] $handlersArray */
+        /** @var RecordFieldTypeSaveHandlerInterface[] $handlersArray */
         $handlersArray = [];
         foreach ($handlers as $handler) {
             $handlersArray[] = $handler;
@@ -53,30 +59,59 @@ class RecordSaveHandlerRegistry
     }
 
     /**
-     * Get the handlers for the module and mode
+     * Get the field type save handlers for the module, type and mode
      * @param string $module
+     * @param string $fieldType
      * @param string|null $mode
-     * @return RecordSaveHandlerInterface[]
+     * @return RecordFieldTypeSaveHandlerInterface[]
      */
-    public function getHandlers(string $module, ?string $mode = ''): array
+    public function getHandlers(string $module, string $fieldType, ?string $mode = ''): array
     {
-        $handlers = $this->getOrderedHandlers($this->registry, $module);
+        $handlers = $this->getOrderedHandlers($this->registry, $module, $fieldType);
 
         return $this->filterByModes($handlers, $mode);
     }
 
     /**
-     * @param RecordSaveHandlerInterface[] $handlers
+     * Get default save handler for module, field and mode
+     * @param string $module
+     * @param string $fieldType
+     * @param string $mode
+     * @return RecordFieldTypeSaveHandlerInterface|null
+     */
+    public function getDefaultHandler(string $module, string $fieldType, string $mode): ?RecordFieldTypeSaveHandlerInterface
+    {
+        $moduleDefault = $this->defaultHandlers[$module . '-' . $fieldType . '-' . $mode] ?? null;
+
+        if ($moduleDefault !== null)  {
+            return $moduleDefault;
+        }
+
+        return $this->defaultHandlers['default' . '-' . $fieldType . '-' . $mode] ?? null;
+    }
+
+
+    /**
+     * @param RecordFieldTypeSaveHandlerInterface[] $handlers
      * @return void
      */
     protected function addHandlers(iterable $handlers): void
     {
         foreach ($handlers as $handler) {
+            $fieldType = $handler->getFieldType();
             $module = $handler->getModule();
             $order = $handler->getOrder() ?? 0;
             $moduleHandlers = $this->registry[$module] ?? [];
+            $key = $handler->getKey();
 
-            $this->addHandlerByOrder($moduleHandlers, $order, $handler);
+            if ($key === 'default') {
+                foreach ($handler->getModes() as $mode) {
+                    $this->defaultHandlers[$module . '-' . $fieldType . '-' . $mode] = $handler;
+                }
+                continue;
+            }
+
+            $this->addHandler($moduleHandlers, $fieldType, $order, $handler);
 
             $this->registry[$module] = $moduleHandlers;
         }

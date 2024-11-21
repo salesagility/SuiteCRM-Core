@@ -32,7 +32,5 @@ use App\Data\Entity\Record;
 
 interface RecordSaveHandlerRunnerInterface
 {
-    public function beforeSave(?Record $previousVersion, Record $record): void;
-
-    public function afterSave(?Record $previousVersion, Record $record): void;
+    public function run(?Record $previousVersion, Record $inputRecord, ?Record $savedRecord, string $mode): void;
 }

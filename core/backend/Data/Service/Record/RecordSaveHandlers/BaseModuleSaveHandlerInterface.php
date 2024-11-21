@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -28,6 +28,29 @@
 
 namespace App\Data\Service\Record\RecordSaveHandlers;
 
-interface RecordBeforeSaveHandlerInterface extends RecordSaveHandlerInterface
+interface BaseModuleSaveHandlerInterface
 {
+    /**
+     * Get the sve handler key
+     * @return string
+     */
+    public function getKey(): string;
+
+    /**
+     * Get the module key
+     * @return string
+     */
+    public function getModule(): string;
+
+    /**
+     * Get the order of execution default 0
+     * @return int
+     */
+    public function getOrder(): int;
+
+    /**
+     * Get modes where save handler should run
+     * @return string[]
+     */
+    public function getModes(): array;
 }

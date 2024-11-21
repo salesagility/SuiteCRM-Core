@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2024 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -28,6 +28,51 @@
 
 namespace App\Data\Service\Record\RecordSaveHandlers;
 
-interface RecordAfterSaveHandlerInterface extends RecordSaveHandlerInterface
+trait RecordSaveHandlerTrait
 {
+    use ModuleSaveHandlerTrait;
+
+    /**
+     * @param BaseModuleSaveHandlerInterface[] $registry
+     * @param string $module
+     * @return array
+     */
+    protected function getOrderedHandlers(array &$registry, string $module): array
+    {
+        $handlers = $this->getMergedHandlers($registry, $module);
+
+        $flatList = [];
+        foreach ($handlers as $orderedHandlers) {
+
+            if (empty($orderedHandlers)) {
+                continue;
+            }
+
+            if (!is_array($orderedHandlers)) {
+                $flatList[] = $orderedHandlers;
+                continue;
+            }
+
+            foreach ($orderedHandlers as $orderedHandler) {
+                if (empty($orderedHandler)) {
+                    continue;
+                }
+                $flatList[] = $orderedHandler;
+            }
+        }
+        return $flatList;
+    }
+
+    /**
+     * @param BaseModuleSaveHandlerInterface[] $registry
+     * @param string $module
+     * @return BaseModuleSaveHandlerInterface[]
+     */
+    protected function getMergedHandlers(array &$registry, string $module): array
+    {
+        $defaultDefinitions = $registry['default'] ?? [];
+        $moduleDefinitions = $registry[$module] ?? [];
+
+        return array_merge($defaultDefinitions, $moduleDefinitions);
+    }
 }
