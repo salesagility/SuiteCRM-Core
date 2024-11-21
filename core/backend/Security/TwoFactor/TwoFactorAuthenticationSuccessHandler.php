@@ -19,6 +19,7 @@ class TwoFactorAuthenticationSuccessHandler implements AuthenticationSuccessHand
     {
         $this->authentication = $authentication;
     }
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token): Response
     {
         $user = $token->getUser();
@@ -29,8 +30,21 @@ class TwoFactorAuthenticationSuccessHandler implements AuthenticationSuccessHand
                 return new Response('{"login_success": false, "two_factor_complete": false}');
             }
         }
-        // Return the response to tell the client that authentication including two-factor
-        // authentication is complete now.
+
+        $redirect = $this->authentication->needsRedirect($user);
+
+        if (!empty($redirect)) {
+
+            $response = [
+                'redirect' => $redirect,
+                'login_success' => true,
+                'two_factor_complete' => true,
+            ];
+
+            return new Response(json_encode($response));
+        }
+
+
         return new Response('{"login_success": true, "two_factor_complete": true}');
     }
 }
