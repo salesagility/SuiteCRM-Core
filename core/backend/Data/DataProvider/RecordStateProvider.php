@@ -31,7 +31,7 @@ namespace App\Data\DataProvider;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Data\Entity\Record;
-use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Service\Record\ApiRecordMappers\ApiRecordMapperRunner;
 use App\Data\Service\RecordProviderInterface;
 use Exception;
 
@@ -41,16 +41,16 @@ use Exception;
 class RecordStateProvider implements ProviderInterface
 {
     protected RecordProviderInterface $recordHandler;
-    protected RecordMapperRunnerInterface $apiRecordMapperRunner;
+    protected ApiRecordMapperRunner $apiRecordMapperRunner;
 
     /**
      * RecordStateProvider constructor.
      * @param RecordProviderInterface $recordHandler
-     * @param RecordMapperRunnerInterface $apiRecordMapperRunner
+     * @param ApiRecordMapperRunner $apiRecordMapperRunner
      */
     public function __construct(
         RecordProviderInterface $recordHandler,
-        RecordMapperRunnerInterface $apiRecordMapperRunner
+        ApiRecordMapperRunner $apiRecordMapperRunner
     ) {
         $this->recordHandler = $recordHandler;
         $this->apiRecordMapperRunner = $apiRecordMapperRunner;

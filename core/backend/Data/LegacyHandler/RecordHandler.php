@@ -29,8 +29,7 @@ namespace App\Data\LegacyHandler;
 
 use ApiBeanMapper;
 use App\Data\Entity\Record;
-use App\Data\Service\Record\Mappers\RecordMapperRunner;
-use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Service\Record\EntityRecordMappers\EntityRecordMapperRunner;
 use App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerRunnerInterface;
 use App\Data\Service\RecordProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
@@ -67,8 +66,8 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      */
     protected $favorites;
 
-    protected RecordMapperRunner $entityRecordMapperRunner;
-    private RecordSaveHandlerRunnerInterface $saveHandlerRunner;
+    protected EntityRecordMapperRunner $entityRecordMapperRunner;
+    protected RecordSaveHandlerRunnerInterface $saveHandlerRunner;
 
     /**
      * RecordViewHandler constructor.
@@ -81,7 +80,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param RequestStack $session
      * @param AclManagerInterface $aclHandler
      * @param FavoriteProviderInterface $favorites
-     * @param RecordMapperRunnerInterface $entityRecordMapperRunner
+     * @param EntityRecordMapperRunner $entityRecordMapperRunner
      * @param RecordSaveHandlerRunnerInterface $saveHandlerRunner
      */
     public function __construct(
@@ -94,7 +93,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         RequestStack $session,
         AclManagerInterface $aclHandler,
         FavoriteProviderInterface $favorites,
-        RecordMapperRunnerInterface $entityRecordMapperRunner,
+        EntityRecordMapperRunner $entityRecordMapperRunner,
         RecordSaveHandlerRunnerInterface $saveHandlerRunner
     ) {
         parent::__construct(

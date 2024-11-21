@@ -28,23 +28,28 @@
 namespace App\Data\Resolver;
 
 use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
-use App\Data\LegacyHandler\RecordListHandler;
+use App\Data\Entity\Record;
 use App\Data\Entity\RecordList;
+use App\Data\LegacyHandler\RecordListHandler;
+use App\Data\Service\Record\ApiRecordMappers\ApiRecordMapperRunner;
 
 class RecordListResolver implements QueryItemResolverInterface
 {
-    /**
-     * @var RecordListHandler
-     */
-    protected $recordListHandler;
+    protected RecordListHandler $recordListHandler;
+    protected ApiRecordMapperRunner $apiRecordMapperRunner;
 
     /**
      * RecordListResolver constructor.
      * @param RecordListHandler $recordListHandler
+     * @param ApiRecordMapperRunner $apiRecordMapperRunner
      */
-    public function __construct(RecordListHandler $recordListHandler)
+    public function __construct(
+        RecordListHandler $recordListHandler,
+        ApiRecordMapperRunner $apiRecordMapperRunner
+    )
     {
         $this->recordListHandler = $recordListHandler;
+        $this->apiRecordMapperRunner = $apiRecordMapperRunner;
     }
 
     /**
@@ -55,13 +60,24 @@ class RecordListResolver implements QueryItemResolverInterface
      */
     public function __invoke($item, array $context): RecordList
     {
-
         $module = $context['args']['module'] ?? '';
         $limit = $context['args']['limit'] ?? -1;
         $offset = $context['args']['offset'] ?? -1;
         $criteria = $context['args']['criteria'] ?? [];
         $sort = $context['args']['sort'] ?? [];
 
-        return $this->recordListHandler->getList($module, $criteria, $offset, $limit, $sort);
+        $list = $this->recordListHandler->getList($module, $criteria, $offset, $limit, $sort);
+
+        $mappedRecords = [];
+        foreach ($list->getRecords() as $recordArray) {
+            $record = new Record();
+            $record->fromArray($recordArray);
+
+            $this->apiRecordMapperRunner->toExternal($record, 'list');
+            $mappedRecords[] = $record->toArray();
+        }
+
+        $list->setRecords($mappedRecords);
+        return $list;
     }
 }

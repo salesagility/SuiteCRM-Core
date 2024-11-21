@@ -29,6 +29,7 @@ namespace App\Data\Resolver;
 
 use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
 use App\Data\Entity\Record;
+use App\Data\Service\Record\ApiRecordMappers\ApiRecordMapperRunner;
 use App\Data\Service\RecordProviderInterface;
 use Exception;
 
@@ -38,14 +39,20 @@ class RecordItemResolver implements QueryItemResolverInterface
      * @var RecordProviderInterface
      */
     protected $recordHandler;
+    private ApiRecordMapperRunner $apiRecordMapperRunner;
 
     /**
      * RecordViewResolver constructor.
      * @param RecordProviderInterface $recordHandler
+     * @param ApiRecordMapperRunner $apiRecordMapperRunner
      */
-    public function __construct(RecordProviderInterface $recordHandler)
+    public function __construct(
+        RecordProviderInterface $recordHandler,
+        ApiRecordMapperRunner $apiRecordMapperRunner
+    )
     {
         $this->recordHandler = $recordHandler;
+        $this->apiRecordMapperRunner = $apiRecordMapperRunner;
     }
 
     /**
@@ -60,6 +67,9 @@ class RecordItemResolver implements QueryItemResolverInterface
         $module = $context['args']['module'] ?? '';
         $record = $context['args']['record'] ?? '';
 
-        return $this->recordHandler->getRecord($module, $record);
+        $record = $this->recordHandler->getRecord($module, $record);
+        $this->apiRecordMapperRunner->toExternal($record, 'retrieve');
+
+        return $record;
     }
 }

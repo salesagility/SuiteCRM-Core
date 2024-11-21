@@ -31,23 +31,22 @@ namespace App\Data\DataPersister;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Data\Entity\Record;
-use App\Data\Service\Record\Mappers\RecordMapperRunner;
-use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Service\Record\ApiRecordMappers\ApiRecordMapperRunner;
 use App\Data\Service\RecordProviderInterface;
 
 class RecordProcessor implements ProcessorInterface
 {
     protected RecordProviderInterface $recordProvider;
-    protected RecordMapperRunner $apiRecordMapperRunner;
+    protected ApiRecordMapperRunner $apiRecordMapperRunner;
 
     /**
      * RecordProcessor constructor.
      * @param RecordProviderInterface $recordProvider
-     * @param RecordMapperRunnerInterface $apiRecordMapperRunner
+     * @param ApiRecordMapperRunner $apiRecordMapperRunner
      */
     public function __construct(
         RecordProviderInterface $recordProvider,
-        RecordMapperRunnerInterface $apiRecordMapperRunner
+        ApiRecordMapperRunner $apiRecordMapperRunner
     ) {
         $this->recordProvider = $recordProvider;
         $this->apiRecordMapperRunner = $apiRecordMapperRunner;

@@ -72,11 +72,9 @@ services:
       $quickActions: '%quick_actions%'
       $graphqlShowDocs: '%graphql.graphql_show_docs%'
       $language: '%language%'
-      $apiRecordMapperRunner: '@api.record.mapper.runner'
       $apiRecordMapperRegistry: '@api.record.mapper.registry'
       $apiFieldMapperRegistry: '@api.field.mapper.registry'
       $apiFieldTypeMapperRegistry: '@api.fieldType.mapper.registry'
-      $entityRecordMapperRunner: '@entity.record.mapper.runner'
       $entityRecordMapperRegistry: '@entity.record.mapper.registry'
       $entityFieldMapperRegistry: '@entity.field.mapper.registry'
       $entityFieldTypeMapperRegistry: '@entity.fieldType.mapper.registry'
@@ -332,10 +330,6 @@ services:
     arguments:
       - !tagged { tag: 'massupdate.definition.mapper' }
 
-  mapper.runner.factory:
-    alias: App\Data\Service\Record\Mappers\RecordMapperRunnerFactoryInterface
-    public: true
-
   api.record.mapper.registry:
     class: 'App\Data\Service\Record\Mappers\BaseRecordMapperRegistry'
     factory: 'App\Data\Service\Record\Mappers\BaseRecordMapperRegistryFactory::create'
@@ -354,13 +348,8 @@ services:
     arguments:
       - !tagged { tag: 'mappers.api.record.fieldType' }
 
-  api.mapper.runner.factory:
-    alias: 'mapper.runner.factory'
-    public: true
-
   api.record.mapper.runner:
-    class: 'App\Data\Service\Record\Mappers\RecordMapperRunner'
-    factory: ['@api.mapper.runner.factory', 'create']
+    class: 'App\Data\Service\Record\Mappers\ApiRecordMapperRunner'
     arguments:
       - '@api.field.mapper.registry'
       - '@api.fieldType.mapper.registry'
@@ -385,13 +374,8 @@ services:
     arguments:
       - !tagged { tag: 'mappers.entity.record.fieldType' }
 
-  entity.mapper.runner.factory:
-    alias: 'mapper.runner.factory'
-    public: true
-
   entity.record.mapper.runner:
-    class: 'App\Data\Service\Record\Mappers\RecordMapperRunner'
-    factory: [ '@entity.mapper.runner.factory', 'create']
+    class: 'App\Data\Service\Record\Mappers\EntityRecordMapperRunner'
     arguments:
       - '@entity.field.mapper.registry'
       - '@entity.fieldType.mapper.registry'

@@ -27,12 +27,12 @@
 
 namespace App\Data\LegacyHandler;
 
-use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Entity\RecordList;
+use App\Data\Service\Record\EntityRecordMappers\EntityRecordMapperRunner;
+use App\Data\Service\RecordListProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
-use App\Data\Entity\RecordList;
 use App\Module\Service\ModuleNameMapperInterface;
-use App\Data\Service\RecordListProviderInterface;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -58,7 +58,7 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
      * @var PresetListDataHandlers
      */
     private $presetHandlers;
-    protected RecordMapperRunnerInterface $entityRecordMapperRunner;
+    protected EntityRecordMapperRunner $entityRecordMapperRunner;
 
     /**
      * SystemConfigHandler constructor.
@@ -71,6 +71,7 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
      * @param ListDataHandler $listDataHandler
      * @param PresetListDataHandlers $presetHandlers
      * @param RequestStack $session
+     * @param EntityRecordMapperRunner $entityRecordMapperRunner
      */
     public function __construct(
         string $projectDir,
@@ -82,10 +83,16 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
         ListDataHandler $listDataHandler,
         PresetListDataHandlers $presetHandlers,
         RequestStack $session,
-        RecordMapperRunnerInterface $entityRecordMapperRunner,
+        EntityRecordMapperRunner $entityRecordMapperRunner
     ) {
-        parent::__construct($projectDir, $legacyDir, $legacySessionName, $defaultSessionName, $legacyScopeState,
-            $session);
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $session
+        );
         $this->moduleNameMapper = $moduleNameMapper;
         $this->listDataHandler = $listDataHandler;
         $this->presetHandlers = $presetHandlers;
@@ -143,7 +150,8 @@ class RecordListHandler extends LegacyHandler implements RecordListProviderInter
                     'ordering' => $listData->getOrdering()
                 ],
                 $listData->getMeta() ?? []
-            ));
+            )
+        );
 
         $this->close();
 

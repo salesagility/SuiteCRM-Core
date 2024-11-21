@@ -28,7 +28,7 @@
 namespace App\Data\LegacyHandler;
 
 use App\Data\Service\AlertProviderInterface;
-use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Service\Record\EntityRecordMappers\EntityRecordMapperRunner;
 use App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerRunnerInterface;
 use App\Data\Service\RecordDeletionServiceInterface;
 use App\Engine\LegacyHandler\LegacyScopeState;
@@ -62,6 +62,8 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
      * @param AclManagerInterface $aclHandler
      * @param FavoriteProviderInterface $favorites
      * @param RecordDeletionServiceInterface $recordDeletionProvider
+     * @param EntityRecordMapperRunner $entityRecordMapperRunner
+     * @param RecordSaveHandlerRunnerInterface $saveHandlerRunner
      */
     public function __construct(
         string $projectDir,
@@ -74,7 +76,7 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
         AclManagerInterface $aclHandler,
         FavoriteProviderInterface $favorites,
         RecordDeletionServiceInterface $recordDeletionProvider,
-        RecordMapperRunnerInterface $entityRecordMapperRunner,
+        EntityRecordMapperRunner $entityRecordMapperRunner,
         RecordSaveHandlerRunnerInterface $saveHandlerRunner
     ) {
         parent::__construct(
@@ -164,7 +166,7 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
         /** @var \Reminder $bean */
         $reminder = BeanFactory::getBean('Reminders', $reminderId, ['encode' => false]);
 
-        if (empty($reminder)){
+        if (empty($reminder)) {
             return;
         }
         $reminder->popup_viewed = 1;

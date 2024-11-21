@@ -25,9 +25,23 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+namespace App\Data\Service\Record\ApiRecordMappers;
 
-namespace App\Data\Service\Record\Mappers;
+use App\Data\Service\Record\Mappers\BaseFieldMapperRegistry;
+use App\Data\Service\Record\Mappers\BaseFieldTypeMapperRegistry;
+use App\Data\Service\Record\Mappers\BaseRecordMapperRegistry;
+use App\Data\Service\Record\Mappers\RecordMapperRunner;
+use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 
-interface RecordMapperRunnerFactoryInterface
+class ApiRecordMapperRunner extends RecordMapperRunner
 {
+
+    public function __construct(
+        BaseFieldMapperRegistry $apiFieldMapperRegistry,
+        BaseFieldTypeMapperRegistry $apiFieldTypeMapperRegistry,
+        BaseRecordMapperRegistry $apiRecordMapperRegistry,
+        FieldDefinitionsProviderInterface $fieldDefinitions
+    ) {
+        parent::__construct($apiFieldMapperRegistry, $apiFieldTypeMapperRegistry, $apiRecordMapperRegistry, $fieldDefinitions);
+    }
 }

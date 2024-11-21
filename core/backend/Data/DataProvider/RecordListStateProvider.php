@@ -32,7 +32,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Data\Entity\Record;
 use App\Data\Entity\RecordList;
 use App\Data\LegacyHandler\RecordListHandler;
-use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
+use App\Data\Service\Record\ApiRecordMappers\ApiRecordMapperRunner;
 
 /**
  * Class RecordListStateProvider
@@ -40,20 +40,17 @@ use App\Data\Service\Record\Mappers\RecordMapperRunnerInterface;
  */
 class RecordListStateProvider implements ProviderInterface
 {
-    /**
-     * @var RecordListHandler
-     */
-    protected $recordListHandler;
-    protected RecordMapperRunnerInterface $apiRecordMapperRunner;
+    protected RecordListHandler $recordListHandler;
+    protected ApiRecordMapperRunner $apiRecordMapperRunner;
 
     /**
      * RecordListStateProvider constructor.
      * @param RecordListHandler $recordListHandler
-     * @param RecordMapperRunnerInterface $apiRecordMapperRunner
+     * @param ApiRecordMapperRunner $apiRecordMapperRunner
      */
     public function __construct(
         RecordListHandler $recordListHandler,
-        RecordMapperRunnerInterface $apiRecordMapperRunner
+        ApiRecordMapperRunner $apiRecordMapperRunner
     ) {
         $this->recordListHandler = $recordListHandler;
         $this->apiRecordMapperRunner = $apiRecordMapperRunner;
