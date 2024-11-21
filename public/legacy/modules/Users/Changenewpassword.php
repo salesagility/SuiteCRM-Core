@@ -136,6 +136,9 @@ if (!empty($_REQUEST['guid']) && !empty($_REQUEST['key'])) {
                 }
             } else {
                 $redirect = false;
+                if ($_REQUEST['redirect'] === '1') {
+                    $redirect = true;
+                }
             }
         } else {
             $query2 = "UPDATE users_password_link SET deleted='1' where id='" . $db->quote($_REQUEST['guid']) . "'";
