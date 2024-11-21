@@ -83,4 +83,8 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+  .mobile-menu-item-label:hover {
+    cursor: pointer;
+  }
 }
