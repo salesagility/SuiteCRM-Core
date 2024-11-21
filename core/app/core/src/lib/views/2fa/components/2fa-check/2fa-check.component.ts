@@ -71,6 +71,17 @@ export class TwoFactorCheckComponent {
                 this.authService.setCurrentUser(response);
                 this.notificationStore.enableNotifications();
                 this.notificationStore.refreshNotifications();
+
+                if (response?.redirect && response?.redirect?.route) {
+                    this.router.navigate(
+                        [response.redirect.route],
+                        {
+                            queryParams: response.redirect.queryParams ?? {}
+                        }).then();
+                    return;
+                }
+
+
                 return;
             }
 
