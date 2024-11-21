@@ -33,6 +33,7 @@ import {LanguageStore} from "../../../../store/language/language.store";
 import {ButtonCallback, ButtonInterface} from "../../../../common/components/button/button.model";
 import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
 import {Clipboard} from '@angular/cdk/clipboard';
+import {GenerateBackupCodes} from "../../../../services/process/processes/generate-backup-codes/generate-backup-codes";
 
 
 @Component({
@@ -54,6 +55,8 @@ export class TwoFactorComponent implements OnInit {
     appMethodHeaderLabel: string = '';
     enableAppMethodButtonConfig: ButtonInterface;
     disableAppMethodTButtonConfig: ButtonInterface;
+    cancelAppMethodTButtonConfig: ButtonInterface;
+    regenerateBackupCodesButtonConfig: ButtonInterface;
     recoveryCodesHeaderLabel: string = '';
 
     @HostListener('keyup.control.enter')
@@ -67,7 +70,8 @@ export class TwoFactorComponent implements OnInit {
         protected message: MessageService,
         protected language: LanguageStore,
         protected userPreference: UserPreferenceStore,
-        protected clipboard: Clipboard
+        protected clipboard: Clipboard,
+        protected generateBackupCodesService: GenerateBackupCodes,
     ) {
     }
 
@@ -96,6 +100,24 @@ export class TwoFactorComponent implements OnInit {
                 this.disable2FactorAuth()
             }) as ButtonCallback,
             labelKey: 'LBL_DISABLE',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.cancelAppMethodTButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.disable2FactorAuth()
+            }) as ButtonCallback,
+            labelKey: 'LBL_CANCEL',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.regenerateBackupCodesButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.generateBackupCodes();
+            }) as ButtonCallback,
+            labelKey: 'LBL_REGENERATE_BACKUP_CODES',
             titleKey: ''
         } as ButtonInterface;
     }
@@ -141,6 +163,7 @@ export class TwoFactorComponent implements OnInit {
             const verified = response?.two_factor_setup_complete ?? false;
 
             if (isTrue(verified)) {
+                this.generateBackupCodes();
                 this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_SUCCESS');
 
                 this.isAppMethodEnabled.set(true);
@@ -156,5 +179,22 @@ export class TwoFactorComponent implements OnInit {
 
     public copyBackupCodes() {
         this.clipboard.copy(this.backupCodes);
+    }
+
+
+    public generateBackupCodes(){
+        this.areRecoveryCodesGenerated.set(false)
+        this.generateBackupCodesService.generate().subscribe({
+            next: (response) => {
+                console.log(response);
+                console.log('inside next');
+                this.backupCodes = response?.data.backupCodes;
+                this.areRecoveryCodesGenerated.set(true)
+            },
+            error: () => {
+                console.log('inside eror');
+                this.areRecoveryCodesGenerated.set(false)
+            }
+        });
     }
 }

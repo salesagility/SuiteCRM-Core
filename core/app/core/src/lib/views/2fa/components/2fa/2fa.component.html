@@ -55,7 +55,9 @@
                         <span widget-header-button>
                             <scrm-button *ngIf="!isAppMethodEnabled() && !isQrCodeGenerated()"
                                          [config]="enableAppMethodButtonConfig"></scrm-button>
-                            <scrm-button *ngIf="isAppMethodEnabled() || isQrCodeGenerated()"
+                            <scrm-button *ngIf="!isAppMethodEnabled() && isQrCodeGenerated()"
+                                         [config]="cancelAppMethodTButtonConfig"></scrm-button>
+                            <scrm-button *ngIf="isAppMethodEnabled() && !isQrCodeGenerated()"
                                          [config]="disableAppMethodTButtonConfig"></scrm-button>
                         </span>
                         <div widget-body>
@@ -77,6 +79,7 @@
                                                    id="auth_code"
                                                    type="text"
                                                    name="auth_code"
+                                                   autocomplete="off"
                                                    class="mb-3 auth-input"
                                                    maxlength="6"/>
 
@@ -108,6 +111,8 @@
                             </span>
                         </span>
                         <span widget-header-button>
+                            <scrm-button *ngIf="isAppMethodEnabled()"
+                                         [config]="regenerateBackupCodesButtonConfig"></scrm-button>
                         </span>
                         <div widget-body>
                             <div class="d-flex col-md-12 pl-4 pr-4 pt-2 pb-2">
@@ -121,6 +126,7 @@
                                     </span>
 
                                     <button (click)="copyBackupCodes()" class="btn btn-sm btn-main copy-button">
+                                        <scrm-image image="clipboard"></scrm-image>
                                         Copy
                                     </button>
                                 </div>

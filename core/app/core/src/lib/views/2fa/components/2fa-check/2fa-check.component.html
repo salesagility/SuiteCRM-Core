@@ -30,8 +30,9 @@
     <input [(ngModel)]="_auth_code"
            id="auth_code"
            type="text"
+           autocomplete="off"
            name="auth_code"
-           class="mb-2 mt-2"
+           class="mb-2 mt-2 pl-0"
            maxlength="20">
 
     <button id="submit-2fa-code" (click)="verifyCode()" type="submit" [class]="class">
