@@ -31,7 +31,7 @@ use App\Data\Entity\Record;
 use App\FieldDefinitions\Entity\FieldDefinition;
 use App\FieldDefinitions\Service\FieldDefinitionsProviderInterface;
 
-class RecordMapperRunner implements RecordMapperRunnerInterface
+abstract class RecordMapperRunner implements RecordMapperRunnerInterface
 {
     protected BaseFieldMapperRegistry $fieldMapperRegistry;
     protected BaseFieldTypeMapperRegistry $fieldTypeMapperRegistry;
@@ -120,17 +120,46 @@ class RecordMapperRunner implements RecordMapperRunnerInterface
     ): void {
         $fieldVardefs = $vardefs ?? [];
         $type = $fieldVardefs['type'] ?? '';
+        $fieldMappers = $this->fieldMapperRegistry->getMappers($record->getModule(), $field, $mode);
 
         if ($type !== '') {
+            $this->runDefaultMapper($record, $type, $mode, $field, $direction, $fieldDefinitions);
+
             $fieldTypeMappers = $this->fieldTypeMapperRegistry->getMappers($record->getModule(), $type, $mode);
             foreach ($fieldTypeMappers as $fieldTypeMapper) {
                 $fieldTypeMapper->$direction($record, $fieldDefinitions, $field);
             }
         }
 
-        $fieldMappers = $this->fieldMapperRegistry->getMappers($record->getModule(), $field, $mode);
         foreach ($fieldMappers as $fieldMapper) {
             $fieldMapper->$direction($record, $fieldDefinitions);
+        }
+    }
+
+    /**
+     * @param Record $record
+     * @param string $type
+     * @param string|null $mode
+     * @param string $field
+     * @param string $direction
+     * @param FieldDefinition $fieldDefinitions
+     * @return void
+     */
+    protected function runDefaultMapper(
+        Record $record,
+        string $type,
+        ?string $mode,
+        string $field,
+        string $direction,
+        FieldDefinition $fieldDefinitions
+    ): void {
+        $default = $this->fieldTypeMapperRegistry->getDefaultMapper($record->getModule(), $type, $mode);
+        $defaultOverride = $this->fieldMapperRegistry->getTypeDefaultOverride($record->getModule(), $field, $mode);
+
+        if ($defaultOverride !== null) {
+            $defaultOverride->$direction($record, $fieldDefinitions);
+        } elseif ($default !== null) {
+            $default->$direction($record, $fieldDefinitions, $field);
         }
     }
 }

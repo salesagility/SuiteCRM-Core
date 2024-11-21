@@ -28,8 +28,6 @@
 
 namespace App\Data\Service\Record\Mappers;
 
-use Traversable;
-
 class BaseFieldTypeMapperRegistry
 {
     use RecordFieldMapperTrait;
@@ -40,14 +38,16 @@ class BaseFieldTypeMapperRegistry
     protected array $registry = [];
 
     /**
-     * BaseFieldTypeMapperRegistry constructor.
-     * @param Traversable $mappers
+     * @var BaseFieldTypeMapperInterface[]
      */
-    public function __construct(Traversable $mappers)
+    protected array $defaultMappers = [];
+
+    /**
+     * BaseFieldTypeMapperRegistry constructor.
+     * @param BaseFieldTypeMapperInterface[] $mappers
+     */
+    public function __construct(array $mappers)
     {
-        /**
-         * @var $mappers BaseFieldTypeMapperInterface[]
-         */
         $this->addMappers($mappers);
     }
 
@@ -65,6 +65,24 @@ class BaseFieldTypeMapperRegistry
         return $this->filterMappersByModes($mappers, $mode);
     }
 
+    /**
+     * Get default mapper for module, field and mode
+     * @param string $module
+     * @param string $fieldType
+     * @param string $mode
+     * @return BaseFieldTypeMapperInterface|null
+     */
+    public function getDefaultMapper(string $module, string $fieldType, string $mode): ?BaseFieldTypeMapperInterface
+    {
+        $moduleDefault = $this->defaultMappers[$module . '-' . $fieldType . '-' . $mode] ?? null;
+
+        if ($moduleDefault !== null)  {
+            return $moduleDefault;
+        }
+
+        return $this->defaultMappers['default' . '-' . $fieldType . '-' . $mode] ?? null;
+    }
+
 
     /**
      * @param BaseFieldTypeMapperInterface[] $mappers
@@ -73,12 +91,20 @@ class BaseFieldTypeMapperRegistry
     protected function addMappers(iterable $mappers): void
     {
         foreach ($mappers as $handler) {
-            $field = $handler->getFieldType();
+            $fieldType = $handler->getFieldType();
             $module = $handler->getModule();
             $order = $handler->getOrder() ?? 0;
             $moduleMappers = $this->registry[$module] ?? [];
+            $key = $handler->getKey();
 
-            $this->addMapper($moduleMappers, $field, $order, $handler);
+            if ($key === 'default') {
+                foreach ($handler->getModes() as $mode) {
+                    $this->defaultMappers[$module . '-' . $fieldType . '-' . $mode] = $handler;
+                }
+                continue;
+            }
+
+            $this->addMapper($moduleMappers, $fieldType, $order, $handler);
 
             $this->registry[$module] = $moduleMappers;
         }

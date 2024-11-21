@@ -40,6 +40,12 @@ interface BaseFieldMapperInterface extends BaseModuleMapperInterface
     public function getField(): string;
 
     /**
+     * Set if mapper overrides type default
+     * @return bool
+     */
+    public function replaceDefaultTypeMapper(): bool;
+
+    /**
      * Map value to internal format
      * @param Record $record
      * @param FieldDefinition $fieldDefinitions

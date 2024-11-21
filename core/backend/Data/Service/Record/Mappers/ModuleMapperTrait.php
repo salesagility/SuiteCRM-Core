@@ -45,6 +45,20 @@ trait ModuleMapperTrait
     }
 
     /**
+     * @param array $mapperModes
+     * @param string $mode
+     * @return bool
+     */
+    protected function isModeEnabled(array $mapperModes, string $mode): bool
+    {
+        $modeEnabled = false;
+        if (in_array($mode, $mapperModes, true)) {
+            $modeEnabled = true;
+        }
+        return $modeEnabled;
+    }
+
+    /**
      * @param array $mappers
      * @param string $mode
      * @return array
@@ -66,20 +80,6 @@ trait ModuleMapperTrait
             }
         }
         return $modeMappers;
-    }
-
-    /**
-     * @param array $mapperModes
-     * @param string $mode
-     * @return bool
-     */
-    protected function isModeEnabled(array $mapperModes, string $mode): bool
-    {
-        $modeEnabled = false;
-        if (in_array($mode, $mapperModes, true)) {
-            $modeEnabled = true;
-        }
-        return $modeEnabled;
     }
 
 

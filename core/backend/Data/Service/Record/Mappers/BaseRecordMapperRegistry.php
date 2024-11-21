@@ -28,7 +28,6 @@
 
 namespace App\Data\Service\Record\Mappers;
 
-use Traversable;
 
 class BaseRecordMapperRegistry
 {
@@ -41,21 +40,15 @@ class BaseRecordMapperRegistry
 
     /**
      * BaseRecordMapperRegistry constructor.
-     * @param Traversable $mappers
+     * @param BaseRecordMapperInterface[] $mappers
      */
-    public function __construct(Traversable $mappers)
+    public function __construct(array $mappers)
     {
-
-        /**
-         * @var $mappers BaseRecordMapperInterface[]
-         */
         $this->addMappers($mappers);
-
-
     }
 
     /**
-     * Get the field type mappers for the module and type
+     * Get the mappers for the module and mode
      * @param string $module
      * @param string|null $mode
      * @return BaseRecordMapperInterface[]

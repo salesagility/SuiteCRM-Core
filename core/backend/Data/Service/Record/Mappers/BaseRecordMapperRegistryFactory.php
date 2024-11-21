@@ -34,6 +34,14 @@ class BaseRecordMapperRegistryFactory
 {
     public static function create(Traversable $mappers): BaseRecordMapperRegistry
     {
-        return new BaseRecordMapperRegistry($mappers);
+        /**
+         * @var $mappers BaseRecordMapperInterface[]
+         */
+        $parsed = [];
+        foreach ($mappers as $mapper) {
+            $parsed[] = $mapper;
+        }
+
+        return new BaseRecordMapperRegistry($parsed);
     }
 }

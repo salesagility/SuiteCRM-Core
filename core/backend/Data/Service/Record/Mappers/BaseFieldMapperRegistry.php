@@ -28,8 +28,6 @@
 
 namespace App\Data\Service\Record\Mappers;
 
-use Traversable;
-
 class BaseFieldMapperRegistry
 {
     use RecordFieldMapperTrait;
@@ -40,19 +38,26 @@ class BaseFieldMapperRegistry
     protected array $registry = [];
 
     /**
-     * RecordLevelMapperInterface constructor.
-     * @param Traversable $mappers
+     * @var BaseFieldMapperInterface[]
      */
-    public function __construct(Traversable $mappers)
+    protected array $defaultMappers = [];
+
+    /**
+     * @var BaseFieldMapperInterface[]
+     */
+    protected array $existingTypeDefaultOverrides = [];
+
+    /**
+     * RecordLevelMapperInterface constructor.
+     * @param BaseFieldMapperInterface[] $mappers
+     */
+    public function __construct(array $mappers)
     {
-        /**
-         * @var $mappers BaseFieldMapperInterface[]
-         */
         $this->addMappers($mappers);
     }
 
     /**
-     * Get the field type mappers for the module and type
+     * Get the field mappers for the module, field and mode
      * @param string $module
      * @param string $field
      * @param string|null $mode
@@ -66,6 +71,42 @@ class BaseFieldMapperRegistry
     }
 
     /**
+     * Get default mapper for module, field and mode
+     * @param string $module
+     * @param string $field
+     * @param string $mode
+     * @return BaseFieldMapperInterface|null
+     */
+    public function getDefaultMapper(string $module, string $field, string $mode): ?BaseFieldMapperInterface
+    {
+        $moduleDefault = $this->defaultMappers[$module . '-' . $field . '-' . $mode] ?? null;
+
+        if ($moduleDefault !== null)  {
+            return $moduleDefault;
+        }
+
+        return $this->defaultMappers['default' . '-' . $field . '-' . $mode] ?? null;
+    }
+
+    /**
+     * Get default mapper for module, field and mode
+     * @param string $module
+     * @param string $field
+     * @param string $mode
+     * @return BaseFieldMapperInterface|null
+     */
+    public function getTypeDefaultOverride(string $module, string $field, string $mode): ?BaseFieldMapperInterface
+    {
+        $moduleDefault = $this->existingTypeDefaultOverrides[$module . '-' . $field . '-' . $mode] ?? null;
+
+        if ($moduleDefault !== null)  {
+            return $moduleDefault;
+        }
+
+        return $this->existingTypeDefaultOverrides['default' . '-' . $field . '-' . $mode] ?? null;
+    }
+
+    /**
      * @param BaseFieldMapperInterface[] $mappers
      * @return void
      */
@@ -76,6 +117,21 @@ class BaseFieldMapperRegistry
             $module = $handler->getModule() ?? '';
             $order = $handler->getOrder() ?? 0;
             $moduleMappers = $this->registry[$module] ?? [];
+            $key = $handler->getKey();
+
+            if ($handler->replaceDefaultTypeMapper()) {
+                $key = 'default';
+                foreach ($handler->getModes() as $mode) {
+                    $this->existingTypeDefaultOverrides[$module . '-' . $field . '-' . $mode] = $handler;
+                }
+            }
+
+            if ($key === 'default') {
+                foreach ($handler->getModes() as $mode) {
+                    $this->defaultMappers[$module . '-' . $field . '-' . $mode] = $handler;
+                }
+                continue;
+            }
 
             $this->addMapper($moduleMappers, $field, $order, $handler);
 
