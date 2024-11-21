@@ -142,9 +142,14 @@ export class TwoFactorComponent implements OnInit {
     public disable2FactorAuth(): void {
         this.authService.disable2fa().subscribe({
             next: (response) => {
-                this.isAppMethodEnabled.set(false);
-                this.areRecoveryCodesGenerated.set(false);
-                this.isQrCodeGenerated.set(false);
+                if (isTrue(response?.two_factor_disabled)) {
+
+                    this.isAppMethodEnabled.set(false);
+                    this.areRecoveryCodesGenerated.set(false);
+                    this.isQrCodeGenerated.set(false);
+
+                    this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_DISABLE');
+                }
             },
             error: () => {
                 this.isAppMethodEnabled.set(true);
