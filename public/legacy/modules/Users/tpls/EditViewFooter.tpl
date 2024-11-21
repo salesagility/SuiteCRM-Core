@@ -659,24 +659,24 @@
 </div>
 <div class="user-tab-content">
     <div id="two-factor-auth">
-    <div class="authentication-row pb-1">
-            <div class="left-col label-txt">
-            <div>
-            {$MOD.LBL_STATUS}: {$STATUS}
+        <div class="row-user layout">
+            <div class="row-container">
+                <div class="full-row">
+                    <div class="row-label">{$MOD.LBL_STATUS}: <span id="auth_status">{$STATUS}</span></div>
+                    <div class="bottom-dotted-border"></div>
+                </div>
             </div>
-            <div class="edit-dotted-border"></div>
         </div>
-    </div>
     {if $CURRENT_USER}
-    <div class="authentication-row">
-        <div class="left-col label-txt pt-1">
-            <div>{$MOD.LBL_FACTOR_AUTH}:</div>
-            <div class='dataField'>
-                <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href = './#/users/2fa-config'">{$MOD.LBL_2FA_CONFIG}</button>
+    <div class="row-user layout">
+        <div class="row-container">
+            <div class="full-row">
+                <div class="row-label">{$MOD.LBL_FACTOR_AUTH}:</div>
+                    <div class="row-bottom"> <button type="button" class="btn btn-primary btn-sm" onclick="window.location.href = './#/users/2fa-config'">{$MOD.LBL_2FA_CONFIG}</button></div>
+                    <div class="bottom-dotted-border"></div>
+                </div>
             </div>
-            <div class="edit-dotted-border"></div>
         </div>
-    </div>
     {/if}
     </div>
 </div>
