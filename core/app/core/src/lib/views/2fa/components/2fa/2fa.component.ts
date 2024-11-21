@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnInit, signal, WritableSignal} from "@angular/core";
+import {Component, HostListener, OnInit, signal, WritableSignal} from "@angular/core";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {MessageService} from "../../../../services/message/message.service";
@@ -55,6 +55,11 @@ export class TwoFactorComponent implements OnInit {
     enableAppMethodButtonConfig: ButtonInterface;
     disableAppMethodTButtonConfig: ButtonInterface;
     recoveryCodesHeaderLabel: string = '';
+
+    @HostListener('keyup.control.enter')
+    onEnterKey() {
+        this.finalize2fa();
+    }
 
     constructor(
         protected authService: AuthService,

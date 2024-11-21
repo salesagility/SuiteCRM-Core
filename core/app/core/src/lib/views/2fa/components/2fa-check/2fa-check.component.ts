@@ -23,7 +23,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
-import {Component, Input} from "@angular/core";
+import {Component, HostListener, Input} from "@angular/core";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {NotificationStore} from "../../../../store/notification/notification.store";
 import {Router} from "@angular/router";
@@ -40,6 +40,11 @@ export class TwoFactorCheckComponent {
 
     _auth_code: string;
     @Input() class: string;
+
+    @HostListener('keyup.control.enter')
+    onEnterKey() {
+        this.verifyCode();
+    }
 
     constructor(protected authService: AuthService,
                 protected message: MessageService,
