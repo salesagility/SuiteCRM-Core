@@ -2318,7 +2318,9 @@ $app_strings = array(
     'LBL_ENABLE' => 'Enable',
     'LBL_ENABLED' => 'Enabled',
     'LBL_DISABLE' => 'Disable',
-    'LBL_GENERATED' => 'Generated'
+    'LBL_CANCEL' => 'Cancel',
+    'LBL_GENERATED' => 'Generated',
+    'LBL_REGENERATE_BACKUP_CODES' => 'Regenerate Backup Codes'
 
 );
 
