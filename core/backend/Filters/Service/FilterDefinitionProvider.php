@@ -64,7 +64,7 @@ class FilterDefinitionProvider implements FilterDefinitionProviderInterface
     public function getFilters(string $moduleName): array
     {
         $user = $this->security->getUser();
-        $userid = $user->getid();
+        $userid = $user->getId();
 
         $db = DBManagerFactory::getInstance();
         $query = 'SELECT id, name, contents FROM saved_search
