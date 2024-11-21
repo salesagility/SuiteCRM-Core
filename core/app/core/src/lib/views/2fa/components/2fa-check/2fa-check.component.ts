@@ -30,6 +30,7 @@ import {Router} from "@angular/router";
 import {MessageService} from "../../../../services/message/message.service";
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {isTrue} from '../../../../common/utils/value-utils';
+import {LanguageStore} from "../../../../store/language/language.store";
 
 @Component({
     selector: 'scrm-2fa-check',
@@ -51,6 +52,7 @@ export class TwoFactorCheckComponent {
                 protected appState: AppStateStore,
                 protected notificationStore: NotificationStore,
                 protected router: Router,
+                protected languageStore: LanguageStore
     ) {
     }
 
@@ -72,9 +74,25 @@ export class TwoFactorCheckComponent {
                 return;
             }
 
-            console.log('Two Factor Authentication Failed.');
-            this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
 
+            if (response?.error === '2fa_failed') {
+                console.log('Two Factor Authentication Failed.');
+                this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
+                return;
+            }
+
+            const defaultTooManyFailedMessage = 'Too many failed login attempts, please try again later.';
+            const message = this.getTooManyFailedMessage(defaultTooManyFailedMessage);
+            this.message.addDangerMessage(message);
         })
+    }
+
+    protected getTooManyFailedMessage(defaultTooManyFailedMessage: string): string {
+        let tooManyFailedMessage = this.languageStore.getFieldLabel('LOGIN_TOO_MANY_FAILED');
+
+        if (!tooManyFailedMessage) {
+            tooManyFailedMessage = defaultTooManyFailedMessage;
+        }
+        return tooManyFailedMessage;
     }
 }
