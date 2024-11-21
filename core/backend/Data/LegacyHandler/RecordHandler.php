@@ -257,13 +257,13 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
             throw new AccessDeniedHttpException();
         }
 
-        $previousVersion =  null;
+        $previousVersion = null;
         if (!empty($bean->id) && empty($bean->new_with_id)) {
             $previousVersion = $this->buildRecord($bean->id, $record->getModule(), $bean, 'retrieve');
         }
 
         $this->entityRecordMapperRunner->toInternal($record, 'save');
-        $this->saveHandlerRunner->beforeSave($previousVersion, $record);
+        $this->saveHandlerRunner->run($previousVersion, $record, null, 'before-save');
 
         $this->setFields($bean, $record->getAttributes());
         $this->setUpdatedFields($bean, $record->getAttributes());
@@ -275,7 +275,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
         $savedRecord = $this->buildRecord($bean->id, $record->getModule(), $refreshedBean, 'save');
 
-        $this->saveHandlerRunner->afterSave($previousVersion, $savedRecord);
+        $this->saveHandlerRunner->run($previousVersion, $record, $savedRecord, 'after-save');
 
         $this->close();
 
