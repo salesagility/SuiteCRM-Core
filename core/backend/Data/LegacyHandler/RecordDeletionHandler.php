@@ -27,6 +27,7 @@
 
 namespace App\Data\LegacyHandler;
 
+use App\Data\Entity\Record;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Module\Service\ModuleNameMapperInterface;
@@ -62,6 +63,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
      * @param LegacyScopeState $legacyScopeState
      * @param ModuleNameMapperInterface $moduleNameMapper
      * @param RecordListProviderInterface $listViewProvider
+     * @param RequestStack $session
      */
     public function __construct(
         string $projectDir,
@@ -90,6 +92,18 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
     /**
      * Delete record
      *
+     * @param Record $record
+     * @return bool
+     */
+    public function delete(Record $record): bool
+    {
+        $moduleName = $this->moduleNameMapper->toLegacy($record->getModule() ?? '');
+        return $this->deleteRecord($moduleName, $record->getId() ?? '');
+    }
+
+    /**
+     * Delete record
+     *
      * @param string $moduleName
      * @param string $id
      * @return bool
@@ -100,7 +114,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
         $this->startLegacyApp();
 
         $success = true;
-        if (!$this->delete($moduleName, $id)) {
+        if (!$this->internalDelete($moduleName, $id)) {
             $success = false;
         }
 
@@ -114,7 +128,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
      * @param string $id
      * @return bool
      */
-    protected function delete(string $moduleName, string $id): bool
+    protected function internalDelete(string $moduleName, string $id): bool
     {
         // NOTE: Do not use BeanFactory::getBean($moduleName, $id) with mark_deleted
         // may cause errors when there are related records.
@@ -143,7 +157,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
 
         $success = true;
         foreach ($ids as $id) {
-            if (!$this->delete($moduleName, $id)) {
+            if (!$this->internalDelete($moduleName, $id)) {
                 $success = false;
             }
         }
@@ -178,7 +192,7 @@ class RecordDeletionHandler extends LegacyHandler implements RecordDeletionServi
 
         $success = true;
         foreach ($listView->getRecords() as $record) {
-            if (!$this->delete($moduleName, $record['id'])) {
+            if (!$this->internalDelete($moduleName, $record['id'])) {
                 $success = false;
             }
         }

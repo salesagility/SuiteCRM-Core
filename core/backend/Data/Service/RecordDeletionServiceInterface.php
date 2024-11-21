@@ -28,8 +28,18 @@
 
 namespace App\Data\Service;
 
+use App\Data\Entity\Record;
+
 interface RecordDeletionServiceInterface
 {
+    /**
+     * Delete record
+     *
+     * @param Record $record
+     * @return bool
+     */
+    public function delete(Record $record): bool;
+
     /**
      * Delete record
      *
