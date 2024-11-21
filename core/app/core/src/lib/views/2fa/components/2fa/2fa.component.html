@@ -99,7 +99,7 @@
                 </div>
 
             </div>
-            <div class="row pt-3">
+            <div *ngIf="isAppMethodEnabled()" class="row pt-3">
                 <div class="col mb-4">
                     <scrm-widget-panel [title]="recoveryCodesHeaderLabel">
                         <span widget-header-icon-area>
@@ -119,11 +119,8 @@
                                 <scrm-label class="small" labelKey="LBL_BACKUP_CODES_INFO"></scrm-label>
                             </div>
 
-                            <ng-container *ngIf="areRecoveryCodesGenerated() && isQrCodeGenerated()">
+                            <ng-container *ngIf="areRecoveryCodesGenerated() && backupCodes">
                                 <div class="d-flex flex-column">
-                                    <span class="alert alert-warning backup-code-warning">
-                                        <scrm-label labelKey="LBL_BACKUP_CODES_WARN"></scrm-label>
-                                    </span>
 
                                     <button (click)="copyBackupCodes()" class="btn btn-sm btn-main copy-button">
                                         <scrm-image image="clipboard"></scrm-image>
@@ -132,7 +129,7 @@
                                 </div>
                                 <div class="d-flex col-md-12 pl-4 pr-4 pt-2 pb-3">
                                     <div>
-                                        <div *ngIf="backupCodes" class="backup-codes-container">
+                                        <div class="backup-codes-container">
                                             <ng-container *ngFor="let codes of backupCodes;">
                                                 <div class="backup-codes">{{ codes }}</div>
                                             </ng-container>
