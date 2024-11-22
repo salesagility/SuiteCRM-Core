@@ -241,4 +241,13 @@ class UsersController extends SugarController
             SugarApplication::redirect("index.php?module=Home&action=index");
         }
     }
+
+    protected function action_disableTwoFactor()
+    {
+        global $mod_strings;
+        $this->bean->is_totp_enabled = false;
+        $this->bean->save();
+        SugarApplication::appendSuccessMessage($mod_strings['LBL_FACTOR_AUTH_DISABLE']);
+        SugarApplication::redirect('index.php?module=Users&action=DetailView&record=' . $this->bean->id);
+    }
 }
