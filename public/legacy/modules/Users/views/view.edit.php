@@ -270,11 +270,19 @@ EOD
         $this->ss->assign('SUBTHEMES', $this->bean->getSubThemes());
         $this->ss->assign('SUBTHEME', $this->bean->getSubTheme());
 
-        $isTotpEnabled = (bool)$current_user->is_totp_enabled;
-        $status = $isTotpEnabled ? $mod_strings['LBL_ENABLED'] : $mod_strings['LBL_DISABLED'];
+        $isTotpEnabled = (bool)$this->bean->is_totp_enabled;
+
+        $status =  $mod_strings['LBL_DISABLED'];
+        $statusColor = 'red';
+
+        if ($isTotpEnabled){
+            $status = $mod_strings['LBL_ENABLED'];
+            $statusColor = 'green';
+        }
 
         $this->ss->assign('TOTP_SECRET', $isTotpEnabled);
         $this->ss->assign('STATUS', $status);
+        $this->ss->assign('STATUS_COLOR', $statusColor);
 
         $isCurrentUser = $this->bean->id === $current_user->id;
 

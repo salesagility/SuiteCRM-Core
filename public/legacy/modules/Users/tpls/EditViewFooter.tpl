@@ -689,6 +689,8 @@
     {literal}
     EmailMan = {};
 
+    document.getElementById('auth_status').style.color = '{/literal}{$STATUS_COLOR}{literal}';
+
     function Admin_check() {
         if (('{/literal}{$IS_FOCUS_ADMIN}{literal}') && document.getElementById('is_admin').value == '0') {
             r = confirm('{/literal}{$MOD.LBL_CONFIRM_REGULAR_USER}{literal}');
