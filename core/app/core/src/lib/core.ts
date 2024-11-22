@@ -725,3 +725,6 @@ export * from './views/2fa/components/2fa/2fa.component';
 export * from './views/2fa/components/2fa/2fa.module';
 export * from './views/2fa/components/2fa-check/2fa-check.component';
 export * from './views/2fa/components/2fa-check/2fa-check.module';
+export * from './views/2fa/components/2fa-check-modal/2fa-check-modal.component';
+export * from './views/2fa/components/2fa-check-modal/2fa-check-modal.module';
+export * from './views/2fa/components/2fa-check-modal/2fa-check-modal.model';

@@ -34,6 +34,8 @@ import {ButtonCallback, ButtonInterface} from "../../../../common/components/but
 import {UserPreferenceStore} from "../../../../store/user-preference/user-preference.store";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {GenerateBackupCodes} from "../../../../services/process/processes/generate-backup-codes/generate-backup-codes";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {TwoFactorCheckModalComponent} from "../2fa-check-modal/2fa-check-modal.component";
 
 
 @Component({
@@ -70,6 +72,7 @@ export class TwoFactorComponent implements OnInit {
         protected message: MessageService,
         protected language: LanguageStore,
         protected userPreference: UserPreferenceStore,
+        protected modalService: NgbModal,
         protected clipboard: Clipboard,
         protected generateBackupCodesService: GenerateBackupCodes,
     ) {
@@ -117,7 +120,7 @@ export class TwoFactorComponent implements OnInit {
             onClick: ((): void => {
                 this.generateBackupCodes();
             }) as ButtonCallback,
-            labelKey: 'LBL_REGENERATE_BACKUP_CODES',
+            labelKey: 'LBL_REGENERATE_CODES',
             titleKey: ''
         } as ButtonInterface;
     }
@@ -140,35 +143,46 @@ export class TwoFactorComponent implements OnInit {
     }
 
     public disable2FactorAuth(): void {
-        this.authService.disable2fa().subscribe({
-            next: (response) => {
-                if (isTrue(response?.two_factor_disabled)) {
+        const modal = this.modalService.open(TwoFactorCheckModalComponent, {size: 'lg'});
 
-                    this.isAppMethodEnabled.set(false);
-                    this.areRecoveryCodesGenerated.set(false);
-                    this.isQrCodeGenerated.set(false);
 
-                    this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_DISABLE');
-                }
-            },
-            error: () => {
-                this.isAppMethodEnabled.set(true);
-                this.areRecoveryCodesGenerated.set(true);
+        modal.result.then((result) => {
+            if (!result.two_factor_complete){
+                this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
+                return;
             }
-        });
-        return;
+
+            this.authService.disable2fa().subscribe({
+                next: (response) => {
+                    if (isTrue(response?.two_factor_disabled)) {
+
+                        this.isAppMethodEnabled.set(false);
+                        this.areRecoveryCodesGenerated.set(false);
+                        this.isQrCodeGenerated.set(false);
+
+                        this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_DISABLE');
+                    }
+                },
+                error: () => {
+                    this.isAppMethodEnabled.set(true);
+                    this.areRecoveryCodesGenerated.set(true);
+                }
+            });
+            return;
+        }).catch();
+
     }
 
     getTitle(): string {
         return this.title;
     }
 
-    public finalize2fa() {
+    public finalize2fa(): void {
         this.authService.finalize2fa(this.authCode).subscribe(response => {
             const verified = response?.two_factor_setup_complete ?? false;
 
             if (isTrue(verified)) {
-                this.generateBackupCodes();
+                this.generateCodes();
                 this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_SUCCESS');
 
                 this.isAppMethodEnabled.set(true);
@@ -182,24 +196,36 @@ export class TwoFactorComponent implements OnInit {
         })
     }
 
-    public copyBackupCodes() {
+    public copyBackupCodes(): void {
         this.clipboard.copy(this.backupCodes);
     }
 
-
-    public generateBackupCodes(){
-        this.areRecoveryCodesGenerated.set(false)
+    public generateCodes(): void {
         this.generateBackupCodesService.generate().subscribe({
             next: (response) => {
-                console.log(response);
-                console.log('inside next');
                 this.backupCodes = response?.data.backupCodes;
                 this.areRecoveryCodesGenerated.set(true)
             },
             error: () => {
-                console.log('inside eror');
                 this.areRecoveryCodesGenerated.set(false)
             }
         });
+        return;
+    }
+
+
+    public generateBackupCodes(): void {
+
+        const modal = this.modalService.open(TwoFactorCheckModalComponent, {size: 'lg'});
+
+        modal.result.then((result) => {
+            if (!result.two_factor_complete){
+                this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
+                return;
+            }
+
+            this.areRecoveryCodesGenerated.set(false)
+            this.generateCodes()
+        }).catch();
     }
 }
