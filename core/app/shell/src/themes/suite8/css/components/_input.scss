@@ -58,6 +58,10 @@ input {
     -moz-appearance: none;
     appearance: none;
   }
+
+  #auth_code {
+    text-align: center;
+  }
 }
 
 @media all and (min-width: $breakpoint-medium) {
@@ -69,10 +73,6 @@ input {
       border: 0.05em solid $powdered-blue;
       width: $breakpoint-xsmall;
       color: $shell-grey;
-    }
-
-    #auth_code {
-      text-align: center;
     }
 
     select {
