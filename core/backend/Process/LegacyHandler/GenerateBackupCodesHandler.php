@@ -40,7 +40,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class GenerateBackupCodesHandler extends LegacyHandler implements ProcessHandlerInterface
 {
-    protected const MSG_OPTIONS_NOT_FOUND = 'Process options is not defined';
     protected const PROCESS_TYPE = 'generate-backup-codes';
 
     protected Security $security;
@@ -101,7 +100,6 @@ class GenerateBackupCodesHandler extends LegacyHandler implements ProcessHandler
 
     public function validate(Process $process): void
     {
-
     }
 
     /**
