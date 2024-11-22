@@ -2172,6 +2172,7 @@ $app_strings = array(
     'LBL_DUPLICATE_BUTTON_KEY' => 'u',
     'LBL_DUPLICATE_BUTTON_LABEL' => 'Duplicate',
     'LBL_DUPLICATE_BUTTON_TITLE' => 'Duplicate',
+    'LBL_DISABLE_USER_2FA' => 'Disable Users 2FA',
     'LBL_DELETE_BUTTON_KEY' => 'd',
     'LBL_DELETE_BUTTON_LABEL' => 'Delete',
     'LBL_DELETE_BUTTON_TITLE' => 'Delete',
@@ -2320,7 +2321,7 @@ $app_strings = array(
     'LBL_DISABLE' => 'Disable',
     'LBL_CANCEL' => 'Cancel',
     'LBL_GENERATED' => 'Generated',
-    'LBL_REGENERATE_BACKUP_CODES' => 'Regenerate Backup Codes'
+    'LBL_REGENERATE_CODES' => 'Regenerate',
 
 );
 

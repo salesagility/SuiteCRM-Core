@@ -704,6 +704,7 @@ $mod_strings = array(
 
     // 2FA
     'LBL_FACTOR_AUTH' => 'Two Factor Authentication',
+    'LBL_FACTOR_AUTH_DISABLE' => 'Two Factor Authentication was Disabled for this User',
     'LBL_DISABLED' => 'Disabled',
     'LBL_ENABLED' => 'Enabled',
     'LBL_ENABLE_2FA' => 'Enable 2FA',
