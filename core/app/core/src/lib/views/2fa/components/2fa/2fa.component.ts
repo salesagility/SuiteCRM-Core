@@ -91,7 +91,7 @@ export class TwoFactorComponent implements OnInit {
         this.enableAppMethodButtonConfig = {
             klass: 'btn btn-sm btn-main',
             onClick: ((): void => {
-                this.enable2FactorAuth()
+                this.enable2fa()
             }) as ButtonCallback,
             labelKey: 'LBL_ENABLE',
             titleKey: ''
@@ -109,7 +109,7 @@ export class TwoFactorComponent implements OnInit {
         this.cancelAppMethodTButtonConfig = {
             klass: 'btn btn-sm btn-main',
             onClick: ((): void => {
-                this.disable2FactorAuth()
+                this.cancel2fa()
             }) as ButtonCallback,
             labelKey: 'LBL_CANCEL',
             titleKey: ''
@@ -125,7 +125,7 @@ export class TwoFactorComponent implements OnInit {
         } as ButtonInterface;
     }
 
-    public enable2FactorAuth(): void {
+    public enable2fa(): void {
 
         this.authService.enable2fa().subscribe({
             next: (response) => {
@@ -145,32 +145,40 @@ export class TwoFactorComponent implements OnInit {
     public disable2FactorAuth(): void {
         const modal = this.modalService.open(TwoFactorCheckModalComponent, {size: 'lg'});
 
-
         modal.result.then((result) => {
             if (!result.two_factor_complete){
                 this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
                 return;
             }
 
-            this.authService.disable2fa().subscribe({
-                next: (response) => {
-                    if (isTrue(response?.two_factor_disabled)) {
+            this.disable2fa();
 
-                        this.isAppMethodEnabled.set(false);
-                        this.areRecoveryCodesGenerated.set(false);
-                        this.isQrCodeGenerated.set(false);
-
-                        this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_DISABLE');
-                    }
-                },
-                error: () => {
-                    this.isAppMethodEnabled.set(true);
-                    this.areRecoveryCodesGenerated.set(true);
-                }
-            });
             return;
         }).catch();
 
+    }
+
+    public cancel2fa(): void {
+        this.disable2fa();
+    }
+
+    public disable2fa(): void {
+        this.authService.disable2fa().subscribe({
+            next: (response) => {
+                if (isTrue(response?.two_factor_disabled)) {
+
+                    this.isAppMethodEnabled.set(false);
+                    this.areRecoveryCodesGenerated.set(false);
+                    this.isQrCodeGenerated.set(false);
+
+                    this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_DISABLE');
+                }
+            },
+            error: () => {
+                this.isAppMethodEnabled.set(true);
+                this.areRecoveryCodesGenerated.set(true);
+            }
+        });
     }
 
     getTitle(): string {
