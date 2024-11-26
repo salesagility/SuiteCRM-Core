@@ -145,11 +145,13 @@ class SetUserLanguage extends LegacyHandler implements ProcessHandlerInterface
             return;
         }
 
-        $this->userHandler->setUserPreference('language', $language);
         $user = $this->userHandler->getCurrentUser();
 
         $this->init();
+        $user->setPreference('language', $language);
         $user->savePreferencesToDB();
+
+        $this->close();
 
         $process->setStatus('success');
         $process->setMessages([]);
