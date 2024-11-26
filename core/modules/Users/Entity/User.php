@@ -1278,7 +1278,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getTotpSecret(): ?string
     {
-        return $this->totpSecret;
+        return $this->totpSecret ?? '';
     }
 
     public function setTotpSecret(?string $totpSecret): self
@@ -1290,7 +1290,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getIsTotpEnabled(): ?bool
     {
-        return $this->isTotpEnabled;
+        return $this->isTotpEnabled ?? false;
     }
 
     public function setIsTotpEnabled(?bool $isTotpEnabled): self
