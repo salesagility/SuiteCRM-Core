@@ -32,6 +32,7 @@ import {TwoFactorCheckModule} from "../2fa-check/2fa-check.module";
 import {FormsModule} from "@angular/forms";
 import {LabelModule} from "../../../../components/label/label.module";
 import {TrustHtmlModule} from "../../../../pipes/trust-html/trust-html.module";
+import {ButtonModule} from "../../../../components/button/button.module";
 
 @NgModule({
     declarations: [TwoFactorCheckModalComponent],
@@ -42,6 +43,7 @@ import {TrustHtmlModule} from "../../../../pipes/trust-html/trust-html.module";
         FormsModule,
         LabelModule,
         TrustHtmlModule,
+        ButtonModule,
     ]
 })
 export class TwoFactorCheckModalModule {

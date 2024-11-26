@@ -23,7 +23,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
-import {Component, HostListener, Input} from "@angular/core";
+import {Component, HostListener, OnInit} from "@angular/core";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {NotificationStore} from "../../../../store/notification/notification.store";
 import {Router} from "@angular/router";
@@ -31,16 +31,17 @@ import {MessageService} from "../../../../services/message/message.service";
 import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {isTrue} from '../../../../common/utils/value-utils';
 import {LanguageStore} from "../../../../store/language/language.store";
+import {ButtonCallback, ButtonInterface} from "../../../../common/components/button/button.model";
 
 @Component({
     selector: 'scrm-2fa-check',
     templateUrl: './2fa-check.component.html',
     styleUrls: [],
 })
-export class TwoFactorCheckComponent {
+export class TwoFactorCheckComponent implements OnInit{
 
-    _auth_code: string;
-    @Input() class: string;
+    authCode: string;
+    submitCodeButtonConfig: ButtonInterface;
 
     @HostListener('keyup.control.enter')
     onEnterKey() {
@@ -56,13 +57,23 @@ export class TwoFactorCheckComponent {
     ) {
     }
 
-    public verifyCode() {
-        const _auth_code = this._auth_code;
+    ngOnInit() {
+        this.submitCodeButtonConfig = {
+            klass: 'submit-button login-button',
+            onClick: ((): void => {
+                this.verifyCode()
+            }) as ButtonCallback,
+            labelKey: 'LBL_VERIFY_2FA',
+            titleKey: ''
+        } as ButtonInterface;
+    }
 
-        this.authService.check2fa(_auth_code).subscribe(response => {
+    public verifyCode() {
+        const authCode = this.authCode;
+
+        this.authService.check2fa(authCode).subscribe(response => {
 
             if (isTrue(response?.login_success) && isTrue(response?.two_factor_complete)) {
-                console.log('Two Factor Authentication Successful');
                 this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_SUCCESS');
 
                 this.appState.updateInitialAppLoading(true);
@@ -87,7 +98,6 @@ export class TwoFactorCheckComponent {
 
 
             if (response?.error === '2fa_failed') {
-                console.log('Two Factor Authentication Failed.');
                 this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
                 return;
             }

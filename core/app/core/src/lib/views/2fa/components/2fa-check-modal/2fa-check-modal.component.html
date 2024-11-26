@@ -26,35 +26,33 @@
 */
 -->
 <scrm-modal [closable]="false"
-            bodyKlass="m-0 small-font"
-            footerKlass="border-0"
-            headerKlass="border-0"
-            klass="two-factor-popup">
+            bodyKlass='m-0 small-font'
+            footerKlass='border-0'
+            headerKlass='border-0'
+            klass='two-factor-popup'>
 
     <div modal-body>
         <div>
-            <div class="d-flex flex-column pt-4 align-items-center">
-                <scrm-label labelKey="LBL_ENTER_AUTH_APP_2FA_CODE" class="pb-4"></scrm-label>
+            <div class='d-flex flex-column pt-4 align-items-center'>
+                <scrm-label labelKey='LBL_ENTER_AUTH_APP_2FA_CODE' class='pb-4'></scrm-label>
                 <input [(ngModel)]="authCode"
-                       id="auth_code"
-                       type="text"
-                       name="auth_code"
-                       autocomplete="off"
-                       class="mb-3 auth-input"
-                       maxlength="6"/>
+                       id='auth_code'
+                       type='text'
+                       name='auth_code'
+                       autocomplete='off'
+                       class='mb-3 auth-input'
+                       maxlength='6'/>
 
-                <button id="submit-2fa-code"
-                        (click)="checkCode()"
-                        type="submit"
-                        class="btn btn-sm btn-main mb-1">
-                    <scrm-label labelKey="LBL_VERIFY_2FA"></scrm-label>
-                </button>
+                <scrm-button id='submit-2fa-code'
+                        [config]="checkCodeButtonConfig"
+                        type='submit'>
+                </scrm-button>
 
-                <div class="small mt-2 text-muted">
-                    <scrm-label  labelKey="LBL_PROBLEMS_GENERATING_CODE"></scrm-label>
+                <div class='small mt-2 text-muted'>
+                    <scrm-label  labelKey='LBL_PROBLEMS_GENERATING_CODE'></scrm-label>
                 </div>
-                <div class="small mb-2 text-muted">
-                    <scrm-label  labelKey="LBL_BACKUP_CODES_FALLBACK_INSTRUCTIONS"></scrm-label>
+                <div class='small mb-2 text-muted'>
+                    <scrm-label  labelKey='LBL_BACKUP_CODES_FALLBACK_INSTRUCTIONS'></scrm-label>
                 </div>
 
             </div>

@@ -27,67 +27,64 @@
 -->
 
 <ng-container>
-    <div class="m-0 pt-5" id="two-factor">
-        <div class="list-view-header pb-3">
-            <div class="row mr-0">
-                <div class="col-md-12 d-flex">
-                    <scrm-module-title [title]="getTitle()" class="list-view-title title-font"></scrm-module-title>
+    <div class='m-0 pt-5' id='two-factor'>
+        <div class='list-view-header pb-3'>
+            <div class='row mr-0'>
+                <div class='col-md-12 d-flex'>
+                    <scrm-module-title [title]="getTitle()" class='list-view-title title-font'></scrm-module-title>
                 </div>
             </div>
 
-            <div class="list-view-hr-container">
-                <hr class="list-view-hr">
+            <div class='list-view-hr-container'>
+                <hr class='list-view-hr'>
             </div>
         </div>
 
-        <div class="container">
-            <div class="row">
-                <div class="col">
+        <div class='container'>
+            <div class='row'>
+                <div class='col'>
                     <scrm-widget-panel [title]="appMethodHeaderLabel">
                         <span widget-header-icon-area>
-                            <scrm-image image="mobile-phone"></scrm-image>
+                            <scrm-image image='mobile-phone'></scrm-image>
                         </span>
                         <span widget-header-status-area>
-                            <span *ngIf="isAppMethodEnabled()" class="badge badge-pill badge-success">
-                                <scrm-label labelKey="LBL_ENABLED"></scrm-label>
+                            <span *ngIf="isAppMethodEnabled()" class='badge badge-pill badge-success'>
+                                <scrm-label labelKey='LBL_ENABLED'></scrm-label>
                             </span>
                         </span>
                         <span widget-header-button>
                             <scrm-button *ngIf="!isAppMethodEnabled() && !isQrCodeGenerated()"
                                          [config]="enableAppMethodButtonConfig"></scrm-button>
                             <scrm-button *ngIf="!isAppMethodEnabled() && isQrCodeGenerated()"
-                                         [config]="cancelAppMethodTButtonConfig"></scrm-button>
+                                         [config]="cancelAppMethodButtonConfig"></scrm-button>
                             <scrm-button *ngIf="isAppMethodEnabled() && !isQrCodeGenerated()"
-                                         [config]="disableAppMethodTButtonConfig"></scrm-button>
+                                         [config]="disableAppMethodButtonConfig"></scrm-button>
                         </span>
                         <div widget-body>
-                            <div class="d-flex col-md-12 pl-4 pr-4 pt-2 pb-2">
-                                <scrm-label labelKey="LBL_OTP_SETUP" class="small"></scrm-label>
+                            <div class='d-flex col-md-12 pl-4 pr-4 pt-2 pb-2'>
+                                <scrm-label labelKey='LBL_OTP_SETUP' class='small'></scrm-label>
                             </div>
 
                             <ng-container *ngIf="isQrCodeGenerated()">
-                                <div *ngIf="qrCodeSvg" class="qr-code-container">
-                                    <div class="qr-code" [innerHTML]="qrCodeSvg | trustHtml">
+                                <div *ngIf="qrCodeSvg" class='qr-code-container'>
+                                    <div class='qr-code' [innerHTML]="qrCodeSvg | trustHtml">
                                     </div>
                                     <div>
-                                        <scrm-label labelKey="LBL_QR_CODE_HELP"
-                                                    class="pl-3 d-inline-block qr-code-label">
+                                        <scrm-label labelKey='LBL_QR_CODE_HELP'
+                                                    class='pl-3 d-inline-block qr-code-label'>
                                         </scrm-label>
-                                        <div class="d-flex flex-column pt-4 align-items-center">
+                                        <div class='d-flex flex-column pt-4 align-items-center'>
                                             <input [(ngModel)]="authCode"
-                                                   id="auth_code"
-                                                   type="text"
-                                                   name="auth_code"
-                                                   autocomplete="off"
-                                                   class="mb-3 auth-input"
-                                                   maxlength="6"/>
+                                                   id='auth_code'
+                                                   type='text'
+                                                   name='auth_code'
+                                                   autocomplete='off'
+                                                   class='mb-3 auth-input'
+                                                   maxlength='6'/>
 
-                                            <button id="submit-2fa-code"
-                                                    (click)="finalize2fa()"
-                                                    type="submit"
-                                                    class="btn btn-sm btn-main mb-1">
-                                                <scrm-label labelKey="LBL_VERIFY_2FA"></scrm-label>
-                                            </button>
+                                            <scrm-button id='submit-2fa-code'
+                                                    [config]="verifyCodeButtonConfig">
+                                            </scrm-button>
                                         </div>
                                     </div>
                                 </div>
@@ -98,15 +95,15 @@
                 </div>
 
             </div>
-            <div *ngIf="isAppMethodEnabled()" class="row pt-3">
-                <div class="col mb-4">
+            <div *ngIf="isAppMethodEnabled()" class='row pt-3'>
+                <div class='col mb-4'>
                     <scrm-widget-panel [title]="recoveryCodesHeaderLabel">
                         <span widget-header-icon-area>
-                            <scrm-image image="key"></scrm-image>
+                            <scrm-image image='key'></scrm-image>
                         </span>
                         <span widget-header-status-area>
-                            <span *ngIf="areRecoveryCodesGenerated()" class="badge badge-pill badge-success">
-                                <scrm-label labelKey="LBL_GENERATED"></scrm-label>
+                            <span *ngIf="areRecoveryCodesGenerated()" class='badge badge-pill badge-success'>
+                                <scrm-label labelKey='LBL_GENERATED'></scrm-label>
                             </span>
                         </span>
                         <span widget-header-button>
@@ -114,23 +111,19 @@
                                          [config]="regenerateBackupCodesButtonConfig"></scrm-button>
                         </span>
                         <div widget-body>
-                            <div class="d-flex col-md-12 pl-4 pr-4 pt-2 pb-2">
-                                <scrm-label class="small" labelKey="LBL_BACKUP_CODES_INFO"></scrm-label>
+                            <div class='d-flex col-md-12 pl-4 pr-4 pt-2 pb-2'>
+                                <scrm-label class='small' labelKey='LBL_BACKUP_CODES_INFO'></scrm-label>
                             </div>
 
                             <ng-container *ngIf="areRecoveryCodesGenerated() && backupCodes">
-                                <div class="d-flex flex-column">
-
-                                    <button (click)="copyBackupCodes()" class="btn btn-sm btn-main copy-button">
-                                        <scrm-image image="clipboard"></scrm-image>
-                                        Copy
-                                    </button>
+                                <div class='d-flex flex-column'>
+                                    <scrm-button [config]="copyButtonConfig"></scrm-button>
                                 </div>
-                                <div class="d-flex col-md-12 pl-4 pr-4 pt-2 pb-3">
+                                <div class='d-flex col-md-12 pl-4 pr-4 pt-2 pb-3'>
                                     <div>
-                                        <div class="backup-codes-container">
+                                        <div class='backup-codes-container'>
                                             <ng-container *ngFor="let codes of backupCodes;">
-                                                <div class="backup-codes">{{ codes }}</div>
+                                                <div class='backup-codes'>{{ codes }}</div>
                                             </ng-container>
                                         </div>
                                     </div>
@@ -143,8 +136,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
 </ng-container>

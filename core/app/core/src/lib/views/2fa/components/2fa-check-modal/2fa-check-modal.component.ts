@@ -23,22 +23,24 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display
  * the words "Supercharged by SuiteCRM".
  */
-import {Component, HostListener} from "@angular/core";
+import {Component, HostListener, OnInit} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {LanguageStore} from "../../../../store/language/language.store";
 import {CheckTwoFactorCode} from "../../../../services/process/processes/check-two-factor-code/check-two-factor-code";
 import {TwoFactorCheckModalResult} from "./2fa-check-modal.model";
 import {MessageService} from "../../../../services/message/message.service";
+import {ButtonCallback, ButtonInterface} from "../../../../common/components/button/button.model";
 
 @Component({
     selector: 'scrm-2fa-modal',
     templateUrl: './2fa-check-modal.component.html',
     styleUrls: [],
 })
-export class TwoFactorCheckModalComponent {
+export class TwoFactorCheckModalComponent implements OnInit{
 
     authCode: string;
 
+    checkCodeButtonConfig: ButtonInterface;
 
     @HostListener('keyup.control.enter')
     onEnterKey() {
@@ -53,6 +55,16 @@ export class TwoFactorCheckModalComponent {
     ) {
     }
 
+    ngOnInit() {
+        this.checkCodeButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.checkCode()
+            }) as ButtonCallback,
+            labelKey: 'LBL_VERIFY_2FA',
+            titleKey: ''
+        } as ButtonInterface;
+    }
 
     public checkCode() {
         const authCode = this.authCode;

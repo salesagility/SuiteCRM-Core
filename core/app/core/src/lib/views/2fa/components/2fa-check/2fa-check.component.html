@@ -25,25 +25,24 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="d-flex flex-column pt-4 align-items-center">
-    <scrm-label labelKey="LBL_ENTER_AUTH_APP_2FA_CODE"></scrm-label>
-    <input [(ngModel)]="_auth_code"
-           id="auth_code"
-           type="text"
-           autocomplete="off"
-           name="auth_code"
-           class="mb-2 mt-2 pl-0"
-           maxlength="20">
+<div class='d-flex flex-column pt-4 align-items-center'>
+    <scrm-label labelKey='LBL_ENTER_AUTH_APP_2FA_CODE'></scrm-label>
+    <input [(ngModel)]="authCode"
+           id='auth_code'
+           type='text'
+           autocomplete='off'
+           name='auth_code'
+           class='mb-2 mt-2 pl-0'
+           maxlength='20'>
 
-    <button id="submit-2fa-code" (click)="verifyCode()" type="submit" [class]="class">
-        <scrm-label labelKey="LBL_VERIFY_2FA"></scrm-label>
-    </button>
+    <scrm-button id='submit-2fa-code' type='submit' [config]="submitCodeButtonConfig">
+    </scrm-button>
 
-    <div class="small mt-2 text-muted">
-        <scrm-label  labelKey="LBL_PROBLEMS_GENERATING_CODE"></scrm-label>
+    <div class='small mt-2 text-muted'>
+        <scrm-label  labelKey='LBL_PROBLEMS_GENERATING_CODE'></scrm-label>
     </div>
-    <div class="small mb-2 text-muted">
-        <scrm-label  labelKey="LBL_BACKUP_CODES_FALLBACK_INSTRUCTIONS"></scrm-label>
+    <div class='small mb-2 text-muted'>
+        <scrm-label  labelKey='LBL_BACKUP_CODES_FALLBACK_INSTRUCTIONS'></scrm-label>
     </div>
 
 </div>

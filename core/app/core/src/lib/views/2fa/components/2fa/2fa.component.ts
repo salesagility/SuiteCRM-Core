@@ -56,9 +56,11 @@ export class TwoFactorComponent implements OnInit {
     title: string = '';
     appMethodHeaderLabel: string = '';
     enableAppMethodButtonConfig: ButtonInterface;
-    disableAppMethodTButtonConfig: ButtonInterface;
-    cancelAppMethodTButtonConfig: ButtonInterface;
+    disableAppMethodButtonConfig: ButtonInterface;
+    cancelAppMethodButtonConfig: ButtonInterface;
     regenerateBackupCodesButtonConfig: ButtonInterface;
+    verifyCodeButtonConfig: ButtonInterface;
+    copyButtonConfig: ButtonInterface;
     recoveryCodesHeaderLabel: string = '';
 
     @HostListener('keyup.control.enter')
@@ -87,46 +89,10 @@ export class TwoFactorComponent implements OnInit {
 
         this.isAppMethodEnabled.set(isEnabled);
         this.areRecoveryCodesGenerated.set(isEnabled);
-
-        this.enableAppMethodButtonConfig = {
-            klass: 'btn btn-sm btn-main',
-            onClick: ((): void => {
-                this.enable2fa()
-            }) as ButtonCallback,
-            labelKey: 'LBL_ENABLE',
-            titleKey: ''
-        } as ButtonInterface;
-
-        this.disableAppMethodTButtonConfig = {
-            klass: 'btn btn-sm btn-main',
-            onClick: ((): void => {
-                this.disable2FactorAuth()
-            }) as ButtonCallback,
-            labelKey: 'LBL_DISABLE',
-            titleKey: ''
-        } as ButtonInterface;
-
-        this.cancelAppMethodTButtonConfig = {
-            klass: 'btn btn-sm btn-main',
-            onClick: ((): void => {
-                this.cancel2fa()
-            }) as ButtonCallback,
-            labelKey: 'LBL_CANCEL',
-            titleKey: ''
-        } as ButtonInterface;
-
-        this.regenerateBackupCodesButtonConfig = {
-            klass: 'btn btn-sm btn-main',
-            onClick: ((): void => {
-                this.generateBackupCodes();
-            }) as ButtonCallback,
-            labelKey: 'LBL_REGENERATE_CODES',
-            titleKey: ''
-        } as ButtonInterface;
+        this.initButtons();
     }
 
     public enable2fa(): void {
-
         this.authService.enable2fa().subscribe({
             next: (response) => {
                 this.qrCodeUrl = response?.url;
@@ -146,16 +112,14 @@ export class TwoFactorComponent implements OnInit {
         const modal = this.modalService.open(TwoFactorCheckModalComponent, {size: 'lg'});
 
         modal.result.then((result) => {
-            if (!result.two_factor_complete){
+            if (!result.two_factor_complete) {
                 this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
                 return;
             }
-
             this.disable2fa();
 
             return;
         }).catch();
-
     }
 
     public cancel2fa(): void {
@@ -223,11 +187,10 @@ export class TwoFactorComponent implements OnInit {
 
 
     public generateBackupCodes(): void {
-
         const modal = this.modalService.open(TwoFactorCheckModalComponent, {size: 'lg'});
 
         modal.result.then((result) => {
-            if (!result.two_factor_complete){
+            if (!result.two_factor_complete) {
                 this.message.addDangerMessageByKey('LBL_FACTOR_AUTH_FAIL');
                 return;
             }
@@ -235,5 +198,62 @@ export class TwoFactorComponent implements OnInit {
             this.areRecoveryCodesGenerated.set(false)
             this.generateCodes()
         }).catch();
+    }
+
+    protected initButtons() {
+        this.enableAppMethodButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.enable2fa()
+            }) as ButtonCallback,
+            labelKey: 'LBL_ENABLE',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.disableAppMethodButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.disable2FactorAuth()
+            }) as ButtonCallback,
+            labelKey: 'LBL_DISABLE',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.cancelAppMethodButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.cancel2fa()
+            }) as ButtonCallback,
+            labelKey: 'LBL_CANCEL',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.regenerateBackupCodesButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.generateBackupCodes();
+            }) as ButtonCallback,
+            labelKey: 'LBL_REGENERATE_CODES',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.verifyCodeButtonConfig = {
+            klass: 'btn btn-sm btn-main',
+            onClick: ((): void => {
+                this.finalize2fa()
+            }) as ButtonCallback,
+            labelKey: 'LBL_VERIFY_2FA',
+            titleKey: ''
+        } as ButtonInterface;
+
+        this.copyButtonConfig = {
+            klass: 'btn btn-sm btn-main copy-button',
+            onClick: ((): void => {
+                this.copyBackupCodes()
+            }) as ButtonCallback,
+            labelKey: 'LBL_COPY',
+            titleKey: '',
+            icon: 'clipboard'
+        } as ButtonInterface;
     }
 }
