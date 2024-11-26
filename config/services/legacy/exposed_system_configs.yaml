@@ -46,3 +46,4 @@ parameters:
     site_url: true
     login_language: true
     enable_record_pagination: true
+    auth_type: true

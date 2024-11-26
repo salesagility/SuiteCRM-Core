@@ -28,6 +28,7 @@
 namespace App\Security;
 
 use App\Authentication\LegacyHandler\Authentication;
+use App\SystemConfig\LegacyHandler\SystemConfigHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
@@ -39,10 +40,12 @@ class LoginSuccessEventListener implements EventSubscriberInterface
      * @var Authentication
      */
     private $authentication;
+    protected SystemConfigHandler $config;
 
-    public function __construct(Authentication $authentication)
+    public function __construct(Authentication $authentication, SystemConfigHandler $config)
     {
         $this->authentication = $authentication;
+        $this->config = $config;
     }
 
     public static function getSubscribedEvents(): array
@@ -60,7 +63,9 @@ class LoginSuccessEventListener implements EventSubscriberInterface
 
         $user = $event->getUser();
 
-        if (!$user->isTotpAuthenticationEnabled()) {
+        $authType = $this->config->getSystemConfig('auth_type')->getValue();
+
+        if (!$user->isTotpAuthenticationEnabled() ||  $authType === 'saml') {
             $result = $this->authentication->initLegacyUserSession($user->getUsername());
 
             if ($result === false) {
