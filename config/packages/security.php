@@ -227,6 +227,17 @@ return static function (ContainerConfigurator $containerConfig) {
                     ],
                     'logout' => [
                         'path' => 'app_logout'
+                    ],
+                    'two_factor' => [
+                        'check_path' => 'app_2fa_check',
+                        'prepare_on_login' => true,
+                        'prepare_on_access_denied' => true,
+                        'auth_code_parameter_name' => '_auth_code',
+                        'default_target_path' => '/',
+                        'provider' => 'app_user_provider',
+                        'authentication_required_handler' => '2fa_required',
+                        'success_handler' => '2fa_success',
+                        'failure_handler' => '2fa_failed'
                     ]
                 ],
             ]),

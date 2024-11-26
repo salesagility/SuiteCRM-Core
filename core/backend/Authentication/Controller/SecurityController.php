@@ -319,6 +319,18 @@ class SecurityController extends AbstractController
         $lastName = $user->getLastName();
         $userName = $user->getUsername();
 
+        if ($user->isTotpAuthenticationEnabled()) {
+            return [
+                'appStatus' => $appStatus,
+                'active' => true,
+                'id' => $id,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'userName' => $userName,
+                'two_factor_complete' => 'false'
+            ];
+        }
+
         return [
             'appStatus' => $appStatus,
             'active' => true,
