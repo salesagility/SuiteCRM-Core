@@ -1741,7 +1741,10 @@ function create_guid()
     $microTime = microtime();
     list($a_dec, $a_sec) = explode(' ', $microTime);
 
-    $dec_hex = dechex($a_dec * 1000000);
+    $dec_hex_number = $a_dec * 1000000;
+
+    $dec_hex = dechex($dec_hex_number);
+
     $sec_hex = dechex($a_sec);
 
     ensure_length($dec_hex, 5);
@@ -5279,6 +5282,10 @@ function sugar_ucfirst($string, $charset = 'UTF-8')
  */
 function unencodeMultienum($string)
 {
+    if (is_null($string)){
+        $string = [];
+    }
+
     if (is_array($string)) {
         return $string;
     }
