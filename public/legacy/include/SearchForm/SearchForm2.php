@@ -187,7 +187,7 @@ class SearchForm
         $this->th->ss->assign('action', $this->action);
         $this->th->ss->assign('displayView', $this->displayView);
         $this->th->ss->assign('viewTab', $this->getViewTab());
-
+        $this->th->ss->assign('user_options', get_user_array(false)); // Fix https://github.com/salesagility/SuiteCRM/issues/10264
 
         require_once('modules/MySettings/StoreQuery.php');
         $storeQuery = new StoreQuery();
@@ -1337,7 +1337,7 @@ class SearchForm
                                         // If db_fields (e.g. contacts.first_name) contain table name, need to remove it
                                         for ($i = 0; $i < count($concat_fields); $i++) {
                                             if (strpos($concat_fields[$i], $concat_table) !== false) {
-                                                $concat_fields[$i] = substr($concat_fields[$i], strlen($concat_table) + 1);
+                                                $concat_fields[$i] = substr($concat_fields[$i], strlen($concat_table ?? '') + 1);
                                             }
                                         }
 
@@ -1352,7 +1352,7 @@ class SearchForm
                                                 if (!empty($GLOBALS['app_list_strings']['salutation_dom']) && is_array($GLOBALS['app_list_strings']['salutation_dom'])) {
                                                     foreach ($GLOBALS['app_list_strings']['salutation_dom'] as $salutation) {
                                                         if (!empty($salutation) && strpos($field_value, $salutation) === 0) {
-                                                            $field_value = trim(substr($field_value, strlen($salutation)));
+                                                            $field_value = trim(substr(($field_value ?? ''), strlen($salutation)));
                                                             break;
                                                         }
                                                     }
