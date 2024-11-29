@@ -137,15 +137,18 @@ export class HistoryTimelineAdapter {
             color: gridColor,
             title: {
                 type: 'varchar',
-                value: record.attributes.name
+                value: record.attributes.name,
+                loading: this.loading
             },
             user: {
                 type: 'varchar',
                 value: record.attributes.assigned_user_name.user_name,
+                loading: this.loading
             },
             date: {
                 type: 'datetime',
                 value: record.attributes.date_end,
+                loading: this.loading
             },
             record
         } as HistoryTimelineEntry;
