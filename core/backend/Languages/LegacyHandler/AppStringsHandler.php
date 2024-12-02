@@ -119,9 +119,6 @@ class AppStringsHandler extends LegacyHandler
             return null;
         }
 
-        error_log('Language');
-        error_log(json_encode($this->language));
-
         if (!$this->isInstalled()) {
             return $this->getInstallAppStrings($language);
         }
