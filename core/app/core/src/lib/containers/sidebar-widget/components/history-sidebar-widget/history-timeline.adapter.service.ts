@@ -157,7 +157,8 @@ export class HistoryTimelineAdapter {
 
             timelineEntry.description = {
                 type: 'html',
-                value: record.attributes.description
+                value: record.attributes.description,
+                loading: this.loading
             };
         }
         return timelineEntry;
