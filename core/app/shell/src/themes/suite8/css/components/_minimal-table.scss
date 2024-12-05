@@ -26,6 +26,71 @@
 
 .minimal-table {
 
+  .card {
+    box-shadow: 0 .125rem .25rem #00000040;
+    border: 1px solid #dee2e6;
+
+    .card-header {
+      background-color: #fff;
+      color: #534d64;
+      font-weight: 700;
+      border-top: 3px solid #534d64;
+      padding: .5rem .6rem;
+
+      .subpanel-icon {
+        svg {
+          fill: $main;
+          stroke: $main;
+        }
+      }
+
+      .btn.btn-outline-light {
+        border-color: $main;
+        color: $main;
+      }
+
+      .panel-buttons {
+
+        .dropdown-menu.show {
+          background: $white;
+          box-shadow: 0 .125rem .25rem #00000040;
+          border: 1px solid #dee2e6;
+          z-index: 1;
+
+          a:hover {
+            background-color: $sky-blue;
+            color: $white;
+            cursor: pointer;
+          }
+        }
+
+        .button-group-button {
+          border-color: $main;
+          color: $main;
+        }
+      }
+    }
+
+    .card-body {
+      .card.filter-panel.panel-card {
+        box-shadow: none;
+        border-left: none;
+        border-right: none;
+        margin: 0.3em 0.4em 0.5em !important;
+
+        .card-body {
+          padding: 0 !important;
+          padding-top: 0.5em !important;
+          padding-bottom: 0.5em !important;
+
+          .filter-body {
+            padding: 0 !important;
+          }
+        }
+      }
+    }
+  }
+
   .list-view-tableactions {
     background: none;
     padding: 0;
@@ -130,7 +195,7 @@
   }
 
   .sort-icon {
-    //fill: $midnight-blue;
+    fill: $midnight-blue;
   }
 
   .pagination-count {
@@ -138,9 +203,11 @@
     margin: 0.2em 0.3em 0;
   }
 
-  table.list-view-table {
-    tr:nth-child(even) {
-      background: none;
+  table.table {
+    tbody {
+      tr:nth-child(odd) {
+        background: $off-white;
+      }
     }
   }
 }
