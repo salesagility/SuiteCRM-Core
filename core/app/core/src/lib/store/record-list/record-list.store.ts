@@ -387,6 +387,13 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
         this.localStorageService.set(key, this.pagination);
     }
 
+    public setLoading(loading: boolean): void {
+        this.updateState({
+            ...this.internalState,
+            loading: loading
+        });
+    }
+
     /**
      * Load / reload records using current pagination and criteria
      *
