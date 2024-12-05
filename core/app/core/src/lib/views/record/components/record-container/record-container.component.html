@@ -28,12 +28,55 @@
 <!-- Start Record View Container Section -->
 
 <div *ngIf="(vm$ | async) as vm"
-     class="record-view-container view-container container-fluid pt-3 pb-3 small-font">
+     class="record-view-container view-container container-fluid pt-0 pb-3 small-font">
     <div class="row">
         <ng-container *ngIf="!swapWidgets || (swapWidgets && !displayWidgets)">
             <div class="col-lg-9" [ngClass]="{ 'col-lg-12': !sidebarWidgetConfig.show }">
 
-            <div class="container-fluid pl-0 pr-0">
+                <div class="container-fluid pl-0 pr-0">
+
+                    <div class="row no-gutters">
+                        <div class="col">
+                            <ng-container *ngIf="loading">
+                                <scrm-record-content-skeleton></scrm-record-content-skeleton>
+                            </ng-container>
+                            <ng-container *ngIf="!loading">
+                                <scrm-record-content [dataSource]="getContentAdapter()">
+                                    <div top-right-placement *ngIf="isOffsetExist">
+                                        <scrm-record-pagination></scrm-record-pagination>
+                                    </div>
+                                </scrm-record-content>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div *ngIf="vm.bottomWidgetConfig.show && vm.bottomWidgetConfig.widgets && vm.bottomWidgetConfig.widgets.length"
+                         class="row no-gutters mt-2">
+                        <div class="col">
+                            <div *ngFor="let widget of vm.bottomWidgetConfig.widgets" class="mb-3">
+                                <scrm-sidebar-widget [config]="widget"
+                                                     [context$]="getViewContext$()"
+                                                     [context]="getViewContext()"
+                                                     [type]="widget.type">
+                                </scrm-sidebar-widget>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="vm.showSubpanels"
+                         class="row no-gutters pt-3 pb-4">
+                        <div class="col">
+                            <scrm-subpanel-container [config]="getSubpanelsConfig()"></scrm-subpanel-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="!swapWidgets || (swapWidgets && displayWidgets)">
+            <div class="col-lg-3 record-widget-container pl-0"
+                 [class.mt-0]="swapWidgets"
+                 *ngIf="displayWidgets">
                 <div *ngIf="loading" class="row no-gutters">
                     <div class="col pb-3">
                         <div class="d-flex justify-content-center widget-bar rounded  pb-1 pt-3 box-loading">
@@ -44,8 +87,8 @@
                 </div>
                 <ng-container *ngIf="!loading">
                     <div *ngIf="vm.topWidgetConfig.show && hasTopWidgetMetadata(vm.topWidgetConfig.widget)"
-                         class="row no-gutters">
-                        <div class="col pb-3">
+                         class="mb-3">
+                        <div class="">
                             <scrm-top-widget [config]="vm.topWidgetConfig.widget"
                                              [context]="getViewContext()"
                                              [type]="vm.topWidgetConfig.widget.type">
@@ -53,50 +96,6 @@
                         </div>
                     </div>
                 </ng-container>
-
-
-                <div class="row no-gutters">
-                    <div class="col">
-                        <ng-container *ngIf="loading">
-                            <scrm-record-content-skeleton></scrm-record-content-skeleton>
-                        </ng-container>
-                        <ng-container *ngIf="!loading">
-                            <scrm-record-content [dataSource]="getContentAdapter()">
-                                <div top-right-placement *ngIf="isOffsetExist">
-                                    <scrm-record-pagination></scrm-record-pagination>
-                                </div>
-                            </scrm-record-content>
-                        </ng-container>
-                    </div>
-                </div>
-
-                <div *ngIf="vm.bottomWidgetConfig.show && vm.bottomWidgetConfig.widgets"
-                     class="row no-gutters mt-4">
-                    <div class="col">
-                        <div *ngFor="let widget of vm.bottomWidgetConfig.widgets" class="mb-3">
-                            <scrm-sidebar-widget [config]="widget"
-                                                 [context$]="getViewContext$()"
-                                                 [context]="getViewContext()"
-                                                 [type]="widget.type">
-                            </scrm-sidebar-widget>
-                        </div>
-                    </div>
-                </div>
-
-                <div *ngIf="vm.showSubpanels"
-                     class="row no-gutters pt-1 pb-4">
-                    <div class="col">
-                        <scrm-subpanel-container [config]="getSubpanelsConfig()"></scrm-subpanel-container>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </ng-container>
-
-        <ng-container *ngIf="!swapWidgets || (swapWidgets && displayWidgets)">
-            <div class="col-lg-3 record-widget-container pl-0"
-                 [class.mt-0]="swapWidgets"
-                 *ngIf="displayWidgets">
                 <div class="mb-3" *ngFor="let widget of sidebarWidgetConfig.widgets">
                     <scrm-sidebar-widget [type]="widget.type"
                                          [context]="getViewContext()"
