@@ -131,13 +131,13 @@ class ContactLastTouchPoint extends SubpanelDataQueryHandler implements Statisti
         $callsResult = $this->fetchRow($innerQuery);
 
 
-        $parts = $queries[4];
+        $parts = $queries[5];
         $parts['select'] = 'SELECT  emails.`date_sent_received` ';
         $parts['order_by'] = ' ORDER BY  emails.`date_sent_received` DESC LIMIT 1';
         $innerQuery = $this->joinQueryParts($parts);
         $emailsResult1 = $this->fetchRow($innerQuery);
 
-        $parts = $queries[5];
+        $parts = $queries[6];
         $parts['select'] = 'SELECT  emails.`date_sent_received` as `emails_date_sent` ';
         $parts['order_by'] = ' ORDER BY  `emails_date_sent` DESC LIMIT 1';
         $innerQuery = $this->joinQueryParts($parts);
