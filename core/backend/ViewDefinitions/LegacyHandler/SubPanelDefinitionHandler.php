@@ -218,6 +218,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
             $tabs[$key]['insightWidget'] = $this->mapInsightWidget($subpanel, $tabs, $key, $tab);
             $tabs[$key]['lineActions'] = $this->getSubpanelLineActions($subpanel, $tabs[$key]['module']);
             $tabs[$key]['searchdefs'] = $this->getSearchdefs($subpanel);
+            $tabs[$key]['order'] = $tab['order'];
 
             if (empty($columnSubpanel)) {
                 continue;
@@ -488,37 +489,16 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                                 [
                                     'icon' => $tab['module'],
                                 ],
-                            ]
-                        ],
-                        [
-                            'align' => 'end',
-                            'justify' => 'start',
-                            'class' => 'flex-grow-1',
-                            'cols' => [
-                                [
-                                    'statistic' => $tabs[$key]['module'],
-                                    'class' => 'sub-panel-banner-value',
-                                    'bold' => true,
-                                ],
-                            ]
-                        ],
-                        [
-                            'justify' => 'start',
-                            'cols' => [
-                                [
-                                    'descriptionKey' => $tabs[$key]['title_key'] . '_INSIGHT_DESCRIPTION',
-                                    'class' => 'sub-panel-banner-tooltip',
-                                ]
-                            ]
-                        ],
-                        [
-                            'justify' => 'start',
-                            'cols' => [
                                 [
                                     'labelKey' => $tabs[$key]['title_key'],
                                     'class' => 'sub-panel-banner-button-title',
                                     'bold' => true,
-                                ]
+                                ],
+                                [
+                                    'statistic' => 'default',
+                                    'class' => 'sub-panel-banner-value',
+                                    'bold' => true,
+                                ],
                             ]
                         ],
                     ]
@@ -597,8 +577,10 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 ) {
                     $lineAction = $subpanelLineActions[$list_field['name']];
                     $moduleName = $this->moduleNameMapper->toFrontEnd($subpanelModule);
-                    $lineActions[] = $this->subpanelLineActionDefinitionProvider->getLineAction($moduleName,
-                        $lineAction);
+                    $lineActions[] = $this->subpanelLineActionDefinitionProvider->getLineAction(
+                        $moduleName,
+                        $lineAction
+                    );
                 }
             }
         }
