@@ -25,13 +25,21 @@
  */
 
 .widget-bar {
-  background-color: $very-light-salmon-pink;
+  background-color: $white;
   color: $dark-midnight-grey;
-  font-weight: bolder;
+  box-shadow: 0 .125rem .25rem #00000013 ;
+  border: 1px solid $extra-light-grey;
 }
 
 .widget-bar .widget-bar-entry-value {
-  font-weight: bolder;
+  font-weight: 900;
+  font-size: 2em;
+}
+
+.widget-bar .widget-bar-entry-label,
+.widget-bar .widget-bar-entry-end-label{
+  font-weight: 400;
+  font-size: 0.8em;
 }
 
 .widget-bar .inline-spinner > div {
