@@ -46,7 +46,7 @@ export interface SubPanelMeta {
 }
 
 export interface SubPanelDefinition {
-    insightWidget?: WidgetOptionMap;
+    subpanelWidget?: WidgetOptionMap;
     order?: 10;
     sort_order?: string;
     sort_by?: string;

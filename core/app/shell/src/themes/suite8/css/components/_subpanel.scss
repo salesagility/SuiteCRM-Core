@@ -36,15 +36,6 @@
   background-color: $midnight-blue-transparent;
 }
 
-.sub-panel-banner-button-active {
-  background-color: $midnight-blue-transparent;
-}
-
-.widget-entry-icon svg {
-  fill: $salmon-pink;
-  stroke: $salmon-pink;
-  font-size: 1.6em;
-}
 
 .sub-panel .subpanel-icon svg {
   font-size: x-large;
@@ -66,6 +57,7 @@
   background-color: $midnight-blue;
   color: $white;
   border-color: $midnight-blue;
+  font-weight: bold;
 
   scrm-image {
     display: inline;
@@ -86,7 +78,7 @@
     display: inline;
 
     svg {
-          fill: $midnight-blue;
+      fill: $midnight-blue;
     }
   }
 }
@@ -99,100 +91,213 @@ div.widget-panel .panel-card .card-header {
   padding: 0.5rem 0.6rem;
 }
 
-.insight-panel {
-  margin-left: 0;
-  margin-right: 0;
-  padding: 1em;
+.sub-panel-banner {
+  .insight-panel {
+    margin-left: 0;
+    margin-right: 0;
 
-  .border-insight {
-    margin: 4px;
-    border: 0.15em solid $very-light-grey;
-    border-radius: 4px;
-    border-top: 3px solid $midnight-blue;
+    .insight-panel-card {
+      cursor: pointer;
+      padding: 0;
+      border: none;
+      border-bottom: 1px solid $shell-grey;
+      border-radius: 0;
+      margin: 0;
+      margin-right: 0.5em;
+      color: $shell-grey;
 
-    svg {
-      font-size: 1.5em;
-      fill: $midnight-blue;
-      stroke: $midnight-blue;
-    }
-  }
+      .grid-widget {
+        min-height: 2.1em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        height: 100%;
+        justify-content: flex-end;
+        flex-direction: row !important;
+        align-items: start;
 
-  .insight-panel-card {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    cursor: pointer;
-  }
+        height: 100%;
+        justify-content: flex-end;
 
-  .insight-panel-card:hover {
-    box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 15%);
-  }
+        .widget-entry-icon {
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 0.4em;
 
-  @media (min-width: 768px) {
-    .col-md-2 {
-      flex: 0 0 15.666667%;
-      max-width: 15.666667%;
-    }
-  }
+          svg {
+            font-size: 1.5em;
+            fill: $shell-grey;
+            stroke: $shell-grey;
+          }
+        }
 
-  .widget-entry-icon {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0.7em;
-  }
+        .sub-panel-banner-value {
+          margin-left: 0.4em;
 
-  .sub-panel-banner-value {
-    font-size: 1rem;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: -0.5em;
-    color: $burnt-red;
-  }
+          .widget-entry-value {
+            color: $shell-grey;
+            font-size: .67rem;
+          }
+        }
 
-  .sub-panel-banner-tooltip {
-    width: 100%;
+        .sub-panel-banner-button-title {
+          width: 100%;
 
-    .widget-entry-label {
-      border-bottom: 2px solid $very-light-grey;
-      font-size: 0.7rem;
-      line-height: 1rem;
+          .widget-entry-label {
+            text-transform: uppercase;
+            font-size: .62rem;
+            width: 100%;
+            padding: .5em 0;
+            color: $shell-grey;
+          }
+        }
 
-      label {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        width: 100%;
-        margin: 0;
+      }
+
+      &:hover,
+      &.sub-panel-banner-button-active {
+        border-bottom: 1px solid $bright-purple;
+
+        .grid-widget {
+          background-color: inherit;
+
+          .widget-entry-icon {
+            svg {
+              fill: $bright-purple;
+              stroke: $bright-purple;
+            }
+          }
+
+          .sub-panel-banner-button-title {
+            .widget-entry-label {
+              color: $bright-purple;
+              font-weight: 900;
+            }
+          }
+
+          .sub-panel-banner-value {
+            .widget-entry-value {
+              color: $bright-purple;
+            }
+          }
+        }
       }
     }
 
-  }
 
-  .sub-panel-banner-button-title {
-    width: 100%;
-
-    .widget-entry-label {
-      text-transform: uppercase;
-      font-size: 0.62rem;
-      width: 100%;
-      padding: 0.5em 0;
-      color: $midnight-blue;
+    @media (min-width: 768px) {
+      .col-md-2 {
+        flex: 0 0 15.666667%;
+        max-width: 15.666667%;
+      }
     }
+
+
+    .sub-panel-banner-tooltip {
+      width: 100%;
+
+      .widget-entry-label {
+        border-bottom: 2px solid $very-light-grey;
+        font-size: 0.7rem;
+        line-height: 1rem;
+
+        label {
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          width: 100%;
+          margin: 0;
+        }
+      }
+
+    }
+
+
   }
 
-  .grid-widget {
-    height: 100%;
-    justify-content: flex-end;
+  .sub-panel-banner-body {
+
+
+    .sub-panel-banner-body-table {
+      width: 95%;
+      table-layout: fixed;
+
+      .sub-panel-banner-body-table-row:first-child {
+        .sub-panel-banner-body-table-col {
+          padding-bottom: 0.5em;
+        }
+      }
+
+      .sub-panel-banner-body-table-row {
+        height: 100%;
+        .sub-panel-banner-body-table-col {
+          height: 100%;
+
+          .insight-panel-card {
+            height: 100%;
+            display: flex;
+          }
+
+          .grid-widget {
+            justify-content: flex-end;
+            flex-direction: row !important;
+            align-items: start;
+
+            .statistics-sidebar-widget-row {
+              width: 100%;
+              height: 100%;
+              min-height: 2.7em;
+            }
+
+            .sub-panel-banner-button-title {
+              .widget-entry-label {
+                text-wrap: auto;
+                word-break: normal;
+              }
+            }
+          }
+        }
+      }
+
+    }
   }
 }
 
-.accordion {
+
+.sub-panels {
+  padding: 0 1.25rem 1.25rem;
+}
+
+.sub-panel-banner.accordion {
   .card {
+    border: none;
+
     .card-header {
+      min-height: 2.1em;
       padding: .50rem 1.25rem;
       background: $white;
-      border-top: 3px solid $midnight-blue;
+
+      .sub-panel-banner-header {
+        min-height: 2.2em;
+      }
+
+      .sub-panel-header-toggle {
+        border-radius: 50%;
+
+        .hidden-subpanel-buttons-count {
+          top: -7px;
+          right: -10px;
+          background: $sky-blue;
+          color: $white;
+          border-radius: 7px;
+        }
+
+        svg {
+          font-size: 1.1em;
+        }
+
+        &:hover {
+        }
+      }
 
       a.clickable {
         color: $midnight-blue;
@@ -218,18 +323,26 @@ div.widget-panel .panel-card .card-header {
 
 
 .sub-panel {
+
+  &:first-child {
+    .card.panel-card {
+      margin-top: 0.5em;
+    }
+  }
   table {
     tr {
       td:first-child,
-      th:first-child{
+      th:first-child {
         padding-left: 1.3em;
       }
+
       td:last-child,
       th:last-child {
         padding-right: 1.3em;
       }
     }
   }
+
   .table .show-more-column {
     float: none !important;
     width: 16px;

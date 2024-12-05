@@ -319,7 +319,7 @@ export class SubpanelStore implements StateStore {
      */
     public shouldBatchStatistic(): boolean {
         const metadata: SubPanelDefinition = this.metadata || {} as SubPanelDefinition;
-        return !(metadata.insightWidget && metadata.insightWidget.batch && metadata.insightWidget.batch === false);
+        return !(metadata.subpanelWidget && metadata.subpanelWidget.batch && metadata.subpanelWidget.batch === false);
     }
 
     /**
@@ -411,11 +411,11 @@ export class SubpanelStore implements StateStore {
     public getWidgetLayout(): StatisticWidgetOptions {
 
         const meta = this.metadata;
-        if (!meta || !meta.insightWidget || !meta.insightWidget.options || !meta.insightWidget.options.insightWidget) {
+        if (!meta || !meta.subpanelWidget || !meta.subpanelWidget.options || !meta.subpanelWidget.options.subpanelWidget) {
             return {rows: []} as StatisticWidgetOptions;
         }
 
-        const layout = deepClone(meta.insightWidget.options.insightWidget);
+        const layout = deepClone(meta.subpanelWidget.options.subpanelWidget);
 
         if (!layout.rows || !layout.rows.length) {
             layout.rows = {};
