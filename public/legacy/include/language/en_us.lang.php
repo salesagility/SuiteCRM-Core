@@ -4030,3 +4030,4 @@ $app_strings['LBL_NEW_NOTIFICATION'] = "You have {{context.unread}} new notifica
 $app_strings['LBL_NOTIFICATION_ITEM_DATE'] = 'Due: {{fields.date_start.value}}';
 $app_strings['LBL_NOTIFICATION_ITEM_DATE_ENTERED'] = 'Notified: {{fields.snooze.value}}';
 $app_strings['LBL_QUICK_ACTIONS'] = 'Quick Actions';
+$app_strings['LBL_RELATIONSHIPS'] = 'Relationships';
