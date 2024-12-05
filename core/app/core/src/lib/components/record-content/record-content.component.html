@@ -45,7 +45,7 @@
                 <ng-container *ngFor="let panel of panels; index as i;">
                     <ng-container *ngIf="(panel.display$ | async) as panelDisplay">
                         <li class="tab" [ngbNavItem]="i+1" *ngIf="!!panelDisplay">
-                            <a class="tab-link" ngbNavLink>{{panel.label}}</a>
+                            <a class="tab-link d-flex align-items-end" ngbNavLink>{{panel.label}}</a>
                             <ng-template ngbNavContent>
                                 <div class="tab-{{panel.key}}">
                                     <scrm-field-layout [dataSource]="getLayoutDataSource(panel)"></scrm-field-layout>

@@ -59,10 +59,14 @@
   padding-right: 1.6em;
 }
 
+.record-widget-container {
+  padding-top: 0.2em;
+}
+
 @media all and (min-width: $breakpoint-large) {
   .record-view-hr-container {
     font-size: 0.85em;
-    padding: 0.4em 1.6em;
+    padding: 0.2em 1.6em 0.3em;
   }
 }
 
