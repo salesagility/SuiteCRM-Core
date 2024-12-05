@@ -145,7 +145,6 @@ class OpportunitySalesStageTimeSpan extends LegacyHandler implements StatisticsP
             }
 
             $statistic = $this->getDateDiffStatistic(self::KEY, $start);
-            $this->addMetadata($statistic, ['labelKey' => 'LBL_DAYS_IN_SALE_STAGE']);
         }
 
         $this->close();
