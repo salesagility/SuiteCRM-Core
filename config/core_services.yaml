@@ -46,6 +46,7 @@ services:
       $recordViewBottomWidgets: '%module.recordview.bottom_widgets%'
       $recordViewTopWidgets: '%module.recordview.top_widgets%'
       $recordViewConvertIgnore: '%module.recordview.convert_ignore%'
+      $recordViewSubpanelButtonLimits: '%module.recordview.subpanel_button_limits%'
       $subpanelViewActionLimits: '%module.subpanelview.actions_limits%'
       $groupedFieldsTypeMap: '%record.fields.grouped_fields_type_map%'
       $currencyFieldsTypeMap: '%record.fields.currency_fields_type_map%'

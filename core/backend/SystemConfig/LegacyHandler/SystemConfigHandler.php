@@ -109,6 +109,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
      * @param array $logoutConfig
      * @param array $sessionExpiredConfig
      * @param array $recordViewConvertIgnore
+     * @param array $recordViewSubpanelButtonLimits
      * @param RequestStack $session
      * @param NavigationProviderInterface $navigation
      */
@@ -144,6 +145,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         array $logoutConfig,
         array $sessionExpiredConfig,
         array $recordViewConvertIgnore,
+        array $recordViewSubpanelButtonLimits,
         RequestStack $session,
         NavigationProviderInterface $navigation
     ) {
@@ -168,6 +170,7 @@ class SystemConfigHandler extends LegacyHandler implements SystemConfigProviderI
         $this->injectedSystemConfigs['listview_settings_limits'] = $listViewSettingsLimits;
         $this->injectedSystemConfigs['listview_actions_limits'] = $listViewActionsLimits;
         $this->injectedSystemConfigs['recordview_actions_limits'] = $recordViewActionLimits;
+        $this->injectedSystemConfigs['recordview_subpanel_button_limits'] = $recordViewSubpanelButtonLimits;
         $this->injectedSystemConfigs['convert_ignore'] = $recordViewConvertIgnore;
         $this->injectedSystemConfigs['subpanelview_actions_limits'] = $subpanelViewActionLimits;
         $this->injectedSystemConfigs['listview_line_actions_limits'] = $listViewLineActionsLimits;
