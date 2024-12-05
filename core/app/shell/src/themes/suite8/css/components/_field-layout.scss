@@ -38,7 +38,11 @@
 .field-layout-field-group-wrapper {
   min-height: 2em;
 }
-
+.create.field-layout .field-separation {
+  border-top: 1px solid #ddd;
+  margin-top: 0.25rem !important;
+  padding-top: 5px !important;
+}
 .field-layout .field-separation {
   border-top: 1px solid #ddd;
   margin-top: 0px !important;
