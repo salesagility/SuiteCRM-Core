@@ -32,29 +32,44 @@
   height: 100px;
 }
 
-.history-timeline .card {
-  border: 0.17em solid;
-}
-
-.history-timeline .circle {
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 0.17em solid;
-}
-
-.history-timeline .history-timeline-image svg {
-  font-size: x-large;
-}
-
 .history-timeline {
   font-size: small;
   font-weight: bold;
+  padding-top: 0 !important;
+
+  .card {
+    border: none;
+    margin-left: 7px;
+    padding-left: 18px;
+  }
+
+  .icon-square {
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    left: 0;
+    float: left;
+    z-index: 2;
+  }
+
+  .history-timeline-entry{
+    color: $dim-grey;
+  }
+
+  .history-timeline-image svg {
+    font-size: 150%;
+  }
 
   .history-timeline-entry-title {
+    margin-bottom: 0;
+    line-height: 1;
+  }
+
+  .history-timeline-entry-date{
+    line-height: 1;
   }
 
   .history-timeline-entry-user {
-    border-top-style: double;
   }
 }
 
@@ -74,8 +89,10 @@
 }
 
 .history-timeline .history-timeline-entry.entry-yellow {
-  color: $dark-yellow;
-  border-color: $dark-yellow;
+}
+
+.history-timeline .history-timeline-entry.entry-yellow .icon-square{
+  background: $dark-yellow;
 }
 
 .history-timeline .entry-yellow .card {
@@ -83,18 +100,28 @@
 }
 
 .history-timeline .history-timeline-entry.entry-yellow svg {
-  fill: $dark-yellow;
-  stroke: $dark-yellow;
+  fill: $white;
+  stroke: $white;
+}
+
+.history-timeline .history-timeline-entry.entry-yellow a {
+  color: $dark-yellow;
 }
 
 .history-timeline .history-timeline-entry.entry-purple {
-  color: $dark-purple;
-  border-color: $dark-purple;
+}
+
+.history-timeline .history-timeline-entry.entry-purple .icon-square {
+  background: $dark-purple
 }
 
 .history-timeline .history-timeline-entry.entry-purple svg {
-  fill: $dark-purple;
-  stroke: $dark-purple;
+  fill: $white;
+  stroke: $white;
+}
+
+.history-timeline .history-timeline-entry.entry-purple a {
+  color: $dark-purple;
 }
 
 .history-timeline .entry-purple .card {
@@ -102,13 +129,19 @@
 }
 
 .history-timeline .history-timeline-entry.entry-blue {
-  color: $mild-blue;
-  border-color: $mild-blue;
+}
+
+.history-timeline .history-timeline-entry.entry-blue .icon-square{
+  background: $mild-blue;
 }
 
 .history-timeline .history-timeline-entry.entry-blue svg {
-  fill: $mild-blue;
-  stroke: $mild-blue;
+  fill: $white;
+  stroke: $white;
+}
+
+.history-timeline .history-timeline-entry.entry-blue a {
+  color: $mild-blue;
 }
 
 .history-timeline .entry-blue .card {
@@ -116,13 +149,19 @@
 }
 
 .history-timeline .history-timeline-entry.entry-orange {
-  color: $thick-orange;
-  border-color: $thick-orange;
+}
+
+.history-timeline .history-timeline-entry.entry-orange .icon-square{
+  background: $thick-orange;
 }
 
 .history-timeline .history-timeline-entry.entry-orange svg {
-  fill: $thick-orange;
-  stroke: $thick-orange;
+  fill: $white;
+  stroke: $white;
+}
+
+.history-timeline .history-timeline-entry.entry-orange a {
+  color: $thick-orange;
 }
 
 .history-timeline .entry-orange .card {
@@ -130,13 +169,19 @@
 }
 
 .history-timeline .history-timeline-entry.entry-green {
-  color: $thick-green;
-  border-color: $thick-green;
+}
+
+.history-timeline .history-timeline-entry.entry-green .icon-square{
+  background: $thick-green;
 }
 
 .history-timeline .history-timeline-entry.entry-green svg {
-  fill: $thick-green;
-  stroke: $thick-green;
+  fill: $white;
+  stroke: $white;
+}
+
+.history-timeline .history-timeline-entry.entry-green a {
+  color: $thick-green;
 }
 
 .history-timeline .entry-green .card {
