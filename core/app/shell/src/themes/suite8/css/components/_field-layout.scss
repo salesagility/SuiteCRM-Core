@@ -72,13 +72,19 @@ span.required {
 .form-row > .col, .form-row > [class*=col-] {
   /* padding-right: 5px !important; */
   padding-left: 5px;
-  padding-bottom: 2px !important;
+  padding-bottom: 5px !important;
 }
 
 .field-layout {
   > .form-row > .form-group > .form-group.row {
     margin-bottom: 0;
+
+    .email_addresses {
+      padding-top: .5rem;
+    }
   }
+
+
 
   .col-form-label {
     padding-top: 0;
