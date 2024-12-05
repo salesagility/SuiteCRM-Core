@@ -105,12 +105,12 @@ array(
           'options' => [
               'statistics' => [
                   [
-                      'labelKey' => 'LBL_AVERAGE_CLOSED_WON_PER_YEAR',
+                      'endLabelKey' => 'LBL_AVERAGE_CLOSED_WON_PER_YEAR',
                       'type' => 'accounts-won-opportunity-amount-by-year',
                       'hideValueIfEmpty' => true
                   ],
                   [
-                      'labelKey' => 'LBL_OPPORTUNITIES_TOTAL',
+                      'endLabelKey' => 'LBL_OPPORTUNITIES_TOTAL',
                       'type' => 'opportunities',
                       'hideValueIfEmpty' => true
                   ],
