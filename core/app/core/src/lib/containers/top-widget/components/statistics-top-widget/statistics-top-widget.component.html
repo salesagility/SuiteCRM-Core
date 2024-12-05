@@ -32,7 +32,7 @@
     </div>
     <ng-container *ngFor="let item of statistics | keyvalue">
 
-        <div class="d-flex justify-content-center align-items-baseline widget-bar-entry p-2">
+        <div class="d-flex flex-column justify-content-center align-items-baseline widget-bar-entry p-2">
 
             <ng-container *ngIf="!shouldHide(vm.statistics[item.key], item.value)">
 
