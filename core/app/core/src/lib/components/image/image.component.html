@@ -27,9 +27,9 @@
 -->
 <ng-container *ngIf="imageSig() as img">
 
-    <svg-icon *ngIf="img.type === 'svg'" [svgClass]="klass || ''" [title]="title || ''" class="{{wrapperClass}}"
+    <svg-icon *ngIf="img.type === 'svg'" [svgClass]="klass || ''" [title]="title || ''" class="{{wrapperClass}} image-{{img.name}}"
               name="{{img.name}}"></svg-icon>
 
-    <img *ngIf="img.type !=='svg'" alt="" src="{{img.path}}" class="{{klass}}" [title]="title || ''">
+    <img *ngIf="img.type !=='svg'" alt="" src="{{img.path}}" class="{{klass}} image-{{img.name}}" [title]="title || ''">
 
 </ng-container>
