@@ -75,6 +75,7 @@ const initialState: RecordViewState = {
     loading: false,
     widgets: false,
     showSidebarWidgets: false,
+    showBottomWidgets: false,
     showTopWidget: false,
     showSubpanels: false,
     mode: 'detail',
@@ -96,6 +97,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
     loading$: Observable<boolean>;
     widgets$: Observable<boolean>;
     showSidebarWidgets$: Observable<boolean>;
+    showBottomWidgets$: Observable<boolean>;
     showTopWidget$: Observable<boolean>;
     showSubpanels$: Observable<boolean>;
     mode$: Observable<ViewMode>;
@@ -161,6 +163,7 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.loading$ = this.state$.pipe(map(state => state.loading));
         this.widgets$ = this.state$.pipe(map(state => state.widgets));
         this.showSidebarWidgets$ = this.state$.pipe(map(state => state.showSidebarWidgets));
+        this.showBottomWidgets$ = this.state$.pipe(map(state => state.showBottomWidgets));
         this.showTopWidget$ = this.state$.pipe(map(state => state.showTopWidget));
         this.showSubpanels$ = this.state$.pipe(map(state => state.showSubpanels));
         this.mode$ = this.state$.pipe(map(state => state.mode));
@@ -211,6 +214,17 @@ export class RecordViewStore extends ViewStore implements StateStore {
         this.updateState({
             ...this.internalState,
             showSidebarWidgets: show
+        });
+    }
+
+    get showBottomWidgets(): boolean {
+        return this.internalState.showBottomWidgets;
+    }
+
+    set showBottomWidgets(show: boolean) {
+        this.updateState({
+            ...this.internalState,
+            showBottomWidgets: show
         });
     }
 
@@ -663,6 +677,8 @@ export class RecordViewStore extends ViewStore implements StateStore {
         } else {
             this.showSidebarWidgets = show;
         }
+
+        this.showBottomWidgets = true;
 
         this.widgets = show;
     }

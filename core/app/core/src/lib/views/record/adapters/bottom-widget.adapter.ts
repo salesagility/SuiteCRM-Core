@@ -34,7 +34,7 @@ import {RecordViewStore} from '../store/record-view/record-view.store';
 export class BottomWidgetAdapter {
 
     config$ = this.metadata.recordViewMetadata$.pipe(
-        combineLatestWith(this.store.widgets$),
+        combineLatestWith(this.store.showBottomWidgets$),
         map(([metadata, show]: [RecordViewMetadata, boolean]) => {
 
             if (metadata.bottomWidgets && metadata.bottomWidgets.length) {
