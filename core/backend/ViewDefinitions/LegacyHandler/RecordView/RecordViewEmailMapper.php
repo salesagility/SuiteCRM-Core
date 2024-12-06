@@ -146,6 +146,7 @@ class RecordViewEmailMapper implements ViewDefinitionMapperInterface
                 ]
             ];
             $cell['fieldDefinition']['lineItems'] = $config;
+            $cell['fieldDefinition']['useFullColumn'] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
             $cell['fieldDefinition']['logic'] = [
                 'emailPrimarySelectLogic' => [
