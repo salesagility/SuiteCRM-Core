@@ -186,7 +186,7 @@ class SecurityController extends AbstractController
         $this->userHandler->setUserPreference('is_two_factor_enabled', false);
 
         $this->preparedStatementHandler->update(
-            'UPDATE users SET totp_secret = NULL, is_totp_enabled = 0 WHERE id = :id',
+            'UPDATE users SET totp_secret = NULL, is_totp_enabled = 0, backup_codes = NULL WHERE id = :id',
             ['id' => $id],
             [['param' => 'id', 'type' => 'string']]
         );

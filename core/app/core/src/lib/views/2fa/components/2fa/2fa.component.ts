@@ -173,6 +173,7 @@ export class TwoFactorComponent implements OnInit {
     }
 
     public generateCodes(): void {
+        this.backupCodes = null;
         this.generateBackupCodesService.generate().subscribe({
             next: (response) => {
                 this.backupCodes = response?.data.backupCodes;
@@ -197,6 +198,7 @@ export class TwoFactorComponent implements OnInit {
 
             this.areRecoveryCodesGenerated.set(false)
             this.generateCodes()
+            this.message.addSuccessMessageByKey('LBL_REGENERATED_BACKUP_CODES');
         }).catch();
     }
 
