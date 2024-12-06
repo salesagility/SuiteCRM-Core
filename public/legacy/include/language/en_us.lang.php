@@ -2322,6 +2322,7 @@ $app_strings = array(
     'LBL_CANCEL' => 'Cancel',
     'LBL_GENERATED' => 'Generated',
     'LBL_REGENERATE_CODES' => 'Regenerate',
+    'LBL_REGENERATED_BACKUP_CODES' => 'Backup Codes Regenerated'
 
 );
 
