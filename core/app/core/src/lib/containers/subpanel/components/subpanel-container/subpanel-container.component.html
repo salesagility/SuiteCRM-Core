@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <div class="sub-panels">
+    <div class="sub-panels {{(isCollapsed() && !openSubpanels()?.length) ? 'pb-1' : ''}}">
         <ng-container *ngFor="let subpanelKey of this.openSubpanels()">
             <ng-container *ngIf="(subpanels[subpanelKey]) as item">
                 <scrm-subpanel *ngIf="item.show"

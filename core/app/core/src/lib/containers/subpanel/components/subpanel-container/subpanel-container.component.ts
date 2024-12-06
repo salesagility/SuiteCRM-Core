@@ -53,7 +53,7 @@ export class SubpanelContainerComponent implements OnInit, OnDestroy {
 
     @Input() config: SubpanelContainerConfig;
 
-    isCollapsed = signal(false);
+    isCollapsed = signal(true);
     toggleIcon = signal('arrow_down_filled');
     maxColumns$: Observable<number>;
 
@@ -88,7 +88,7 @@ export class SubpanelContainerComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         const module = this?.config?.parentModule ?? 'default';
-        this.setCollapsed(isTrue(this.preferences.getUi(module, 'subpanel-container-collapse') ?? false));
+        this.setCollapsed(isTrue(this.preferences.getUi(module, 'subpanel-container-collapse') ?? true));
 
         const subpanelButtonLimits = this.systemConfigs.getConfigValue('recordview_subpanel_button_limits') ?? {};
         if (subpanelButtonLimits && Object.keys(subpanelButtonLimits).length) {
