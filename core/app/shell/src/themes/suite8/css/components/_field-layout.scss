@@ -27,6 +27,11 @@
 
 .field-layout.edit,
 .field-layout.create {
+
+  .form-row > .col, .form-row > [class*=col-] {
+    padding-bottom: 0.65rem !important;
+  }
+
   .field-separation {
     display: none;
   }
