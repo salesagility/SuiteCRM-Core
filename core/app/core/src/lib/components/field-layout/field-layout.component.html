@@ -35,7 +35,7 @@
 
             <ng-container *ngIf="col.field && col.field.display !== 'none'">
                 <div class="field-layout-field-group-wrapper form-group row">
-                    <div class="col-sm-3 field-layout-field-label-wrapper col-form-label label-container">
+                    <div class="{{col?.headerColumnClass}} field-layout-field-label-wrapper col-form-label label-container">
                         <strong>
                             <ng-container
                                 *ngIf="col.field.definition.required && (['edit', 'create'].includes(config.mode))">
@@ -44,7 +44,7 @@
                             <label [ngClass]="labelClass">{{col.field.label | uppercase}}</label>
                         </strong>
                     </div>
-                    <div class="col-sm-9 d-flex flex-grow-1 field-layout-field-wrapper"
+                    <div class="{{col?.valueColumnClass}} d-flex flex-grow-1 field-layout-field-wrapper"
                         [ngClass]="{ 'align-items-center': (col?.fieldActions && col?.fieldActions?.position === 'inline') }">
                         <div class="flex-grow-1 text-break field-layout-field-value-wrapper">
                             <scrm-field [type]="col.field.type"

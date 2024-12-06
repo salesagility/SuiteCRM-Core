@@ -160,6 +160,7 @@ export class AttributeBuilder extends FieldBuilder {
         fieldAttribute.valueParent = definition.valueParent;
         fieldAttribute.source = 'attribute';
         fieldAttribute.parentKey = parentField.name;
+        fieldAttribute.useFullColumn = definition?.useFullColumn || field?.definition?.useFullColumn || null;
 
         return fieldAttribute;
     }

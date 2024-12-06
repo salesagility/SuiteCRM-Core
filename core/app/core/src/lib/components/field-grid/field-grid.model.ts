@@ -34,6 +34,8 @@ export interface FieldGridColumn {
     actionSlot?: boolean;
     specialSlot?: boolean;
     fieldActions?: FieldActions;
+    headerColumnClass?: string;
+    valueColumnClass?: string;
 }
 
 export interface FieldGridRow {

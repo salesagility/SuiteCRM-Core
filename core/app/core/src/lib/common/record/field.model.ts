@@ -99,7 +99,8 @@ export interface FieldDefinition {
     defaultValueModes?: ViewMode[];
     modes?: ViewMode[];
     relationship?: string;
-    relationshipMetadata?: RelationshipMetadata
+    relationshipMetadata?: RelationshipMetadata;
+    useFullColumn?: string[];
 
     [key: string]: any;
 }
@@ -203,6 +204,7 @@ export interface Field {
     logic?: FieldLogicMap;
     displayLogic?: FieldLogicMap;
     previousValue?: string;
+    useFullColumn?: string[];
 
     initDefaultValue?: DefaultValueInitCallback;
 }
@@ -236,6 +238,7 @@ export class BaseField implements Field {
     attributeDependencies: AttributeDependency[] = [];
     logic?: FieldLogicMap;
     displayLogic?: FieldLogicMap;
+    useFullColumn?: string[];
 
     protected valueState?: string;
     protected valueListState?: string[];
