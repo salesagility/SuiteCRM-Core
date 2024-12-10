@@ -60,6 +60,7 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
     public function getData(array $query): Statistic
     {
 
+        $count = 0;
         $subpanel = $query['params']['subpanel'] ?? $query['key'];
 
         [$module, $id] = $this->extractContext($query);
@@ -82,13 +83,21 @@ class SubpanelDefault extends SubpanelDataQueryHandler implements StatisticsProv
             $dbQuery = $queries['isDatasourceFunction']['countQuery'];
 
         } else {
-            $parts = $queries[0];
-            $parts['select'] = 'SELECT COUNT(*) as value';
-
-            $dbQuery = $this->joinQueryParts($parts);
+            foreach($queries as $query) {
+                $parts = $query;
+                $parts['select'] = 'SELECT COUNT(*) as value';
+                $dbQuery = $this->joinQueryParts($parts);
+                $result = $this->fetchRow($dbQuery);
+                $count = $count + $result['value'];
+            }
         }
 
-        $result = $this->fetchRow($dbQuery);
+        if ($count === 0){
+            $count = "0";
+        }
+
+        $result['value'] = $count;
+
         $statistic = $this->buildSingleValueResponse(self::KEY, 'int', $result);
 
         $this->addMetadata($statistic, ['descriptionKey' => 'LBL_DEFAULT_TOTAL']);
