@@ -159,33 +159,36 @@ div.widget-panel .panel-card .card-header {
 
       }
 
-      &:hover{
-        border-bottom: 1px solid $highlight-grey;
+      @media (min-width: $breakpoint-medium) {
+        &:hover{
+          border-bottom: 1px solid $highlight-grey;
 
-        .grid-widget {
-          background-color: inherit;
+          .grid-widget {
+            background-color: inherit;
 
-          .widget-entry-icon {
-            svg {
-              fill: $highlight-grey;
-              stroke: $highlight-grey;
+            .widget-entry-icon {
+              svg {
+                fill: $highlight-grey;
+                stroke: $highlight-grey;
+              }
             }
-          }
 
-          .sub-panel-banner-button-title {
-            .widget-entry-label {
-              font-size: .62rem;
-              color: $highlight-grey;
+            .sub-panel-banner-button-title {
+              .widget-entry-label {
+                font-size: .62rem;
+                color: $highlight-grey;
+              }
             }
-          }
 
-          .sub-panel-banner-value {
-            .widget-entry-value {
-              color: $highlight-grey;
+            .sub-panel-banner-value {
+              .widget-entry-value {
+                color: $highlight-grey;
+              }
             }
           }
         }
       }
+
       &.sub-panel-banner-button-active {
         border-bottom: 1px solid $bright-purple;
 
@@ -213,31 +216,32 @@ div.widget-panel .panel-card .card-header {
             }
           }
         }
+        @media (min-width: $breakpoint-medium) {
+          &:hover {
+            border-bottom: 1px solid $highlight-purple;
 
-        &:hover {
-          border-bottom: 1px solid $highlight-purple;
+            .grid-widget {
+              background-color: inherit;
 
-          .grid-widget {
-            background-color: inherit;
-
-            .widget-entry-icon {
-              svg {
-                fill: $highlight-purple;
-                stroke: $highlight-purple;
+              .widget-entry-icon {
+                svg {
+                  fill: $highlight-purple;
+                  stroke: $highlight-purple;
+                }
               }
-            }
 
-            .sub-panel-banner-button-title {
-              .widget-entry-label {
-                font-size: .62rem;
-                color: $highlight-purple;
-                font-weight: 900;
+              .sub-panel-banner-button-title {
+                .widget-entry-label {
+                  font-size: .62rem;
+                  color: $highlight-purple;
+                  font-weight: 900;
+                }
               }
-            }
 
-            .sub-panel-banner-value {
-              .widget-entry-value {
-                color: $highlight-purple;
+              .sub-panel-banner-value {
+                .widget-entry-value {
+                  color: $highlight-purple;
+                }
               }
             }
           }
