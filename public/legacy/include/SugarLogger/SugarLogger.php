@@ -204,7 +204,7 @@ class SugarLogger implements LoggerTemplate
         $level,
         $message
         ) {
-        global $sugar_config, $timezone, $current_language;
+        global $sugar_config, $timezone;
 
         if (!$this->initialized) {
             return;
@@ -233,8 +233,10 @@ class SugarLogger implements LoggerTemplate
             $message .= ("\n" . $trace);
         }
 
+        $language = $sugar_config['default_language'];
+
         $format = new IntlDateFormatter(
-            $current_language,
+            $language,
             IntlDateFormatter::MEDIUM,
             IntlDateFormatter::MEDIUM,
             $timezone,
