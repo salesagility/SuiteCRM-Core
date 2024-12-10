@@ -83,6 +83,12 @@
   }
 }
 
+@media all and (max-width: $breakpoint-small) {
+  .sub-panel table td {
+    max-width: 100px;
+  }
+}
+
 div.widget-panel .panel-card .card-header {
   background-color: $white;
   color: $midnight-blue;
