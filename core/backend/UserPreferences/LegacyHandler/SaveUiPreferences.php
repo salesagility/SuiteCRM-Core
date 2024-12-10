@@ -28,12 +28,15 @@
 namespace App\UserPreferences\LegacyHandler;
 
 use ApiPlatform\Exception\InvalidArgumentException;
+use App\Engine\LegacyHandler\CacheManagerHandler;
 use App\Engine\LegacyHandler\LegacyHandler;
+use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SaveUiPreferences extends LegacyHandler implements ProcessHandlerInterface, LoggerAwareInterface
 {
@@ -44,6 +47,38 @@ class SaveUiPreferences extends LegacyHandler implements ProcessHandlerInterface
      * @var LoggerInterface
      */
     private $logger;
+
+    private CacheManagerHandler $cacheManagerHandler;
+
+    /**
+     * LegacyHandler constructor.
+     * @param string $projectDir
+     * @param string $legacyDir
+     * @param string $legacySessionName
+     * @param string $defaultSessionName
+     * @param LegacyScopeState $legacyScopeState
+     * @param RequestStack $requestStack
+     * @param CacheManagerHandler $cacheManagerHandler
+     */
+    public function __construct(
+        string $projectDir,
+        string $legacyDir,
+        string $legacySessionName,
+        string $defaultSessionName,
+        LegacyScopeState $legacyScopeState,
+        RequestStack $requestStack,
+        CacheManagerHandler $cacheManagerHandler
+    ) {
+        parent::__construct(
+            $projectDir,
+            $legacyDir,
+            $legacySessionName,
+            $defaultSessionName,
+            $legacyScopeState,
+            $requestStack
+        );
+        $this->cacheManagerHandler = $cacheManagerHandler;
+    }
 
     /**
      * @inheritDoc
@@ -130,6 +165,8 @@ class SaveUiPreferences extends LegacyHandler implements ProcessHandlerInterface
         }
 
         $this->close();
+
+        $this->cacheManagerHandler->markAsNeedsUpdate('app-metadata-user-preferences-' . $current_user->id);
     }
 
     /**

@@ -84,8 +84,8 @@ export class UserPreferenceStore implements StateStore {
         protected localStorage: LocalStorageService,
     ) {
         const uiSettings = config.getConfigValue('ui') ?? {};
-        const delay = uiSettings.user_preferences_save_delay ?? 5000;
-        this.saveBuffer$ = this.saveBufferStore.asObservable().pipe(debounceTime(delay ?? 5000));
+        const delay = uiSettings.user_preferences_save_delay ?? 2500;
+        this.saveBuffer$ = this.saveBufferStore.asObservable().pipe(debounceTime(delay ?? 2500));
         this.subs.push(this.saveBuffer$.subscribe((value) => {
             if (!value) {
                 return;
