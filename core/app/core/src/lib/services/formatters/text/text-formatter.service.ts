@@ -64,7 +64,7 @@ export class TextFormatter implements Formatter {
 
         do {
             previousValue = decodedValue;
-            decodedValue = decodedValue.replace(entityRegex, (match) => decodeMap[match] || match);
+            decodedValue = decodedValue?.replace(entityRegex, (match) => decodeMap[match] || match);
         } while (decodedValue !== previousValue); // Repeat until no changes
 
         return decodedValue;
@@ -75,7 +75,7 @@ export class TextFormatter implements Formatter {
      * Decodes HTML special characters.
      */
     toInternalFormat(value): string {
-        const formmatedValue = value.replace(/[<>&"'\u00A0-\uFFFF]/g, (match) => {
+        const formmatedValue = value?.replace(/[<>&"'\u00A0-\uFFFF]/g, (match) => {
             const encoded = this.defaultMap[match];
             return encoded !== undefined ? encoded : match;
         });
