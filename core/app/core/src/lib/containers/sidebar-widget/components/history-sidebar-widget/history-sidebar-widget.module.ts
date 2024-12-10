@@ -35,6 +35,10 @@ import {LoadingSpinnerModule} from '../../../../components/loading-spinner/loadi
 import {LabelModule} from '../../../../components/label/label.module';
 import {ChartMessageAreaModule} from '../../../../components/chart/components/chart-message-area/chart-message-area.module';
 import {RouterModule} from "@angular/router";
+import {ButtonModule} from "../../../../components/button/button.module";
+import {
+    HistorySidebarSkeletonLoadingComponent
+} from "./history-sidebar-skeleton-loading/history-sidebar-skeleton-loading.component";
 
 @NgModule({
     declarations: [HistorySidebarWidgetComponent],
@@ -51,6 +55,8 @@ import {RouterModule} from "@angular/router";
         LabelModule,
         ChartMessageAreaModule,
         RouterModule,
+        ButtonModule,
+        HistorySidebarSkeletonLoadingComponent,
     ]
 })
 export class HistorySidebarWidgetModule {

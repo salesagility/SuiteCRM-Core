@@ -33,6 +33,7 @@ import {Record} from '../../../../common/record/record.model';
 import {ViewContext} from '../../../../common/views/view.model';
 import {take} from 'rxjs/operators';
 import {HistoryTimelineStoreFactory} from './history-timeline.store.factory';
+import {sign} from "mathjs";
 
 export type ActivityTypes = 'calls' | 'tasks' | 'meetings' | 'history' | 'audit' | 'notes' | string;
 
@@ -40,6 +41,8 @@ export type ActivityTypes = 'calls' | 'tasks' | 'meetings' | 'history' | 'audit'
 export class HistoryTimelineAdapter {
     loading: WritableSignal<boolean> = signal(false);
     initializing: WritableSignal<boolean> = signal(true);
+    firstLoad: WritableSignal<boolean> = signal(true);
+    allLoaded: WritableSignal<boolean> = signal(false);
 
     cache: HistoryTimelineEntry[] = [];
     dataStream = new BehaviorSubject<HistoryTimelineEntry[]>(this.cache);
@@ -84,6 +87,7 @@ export class HistoryTimelineAdapter {
         this.initializing.set(false)
         this.store.load(false).pipe(take(1)).subscribe(value => {
             this.loading.set(false);
+            this.firstLoad.set(false);
             const records: Record [] = value.records;
 
             if (!emptyObject(records)) {
@@ -93,6 +97,9 @@ export class HistoryTimelineAdapter {
                     this.cache.push(this.buildTimelineEntry(records[key]));
                 });
             }
+
+            this.allLoaded.set((value?.pagination?.pageLast ?? 0) < (value?.pagination?.pageSize ?? 0));
+
             this.dataStream.next([...this.cache]);
         });
         return this.dataStream$;
@@ -138,17 +145,17 @@ export class HistoryTimelineAdapter {
             title: {
                 type: 'varchar',
                 value: record.attributes.name,
-                loading: this.loading
+                loading: signal(false)
             },
             user: {
                 type: 'varchar',
                 value: record.attributes.assigned_user_name.user_name,
-                loading: this.loading
+                loading:  signal(false)
             },
             date: {
                 type: 'datetime',
                 value: record.attributes.date_end,
-                loading: this.loading
+                loading:  signal(false)
             },
             record
         } as HistoryTimelineEntry;
@@ -158,7 +165,7 @@ export class HistoryTimelineAdapter {
             timelineEntry.description = {
                 type: 'html',
                 value: record.attributes.description,
-                loading: this.loading
+                loading: signal(false)
             };
         }
         return timelineEntry;

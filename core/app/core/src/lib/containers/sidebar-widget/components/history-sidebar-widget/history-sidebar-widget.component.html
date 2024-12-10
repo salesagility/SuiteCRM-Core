@@ -30,14 +30,18 @@
 
         <div class="widget-background history-timeline p-2 pt-0">
 
-            <div *ngIf="adapter?.initializing() || adapter?.loading()" class="d-flex record-thread-loading justify-content-center">
+            <div *ngIf="adapter?.initializing() || (adapter?.firstLoad() && adapter?.loading())" class="record-thread-loading">
+                <scrm-history-sidebar-skeleton-loading></scrm-history-sidebar-skeleton-loading>
+            </div>
+
+            <div *ngIf="!adapter?.firstLoad() && adapter?.loading()" class="d-flex record-thread-loading justify-content-center">
                 <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
             </div>
 
-            <cdk-virtual-scroll-viewport itemSize="100"
-                                         class="history-timeline-viewport"
-                                         [ngClass]="[vm.length <= 0 ? 'history-timeline-viewport-no-data' : 'history-timeline-viewport']"
-                                         (scroll)="onScroll()">
+            <div class="history-timeline-viewport"
+                 *ngIf="!(adapter?.firstLoad() && adapter?.loading())"
+                 [ngClass]="[vm.length <= 0 ? 'history-timeline-viewport-no-data' : 'history-timeline-viewport']"
+            >
 
                 <scrm-chart-message-area *ngIf="!adapter?.initializing() && !adapter?.loading() && vm.length <= 0"
                                          labelKey="LBL_NO_DATA"></scrm-chart-message-area>
@@ -45,10 +49,10 @@
                 <div *ngFor="let entry of vm;">
                     <div *ngIf="vm.length > 0"
                          class="d-flex flex-row m-2 history-timeline-entry entry-{{entry.color}}">
-                        <div class="">
+                        <div class="history-timeline-entry-icon">
                             <div class="rounded-square icon-square">
                                 <div
-                                    class="d-flex justify-content-center align-items-center h-100 history-timeline-image">
+                                        class="d-flex justify-content-center align-items-center h-100 history-timeline-image">
                                     <scrm-image [image]="entry.icon"></scrm-image>
                                 </div>
                             </div>
@@ -61,11 +65,11 @@
                                         <a *ngIf="entry.record.module !== 'audit'"
                                            [routerLink]="redirectLink(entry.record.module, entry.record.id)"
                                         >
-                                        <scrm-field [type]="entry.title.type"
-                                                    mode="list"
-                                                    [field]="entry.title"
-                                                    [record]="entry.record">
-                                        </scrm-field>
+                                            <scrm-field [type]="entry.title.type"
+                                                        mode="list"
+                                                        [field]="entry.title"
+                                                        [record]="entry.record">
+                                            </scrm-field>
                                         </a>
                                         <a *ngIf="entry.record.module === 'audit'">
                                             <scrm-field [type]="entry.title.type"
@@ -109,7 +113,12 @@
                     </div>
 
                 </div>
-            </cdk-virtual-scroll-viewport>
+                <div *ngIf="!adapter.initializing() && !adapter.allLoaded()"
+                        class="record-thread-load-more d-flex justify-content-center flex-grow-1">
+                    <scrm-button [config]="getLoadMoreButton()"></scrm-button>
+                </div>
+            </div>
+
         </div>
     </div>
 </scrm-widget-panel>

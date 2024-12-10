@@ -26,6 +26,7 @@
 
 .history-timeline-viewport {
   height: 45em;
+  overflow-x: auto;
 }
 
 .history-timeline-viewport-no-data {
@@ -43,17 +44,18 @@
     padding-left: 18px;
   }
 
-  .icon-square {
-    width: 2rem;
-    height: 2rem;
-    position: absolute;
-    left: 0;
-    float: left;
-    z-index: 2;
-  }
-
-  .history-timeline-entry{
+  .history-timeline-entry {
     color: $dim-grey;
+
+    .history-timeline-entry-icon {
+      z-index: 2;
+      margin-right: -1.5rem;
+
+      .icon-square {
+        width: 2rem;
+        height: 2rem;
+      }
+    }
   }
 
   .history-timeline-image svg {
@@ -92,7 +94,7 @@
 }
 
 .history-timeline .history-timeline-entry.entry-yellow .icon-square{
-  background: $dark-yellow;
+  background: $goldenrod;
 }
 
 .history-timeline .entry-yellow .card {
@@ -105,7 +107,7 @@
 }
 
 .history-timeline .history-timeline-entry.entry-yellow a {
-  color: $dark-yellow;
+  color: $goldenrod;
 }
 
 .history-timeline .history-timeline-entry.entry-purple {
@@ -152,7 +154,7 @@
 }
 
 .history-timeline .history-timeline-entry.entry-orange .icon-square{
-  background: $thick-orange;
+  background: $dark-yellow;
 }
 
 .history-timeline .history-timeline-entry.entry-orange svg {
@@ -161,7 +163,7 @@
 }
 
 .history-timeline .history-timeline-entry.entry-orange a {
-  color: $thick-orange;
+  color: $dark-yellow;
 }
 
 .history-timeline .entry-orange .card {
@@ -184,6 +186,26 @@
   color: $thick-green;
 }
 
+.history-timeline .entry-grey .card {
+  background: $off-white;
+}
+
+.history-timeline .history-timeline-entry.entry-grey {
+}
+
+.history-timeline .history-timeline-entry.entry-grey .icon-square{
+  background: $light-grey;
+}
+
+.history-timeline .history-timeline-entry.entry-grey svg {
+  fill: $white;
+  stroke: $white;
+}
+
+.history-timeline .history-timeline-entry.entry-grey a {
+  color: $light-grey;
+}
+
 .history-timeline .entry-green .card {
-  background: $lighter-green;
+  background: $off-white;
 }
