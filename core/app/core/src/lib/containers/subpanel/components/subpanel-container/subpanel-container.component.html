@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div class="card border shadow-sm">
+<div *ngIf="bodySubpanels()?.length" class="card border shadow-sm">
     <div ngbAccordion class="sub-panel-banner" #accordion="ngbAccordion" activeIds="sub-panel-buttons">
         <div ngbAccordionItem id="sub-panel-buttons" class="card" [collapsed]="isCollapsed()">
             <div ngbAccordionHeader class="card-header">
