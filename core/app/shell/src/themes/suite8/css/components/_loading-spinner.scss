@@ -48,12 +48,14 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+
+  .sk-cube-grid{
+  }
 }
 
+.loading-spinner .sk-cube-secondary,
 .loading-spinner .sk-cube-primary {
-  background-color: $suite-logo-pink;
-}
-
-.loading-spinner .sk-cube-secondary {
-  background-color: $suite-logo-blue;
+  border: 1px solid $white;
+  background-color: $midnight-blue;
+  opacity: .4;
 }
