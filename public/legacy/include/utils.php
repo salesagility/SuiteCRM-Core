@@ -3175,8 +3175,7 @@ function get_emails_by_assign_or_link($params)
     // directly assigned emails
     $return_array['join'][] = "
         SELECT
-            eb.email_id,
-            'direct' source
+            eb.email_id
         FROM
             emails_beans eb
         WHERE
@@ -3188,8 +3187,7 @@ function get_emails_by_assign_or_link($params)
     // Related by directly by email
     $return_array['join'][] = "
         SELECT DISTINCT
-            eear.email_id,
-            'relate' source
+            eear.email_id
         FROM
             emails_email_addr_rel eear
         INNER JOIN
@@ -3211,8 +3209,7 @@ function get_emails_by_assign_or_link($params)
         // Assigned to contacts
         $return_array['join'][] = "
             SELECT DISTINCT
-                eb.email_id,
-                'contact' source
+                eb.email_id
             FROM
                 emails_beans eb
             $rel_join AND link_bean.id = eb.bean_id
@@ -3223,8 +3220,7 @@ function get_emails_by_assign_or_link($params)
         // Related by email to linked contact
         $return_array['join'][] = "
             SELECT DISTINCT
-                eear.email_id,
-                'relate_contact' source
+                eear.email_id
             FROM
                 emails_email_addr_rel eear
             INNER JOIN
