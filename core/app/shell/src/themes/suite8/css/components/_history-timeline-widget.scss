@@ -42,10 +42,11 @@
     border: none;
     margin-left: 7px;
     padding-left: 18px;
+    border-left: 1px solid $lightgray;
+    border-bottom: 1px solid $lightgray;
   }
 
   .history-timeline-entry {
-    color: $dim-grey;
 
     .history-timeline-entry-icon {
       z-index: 2;
@@ -54,6 +55,8 @@
       .icon-square {
         width: 2rem;
         height: 2rem;
+        border: 2px solid $lightgray;
+        background: $white;
       }
     }
   }
@@ -94,16 +97,15 @@
 }
 
 .history-timeline .history-timeline-entry.entry-yellow .icon-square{
-  background: $goldenrod;
+  border-color: $goldenrod;
 }
 
 .history-timeline .entry-yellow .card {
-  background: $light-yellow;
 }
 
 .history-timeline .history-timeline-entry.entry-yellow svg {
-  fill: $white;
-  stroke: $white;
+  fill: $goldenrod;
+  stroke: $goldenrod;
 }
 
 .history-timeline .history-timeline-entry.entry-yellow a {
@@ -114,12 +116,12 @@
 }
 
 .history-timeline .history-timeline-entry.entry-purple .icon-square {
-  background: $dark-purple
+  border-color: $dark-purple
 }
 
 .history-timeline .history-timeline-entry.entry-purple svg {
-  fill: $white;
-  stroke: $white;
+  fill: $dark-purple;
+  stroke: $dark-purple;
 }
 
 .history-timeline .history-timeline-entry.entry-purple a {
@@ -127,19 +129,18 @@
 }
 
 .history-timeline .entry-purple .card {
-  background: $light-purple;
 }
 
 .history-timeline .history-timeline-entry.entry-blue {
 }
 
 .history-timeline .history-timeline-entry.entry-blue .icon-square{
-  background: $mild-blue;
+  border-color: $mild-blue;
 }
 
 .history-timeline .history-timeline-entry.entry-blue svg {
-  fill: $white;
-  stroke: $white;
+  fill: $mild-blue;
+  stroke: $mild-blue;
 }
 
 .history-timeline .history-timeline-entry.entry-blue a {
@@ -147,19 +148,18 @@
 }
 
 .history-timeline .entry-blue .card {
-  background: $light-blue;
 }
 
 .history-timeline .history-timeline-entry.entry-orange {
 }
 
 .history-timeline .history-timeline-entry.entry-orange .icon-square{
-  background: $dark-yellow;
+  border-color: $dark-yellow;
 }
 
 .history-timeline .history-timeline-entry.entry-orange svg {
-  fill: $white;
-  stroke: $white;
+  fill: $dark-yellow;
+  stroke: $dark-yellow;
 }
 
 .history-timeline .history-timeline-entry.entry-orange a {
@@ -167,19 +167,18 @@
 }
 
 .history-timeline .entry-orange .card {
-  background: $very-lighter-orange;
 }
 
 .history-timeline .history-timeline-entry.entry-green {
 }
 
 .history-timeline .history-timeline-entry.entry-green .icon-square{
-  background: $thick-green;
+  border-color: $thick-green;
 }
 
 .history-timeline .history-timeline-entry.entry-green svg {
-  fill: $white;
-  stroke: $white;
+  fill: $thick-green;
+  stroke: $thick-green;
 }
 
 .history-timeline .history-timeline-entry.entry-green a {
@@ -187,14 +186,15 @@
 }
 
 .history-timeline .entry-grey .card {
-  background: $off-white;
 }
 
 .history-timeline .history-timeline-entry.entry-grey {
 }
 
 .history-timeline .history-timeline-entry.entry-grey .icon-square{
-  background: $light-grey;
+  border-color: $light-grey;
+  background-color: $white;
+
 }
 
 .history-timeline .history-timeline-entry.entry-grey svg {
@@ -206,6 +206,5 @@
   color: $light-grey;
 }
 
-.history-timeline .entry-green .card {
-  background: $off-white;
+.history-timeline .entry-grey .card {
 }
