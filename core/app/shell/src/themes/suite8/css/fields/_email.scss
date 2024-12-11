@@ -35,6 +35,12 @@
       @media all and (max-width: $breakpoint-xxlarge) {
         line-height: 1;
       }
+
+      .field-group-label {
+        label {
+            margin-bottom: .2rem;
+        }
+      }
     }
   }
 }
