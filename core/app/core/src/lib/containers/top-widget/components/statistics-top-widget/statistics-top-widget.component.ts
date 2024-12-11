@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
 import {SingleValueStatisticsStore} from '../../../../store/single-value-statistics/single-value-statistics.store';
 import {
@@ -65,7 +65,7 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
     vm$: Observable<StatisticsTopWidgetState>;
     messageLabelKey: string;
     loading$: Observable<boolean>;
-    protected loading = true;
+    protected loading: WritableSignal<boolean> = signal(true);
     protected subs: Subscription[] = [];
 
     constructor(
@@ -148,7 +148,7 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
             combineLatestWith(...loadings$),
             map((loadings) => {
                 if (!loadings || loadings.length < 1) {
-                    this.loading = false;
+                    this.loading.set(false);
                     return false;
                 }
 
@@ -158,7 +158,7 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
                     loading = loading && value;
                 });
 
-                this.loading = loading;
+                this.loading.set(loading);
 
                 return loading;
             })
@@ -186,9 +186,9 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
         if (this.config.reload$) {
             this.subs.push(this.config.reload$.subscribe(() => {
-                if (this.loading === false) {
+                if (this.loading() === false) {
 
-                    this.loading = true;
+                    this.loading.set(true);
                     this.config.options.statistics.forEach(statistic => {
 
                         if (!statistic.type) {
@@ -273,4 +273,6 @@ export class StatisticsTopWidgetComponent extends BaseWidgetComponent implements
 
         return this.language.getFieldLabel(key, module);
     }
+
+    protected readonly signal = signal;
 }

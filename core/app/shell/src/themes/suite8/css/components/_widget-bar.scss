@@ -27,17 +27,23 @@
 .widget-bar {
   background-color: $white;
   color: $dark-midnight-grey;
-  box-shadow: 0 .125rem .25rem #00000013 ;
+  box-shadow: 0 .125rem .25rem #00000013;
   border: 1px solid $extra-light-grey;
+  min-height: 70px;
 }
 
 .widget-bar .widget-bar-entry-value {
   font-weight: 900;
   font-size: 1.7em;
+
+  .skeleton-field-content {
+    background-color: $dark-midnight-grey;
+    opacity: 0.2;
+  }
 }
 
 .widget-bar .widget-bar-entry-label,
-.widget-bar .widget-bar-entry-end-label{
+.widget-bar .widget-bar-entry-end-label {
   font-weight: 400;
   font-size: 0.7em;
 }
@@ -45,5 +51,5 @@
 .widget-bar .inline-spinner > div {
   width: 0.45em;
   height: 0.45em;
-  background-color: white;
+  background-color: $dark-midnight-grey;
 }
