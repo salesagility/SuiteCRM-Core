@@ -25,22 +25,54 @@
  */
 
 .record-content-skeleton .nav-tabs.nav {
-  height: 34px;
+  height: 30px;
   opacity: 0.6;
 }
 
 .record-content-skeleton .tab-content .col-form-label-sm {
   background-color: $midnight-blue;
   opacity: 0.4;
+  height: 1.2rem !important;
 }
 
 .record-content-skeleton .tab-content .skeleton-field-content {
   background-color: $geyser-blue;
   opacity: 0.6;
+  height: 1.2rem;
 }
 
 .dynamic-field .skeleton-field-content {
   height: 34px;
   background-color: $geyser-blue;
   opacity: 0.6;
+}
+
+.skeleton-field-content {
+  color: transparent;
+  background-color: $geyser-blue;
+  opacity: 0.6;
+}
+
+.skeleton-field-content.small-size-text-skeleton {
+  height: 0.5em;
+}
+
+.skeleton-field-content.medium-size-text-skeleton {
+  height: 1em;
+}
+
+.skeleton-field-content.large-size-text-skeleton {
+  height: 1.5em;
+}
+
+.skeleton-field-content.small-length-text-skeleton {
+  width: 4.5em;
+}
+
+.skeleton-field-content.medium-length-text-skeleton {
+  width: 6em;
+}
+
+.skeleton-field-content.large-length-text-skeleton {
+  width: 12em;
 }
