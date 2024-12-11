@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<div *ngIf="bodySubpanels()?.length" class="card border shadow-sm">
+<div class="card border shadow-sm" *ngIf="bodySubpanels()?.length">
     <div ngbAccordion class="sub-panel-banner" #accordion="ngbAccordion" activeIds="sub-panel-buttons">
         <div ngbAccordionItem id="sub-panel-buttons" class="card" [collapsed]="isCollapsed()">
             <div ngbAccordionHeader class="card-header">
@@ -79,16 +79,18 @@
             <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
                     <ng-template>
-                        <div id="collapseShowSubPanels" class="sub-panel-banner-body d-flex align-items-center justify-content-center border-bottom border-top pt-2 pb-3 ml-2 mr-2">
+                        <div id="collapseShowSubPanels" class="sub-panel-banner-body d-flex align-items-center justify-content-center border-bottom border-top pt-2 pb-3 ml-2 mr-2 mb-2">
                             <table class="sub-panel-banner-body-table">
                                 <tr class="insight-panel sub-panel-banner-body-table-row" *ngFor="let subpanelRow of bodySubpanels()">
                                     <td *ngFor="let subpanelKey of subpanelRow" class="sub-panel-banner-body-table-col">
-                                        <div class="insight-panel-card border-insight pl-2 pr-2"
-                                             [ngClass]="{'sub-panel-banner-button-active': subpanels[subpanelKey].show === true}"
-                                             (click)="showSubpanel(subpanels[subpanelKey].metadata.name, subpanels[subpanelKey])">
-                                            <scrm-grid-widget
-                                                    [config]="getGridConfig(subpanels[subpanelKey])"></scrm-grid-widget>
-                                        </div>
+                                        <ng-container *ngIf="subpanelKey">
+                                            <div class="insight-panel-card border-insight pl-2 pr-2"
+                                                 [ngClass]="{'sub-panel-banner-button-active': subpanels[subpanelKey].show === true}"
+                                                 (click)="showSubpanel(subpanels[subpanelKey].metadata.name, subpanels[subpanelKey])">
+                                                <scrm-grid-widget
+                                                        [config]="getGridConfig(subpanels[subpanelKey])"></scrm-grid-widget>
+                                            </div>
+                                        </ng-container>
                                     </td>
                                 </tr>
                             </table>

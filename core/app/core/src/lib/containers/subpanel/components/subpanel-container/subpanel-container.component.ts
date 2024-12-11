@@ -151,6 +151,15 @@ export class SubpanelContainerComponent implements OnInit, OnDestroy {
                 }
             });
 
+            if(count < this.subpanelButtonBreakpoint() && groups.length > 0) {
+                const lastGroup = groups[groups.length - 1];
+                const diff = this.subpanelButtonBreakpoint() - lastGroup.length;
+                for (let i = 0; i < diff; i++) {
+                    lastGroup.push('');
+                }
+                groups[groups.length - 1] = lastGroup;
+            }
+
             return groups;
         });
 
