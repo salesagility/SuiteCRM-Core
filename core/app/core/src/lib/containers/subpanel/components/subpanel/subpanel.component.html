@@ -38,7 +38,7 @@
             ></scrm-action-group-menu>
         </span>
         <div panel-body>
-            <scrm-list-filter *ngIf="store.showFilter" [config]="filterConfig"></scrm-list-filter>
+            <scrm-list-filter *ngIf="store.showFilter()" [config]="filterConfig"></scrm-list-filter>
             <scrm-table [config]="tableConfig"></scrm-table>
         </div>
     </scrm-panel>

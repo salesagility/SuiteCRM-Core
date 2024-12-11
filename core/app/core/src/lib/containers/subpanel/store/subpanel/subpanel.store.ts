@@ -77,7 +77,7 @@ export class SubpanelStore implements StateStore {
     // Filter variables
     filterList: FilterListStore;
     criteria$: Observable<SearchCriteria>;
-    showFilter = false;
+    showFilter: WritableSignal<boolean> = signal(false);
     filterApplied = false;
 
     preferenceKey = null;
@@ -132,7 +132,7 @@ export class SubpanelStore implements StateStore {
 
     searchFilter() {
         this.filterApplied = true;
-        this.showFilter = false;
+        this.showFilter.set(false);
     }
 
     /**
@@ -239,7 +239,7 @@ export class SubpanelStore implements StateStore {
     public clearFilter(): void {
         this.resetFilters();
         this.filterApplied = false;
-        this.showFilter = false;
+        this.showFilter.set(false);
     }
 
     /**
@@ -425,7 +425,8 @@ export class SubpanelStore implements StateStore {
     }
 
     public toggleFilter(): boolean {
-        return this.showFilter = !this.showFilter;
+        this.showFilter.set(!this.showFilter());
+        return this.showFilter();
     }
 
     /**
