@@ -60,9 +60,13 @@
                                 </scrm-field>
 
                             </div>
-                            <div *ngIf="statistics.loading && loading" class="widget-entry-loading">
+                            <div *ngIf="initializing() || (statistics.loading && loading)" class="widget-entry-loading">
 
-                                <scrm-inline-loading-spinner klass="d-flex flex-row"></scrm-inline-loading-spinner>
+                                <div class="pb-2 widget-entry-value">
+                                    <div class=" rounded box-loading skeleton-field-content">
+                                        ...
+                                    </div>
+                                </div>
 
                             </div>
                         </ng-container>
@@ -108,12 +112,15 @@
                         </ng-container>
 
                         <!-- MISCONFIGURATION -->
-                        <ng-container
-                                *ngIf="col.statistic && !loading && (!vm.statistics[col.statistic].field || (vm.statistics[col.statistic].field && isEmptyFieldValue(vm.statistics[col.statistic].field.value)))">
-                            <div class="widget-entry-value {{getSizeClass(col.size)}}">
-                                -
-                            </div>
+                        <ng-container *ngIf="!initializing()">
+                            <ng-container
+                                    *ngIf="col.statistic && !loading && (!vm.statistics[col.statistic].field || (vm.statistics[col.statistic].field && isEmptyFieldValue(vm.statistics[col.statistic].field.value)))">
+                                <div class="widget-entry-value {{getSizeClass(col.size)}}">
+                                    -
+                                </div>
+                            </ng-container>
                         </ng-container>
+
 
                     </ng-container>
 
