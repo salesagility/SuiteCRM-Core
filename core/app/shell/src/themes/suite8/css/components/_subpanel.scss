@@ -138,10 +138,15 @@ div.widget-panel .panel-card .card-header {
 
         .sub-panel-banner-value {
           margin-left: 0.4em;
+          min-width: fit-content;
 
           .widget-entry-value {
             color: $shell-grey;
             font-size: .67rem;
+          }
+
+          .skeleton-field-content {
+            height: 0.8em;
           }
         }
 
@@ -393,7 +398,7 @@ div.widget-panel .panel-card .card-header {
 
   &:first-child {
     .card.panel-card {
-      margin-top: 0.5em;
+      margin-top: 0.3em;
     }
   }
   table {
