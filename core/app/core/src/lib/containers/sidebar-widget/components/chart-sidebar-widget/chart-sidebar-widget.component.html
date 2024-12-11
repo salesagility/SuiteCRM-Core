@@ -54,7 +54,7 @@
                                                 [type]="chartType">
                                     </scrm-chart>
                                 </ng-container>
-                                <div *ngIf="loading" [class.m-5]="!dataSource" class="chart-loading">
+                                <div *ngIf="loading" [class.m-3]="!dataSource" class="chart-loading">
                                     <scrm-loading-spinner [overlay]="true"></scrm-loading-spinner>
                                 </div>
                                 <p *ngIf="!loading && (!isConfigured() || !dataSource)"
