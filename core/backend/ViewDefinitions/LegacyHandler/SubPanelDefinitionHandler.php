@@ -104,7 +104,7 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
         SubpanelTopActionDefinitionProviderInterface $subpanelTopActionDefinitionProvider,
         SubpanelLineActionDefinitionProviderInterface $subpanelLineActionDefinitionProvider,
         FieldAliasMapper $fieldAliasMapper,
-        RequestStack $session
+        RequestStack $session,
     ) {
         parent::__construct(
             $projectDir,
@@ -203,6 +203,10 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 $columnSubpanel = $subpanel->get_header_panel_def();
                 $headerModule = $this->moduleNameMapper->toFrontEnd($columnSubpanel->get_module_name());
                 $extraModuleVardefs = $this->getCollectionListVardefs($tab['collection_list']);
+
+//                if ($tab['searchdefs']){
+//                    $this->vi
+//                }
             } else {
                 $headerModule = $this->getHeaderModule($tab);
             }
@@ -335,6 +339,11 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                     'width' => $field['width'] ?? '',
                     'enable_range_search' => $field['enable_range_search'] ?? '',
                 ];
+
+                if (!empty($field['name'] ?? false) && str_contains($field['name'], '_only')) {
+                    $fieldDefinition['displayType'] = 'checkbox';
+                }
+
                 $field['fieldDefinition'] = $fieldDefinition;
             }
 
