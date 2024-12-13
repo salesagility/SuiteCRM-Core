@@ -73,9 +73,6 @@ class SearchDefsDateTypeMapper implements ViewDefinitionMapperInterface
      */
     public function mapField(string $type, array $field): array
     {
-        if ($type === 'datetime') {
-            $type = 'date';
-        }
 
         $field['type'] = 'composite';
         $field['fieldDefinition']['layout'] = ['operator', 'target', 'start', 'end'];
