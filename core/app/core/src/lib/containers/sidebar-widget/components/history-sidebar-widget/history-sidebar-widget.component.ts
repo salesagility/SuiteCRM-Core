@@ -24,15 +24,13 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {AfterViewInit, Component, OnDestroy, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {HistoryTimelineAdapter} from './history-timeline.adapter.service';
 import {BaseWidgetComponent} from '../../../widgets/base-widget.model';
 import {LanguageStore} from '../../../../store/language/language.store';
 import {HistoryTimelineAdapterFactory} from './history-timeline.adapter.factory';
 import {combineLatestWith, Subscription, timer} from 'rxjs';
-import {debounce, map, take, tap} from 'rxjs/operators';
-import {floor} from 'lodash-es';
-import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {debounce, map} from 'rxjs/operators';
 import {ModuleNavigation} from "../../../../services/navigation/module-navigation/module-navigation.service";
 import {ButtonInterface} from "../../../../common/components/button/button.model";
 
