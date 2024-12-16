@@ -81,11 +81,6 @@ export class FieldGridComponent extends BaseFieldGridComponent implements OnChan
             col++;
         });
 
-        const lastRow = grid[grid.length - 1];
-        if (col < this.colNumber) {
-            this.fillRow(lastRow);
-        }
-
         this.addSpecialSlots(grid);
 
         this.fieldGrid = grid;

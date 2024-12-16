@@ -27,7 +27,7 @@
 import {Directive, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {FieldGridRow, LabelDisplay} from './field-grid.model';
+import {FieldGridColumn, FieldGridRow, LabelDisplay} from './field-grid.model';
 import {ScreenSizeMap} from '../../common/services/ui/resize.model';
 
 
@@ -153,24 +153,39 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
             });
 
         } else {
-            const lastNeededCol = this.colNumber - neededSlots.length;
             let lastRow = grid[grid.length - 1];
 
-            if (lastRow.cols[lastNeededCol].field) {
-                lastRow = {
-                    cols: []
-                } as FieldGridRow;
-                this.fillRow(lastRow);
-                grid.push(lastRow);
-            }
+            let rowLength = lastRow.cols.length;
 
-            let place = this.colNumber - 1;
-            neededSlots.forEach(type => {
-                lastRow.cols[place][type] = true;
-                place--;
+            neededSlots.reverse().forEach(type => {
+                let actionSlot = false;
+                if (type === 'actionSlot') {
+                    actionSlot = true;
+                }
+
+                if (rowLength === this.colNumber || actionSlot) {
+                    lastRow = this.addNewRow();
+                    grid.push(lastRow);
+                    rowLength = actionSlot ? (this.colNumber - 1) : 0;
+                }
+
+                lastRow.cols[rowLength] = [] as FieldGridColumn;
+                lastRow.cols[rowLength][type] = true;
+                this.fillRow(lastRow);
+                rowLength++;
             });
         }
 
+    }
+
+    protected addNewRow(): FieldGridRow {
+        const row = {
+            cols: []
+        } as FieldGridRow
+
+        this.fillRow(row);
+
+        return row;
     }
 
     protected getNeededExtraSlots(): string[] {
