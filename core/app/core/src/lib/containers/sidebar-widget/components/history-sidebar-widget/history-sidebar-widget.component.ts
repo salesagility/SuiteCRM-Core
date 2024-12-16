@@ -86,7 +86,7 @@ export class HistorySidebarWidgetComponent extends BaseWidgetComponent implement
             }),
             );
 
-        const debouncedReload = reload$.pipe(debounce(() => timer(1000)));
+        const debouncedReload = reload$.pipe(debounce(() => timer(400)));
 
         this.subscription.add(debouncedReload.subscribe(reload => {
             if (reload) {
