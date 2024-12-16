@@ -65,7 +65,7 @@ export class AppComponent {
             setTimeout(() => {
                 this.notificationStore.conditionalNotificationRefresh();
                 this.recentlyViewed.conditionalGlobalRefresh()
-            }, 1000);
+            }, 500);
         }
 
         if (routerEvent instanceof NavigationEnd) {
