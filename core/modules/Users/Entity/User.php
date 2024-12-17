@@ -1322,16 +1322,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
         if ($key !== false){
             unset($this->backupCodes[$key]);
         }
-    }
-
-    /**
-     * Add a backup code
-     */
-    public function addBackUpCode(string $backUpCode): void
-    {
-        if (!in_array($backUpCode, $this->backupCodes)) {
-            $this->backupCodes[] = $backUpCode;
-        }
+        $this->backupCodes = array_values($this->backupCodes);
     }
 
 }
