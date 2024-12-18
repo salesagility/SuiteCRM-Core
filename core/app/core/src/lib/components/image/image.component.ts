@@ -25,6 +25,7 @@
  */
 
 import {
+    ChangeDetectionStrategy,
     Component,
     Input,
     OnDestroy,
@@ -38,17 +39,23 @@ import {ThemeImage, ThemeImageMap, ThemeImagesStore} from '../../store/theme-ima
 @Component({
     selector: 'scrm-image',
     templateUrl: './image.component.html',
-    styleUrls: []
+    styleUrls: [],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageComponent  implements OnInit, OnDestroy {
-    @Input() image: string;
     @Input() klass = '';
     @Input() title = '';
     @Input() wrapperClass = 'sicon';
+    @Input() set image(value: string) {
+        this.imageName.set(value);
+        this.getImage();
+    }
 
     images$: Observable<ThemeImageMap> = this.themeImagesStore.images$;
 
     imageSig = signal<any>({});
+    imageName= signal<string>('');
+    imageMap: { images: ThemeImageMap } = { images: {} };
 
     protected subs: Subscription[] = [];
 
@@ -56,11 +63,11 @@ export class ImageComponent  implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.subs = [];
         this.subs.push(this.images$.pipe(
             filter(img => img !== null),
             map((images) => ({images})),
-            tap(data => this.getImage(data, this.image)),
+            tap(images => this.imageMap = {...images}),
+            tap(() => this.getImage()),
         ).subscribe());
     }
 
@@ -69,22 +76,16 @@ export class ImageComponent  implements OnInit, OnDestroy {
         this.subs = [];
     }
 
-    /**
-     * Get image from current view model and log if not existent
-     *
-     * @param vm
-     * @param image name
-     * @returns ThemeImage
-     */
-    getImage(vm: { images: ThemeImageMap }, image: string): void {
-        if (!vm || !vm.images || Object.keys(vm.images).length < 1) {
+
+    getImage(): void {
+        if (!this.imageMap || !this.imageMap.images || Object.keys(this.imageMap.images).length < 1) {
             return null;
         }
 
-        this.imageSig.update(() => vm.images[image]);
+        this.imageSig.update(() => this.imageMap.images[this.imageName()]);
 
         if (!this.imageSig()) {
-            console.warn(`Image with name '${image}' not found`);
+            console.warn(`Image with name '${this.imageName()}' not found`);
         }
     }
 }
