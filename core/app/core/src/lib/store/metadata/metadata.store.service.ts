@@ -163,6 +163,7 @@ export class MetadataStore implements StateStore {
         'listView',
         'search',
         'recordView',
+        'subPanel',
         'favorites'
     ];
 
