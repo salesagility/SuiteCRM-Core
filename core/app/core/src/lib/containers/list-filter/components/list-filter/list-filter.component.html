@@ -50,9 +50,9 @@
                          (click)="onFocusSearch()"
         >
 
-            <div *ngIf="store.special.length > 0" class="float-right mt-4" field-grid-special>
+            <div *ngIf="store.special.length > 0" class="special-field-grid" field-grid-special>
 
-                <div *ngFor="let item of store.special " class="d-inline-block mb-2 mr-sm-2 w-25">
+                <div *ngFor="let item of store.special " class="d-inline-block mr-sm-2 w-25 special-field-grid-col">
 
                     <label class="form-check-label">
                         <scrm-label [labelKey]="item.labelKey"></scrm-label>
