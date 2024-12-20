@@ -281,6 +281,7 @@ return static function (ContainerConfigurator $containerConfig) {
             ['path' => '^/login$', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/session-status$', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/logout$', 'roles' => 'PUBLIC_ACCESS'],
+            ['path' => '^/auth/2fa_check', 'roles' => 'IS_AUTHENTICATED_2FA_IN_PROGRESS'],
             ['path' => '^/saml/login', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/saml/metadata', 'roles' => 'PUBLIC_ACCESS'],
             ['path' => '^/saml/acs', 'roles' => 'PUBLIC_ACCESS'],
@@ -331,6 +332,17 @@ return static function (ContainerConfigurator $containerConfig) {
                     ],
                     'logout' => [
                         'path' => 'logged-out'
+                    ],
+                    'two_factor' => [
+                        'check_path' => 'native_auth_2fa_check',
+                        'prepare_on_login' => true,
+                        'prepare_on_access_denied' => true,
+                        'auth_code_parameter_name' => '_auth_code',
+                        'default_target_path' => '/',
+                        'provider' => 'app_user_provider',
+                        'authentication_required_handler' => '2fa_required',
+                        'success_handler' => '2fa_success',
+                        'failure_handler' => '2fa_failed'
                     ]
                 ],
                 'logged-out' => [

@@ -307,6 +307,12 @@ class SecurityController extends AbstractController
         return $this->sessionStatus($security);
     }
 
+    #[Route('/auth/2fa_check', name: 'native_auth_2fa_check', methods: ["GET", "POST"])]
+    public function nativeCheckTwoFactorCode(Request $request): Response
+    {
+        return $this->redirectToRoute('app_2fa_check', $request->query->all());
+    }
+
     /**
      * @param UserInterface $user
      * @param array $appStatus
