@@ -273,17 +273,14 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
 
         $metadata->setNavigation([]);
+        $navigation = $this->getNavigation($userId);
         if (in_array('navigation', $exposed, true)) {
-            $navigation = $this->cache->get('app-metadata-navigation-' . $userId, function () {
-                return $this->navigationService->getNavbar()->toArray();
-            });
             $metadata->setNavigation($navigation);
         }
 
         $metadata->setModuleMetadata([]);
         $metadata->setMinimalModuleMetadata([]);
         if (in_array('moduleMetadata', $exposed, true)) {
-            $navigation = $this->navigationService->getNavbar();
             $moduleMetadata = $this->getModuleMetadata($moduleName, $navigation) ?? [];
             $metadata->setModuleMetadata($moduleMetadata);
         } elseif (in_array('minimalModuleMetadata', $exposed, true)) {
@@ -292,7 +289,6 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
         $metadata->setGlobalRecentlyViewedMetadata([]);
         if (in_array('globalRecentlyViewed', $exposed, true)) {
-            $navigation = $this->navigationService->getNavbar();
             $metadata->setGlobalRecentlyViewedMetadata($this->getGlobalRecentlyViewedMetadata($navigation));
         }
 
@@ -480,13 +476,13 @@ class AppMetadataProvider implements AppMetadataProviderInterface
 
     /**
      * @param string $module
-     * @param Navbar $navigation
+     * @param array $navigation
      * @return array
      */
-    protected function getModuleMetadata(string $module, Navbar $navigation): array
+    protected function getModuleMetadata(string $module, array $navigation): array
     {
-        $max = $navigation->maxTabs;
-        $modules = $navigation->tabs ?? [];
+        $max = $navigation['maxTabs'];
+        $modules = $navigation['tabs'] ?? [];
 
         if (!in_array($module, $modules, true)) {
             $modules[] = $module;
@@ -499,7 +495,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
             'calendar' => true,
         ];
 
-        $type = $navigation->type ?? '';
+        $type = $navigation['type'] ?? '';
         if ($type === 'gm') {
             $groupedTabsModules = $this->getGroupedTabModules($navigation, $module);
 
@@ -557,11 +553,12 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     }
 
     /**
+     * @param array $navigation
      * @return array
      */
-    protected function getGlobalRecentlyViewedMetadata(Navbar $navigation): array
+    protected function getGlobalRecentlyViewedMetadata(array $navigation): array
     {
-        $modules = $navigation->tabs ?? [];
+        $modules = $navigation['tabs'] ?? [];
         $legacyModuleNames = [];
         foreach ($modules as $module) {
             $legacyModuleNames[] = $this->moduleNameMapper->toLegacy($module);
@@ -616,13 +613,13 @@ class AppMetadataProvider implements AppMetadataProviderInterface
     }
 
     /**
-     * @param Navbar $navigation
+     * @param array $navigation
      * @param string $module
      * @return string[]
      */
-    protected function getGroupedTabModules(Navbar $navigation, string $module): array
+    protected function getGroupedTabModules(array $navigation, string $module): array
     {
-        $groupedTabs = $navigation->groupedTabs ?? [];
+        $groupedTabs = $navigation['groupedTabs'] ?? [];
         $groupedTabsModules = [];
 
         foreach ($groupedTabs as $groupedTab) {
@@ -731,5 +728,18 @@ class AppMetadataProvider implements AppMetadataProviderInterface
         }
 
         return $modules;
+    }
+
+    /**
+     * @param string $userId
+     * @return array
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function getNavigation(string $userId): array
+    {
+        $navigation = $this->cache->get('app-metadata-navigation-' . $userId, function () {
+            return $this->navigationService->getNavbar()->toArray();
+        });
+        return $navigation ?? [];
     }
 }
