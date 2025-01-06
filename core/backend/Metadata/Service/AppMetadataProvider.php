@@ -735,7 +735,7 @@ class AppMetadataProvider implements AppMetadataProviderInterface
      * @return array
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getNavigation(string $userId): array
+    protected function getNavigation(string $userId): array
     {
         $navigation = $this->cache->get('app-metadata-navigation-' . $userId, function () {
             return $this->navigationService->getNavbar()->toArray();
