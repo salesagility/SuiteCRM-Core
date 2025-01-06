@@ -121,9 +121,6 @@ div.widget-panel .panel-card .card-header {
         flex-direction: row !important;
         align-items: start;
 
-        height: 100%;
-        justify-content: flex-end;
-
         .widget-entry-icon {
           display: flex;
           justify-content: flex-end;
@@ -342,6 +339,11 @@ div.widget-panel .panel-card .card-header {
 .sub-panel-banner.accordion {
   .card {
     border: none;
+
+    .accordion-collapse.collapsing {
+      transition: height 0.3s ease-in-out;
+      overflow: hidden;
+    }
 
     .card-header {
       min-height: 2.1em;
