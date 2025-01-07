@@ -32,6 +32,7 @@ import {AppStateStore} from "../../../../store/app-state/app-state.store";
 import {isTrue} from '../../../../common/utils/value-utils';
 import {LanguageStore} from "../../../../store/language/language.store";
 import {ButtonCallback, ButtonInterface} from "../../../../common/components/button/button.model";
+import {BaseRouteService} from "../../../../services/base-route/base-route.service";
 
 @Component({
     selector: 'scrm-2fa-check',
@@ -53,6 +54,7 @@ export class TwoFactorCheckComponent implements OnInit{
                 protected appState: AppStateStore,
                 protected notificationStore: NotificationStore,
                 protected router: Router,
+                protected baseRoute: BaseRouteService,
                 protected languageStore: LanguageStore
     ) {
     }
@@ -75,6 +77,10 @@ export class TwoFactorCheckComponent implements OnInit{
 
             if (isTrue(response?.login_success) && isTrue(response?.two_factor_complete)) {
                 this.message.addSuccessMessageByKey('LBL_FACTOR_AUTH_SUCCESS');
+
+                if (this.baseRoute.isNativeAuth()) {
+                    window.location.href = this.baseRoute.removeNativeAuth();
+                }
 
                 this.appState.updateInitialAppLoading(true);
                 this.authService.setLanguage(response);
