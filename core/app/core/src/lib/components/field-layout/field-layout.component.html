@@ -38,7 +38,7 @@
                     <div class="{{col?.headerColumnClass}} field-layout-field-label-wrapper col-form-label label-container">
                         <strong>
                             <ng-container
-                                *ngIf="col.field.definition.required && (['edit', 'create'].includes(config.mode))">
+                                *ngIf="col.field?.required()  && (['edit', 'create'].includes(config.mode))">
                                 <span class="required">*</span>
                             </ng-container>
                             <label [ngClass]="labelClass">{{col.field.label | uppercase}}</label>

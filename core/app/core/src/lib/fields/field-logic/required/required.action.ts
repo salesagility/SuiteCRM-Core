@@ -84,7 +84,7 @@ export class RequiredAction extends FieldLogicActionHandler {
 
         data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
-        data.field.definition.required = required;
+        data.field.required.set(required);
         data.field.formControl.setValidators(validators);
         data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});

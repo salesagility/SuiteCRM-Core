@@ -41,7 +41,7 @@
             <span class="field-group-label pr-1">
                 <label *ngIf="attribute.labelKey && showLabel(attribute)">
                     <scrm-label [labelKey]="attribute.labelKey" [module]="getModule()"></scrm-label>
-                    <ng-container *ngIf="attribute.definition.required && (['edit', 'create'].includes(mode))">
+                    <ng-container *ngIf="attribute?.required() && (['edit', 'create'].includes(mode))">
                         <span class="required">*</span>
                     </ng-container>
                 </label>
