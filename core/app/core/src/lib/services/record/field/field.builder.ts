@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {ValidationManager} from '../validation/validation.manager';
 import {DataTypeFormatter} from '../../formatters/data-type.formatter.service';
 import {isFalse, isTrue} from '../../../common/utils/value-utils';
@@ -185,8 +185,8 @@ export class FieldBuilder {
         field.name = viewField.name || definition.name || '';
         field.vardefBased = viewField?.vardefBased ?? definition?.vardefBased ?? false;
         field.readonly = isTrue(viewField.readonly) || isTrue(definition.readonly) || false;
-        field.display = (viewField.display || definition.display || 'default') as DisplayType;
-        field.defaultDisplay = field.display;
+        field.display = signal((viewField.display || definition.display || 'default') as DisplayType);
+        field.defaultDisplay = field?.display();
         if (field.defaultDisplay === 'default') {
             field.defaultDisplay = 'show';
         }

@@ -108,7 +108,7 @@ export class DisplayTypeBackendAction extends FieldLogicActionHandler {
                     return;
                 }
                 display = targetDisplay
-                data.field.display = display as DisplayType;
+                data.field.display.set(display as DisplayType);
 
             }, (error) => {
                 field.loading.set(false)

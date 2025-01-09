@@ -36,14 +36,14 @@
                      [ngClass]="colAlignItems ? colAlignItems : ''"
                      class="d-flex"
                 >
-                    <div *ngIf="col.field && col.field.display !== 'none'"
+                    <div *ngIf="col.field && col.field?.display() !== 'none'"
                          [class.pr-3]="labelDisplay === 'inline'" >
                         <label *ngIf="col.field.label" [ngClass]="labelClass">{{col.field.label}}</label>
                         <scrm-label *ngIf="!col.field.label && col.field.labelKey"
                                     [labelKey]="col.field.labelKey"
                                     [ngClass]="labelClass"></scrm-label>
                     </div>
-                    <div *ngIf="col.field && col.field.display !== 'none'"
+                    <div *ngIf="col.field && col.field?.display()!== 'none'"
                          [class.flex-grow-1]="labelDisplay === 'inline'">
                         <scrm-field [field]="col.field"
                                     [klass]="inputClass"

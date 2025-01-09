@@ -24,11 +24,12 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Directive, Input, OnDestroy, OnInit} from '@angular/core';
+import {Directive, Input, OnDestroy, OnInit, signal} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {FieldGridColumn, FieldGridRow, LabelDisplay} from './field-grid.model';
 import {ScreenSizeMap} from '../../common/services/ui/resize.model';
+import {DisplayType} from "../../common/record/field.model";
 
 
 @Directive()
@@ -204,7 +205,7 @@ export abstract class BaseFieldGridComponent implements OnInit, OnDestroy {
     protected fillRow(row: FieldGridRow): void {
         const len = row.cols.length;
         for (let i = len; i < this.colNumber; i++) {
-            row.cols.push({field: {type: '', display: 'none'}});
+            row.cols.push({field: {type: '', display: signal<DisplayType>('none')}});
         }
     }
 

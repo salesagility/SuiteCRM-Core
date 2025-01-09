@@ -74,7 +74,7 @@ export class BaseComposite extends BaseFieldComponent implements OnInit, OnDestr
         const fields: Field[] = [];
 
         this.field.definition.layout.forEach(name => {
-            if (!this.field.attributes[name] || this.field.attributes[name].display === 'none') {
+            if (!this.field.attributes[name] || this.field.attributes[name]?.display() === 'none') {
                 return;
             }
             fields.push(this.field.attributes[name]);

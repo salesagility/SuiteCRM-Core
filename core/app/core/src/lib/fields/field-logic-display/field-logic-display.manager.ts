@@ -58,7 +58,7 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
         });
 
         if (!validModeLogic || !validModeLogic.length) {
-            field.display = toDisplay;
+            field.display.set(toDisplay);
             return;
         }
 
@@ -93,7 +93,7 @@ export class FieldLogicDisplayManager extends BaseActionManager<FieldLogicDispla
             toDisplay = 'show';
         }
 
-        field.display = toDisplay;
+        field.display.set(toDisplay);
 
     }
 

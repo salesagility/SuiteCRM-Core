@@ -243,8 +243,8 @@ export class ListFilterStore implements StateStore {
 
 
 
-            if (!isEmpty(fieldFilter?.operator) && field.display === 'none') {
-                field.display = 'default';
+            if (!isEmpty(fieldFilter?.operator) && field.display() === 'none') {
+                field.display.set('default');
             }
 
             this.fields.push(field);
@@ -269,7 +269,7 @@ export class ListFilterStore implements StateStore {
             const name = field.name;
 
 
-            if (field.display === 'none' || field.source === 'groupField') {
+            if (field?.display() === 'none' || field.source === 'groupField') {
                 return;
             }
 

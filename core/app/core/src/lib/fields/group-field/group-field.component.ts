@@ -101,7 +101,7 @@ export class GroupFieldComponent extends BaseFieldComponent implements AfterView
         const fields: Field[] = [];
 
         this.field.definition.layout.forEach(name => {
-            if (!this.record.fields[name] || this.record.fields[name].display === 'none') {
+            if (!this.record.fields[name] || this.record.fields[name]?.display() === 'none') {
                 return;
             }
 

@@ -82,7 +82,7 @@ export class FieldLogicDisplayTypeAction extends FieldLogicActionHandler {
             display = targetDisplay;
         }
 
-        data.field.display = display as DisplayType;
+        data.field.display.set(display as DisplayType);
 
         const resetOn: string = (action.params && action.params.resetOn) || 'none';
 

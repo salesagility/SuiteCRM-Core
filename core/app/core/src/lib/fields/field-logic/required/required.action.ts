@@ -32,6 +32,7 @@ import {ViewMode} from '../../../common/views/view.model';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
 import {RequiredValidator} from '../../../services/record/validation/validators/required.validator';
 import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";
+import {ViewFieldDefinition} from "../../../common/metadata/metadata.model";
 
 @Injectable({
     providedIn: 'root'
@@ -72,7 +73,13 @@ export class RequiredAction extends FieldLogicActionHandler {
         let validators = [...data.field.validators || []];
         if (isActive) {
             required = true;
-            validators = validators.concat(this.requiredValidator.getValidator(field, record));
+
+            const viewField: ViewFieldDefinition = {
+                ...field,
+                display: field?.display()
+            }
+
+            validators = validators.concat(this.requiredValidator.getValidator(viewField, record));
         }
 
         data.field.formControl.updateValueAndValidity({onlySelf: true, emitEvent: true});

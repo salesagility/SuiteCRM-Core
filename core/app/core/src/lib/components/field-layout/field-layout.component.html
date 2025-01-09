@@ -33,7 +33,7 @@
              [ngClass]="colClass"
              class="field-layout-col">
 
-            <ng-container *ngIf="col.field && col.field.display !== 'none'">
+            <ng-container *ngIf="col.field && col.field.display() !== 'none'">
                 <div class="field-layout-field-group-wrapper form-group row">
                     <div class="{{col?.headerColumnClass}} field-layout-field-label-wrapper col-form-label label-container">
                         <strong>
@@ -94,7 +94,7 @@
                 <ng-content select="[field-grid-special]"></ng-content>
             </ng-container>
 
-            <div *ngIf="col.field && col.field?.display !== 'none' && i < fieldGrid.length - 1"
+            <div *ngIf="col.field && col.field?.display() !== 'none' && i < fieldGrid.length - 1"
                  class="field-separation mt-2">
             </div>
         </div>

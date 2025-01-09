@@ -183,7 +183,7 @@ export interface Field {
     attributes?: FieldAttributeMap;
     items?: Record[];
     readonly?: boolean;
-    display?: DisplayType;
+    display?: WritableSignal<DisplayType>;
     defaultDisplay?: string;
     default?: string;
     defaultValueModes?: ViewMode[];
@@ -218,7 +218,7 @@ export class BaseField implements Field {
     loading?: WritableSignal<boolean> = signal(false);
     dynamicLabelKey?: string;
     readonly?: boolean;
-    display?: DisplayType;
+    display?: WritableSignal<DisplayType>;
     defaultDisplay?: string;
     default?: string;
     defaultValueModes?: ViewMode[];
@@ -249,6 +249,7 @@ export class BaseField implements Field {
     constructor() {
         this.valueSubject = new BehaviorSubject<FieldValue>({} as FieldValue);
         this.valueChanges$ = this.valueSubject.asObservable();
+        this.display = signal('default');
     }
 
     get value(): string {

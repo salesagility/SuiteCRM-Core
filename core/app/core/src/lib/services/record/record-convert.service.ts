@@ -103,7 +103,7 @@ export class RecordConvertService {
                     vardefBased: true,
                     label: vardef.vname ?? '',
                     type: vardef.type ?? '',
-                    display: vardef.display ?? '',
+                    display: vardef.display ?? 'default',
                     fieldDefinition: vardef,
                     metadata: vardef.metadata ?? {} as FieldMetadata,
                     logic: vardef.logic ?? {} as FieldLogicMap

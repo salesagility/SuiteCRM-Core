@@ -298,7 +298,7 @@ export class SavedFilterRecordStore extends RecordStore {
             label: fieldMeta.label,
             vardefBased: fieldMeta?.vardefBased ?? false,
             readonly: fieldMeta?.readonly ?? false,
-            display: fieldMeta?.display ?? '',
+            display: fieldMeta?.display ?? 'default',
             type,
             fieldDefinition: {}
         } as ViewFieldDefinition;

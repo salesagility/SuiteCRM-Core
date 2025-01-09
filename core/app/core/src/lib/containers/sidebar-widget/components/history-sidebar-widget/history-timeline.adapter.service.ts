@@ -33,7 +33,6 @@ import {Record} from '../../../../common/record/record.model';
 import {ViewContext} from '../../../../common/views/view.model';
 import {take} from 'rxjs/operators';
 import {HistoryTimelineStoreFactory} from './history-timeline.store.factory';
-import {sign} from "mathjs";
 
 export type ActivityTypes = 'calls' | 'tasks' | 'meetings' | 'history' | 'audit' | 'notes' | string;
 
@@ -145,17 +144,20 @@ export class HistoryTimelineAdapter {
             title: {
                 type: 'varchar',
                 value: record.attributes.name,
-                loading: signal(false)
+                loading: signal(false),
+                display: signal('default')
             },
             user: {
                 type: 'varchar',
                 value: record.attributes.assigned_user_name.user_name,
-                loading:  signal(false)
+                loading:  signal(false),
+                display: signal('default')
             },
             date: {
                 type: 'datetime',
                 value: record.attributes.date_end,
-                loading:  signal(false)
+                loading:  signal(false),
+                display: signal('default')
             },
             record
         } as HistoryTimelineEntry;
@@ -165,7 +167,8 @@ export class HistoryTimelineAdapter {
             timelineEntry.description = {
                 type: 'html',
                 value: record.attributes.description,
-                loading: signal(false)
+                loading: signal(false),
+                display: signal('default')
             };
         }
         return timelineEntry;

@@ -69,7 +69,8 @@ export class FieldManager {
             definition: {
                 type
             },
-            loading: signal(false)
+            loading: signal(false),
+            display: signal('default')
         } as Field;
     }
 
