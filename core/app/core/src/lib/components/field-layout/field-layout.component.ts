@@ -105,11 +105,11 @@ export class FieldLayoutComponent extends BaseFieldGridComponent {
                 const adaptor = layoutCol.adaptor ?? null;
                 const useFullColumn = field?.useFullColumn ?? field?.definition?.useFullColumn ?? [];
 
-                let headerColumnClass = 'col-sm-3';
-                let valueColumnClass = 'col-sm-9';
+                let headerColumnClass = 'col-sm-12 col-md-12 col-lg-3';
+                let valueColumnClass = 'col-sm-12 col-md-12 col-lg-9';
 
-                const headerColSizes = {'xs': '12', 'sm': '3', 'md': '3', 'lg': '3', 'xl': '3'};
-                const valuesColSizes = {'xs': '12', 'sm': '9', 'md': '9', 'lg': '9', 'xl': '9'};
+                const headerColSizes = {'xs': '12', 'sm': '12', 'md': '12', 'lg': '3', 'xl': '3'};
+                const valuesColSizes = {'xs': '12', 'sm': '12', 'md': '12', 'lg': '9', 'xl': '9'};
                 const useFullColumnsMaps = useFullColumn.reduce((ac,a) => ({...ac,[a]:true}),{});
 
                 if (useFullColumn.length) {
