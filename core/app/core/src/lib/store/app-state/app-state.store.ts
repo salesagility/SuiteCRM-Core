@@ -24,7 +24,7 @@
  * the words "Supercharged by SuiteCRM".
  */
 
-import {Injectable, signal} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import {BehaviorSubject, combineLatestWith, Observable, Subscription} from 'rxjs';
 import {distinctUntilChanged, map} from 'rxjs/operators';
 import {isVoid} from '../../common/utils/value-utils';
@@ -94,7 +94,7 @@ export class AppStateStore implements StateStore {
     protected loadingBuffer: LoadingBuffer;
     protected subs: Subscription[] = [];
 
-    isTouchScreen = signal<boolean>(false);
+    private isLoginWizardCompleted: WritableSignal<boolean> = signal<boolean>(true);
 
     constructor(
         protected loadingBufferFactory: LoadingBufferFactory,
@@ -122,12 +122,6 @@ export class AppStateStore implements StateStore {
 
             }))
         );
-
-        if('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            this.isTouchScreen.set(true);
-        } else {
-            this.isTouchScreen.set(false);
-        }
     }
 
     /**
@@ -458,5 +452,13 @@ export class AppStateStore implements StateStore {
 
     public resetActiveDropdown(): void {
         this.updateState({...internalState, activeNavbarDropdown: 0});
+    }
+
+    public setLoginWizardComplete(isComplete: boolean): void {
+        this.isLoginWizardCompleted.set(isComplete);
+    }
+
+    public getLoginWizardComplete(): boolean {
+        return this.isLoginWizardCompleted();
     }
 }

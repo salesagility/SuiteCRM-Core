@@ -53,6 +53,7 @@ export interface SessionStatus {
 export interface AppStatus {
     installed?: boolean;
     locked?: boolean;
+    loginWizardCompleted?: boolean;
 }
 
 @Injectable({
@@ -369,6 +370,9 @@ export class AuthService {
             .pipe(
                 take(1),
                 map((user: SessionStatus) => {
+
+                    const isLoginWizardCompleted = user.appStatus.loginWizardCompleted ?? false;
+                    this.appStateStore.setLoginWizardComplete(isLoginWizardCompleted);
 
                     if (user && user.appStatus.installed === false) {
                         return this.router.parseUrl('install');

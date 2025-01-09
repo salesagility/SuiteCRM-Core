@@ -72,13 +72,25 @@ export class AuthGuard  {
             this.authorizeUserACL(route)
         ]).pipe(map(([session, acl]: any) => {
 
+
+
                 if (session instanceof UrlTree) {
                     return session;
                 }
                 if (acl instanceof UrlTree) {
                     return acl;
                 }
-                return session && acl;
+                if (session && acl) {
+                    const isLoginWizardCompleted = this.appState.getLoginWizardComplete();
+
+                    if (!isLoginWizardCompleted && snapshot.url !== '/users/Wizard') {
+                        return this.router.parseUrl('/users/Wizard');
+                    }
+
+                    return true;
+                }
+
+                return false;
             }
         ));
 

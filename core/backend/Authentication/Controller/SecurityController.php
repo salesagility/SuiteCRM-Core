@@ -277,6 +277,14 @@ class SecurityController extends AbstractController
             return $response;
         }
 
+        $isLoginWizardCompleteStatus = $this->authentication->getLoginWizardCompletedStatus();
+
+        if ($isLoginWizardCompleteStatus) {
+            $appStatus['loginWizardCompleted'] = true;
+        } else {
+            $appStatus['loginWizardCompleted'] = false;
+        }
+
         $data = $this->getResponseData($user, $appStatus);
 
         if (!isset($data['redirect'])){

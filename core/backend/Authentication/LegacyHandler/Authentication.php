@@ -146,6 +146,29 @@ class Authentication extends LegacyHandler
     }
 
     /**
+     * Check if user completed login wizard
+     * @return bool
+     */
+    public function getLoginWizardCompletedStatus(): bool
+    {
+
+        $this->init();
+
+        $user = $this->userHandler->getCurrentUser();
+
+        $ut = $user->getPreference('ut') ?? '';
+
+        $this->close();
+
+        if (empty($ut)) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * Init legacy user session
      *
      * @param $username
