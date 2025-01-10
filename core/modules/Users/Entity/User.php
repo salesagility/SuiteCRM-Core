@@ -1170,7 +1170,7 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getBackupCodes(): array
     {
-        return $this->backupCodes;
+        return $this->backupCodes ?? [];
     }
 
     public function setBackupCodes(?array $backupCodes): self
@@ -1272,7 +1272,6 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
 
     public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
     {
-        // You could persist the other configuration options in the user entity to make it individual per user.
         return new TotpConfiguration($this->getTotpSecret(), TotpConfiguration::ALGORITHM_SHA1, 30, 6);
     }
 
@@ -1306,10 +1305,13 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
     public function isBackupCode(string $code): bool
     {
         $correctCode = false;
-        if (in_array($code, $this->getBackupCodes())){
+        $backupCodes = $this->getBackupCodes();
+
+        if (in_array($code, $backupCodes, true)){
             $correctCode = true;
             $this->invalidateBackupCode($code);
         }
+
         return $correctCode;
     }
 
@@ -1318,10 +1320,11 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
      */
     public function invalidateBackupCode(string $code): void
     {
-        $key = array_search($code, $this->backupCodes);
+        $key = array_search($code, $this->getBackupCodes(), true);
         if ($key !== false){
-            unset($this->backupCodes[$key]);
+            unset($this->getBackupCodes()[$key]);
         }
+
         $this->backupCodes = array_values($this->backupCodes);
     }
 

@@ -31,7 +31,6 @@ namespace App\Authentication\Controller;
 use App\Authentication\LegacyHandler\UserHandler;
 use App\Data\LegacyHandler\PreparedStatementHandler;
 use App\Engine\LegacyHandler\CacheManagerHandler;
-use App\Security\TwoFactor\BackupCodeGenerator;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
@@ -77,7 +76,6 @@ class SecurityController extends AbstractController
     private $entityManager;
     private PreparedStatementHandler $preparedStatementHandler;
 
-    private BackupCodeGenerator $backupCodeGenerator;
 
     private UserHandler $userHandler;
 
@@ -92,7 +90,6 @@ class SecurityController extends AbstractController
         RequestStack             $requestStack,
         EntityManagerInterface   $entityManager,
         PreparedStatementHandler $preparedStatementHandler,
-        BackupCodeGenerator $backupCodeGenerator,
         UserHandler $userHandler,
         CacheManagerHandler $cacheManagerHandler
     )
@@ -101,7 +98,6 @@ class SecurityController extends AbstractController
         $this->requestStack = $requestStack;
         $this->entityManager = $entityManager;
         $this->preparedStatementHandler = $preparedStatementHandler;
-        $this->backupCodeGenerator = $backupCodeGenerator;
         $this->userHandler = $userHandler;
         $this->cacheManagerHandler = $cacheManagerHandler;
     }
@@ -155,9 +151,7 @@ class SecurityController extends AbstractController
 
         $user->setTotpSecret($secret);
 
-        $backupCodes = $this->backupCodeGenerator->generate();
-
-        $this->setupBackupCodes($user,$backupCodes);
+        $qrCodeUrl = $totpAuthenticator->getQRContent($user);
 
         $this->preparedStatementHandler->update(
             'UPDATE users SET totp_secret = :totp_secret WHERE id = :id',
@@ -167,12 +161,9 @@ class SecurityController extends AbstractController
 
         $this->entityManager->flush();
 
-        $qrCodeUrl = $totpAuthenticator->getQRContent($user);
-
         $response = [
             'url' => $qrCodeUrl,
             'svg' => $this->displayQRCode($qrCodeUrl),
-            'backupCodes' => $backupCodes
         ];
 
         return new Response(json_encode($response), Response::HTTP_OK);
@@ -184,6 +175,8 @@ class SecurityController extends AbstractController
         $id = $user->getId();
 
         $this->userHandler->setUserPreference('is_two_factor_enabled', false);
+        $user->setTotpSecret(null);
+        $user->setBackupCodes(null);
 
         $this->preparedStatementHandler->update(
             'UPDATE users SET totp_secret = NULL, is_totp_enabled = 0, backup_codes = NULL WHERE id = :id',
@@ -370,13 +363,5 @@ class SecurityController extends AbstractController
             ->build();
 
         return $result->getString();
-    }
-
-    protected function setupBackupCodes($user, $backupCodes): void
-    {
-        $this->preparedStatementHandler->update("UPDATE users SET backup_codes = :backup_codes WHERE id = :id",
-            ['id' => $user->getId(), 'backup_codes' => $backupCodes],
-            [['param' => 'id', 'type' => 'string'], ['param' => 'backup_codes', 'type' => 'json']]
-        );
     }
 }

@@ -192,6 +192,14 @@ services:
 
   security.listener.json_login_ldap.main: '@App\Security\Ldap\AppCheckLdapCredentialsListener'
 
+  App\Security\TwoFactor\EventListener\TotpEncryptionListener:
+    arguments:
+      - '@App\Security\TwoFactor\LegacyHandler\BlowfishCodeHandler'
+    tags:
+      - { name: doctrine.event_listener, event: prePersist, entity: App\Module\Users\Entity\User }
+      - { name: doctrine.event_listener, event: preUpdate, entity: App\Module\Users\Entity\User }
+      - { name: doctrine.event_listener, event: postLoad, entity: App\Module\Users\Entity\User }
+
   App\Security\Ldap\AppCheckLdapCredentialsListener:
     class: App\Security\Ldap\AppCheckLdapCredentialsListener
     tags:

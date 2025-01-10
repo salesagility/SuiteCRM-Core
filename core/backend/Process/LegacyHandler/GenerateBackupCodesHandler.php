@@ -109,8 +109,9 @@ class GenerateBackupCodesHandler extends LegacyHandler implements ProcessHandler
      */
     public function run(Process $process): void
     {
-        $user = $this->security->getToken()->getUser();
+        $user = $this->security->getToken()?->getUser();
         $backupCodes = $this->backupCodeGenerator->generate();
+        $user?->setBackupCodes($backupCodes);
         $this->setupBackupCodes($user, $backupCodes);
 
 

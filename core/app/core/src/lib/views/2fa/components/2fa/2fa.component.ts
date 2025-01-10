@@ -97,7 +97,6 @@ export class TwoFactorComponent implements OnInit {
             next: (response) => {
                 this.qrCodeUrl = response?.url;
                 this.qrCodeSvg = response?.svg;
-                this.backupCodes = response?.backupCodes;
                 this.areRecoveryCodesGenerated.set(true);
                 this.isQrCodeGenerated.set(true);
             },
