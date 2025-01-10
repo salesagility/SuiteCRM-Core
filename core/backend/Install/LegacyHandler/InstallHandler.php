@@ -43,6 +43,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Throwable;
 
 /**
  * Class InstallHandler
@@ -152,17 +153,46 @@ class InstallHandler extends LegacyHandler
         $_REQUEST['goto'] = 'SilentInstall';
         $_REQUEST['cli'] = 'true';
 
-        ob_start();
-        ob_start();
-        /* @noinspection PhpIncludeInspection */
-        include_once 'install.php';
-        ob_end_clean();
-        ob_end_clean();
+        $installResult = [];
 
-        if (is_file('config.php')) {
-            $feedback->setSuccess(true)->setMessages(['SuiteCRM Installation Completed']);
+        try {
+            ob_start();
+            ob_start();
+            /* @noinspection PhpIncludeInspection */
+            include_once 'install_service.php';
+            ob_end_clean();
+            ob_end_clean();
+        } catch (Throwable $t) {
+            $this->logger->error('An error occurred while installing SuiteCRM ' . $t->getMessage());
+
+            $messages = ['An error occurred while installing SuiteCRM. Please check the logs.'];
+            if (!empty($installResult['messages'])) {
+                $messages = array_merge($messages, $installResult['messages']);
+            }
+            return $feedback->setSuccess(false)->setMessages($messages);
+        }
+
+        $success = false;
+        if (isset($installResult['success'])) {
+            $success = $installResult['success'];
+        }
+
+        if ($success === true && is_file('config.php')) {
+            $messages = ['SuiteCRM Installation Completed'];
+
+            if (!empty($installResult['messages'])) {
+                $messages = array_merge($messages, $installResult['messages']);
+            }
+
+            $feedback->setSuccess(true)->setMessages($messages);
         } else {
-            $feedback->setSuccess(false)->setMessages(['SuiteCRM Installation Failed']);
+            $messages = ['An error occurred while installing SuiteCRM. Please check the logs.'];
+
+            if (!empty($installResult['messages'])) {
+                $messages = array_merge($messages, $installResult['messages']);
+            }
+
+            $feedback->setSuccess(false)->setMessages($messages);
         }
 
         chdir($this->projectDir);
