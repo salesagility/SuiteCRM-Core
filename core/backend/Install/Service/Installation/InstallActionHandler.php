@@ -106,7 +106,13 @@ class InstallActionHandler implements ProcessHandlerInterface
         if (empty($process->getOptions())) {
             throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
         }
+    }
 
+    /**
+     * @inheritDoc
+     */
+    public function run(Process $process)
+    {
         $options = $process->getOptions();
 
         $validOptions = [
@@ -120,19 +126,19 @@ class InstallActionHandler implements ProcessHandlerInterface
             'db_name'
         ];
 
+        $missingOptions = [];
         foreach ($validOptions as $validOption) {
             if (empty($options['payload'][$validOption])) {
-                throw new InvalidArgumentException(self::MSG_OPTIONS_NOT_FOUND);
+                $missingOptions[] = $validOption;
             }
         }
-    }
 
-    /**
-     * @inheritDoc
-     */
-    public function run(Process $process)
-    {
-        $options = $process->getOptions();
+        if(!empty($missingOptions)){
+            $process->setStatus('error');
+            $process->setMessages(['Missing required options: ' . implode(', ', $missingOptions)]);
+            $process->setData([]);
+            return;
+        }
 
         global $installing;
         $installing = true;
