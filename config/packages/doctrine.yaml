@@ -1,6 +1,6 @@
 doctrine:
   dbal:
-    url: '%env(resolve:DATABASE_URL)%'
+    url: '%env(DATABASE_URL)%'
     driver: pdo_mysql
     charset: UTF8
     auto_commit: true
