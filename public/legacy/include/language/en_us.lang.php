@@ -2306,6 +2306,9 @@ $app_strings = array(
     'LBL_BACKUP_CODES_FALLBACK_INSTRUCTIONS' => 'Use one of the backup codes (it expires after being used)',
     'LBL_OTP_SETUP' => 'Use a OTP (one time password) authenticator on your mobile or computer to enable 2FA (Two-Factor Authentication)',
     'LBL_QR_CODE_HELP' => "If you haven't already, please download an Authenticator Application (such as FreeOTP or Google Authenticator). Use that app to scan the QR code.",
+    'LBL_USE_SECRET' => "Unable to scan the QR Code?",
+    'LBL_USE_SECRET_DESC' => "If you are unable to scan the QR code, please enter the secret below manually into your authenticator app.",
+    'LBL_HIDE_SECRET' => "Hide TOTP Secret",
     'LBL_2FA_LOGIN_CANCEL' => 'Two Factor Authentication cancelled',
 
     'LBL_FACTOR_AUTH_DISABLE' => 'Two Factor Authentication was Disabled',
