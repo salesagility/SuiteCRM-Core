@@ -136,7 +136,6 @@ class InstallHandler extends LegacyHandler
      */
     public function installLegacy(): Feedback
     {
-        $this->switchSession($this->legacySessionName);
         chdir($this->legacyDir);
 
         $errorLevelStored = error_reporting();
@@ -155,48 +154,46 @@ class InstallHandler extends LegacyHandler
 
         $installResult = [];
 
+        if (!is_readable('include/portability/Install/AppInstallService.php')) {
+            $this->logger->error('An error occurred while installing SuiteCRM - not able to access portability/Install/AppInstallService.php');
+            $feedback->setSuccess(false)->setMessages(['An error occurred while installing SuiteCRM - not able to access portability/Install/AppInstallService.php']);
+            chdir($this->projectDir);
+
+            error_reporting($errorLevelStored);
+
+            return $feedback;
+        }
+
         try {
             ob_start();
             ob_start();
             /* @noinspection PhpIncludeInspection */
-            include_once 'install_service.php';
+            require_once 'include/portability/Install/AppInstallService.php';
+            $appInstallService = new \AppInstallService();
+            $installResult = $appInstallService->runInstall();
             ob_end_clean();
             ob_end_clean();
         } catch (Throwable $t) {
-            $this->logger->error('An error occurred while installing SuiteCRM ' . $t->getMessage());
+            $this->logger->error('An error occurred while installing SuiteCRM : ' . $t->getMessage());
 
+            $installResult = $installResult ?? [];
+            $installResult['success'] = false;
+            $installResult['messages'] = $installResult['messages'] ?? [];
+            $installResult['messages'] = array_merge($installResult['messages'], ['Exception: ' . $t->getMessage()]);
+        }
+
+        $success = ($installResult['success'] ?? false) && is_file('config.php');
+        $installMessages = $installResult['messages'] ?? [];
+
+        $messages = ['SuiteCRM Installation Completed'];
+        if (!$success) {
             $messages = ['An error occurred while installing SuiteCRM. Please check the logs.'];
-            if (!empty($installResult['messages'])) {
-                $messages = array_merge($messages, $installResult['messages']);
-            }
-            return $feedback->setSuccess(false)->setMessages($messages);
         }
+        $messages = array_merge($messages, $installMessages);
 
-        $success = false;
-        if (isset($installResult['success'])) {
-            $success = $installResult['success'];
-        }
-
-        if ($success === true && is_file('config.php')) {
-            $messages = ['SuiteCRM Installation Completed'];
-
-            if (!empty($installResult['messages'])) {
-                $messages = array_merge($messages, $installResult['messages']);
-            }
-
-            $feedback->setSuccess(true)->setMessages($messages);
-        } else {
-            $messages = ['An error occurred while installing SuiteCRM. Please check the logs.'];
-
-            if (!empty($installResult['messages'])) {
-                $messages = array_merge($messages, $installResult['messages']);
-            }
-
-            $feedback->setSuccess(false)->setMessages($messages);
-        }
+        $feedback->setSuccess($success)->setMessages($messages);
 
         chdir($this->projectDir);
-        $this->switchSession($this->defaultSessionName);
 
         error_reporting($errorLevelStored);
 
