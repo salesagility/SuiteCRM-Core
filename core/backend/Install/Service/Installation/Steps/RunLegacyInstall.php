@@ -81,17 +81,11 @@ class RunLegacyInstall implements InstallStepInterface
     {
         $result = $this->handler->installLegacy();
 
-        $feedback = new Feedback();
-        $feedback->setSuccess(true);
-        $feedback->setMessages(['Legacy install successful']);
-
-        if ($result === false) {
-            $feedback->setSuccess(false);
-            $feedback->setMessages(['Legacy install failed']);
-            $feedback->setStatusCode(InstallStatus::FAILED);
+        if ($result->isSuccess() === false) {
+            $result->setStatusCode(InstallStatus::FAILED);
         }
 
-        return $feedback;
+        return $result;
     }
 
 }
