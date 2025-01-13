@@ -67,7 +67,28 @@
 
                             <ng-container *ngIf="isQrCodeGenerated()">
                                 <div *ngIf="qrCodeSvg" class='qr-code-container'>
-                                    <div class='qr-code' [innerHTML]="qrCodeSvg | trustHtml">
+                                    <div *ngIf="!showSecret()" class='qr-code'>
+                                        <div [innerHTML]="qrCodeSvg | trustHtml">
+                                        </div>
+                                        <div>
+                                            <a class="small show-secret-link pl-1" (click)="setShowSecret(true)">
+                                                <scrm-label labelKey='LBL_USE_SECRET'>
+                                                </scrm-label>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="showSecret()" class='qr-code'>
+                                        <scrm-label class="pb-3" labelKey='LBL_USE_SECRET_DESC'>
+                                        </scrm-label>
+
+                                        <span class="small font-weight-bold pb-3 secret">{{ secret }}</span>
+
+                                        <div>
+                                            <a class="small show-secret-link" (click)="setShowSecret(false)">
+                                                <scrm-label labelKey='LBL_SHOW_QR_CODE'>
+                                                </scrm-label>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div>
                                         <scrm-label labelKey='LBL_QR_CODE_HELP'

@@ -47,11 +47,13 @@ export class TwoFactorComponent implements OnInit {
 
     qrCodeUrl: string;
     qrCodeSvg: string;
+    secret: string;
     backupCodes: any;
     authCode: string;
     isAppMethodEnabled: WritableSignal<boolean> = signal(false);
     areRecoveryCodesGenerated: WritableSignal<boolean> = signal(false);
     isQrCodeGenerated: WritableSignal<boolean> = signal(false);
+    showSecret: WritableSignal<boolean> = signal(false);
 
     title: string = '';
     appMethodHeaderLabel: string = '';
@@ -89,6 +91,7 @@ export class TwoFactorComponent implements OnInit {
 
         this.isAppMethodEnabled.set(isEnabled);
         this.areRecoveryCodesGenerated.set(isEnabled);
+        this.showSecret.set(false);
         this.initButtons();
     }
 
@@ -97,6 +100,7 @@ export class TwoFactorComponent implements OnInit {
             next: (response) => {
                 this.qrCodeUrl = response?.url;
                 this.qrCodeSvg = response?.svg;
+                this.secret = response.secret;
                 this.areRecoveryCodesGenerated.set(true);
                 this.isQrCodeGenerated.set(true);
             },
@@ -199,6 +203,11 @@ export class TwoFactorComponent implements OnInit {
             this.generateCodes()
             this.message.addSuccessMessageByKey('LBL_REGENERATED_BACKUP_CODES');
         }).catch();
+    }
+
+    setShowSecret(value): void {
+        this.showSecret.set(value);
+        return;
     }
 
     protected initButtons() {

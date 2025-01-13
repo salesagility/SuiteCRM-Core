@@ -45,6 +45,17 @@
 
           .qr-code {
             display: flex;
+            flex-flow: column;
+
+            .show-secret-link {
+              clear: both;
+              color: $coral-pink;
+            }
+
+            .show-secret-link:hover {
+              color: $light-orange;
+              cursor: pointer;
+            }
           }
 
           .auth-input {
@@ -122,6 +133,20 @@
               flex-direction: column;
               align-items: center;
               padding-bottom: .25rem;
+
+              .secret {
+                width: 50%;
+              }
+
+              .show-secret-link {
+                clear: both;
+                color: $coral-pink;
+              }
+
+              .show-secret-link:hover {
+                color: $light-orange;
+                cursor: pointer;
+              }
             }
 
             .qr-code-label {
@@ -188,6 +213,20 @@
               flex-direction: column;
               align-items: center;
               padding-bottom: .25rem;
+
+              .secret {
+                width: 50%;
+              }
+
+              .show-secret-link {
+                clear: both;
+                color: $coral-pink;
+              }
+
+              .show-secret-link:hover {
+                color: $light-orange;
+                cursor: pointer;
+              }
             }
 
             .qr-code-label {

@@ -164,6 +164,7 @@ class SecurityController extends AbstractController
         $response = [
             'url' => $qrCodeUrl,
             'svg' => $this->displayQRCode($qrCodeUrl),
+            'secret' => $secret,
         ];
 
         return new Response(json_encode($response), Response::HTTP_OK);
