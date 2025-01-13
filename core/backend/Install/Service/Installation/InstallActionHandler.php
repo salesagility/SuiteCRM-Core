@@ -133,7 +133,7 @@ class InstallActionHandler implements ProcessHandlerInterface
             }
         }
 
-        if(!empty($missingOptions)){
+        if (!empty($missingOptions)) {
             $process->setStatus('error');
             $process->setMessages(['Missing required options: ' . implode(', ', $missingOptions)]);
             $process->setData([]);
@@ -232,11 +232,17 @@ class InstallActionHandler implements ProcessHandlerInterface
             return ['LBL_SILENT_INSTALL_SUCCESS'];
         }
 
+        $messages = [];
+
         if (!empty($result->getMessageLabels())) {
-            return [$result->getMessageLabels()[0]];
+            $messages = $result->getMessageLabels();
         }
 
-        return $result->getMessageLabels();
+        if (!empty($result->getMessages())) {
+            $messages = array_merge($messages, $result->getMessages());
+        }
+
+        return $messages;
     }
 
 }
