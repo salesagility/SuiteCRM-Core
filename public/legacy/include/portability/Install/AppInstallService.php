@@ -111,10 +111,7 @@ class AppInstallService
 
 
         if (!empty($sugar_config['installer_locked'])) {
-            return [
-                'success' => false,
-                'messages' => ['Installer has been disabled'],
-            ];
+            return $this->buildResult(false, ['Installer has been disabled']);
         }
 
         //check to see if the script files need to be rebuilt, add needed variables to request array
@@ -200,8 +197,13 @@ class AppInstallService
 
         // Add check here to see if a silent install config file exists; if so then launch silent installer
 
-
-        pullSilentInstallVarsIntoSession();
+        try {
+            pullSilentInstallVarsIntoSession();
+        } catch (Exception $e) {
+            $this->addDebug($e->getMessage());
+            $this->addMessage($e->getMessage());
+            return $this->buildResult(false);
+        }
 
         $validation_errors = array();
 
@@ -240,10 +242,7 @@ class AppInstallService
         }
 
         if ($si_errors) {
-            return [
-                'success' => false,
-                'messages' => $validation_errors ?? [],
-            ];
+            return $this->buildResult(false, $validation_errors ?? []);
         }
 
         //since this is a SilentInstall we still need to make sure that
@@ -252,15 +251,11 @@ class AppInstallService
         $result = make_writable('./config.php');
 
         if (!$result) {
-            return [
-                'success' => false,
-                'messages' => ['Not able to write to /public/legacy/config.php'],
-            ];
+            return $this->buildResult(false, ['Not able to write to /public/legacy/config.php']);
         }
 
         // custom dir
         make_writable('./custom');
-
 
         // modules dir
         recursive_make_writable('./modules');
@@ -281,29 +276,24 @@ class AppInstallService
         recursive_make_writable('./public');
 
         installerHook('pre_installFileRequire', ['the_file' => 'install/perform_setup.php']);
-        $performSetupResult = [];
+
         try {
-            $this->performSetup();
+            $performSetupResult = $this->performSetup();
         } catch (Exception $e) {
-            return [
-                'success' => false,
-                'messages' => [$e->getMessage()],
-                'debug' => $this->getDebug()
-            ];
+            return $this->buildResult(false, [$e->getMessage()]);
         }
+
         installerHook('post_installFileRequire', ['the_file' => 'install/perform_setup.php']);
 
+        $success = true;
         if (isset($performSetupResult['success']) && $performSetupResult['success'] === false) {
-            return $performSetupResult;
+            $success = false;
         }
 
-        return [
-            'success' => true,
-            'messages' => []
-        ];
+        return $this->buildResult($success);
     }
 
-    protected function performSetup()
+    protected function performSetup(): array
     {
 
         global $mod_strings;
@@ -949,6 +939,9 @@ class AppInstallService
 
         $this->installStatus('Installation process finished');
 
+        return [
+            'success' => true
+        ];
     }
 
     protected function getSupportedInstallLanguages(): array
@@ -1070,9 +1063,24 @@ class AppInstallService
     }
 
 
-    protected function addMessage(array $message): void
+    protected function addMessage(string $message): void
     {
         $this->messages[] = $message;
+    }
+
+    /**
+     * @param bool $success
+     * @param array $messages
+     * @param array $debug
+     * @return array
+     */
+    protected function buildResult(bool $success, array $messages = [], array $debug = []): array
+    {
+        return [
+            'success' => $success,
+            'messages' => array_merge($this->getMessages(), $messages),
+            'debug' => array_merge($this->getDebug(), $debug)
+        ];
     }
 
 }
