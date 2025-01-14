@@ -2122,7 +2122,10 @@ function sugar_die($error_message, $exit_code = 1)
 {
     global $focus;
     sugar_cleanup();
-    echo $error_message;
+
+    if (!empty($GLOBALS['disable_echos'])) {
+        echo $error_message;
+    }
     throw new Exception($error_message, $exit_code);
 }
 
@@ -3760,10 +3763,12 @@ function sugar_cleanup($exit = false)
         //this is not an ajax call and the user preference error flag is set, so reset the flag and print js to flash message
         $err_mess = $app_strings['ERROR_USER_PREFS'];
         $_SESSION['USER_PREFRENCE_ERRORS'] = false;
-        echo "
-		<script>
-			ajaxStatus.flashStatus('$err_mess',7000);
-		</script>";
+        if (!empty($GLOBALS['disable_echos'])) {
+            echo "
+            <script>
+                ajaxStatus.flashStatus('$err_mess',7000);
+            </script>";
+        }
     }
 
     pre_login_check();
