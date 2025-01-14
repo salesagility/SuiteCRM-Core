@@ -191,7 +191,9 @@ class InstallHandler extends LegacyHandler
         }
         $messages = array_merge($messages, $installMessages);
 
-        $feedback->setSuccess($success)->setMessages($messages);
+        $debug = $installResult['debug'] ?? [];
+
+        $feedback->setSuccess($success)->setMessages($messages)->setDebug($debug);
 
         chdir($this->projectDir);
 
