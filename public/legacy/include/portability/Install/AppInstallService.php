@@ -70,19 +70,22 @@ class AppInstallService
          * If less than minimum we refuse to install.
          */
         if (check_php_version() === -1) {
-            $msg = 'The recommended PHP version to install SuiteCRM is ';
-            $msg .= constant('SUITECRM_PHP_REC_VERSION') . '<br />';
-            $msg .= 'Although the minimum PHP version required is ';
-            $msg .= constant('SUITECRM_PHP_MIN_VERSION') . ', ';
-            $msg .= 'is not recommended due to the large number of fixed bugs, including security fixes, ';
-            $msg .= 'released in the more modern versions.<br />';
-            $msg .= 'You are using PHP version  ' . constant('PHP_VERSION') . ', which is EOL: <a href="http://php.net/eol.php">http://php.net/eol.php</a>.<br />';
 
-            return [
-                'success' => false,
-                'messages' => [$msg]
-            ];
+            $currentPhpVersion = constant('PHP_VERSION');
+            $recommendedPhpVersion =  constant('SUITECRM_PHP_REC_VERSION');
+            $minumumPhpVersion =  constant('SUITECRM_PHP_MIN_VERSION');
 
+            $this->addMessage("Current PHP version '$currentPhpVersion' not supported | Recommended: '$recommendedPhpVersion' | Minimum: '$minumumPhpVersion'");
+            $debugMessage = 'The recommended PHP version to install SuiteCRM is ';
+            $debugMessage .= constant('SUITECRM_PHP_REC_VERSION');
+            $debugMessage .= 'Although the minimum PHP version required is ';
+            $debugMessage .= constant('SUITECRM_PHP_MIN_VERSION') . ', ';
+            $debugMessage .= 'is not recommended due to the large number of fixed bugs, including security fixes, ';
+            $debugMessage .= 'released in the more modern versions.';
+            $debugMessage .= 'You are using PHP version  ' . constant('PHP_VERSION') . ', which is EOL: <a href="http://php.net/eol.php">http://php.net/eol.php</a>.<br />';
+            $this->addDebug($debugMessage);
+
+            return $this->buildResult(false);
         }
 
         $session_id = session_id();
