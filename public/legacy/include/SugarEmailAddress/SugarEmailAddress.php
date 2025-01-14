@@ -192,7 +192,7 @@ class SugarEmailAddress extends SugarBean
         'Users',
         'Employees'
     );
-    
+
     /**
      * For saveAtUserProfile() method to telling what
      * went wrong at the last call.
@@ -461,11 +461,11 @@ class SugarEmailAddress extends SugarBean
             $_addressCaps = $db->quote(strtoupper($address));
             $_id = $db->quoted($id);
             $query =
-                "UPDATE email_addresses 
-                  SET 
-                    email_address = '$_address', 
-                    email_address_caps = '$_addressCaps' 
-                  WHERE 
+                "UPDATE email_addresses
+                  SET
+                    email_address = '$_address',
+                    email_address_caps = '$_addressCaps'
+                  WHERE
                     id = {$_id} AND
                     deleted = 0";
             $result = $db->query($query);
@@ -483,13 +483,13 @@ class SugarEmailAddress extends SugarBean
         $_replyTo = (bool)$replyTo ? '1' : '0';
         $_id = $db->quoted($id);
         $query =
-            "UPDATE email_addr_bean_rel 
-              SET 
-                primary_address = '{$_primary}', 
-                reply_to_address = '{$_replyTo}' 
-              WHERE 
-                email_address_id = {$_id} AND             
-                bean_module = 'Users' AND 
+            "UPDATE email_addr_bean_rel
+              SET
+                primary_address = '{$_primary}',
+                reply_to_address = '{$_replyTo}'
+              WHERE
+                email_address_id = {$_id} AND
+                bean_module = 'Users' AND
                 bean_id = '{$current_user->id}' AND
                 deleted = 0";
         $result = $db->query($query);
@@ -872,10 +872,7 @@ class SugarEmailAddress extends SugarBean
         $optOut = ''
     ) {
         if (!is_array($new_addrs)) {
-            $GLOBALS['log']->fatal(
-                'Invalid Argument: new address should be an array of strings, ' .
-                gettype($new_addrs) . ' given.'
-            );
+            $new_addrs = array($new_addrs);
         }
         $module = $this->getCorrectedModule($module);
         //One last check for the ConvertLead action in which case we need to change $module to 'Leads'
@@ -1083,6 +1080,11 @@ class SugarEmailAddress extends SugarBean
         $optIn = null
     ) {
         $addr = html_entity_decode($addr, ENT_QUOTES);
+
+        if (empty($addr)) {
+            return;
+        }
+
         if (preg_match($this->regex, $addr)) {
             $primaryFlag = ($primary) ? '1' : '0';
             $replyToFlag = ($replyTo) ? '1' : '0';
@@ -1155,10 +1157,10 @@ class SugarEmailAddress extends SugarBean
                         $id = $this->db->quote($a['id']);
 
                         $qUpdate = /** @lang sql */
-                            "UPDATE email_addresses SET 
-                              invalid_email = {$addressMetaInvalidEmailInt}, 
-                              opt_out = {$addressMetaOptOutInt}, 
-                              date_modified = '{$now}' 
+                            "UPDATE email_addresses SET
+                              invalid_email = {$addressMetaInvalidEmailInt},
+                              opt_out = {$addressMetaOptOutInt},
+                              date_modified = '{$now}'
                             WHERE id = '{$id}'";
 
                         $this->db->query($qUpdate);
@@ -1470,7 +1472,7 @@ class SugarEmailAddress extends SugarBean
         $return = array();
         $module = $this->getCorrectedModule($module);
 
-        $q = "SELECT 
+        $q = "SELECT
                     ea.email_address,
                     ea.email_address_caps,
                     ea.invalid_email,
@@ -1486,7 +1488,7 @@ class SugarEmailAddress extends SugarBean
                     ear.reply_to_address,
                     ear.deleted
                 FROM email_addresses ea LEFT JOIN email_addr_bean_rel ear ON ea.id = ear.email_address_id
-                WHERE 
+                WHERE
                     ear.bean_module = '" . $this->db->quote($module) . "'
                     AND ear.bean_id = '" . $this->db->quote($id) . "'
                     AND ear.deleted = 0
