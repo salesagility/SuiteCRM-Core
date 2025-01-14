@@ -47,6 +47,7 @@ class AppInstallService
         global $layout_defs;
         global $dictionary, $buildingRelCache;
         global $silentInstall;
+        global $disable_echos;
         global $timedate;
         global $locale;
         global $setup_sugar_version;
@@ -123,6 +124,7 @@ class AppInstallService
 
         //Set whether the install is silent or not
         $silentInstall = true;
+        $disable_echos = true;
 
 
         $timedate = TimeDate::getInstance();
@@ -208,10 +210,6 @@ class AppInstallService
             return $this->buildResult(false);
         }
 
-        $validation_errors = array();
-
-        $the_file = 'SilentInstall';
-
         $si_errors = false;
 
         /*
@@ -229,23 +227,24 @@ class AppInstallService
         }
 
         $validation_errors = validate_dbConfig();
-        if ((is_countable($validation_errors) ? count($validation_errors) : 0) > 0) {
-            $the_file = 'dbConfig_a.php';
-            $si_errors = true;
-        }
-        $validation_errors = validate_siteConfig('a');
-        if ((is_countable($validation_errors) ? count($validation_errors) : 0) > 0) {
-            $the_file = 'siteConfig_a.php';
-            $si_errors = true;
-        }
-        $validation_errors = validate_siteConfig('b');
-        if ((is_countable($validation_errors) ? count($validation_errors) : 0) > 0) {
-            $the_file = 'siteConfig_b.php';
-            $si_errors = true;
+        if (!empty($validation_errors) && is_array($validation_errors)) {
+            $this->addMessage('DB configuration is not valid.');
+            $this->addDebugArray($validation_errors);
+            return $this->buildResult(false);
         }
 
-        if ($si_errors) {
-            return $this->buildResult(false, $validation_errors ?? []);
+        $validation_errors = validate_siteConfig('a');
+        if (!empty($validation_errors) && is_array($validation_errors)) {
+            $this->addMessage('Site configuration is not valid.');
+            $this->addDebugArray($validation_errors);
+            return $this->buildResult(false);
+        }
+
+        $validation_errors = validate_siteConfig('b');
+        if (!empty($validation_errors) && is_array($validation_errors)) {
+            $this->addMessage('Site configuration is not valid.');
+            $this->addDebugArray($validation_errors);
+            return $this->buildResult(false);
         }
 
         //since this is a SilentInstall we still need to make sure that
@@ -254,14 +253,22 @@ class AppInstallService
         $result = make_writable('./config.php');
 
         if (!$result) {
-            return $this->buildResult(false, ['Not able to write to /public/legacy/config.php']);
+            $this->addDebug('Not able to write to /public/legacy/config.php');
+            $this->addMessage('Not able to write to /public/legacy/config.php');
+            return $this->buildResult(false);
         }
 
         // custom dir
-        make_writable('./custom');
+        $isCustomWritable = make_writable('./custom');
+        if (!$isCustomWritable) {
+            $this->addDebug('Not able to make writable: /public/legacy/custom');
+        }
 
         // modules dir
-        recursive_make_writable('./modules');
+        $isModulesWritable = recursive_make_writable('./modules');
+        if (!$isModulesWritable) {
+            $this->addDebug('Not able to make writable: /public/legacy/modules');
+        }
 
         // cache dir
         create_writable_dir(sugar_cached('custom_fields'));
@@ -273,7 +280,10 @@ class AppInstallService
         create_writable_dir(sugar_cached('upload/import'));
         create_writable_dir(sugar_cached('xml'));
         create_writable_dir(sugar_cached('include/javascript'));
-        recursive_make_writable(sugar_cached('modules'));
+        $isModulesCacheWritable = recursive_make_writable(sugar_cached('modules'));
+        if (!$isModulesWritable) {
+            $this->addDebug('Not able to make writable: /public/legacy/cache/modules');
+        }
 
         // public dir
         recursive_make_writable('./public');
@@ -301,6 +311,7 @@ class AppInstallService
 
         global $mod_strings;
         global $install_script;
+        global $bottle;
 
         $this->installStatus($mod_strings['LBL_START'], null, true, '');
 
@@ -394,7 +405,9 @@ class AppInstallService
 
         $this->installStatus($mod_strings['STAT_CONFIGURATION'], null, false, '');
         $this->addDebug("calling handleSugarConfig()");
-        $bottle = handleSugarConfig();
+        $configResult = handleSugarConfigSilent();
+        $this->addDebugArray($configResult['debug'] ?? []);
+        $this->addMessageArray($configResult['messages'] ?? []);
 
         $server_software = $_SERVER["SERVER_SOFTWARE"];
         if (str_contains((string)$server_software, 'Microsoft-IIS')) {
@@ -402,7 +415,8 @@ class AppInstallService
             handleWebConfig();
         } else {
             $this->addDebug("calling handleHtaccess()");
-            handleHtaccess();
+            $htAccessResult = handleHtaccessSilent();
+            $this->addDebugArray($htAccessResult['debug'] ?? []);
         }
 
         ///////////////////////////////////////////////////////////////////////////////
@@ -414,7 +428,16 @@ class AppInstallService
         if ($setup_db_create_database) {
             $this->addDebug("calling handleDbCreateDatabase()");
             installerHook('pre_handleDbCreateDatabase');
-            handleDbCreateDatabase();
+            $databaseCreationResult = handleDbCreateDatabaseSilent();
+
+            if (empty($databaseCreationResult['success'])) {
+                $this->addMessageArray($databaseCreationResult['messages'] ?? []);
+                $this->addDebugArray($databaseCreationResult['debug'] ?? []);
+                return [
+                    'success' => false
+                ];
+            }
+
             installerHook('post_handleDbCreateDatabase');
         } else {
 
@@ -428,7 +451,15 @@ class AppInstallService
         // create the SugarCRM database user
         if ($setup_db_create_sugarsales_user) {
             installerHook('pre_handleDbCreateSugarUser');
-            handleDbCreateSugarUser();
+            $dbUserCreationResult = handleDbCreateSugarUserSilent();
+
+            if (empty($dbUserCreationResult['success'])) {
+                $this->addMessageArray($dbUserCreationResult['messages'] ?? []);
+                $this->addDebugArray($dbUserCreationResult['debug'] ?? []);
+                return [
+                    'success' => false
+                ];
+            }
             installerHook('post_handleDbCreateSugarUser');
         }
 
@@ -604,18 +635,8 @@ class AppInstallService
 
         // Install the logic hook for WorkFLow
         $this->addDebug("Creating WorkFlow logic hook");
-        if (!function_exists('createWorkFlowLogicHook')) {
-            function createWorkFlowLogicHook($filePath = 'Extension/application/Ext/LogicHooks/AOW_WorkFlow_Hook.php')
-            {
-                $customFileLoc = create_custom_directory($filePath);
-                $templateLogicHookFileContents = file_get_contents('include/portability/Install/templates/workflow_logic_hook.php');
-                $fp = sugar_fopen($customFileLoc, 'wb');
-                fwrite($fp, $templateLogicHookFileContents);
-                fclose($fp);
 
-            }
-        }
-        createWorkFlowLogicHook();
+        $this->createWorkFlowLogicHook();
 
         ///////////////////////////////////////////////////////////////////////////
         ////    FINALIZE LANG PACK INSTALL
@@ -924,18 +945,10 @@ class AppInstallService
         $endTime = microtime(true);
         $deltaTime = $endTime - $startTime;
 
-        if (!is_array($bottle) || !is_object($bottle)) {
-            $bottle = $bottle;
-            LoggerManager::getLogger()->warn('Bottle needs to be an array to perform setup');
-        }
-
-
-        if (is_countable($bottle) && count($bottle) > 0) {
+        if (!empty($bottle) && is_array($bottle)) {
             foreach ($bottle as $bottle_message) {
                 $this->addDebug($bottle_message);
             }
-        } else {
-            $bottleMsg = $mod_strings['LBL_PERFORM_SUCCESS'];
         }
 
         installerHook('post_installModules');
@@ -1055,6 +1068,13 @@ class AppInstallService
         $this->debug[] = $message;
     }
 
+    protected function addDebugArray(array $messages): void
+    {
+        foreach ($messages as $message) {
+            $this->addDebug($message);
+        }
+    }
+
     public function getMessages(): array
     {
         return $this->messages;
@@ -1071,6 +1091,13 @@ class AppInstallService
         $this->messages[] = $message;
     }
 
+    protected function addMessageArray(array $messages): void
+    {
+        foreach ($messages as $message) {
+            $this->addMessage($message);
+        }
+    }
+
     /**
      * @param bool $success
      * @param array $messages
@@ -1084,6 +1111,16 @@ class AppInstallService
             'messages' => array_merge($this->getMessages(), $messages),
             'debug' => array_merge($this->getDebug(), $debug)
         ];
+    }
+
+    protected function createWorkFlowLogicHook($filePath = 'Extension/application/Ext/LogicHooks/AOW_WorkFlow_Hook.php')
+    {
+        $customFileLoc = create_custom_directory($filePath);
+        $templateLogicHookFileContents = file_get_contents('include/portability/Install/templates/workflow_logic_hook.php');
+        $fp = sugar_fopen($customFileLoc, 'wb');
+        fwrite($fp, $templateLogicHookFileContents);
+        fclose($fp);
+
     }
 
 }
