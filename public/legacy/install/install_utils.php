@@ -619,6 +619,45 @@ function getDbConnection()
     return $db;
 }
 
+function handleDbCreateSugarUserSilent(): array
+{
+    global $mod_strings;
+    global $setup_db_database_name;
+    global $setup_db_host_name;
+    global $setup_db_host_instance;
+    global $setup_db_port_num;
+    global $setup_db_admin_user_name;
+    global $setup_db_admin_password;
+    global $sugar_config;
+    global $setup_db_sugarsales_user;
+    global $setup_site_host_name;
+    global $setup_db_sugarsales_password;
+
+    $success = true;
+    $messages = [];
+    $debug = [];
+    $debug[] = $mod_strings['LBL_PERFORM_CREATE_DB_USER'];
+
+    $db = getDbConnection();
+    $db->createDbUser($setup_db_database_name, $setup_site_host_name, $setup_db_sugarsales_user, $setup_db_sugarsales_password);
+    $err = $db->lastError();
+    if (empty($err)) {
+        $debug[] = $mod_strings['LBL_PERFORM_DONE'];
+    } else {
+        $success = false;
+        $messages[] = 'An error occurred when creating user';
+        $debug[] = 'An error occurred when creating user: ' . $err;
+        installLog("An error occurred when creating user: $err");
+    }
+
+    return [
+        'success' => $success,
+        'messages' => $messages,
+        'debug' => $debug,
+        'err' => $err
+    ];
+}
+
 /**
  * creates the Sugar DB user (if not admin)
  */
@@ -638,17 +677,14 @@ function handleDbCreateSugarUser()
 
     echo $mod_strings['LBL_PERFORM_CREATE_DB_USER'];
 
-    $db = getDbConnection();
-    $db->createDbUser($setup_db_database_name, $setup_site_host_name, $setup_db_sugarsales_user, $setup_db_sugarsales_password);
-    $err = $db->lastError();
-    if ($err == '') {
+    $result = handleDbCreateSugarUserSilent();
+    if ($result['success'] === true) {
         echo $mod_strings['LBL_PERFORM_DONE'];
     } else {
         echo "<div style='color:red;'>";
         echo "An error occurred when creating user:<br>";
-        echo "$err<br>";
+        echo $result['err'] . "<br>";
         echo "</div>";
-        installLog("An error occurred when creating user: $err");
     }
 }
 
@@ -673,11 +709,7 @@ function handleDbCharsetCollation()
 }
 
 
-/**
- * creates the new database
- */
-function handleDbCreateDatabase()
-{
+function handleDbCreateDatabaseSilent(): array {
     global $mod_strings;
     global $setup_db_database_name;
     global $setup_db_host_name;
@@ -687,13 +719,41 @@ function handleDbCreateDatabase()
     global $setup_db_admin_password;
     global $sugar_config;
 
-    echo "{$mod_strings['LBL_PERFORM_CREATE_DB_1']} {$setup_db_database_name} {$mod_strings['LBL_PERFORM_CREATE_DB_2']} {$setup_db_host_name}...";
-    $db = getDbConnection();
-    if ($db->dbExists($setup_db_database_name)) {
-        $db->dropDatabase($setup_db_database_name);
+    $debug = [];
+    $messages = [];
+    $debug[] = "{$mod_strings['LBL_PERFORM_CREATE_DB_1']} {$setup_db_database_name} {$mod_strings['LBL_PERFORM_CREATE_DB_2']} {$setup_db_host_name}...";
+    $success = true;
+    try {
+        $db = getDbConnection();
+        if ($db->dbExists($setup_db_database_name)) {
+            $db->dropDatabase($setup_db_database_name);
+        }
+        $db->createDatabase($setup_db_database_name);
+        $debug[] = $mod_strings['LBL_PERFORM_DONE'];
+    } catch (Exception $e) {
+        $messages[] = 'Error occurred while trying to create database';
+        $debug[] = 'Error occurred while trying to create database';
+        $debug[] = $e->getMessage();
+        $success = false;
     }
-    $db->createDatabase($setup_db_database_name);
 
+    return [
+        'success' => $success,
+        'messages' => $messages,
+        'debug' => $debug
+    ];
+}
+/**
+ * creates the new database
+ */
+function handleDbCreateDatabase()
+{
+    global $mod_strings;
+    global $setup_db_database_name;
+    global $setup_db_host_name;
+
+    echo "{$mod_strings['LBL_PERFORM_CREATE_DB_1']} {$setup_db_database_name} {$mod_strings['LBL_PERFORM_CREATE_DB_2']} {$setup_db_host_name}...";
+    handleDbCreateDatabaseSilent();
     echo $mod_strings['LBL_PERFORM_DONE'];
 }
 
@@ -741,10 +801,10 @@ function installLog($entry)
 
 
 /**
- * takes session vars and creates config.php
+ * Silent config creation
  * @return array bottle collection of error messages
  */
-function handleSugarConfig()
+function handleSugarConfigSilent(): array
 {
     global $bottle;
     global $cache_dir;
@@ -765,7 +825,9 @@ function handleSugarConfig()
     global $sugar_config;
     global $setup_site_log_level;
 
-    echo "<b>{$mod_strings['LBL_PERFORM_CONFIG_PHP']} (config.php)</b><br>";
+    $messages = [];
+    $debug = [];
+    $debug[] = "{$mod_strings['LBL_PERFORM_CONFIG_PHP']} (config.php)";
     ///////////////////////////////////////////////////////////////////////////////
     ////    $sugar_config SETTINGS
     if (is_file('config.php')) {
@@ -921,15 +983,11 @@ function handleSugarConfig()
         var_export($sugar_config, true) .
         ";\n?>\n";
     if ($is_writable && write_array_to_file("sugar_config", $sugar_config, "config.php")) {
+        $debug[] = 'Saved sugar_config to file';
         // was 'Done'
     } else {
-        echo 'failed<br>';
-        echo "<p>{$mod_strings['ERR_PERFORM_CONFIG_PHP_1']}</p>\n";
-        echo "<p>{$mod_strings['ERR_PERFORM_CONFIG_PHP_2']}</p>\n";
-        echo "<TEXTAREA  rows=\"15\" cols=\"80\">".$sugar_config_string."</TEXTAREA>";
-        echo "<p>{$mod_strings['ERR_PERFORM_CONFIG_PHP_3']}</p>";
-
-        $bottle[] = $mod_strings['ERR_PERFORM_CONFIG_PHP_4'];
+        $messages[] = $mod_strings['ERR_PERFORM_CONFIG_PHP_4'];
+        $debug[] = $mod_strings['ERR_PERFORM_CONFIG_PHP_4'];
     }
 
 
@@ -939,10 +997,32 @@ function handleSugarConfig()
         merge_config_si_settings(false, 'config.php', 'config_si.php');
     }
 
-
     ////    END $sugar_config
     ///////////////////////////////////////////////////////////////////////////////
-    return $bottle;
+    return [
+        'messages' => $messages,
+        'debug' => $debug
+    ];
+}
+
+/**
+ * takes session vars and creates config.php
+ * @return array bottle collection of error messages
+ */
+function handleSugarConfig()
+{
+    global $mod_strings;
+    echo "<b>{$mod_strings['LBL_PERFORM_CONFIG_PHP']} (config.php)</b><br>";
+    $result = handleSugarConfigSilent();
+
+    if (!empty($result['messages'])) {
+        foreach ($result['messages'] as $message) {
+            echo 'failed<br>';
+            echo "<p>{$message}</p>\n";
+        }
+    }
+
+    return $result['messages'];
 }
 
 /**
@@ -975,11 +1055,7 @@ function getFtsSettings()
     return $ftsSettings;
 }
 
-/**
- * (re)write the .htaccess file to prevent browser access to the log file
- */
-function handleHtaccess()
-{
+function handleHtaccessSilent(): array {
     global $mod_strings;
     global $sugar_config;
     $ignoreCase = '';
@@ -1165,13 +1241,35 @@ EOQ;
         fclose($fp);
     }
     $status = file_put_contents($htaccess_file, $contents);
+
+    $messages = [];
     if (!$status) {
-        echo "<p>{$mod_strings['ERR_PERFORM_HTACCESS_1']}<span class=stop>{$htaccess_file}</span> {$mod_strings['ERR_PERFORM_HTACCESS_2']}</p>\n";
-        echo "<p>{$mod_strings['ERR_PERFORM_HTACCESS_3']}</p>\n";
-        echo $restrict_str;
+        $messages[] = "{$mod_strings['ERR_PERFORM_HTACCESS_1']} {$htaccess_file} {$mod_strings['ERR_PERFORM_HTACCESS_2']}";
     }
 
-    return $status;
+    return [
+        'status' => $status,
+        'messages' => $messages,
+        'debug' => $messages,
+        'restrict_str' => $restrict_str,
+        'htaccess_file' => $htaccess_file
+    ];
+}
+/**
+ * (re)write the .htaccess file to prevent browser access to the log file
+ */
+function handleHtaccess()
+{
+    global $mod_strings;
+
+    $result = handleHtaccessSilent();
+    if (!$result['status']) {
+        echo "<p>{$mod_strings['ERR_PERFORM_HTACCESS_1']}<span class=stop>{$result['htaccess_file']}</span> {$mod_strings['ERR_PERFORM_HTACCESS_2']}</p>\n";
+        echo "<p>{$mod_strings['ERR_PERFORM_HTACCESS_3']}</p>\n";
+        echo $result['restrict_str'];
+    }
+
+    return $result['status'];
 }
 
 /**
@@ -1598,54 +1696,54 @@ function validate_siteConfig($type)
 
     if ($type=='a') {
         if (empty($_SESSION['setup_system_name'])) {
-            $errors[] = "<span class='error'>".$mod_strings['LBL_REQUIRED_SYSTEM_NAME']."</span>";
+            $errors[] = $mod_strings['LBL_REQUIRED_SYSTEM_NAME'];
         }
         if ($_SESSION['setup_site_url'] == '') {
-            $errors[] = "<span class='error'>".$mod_strings['ERR_URL_BLANK']."</span>";
+            $errors[] = $mod_strings['ERR_URL_BLANK'];
         }
 
         if ($_SESSION['setup_site_admin_user_name'] == '') {
-            $errors[] = "<span class='error'>".$mod_strings['ERR_ADMIN_USER_NAME_BLANK']."</span>";
+            $errors[] = $mod_strings['ERR_ADMIN_USER_NAME_BLANK'];
         }
 
         if ($_SESSION['setup_site_admin_password'] == '') {
-            $errors[] = "<span class='error'>".$mod_strings['ERR_ADMIN_PASS_BLANK']."</span>";
+            $errors[] = $mod_strings['ERR_ADMIN_PASS_BLANK'];
         }
 
         if ($_SESSION['setup_site_admin_password'] != $_SESSION['setup_site_admin_password_retype']) {
-            $errors[] = "<span class='error'>".$mod_strings['ERR_PASSWORD_MISMATCH']."</span>";
+            $errors[] = $mod_strings['ERR_PASSWORD_MISMATCH'];
         }
     } else {
         if (!empty($_SESSION['setup_site_custom_session_path']) && $_SESSION['setup_site_session_path'] == '') {
-            $errors[] = "<span class='error'>".$mod_strings['ERR_SESSION_PATH']."</span>";
+            $errors[] = $mod_strings['ERR_SESSION_PATH'];
         }
 
         if (!empty($_SESSION['setup_site_custom_session_path']) && $_SESSION['setup_site_session_path'] != '') {
             if (is_dir($_SESSION['setup_site_session_path'])) {
                 if (!is_writable($_SESSION['setup_site_session_path'])) {
-                    $errors[] = "<span class='error'>".$mod_strings['ERR_SESSION_DIRECTORY']."</span>";
+                    $errors[] = $mod_strings['ERR_SESSION_DIRECTORY'];
                 }
             } else {
-                $errors[] = "<span class='error'>".$mod_strings['ERR_SESSION_DIRECTORY_NOT_EXISTS']."</span>";
+                $errors[] = $mod_strings['ERR_SESSION_DIRECTORY_NOT_EXISTS'];
             }
         }
 
         if (!empty($_SESSION['setup_site_custom_log_dir']) && $_SESSION['setup_site_log_dir'] == '') {
-            $errors[] = "<span class='error'>".$mod_strings['ERR_LOG_DIRECTORY_NOT_EXISTS']."</span>";
+            $errors[] = $mod_strings['ERR_LOG_DIRECTORY_NOT_EXISTS'];
         }
 
         if (!empty($_SESSION['setup_site_custom_log_dir']) && $_SESSION['setup_site_log_dir'] != '') {
             if (is_dir($_SESSION['setup_site_log_dir'])) {
                 if (!is_writable($_SESSION['setup_site_log_dir'])) {
-                    $errors[] = "<span class='error'>".$mod_strings['ERR_LOG_DIRECTORY_NOT_WRITABLE']."</span>";
+                    $errors[] = $mod_strings['ERR_LOG_DIRECTORY_NOT_WRITABLE'];
                 }
             } else {
-                $errors[] = "<span class='error'>".$mod_strings['ERR_LOG_DIRECTORY_NOT_EXISTS']."</span>";
+                $errors[] = $mod_strings['ERR_LOG_DIRECTORY_NOT_EXISTS'];
             }
         }
 
         if (!empty($_SESSION['setup_site_specify_guid']) && $_SESSION['setup_site_guid'] == '') {
-            $errors[] = "<span class='error'>".$mod_strings['ERR_SITE_GUID']."</span>";
+            $errors[] = $mod_strings['ERR_SITE_GUID'];
         }
     }
 
@@ -1662,7 +1760,7 @@ function pullSilentInstallVarsIntoSession()
         require_once('config_si.php');
     } else {
         if (empty($sugar_config_si)) {
-            die($mod_strings['ERR_SI_NO_CONFIG']);
+            throw new RuntimeException($mod_strings['ERR_SI_NO_CONFIG']);
         }
     }
 
