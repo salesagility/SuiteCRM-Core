@@ -10,6 +10,7 @@ parameters:
   default_session_name: 'SCRMSESSID'
   auth_type: '%env(AUTH_TYPE)%'
   log.dir: '%kernel.logs_dir%'
+  base.log.dir: '%kernel.project_dir%/logs'
   log.main.default: '%kernel.environment%.log'
   log.security.default: '%kernel.environment%.security.log'
   log.deprecation.default: '%kernel.environment%.deprecation.log'

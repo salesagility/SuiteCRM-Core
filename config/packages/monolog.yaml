@@ -8,7 +8,7 @@ monolog:
       channels: [ "upgrade" ]
     install:
       type: stream
-      path: "%env(default:log.dir:env.logs:LOG_DIR)%/install.log"
+      path: "%env(default:base.log.dir:env.base_logs:LOG_DIR)%/install.log"
       level: debug
       channels: [ "install" ]
     auth:
