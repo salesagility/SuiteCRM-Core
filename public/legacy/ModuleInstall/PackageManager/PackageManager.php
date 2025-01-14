@@ -542,14 +542,14 @@ class PackageManager
                 if ($upgrade_zip_type != "module" && $upgrade_zip_type != "theme" && $upgrade_zip_type != "langpack") {
                     $this->unlinkTempFiles();
                     if ($display_messages) {
-                        die($mod_strings['ERR_UW_NOT_ACCEPTIBLE_TYPE']);
+                        throw new RuntimeException($mod_strings['ERR_UW_NOT_ACCEPTIBLE_TYPE']);
                     }
                 }
             } elseif ($view == "default") {
                 if ($upgrade_zip_type != "patch") {
                     $this->unlinkTempFiles();
                     if ($display_messages) {
-                        die($mod_strings['ERR_UW_ONLY_PATCHES']);
+                        throw new RuntimeException($mod_strings['ERR_UW_ONLY_PATCHES']);
                     }
                 }
             }
