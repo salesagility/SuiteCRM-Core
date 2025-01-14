@@ -769,6 +769,11 @@ function handleLog4Php()
 
 function installLog($entry)
 {
+    if (!empty($GLOBALS['install_log'])) {
+        $GLOBALS['install_log']->info($entry);
+        return;
+    }
+
     global $mod_strings;
     $nl = '
 '.gmdate("Y-m-d H:i:s").'...';

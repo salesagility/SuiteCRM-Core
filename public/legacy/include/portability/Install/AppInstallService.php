@@ -34,6 +34,8 @@ class AppInstallService
 
     protected array $debug = [];
     protected array $messages = [];
+    protected mixed $loggerBackup;
+    protected bool $loggerToggled = false;
 
     public function runInstall(): array
     {
@@ -99,19 +101,20 @@ class AppInstallService
         $GLOBALS['sql_queries'] = 0;
 
 
-        require_once('include/SugarLogger/LoggerManager.php');
-        require_once('sugar_version.php');
-        require_once('suitecrm_version.php');
-        require_once('install/install_utils.php');
-        require_once('install/install_defaults.php');
-        require_once('include/TimeDate.php');
-        require_once('include/Localization/Localization.php');
-        require_once('include/SugarTheme/SugarTheme.php');
-        require_once('include/utils/LogicHook.php');
-        require_once('data/SugarBean.php');
-        require_once('include/entryPoint.php');
-        require_once('jssource/minify.php'); // Do we need?
-        require_once('config.php');
+        require_once 'include/SugarLogger/LoggerManager.php';
+        require_once 'include/portability/Install/Logger/InstallLoggerManager.php';
+        require_once 'sugar_version.php';
+        require_once 'suitecrm_version.php';
+        require_once 'install/install_utils.php';
+        require_once 'install/install_defaults.php';
+        require_once 'include/TimeDate.php';
+        require_once 'include/Localization/Localization.php';
+        require_once 'include/SugarTheme/SugarTheme.php';
+        require_once 'include/utils/LogicHook.php';
+        require_once 'data/SugarBean.php';
+        require_once 'include/entryPoint.php';
+        require_once 'jssource/minify.php'; // Do we need?
+        require_once 'config.php';
 
 
         if (!empty($sugar_config['installer_locked'])) {
@@ -133,7 +136,7 @@ class AppInstallService
 
         $locale = new Localization();
 
-        $GLOBALS['log'] = LoggerManager::getLogger();
+        $this->switchLogger();
 
         $setup_sugar_version = $suitecrm_version;
 
@@ -207,6 +210,7 @@ class AppInstallService
         } catch (Exception $e) {
             $this->addDebug($e->getMessage());
             $this->addMessage($e->getMessage());
+            $this->switchLogger();
             return $this->buildResult(false);
         }
 
@@ -230,6 +234,7 @@ class AppInstallService
         if (!empty($validation_errors) && is_array($validation_errors)) {
             $this->addMessage('DB configuration is not valid.');
             $this->addDebugArray($validation_errors);
+            $this->switchLogger();
             return $this->buildResult(false);
         }
 
@@ -237,6 +242,7 @@ class AppInstallService
         if (!empty($validation_errors) && is_array($validation_errors)) {
             $this->addMessage('Site configuration is not valid.');
             $this->addDebugArray($validation_errors);
+            $this->switchLogger();
             return $this->buildResult(false);
         }
 
@@ -244,6 +250,7 @@ class AppInstallService
         if (!empty($validation_errors) && is_array($validation_errors)) {
             $this->addMessage('Site configuration is not valid.');
             $this->addDebugArray($validation_errors);
+            $this->switchLogger();
             return $this->buildResult(false);
         }
 
@@ -255,6 +262,7 @@ class AppInstallService
         if (!$result) {
             $this->addDebug('Not able to write to /public/legacy/config.php');
             $this->addMessage('Not able to write to /public/legacy/config.php');
+            $this->switchLogger();
             return $this->buildResult(false);
         }
 
@@ -293,6 +301,7 @@ class AppInstallService
         try {
             $performSetupResult = $this->performSetup();
         } catch (Exception $e) {
+            $this->switchLogger();
             return $this->buildResult(false, [$e->getMessage()]);
         }
 
@@ -302,7 +311,7 @@ class AppInstallService
         if (isset($performSetupResult['success']) && $performSetupResult['success'] === false) {
             $success = false;
         }
-
+        $this->switchLogger();
         return $this->buildResult($success);
     }
 
@@ -1121,6 +1130,23 @@ class AppInstallService
         fwrite($fp, $templateLogicHookFileContents);
         fclose($fp);
 
+    }
+
+    /**
+     * @return void
+     */
+    protected function switchLogger(): void
+    {
+        if ($this->loggerToggled === false) {
+            $this->loggerBackup = $GLOBALS['log'] ?? null;
+            $GLOBALS['log'] = InstallLoggerManager::getLogger();
+            $GLOBALS['install_log'] = &$GLOBALS['log'];
+            $this->loggerToggled = true;
+            return;
+        }
+
+        $GLOBALS['log'] = $this->loggerBackup;
+        $this->loggerToggled = false;
     }
 
 }

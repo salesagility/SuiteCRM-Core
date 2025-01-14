@@ -122,6 +122,11 @@ class SugarLogger implements LoggerTemplate
      */
     public function __construct()
     {
+        $this->init();
+    }
+
+    protected function init(): void
+    {
         $config = SugarConfig::getInstance();
         $this->ext = $config->get('logger.file.ext', $this->ext);
         $this->logfile = $config->get('logger.file.name', $this->logfile);
