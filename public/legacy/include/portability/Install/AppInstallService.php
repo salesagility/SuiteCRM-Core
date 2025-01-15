@@ -122,6 +122,7 @@ class AppInstallService
         //check to see if the script files need to be rebuilt, add needed variables to request array
         $_REQUEST['root_directory'] = getcwd();
         $_REQUEST['js_rebuild_concat'] = 'rebuild';
+        require_once 'jssource/minify.php'; // Do we need?
 
         //Set whether the install is silent or not
         $silentInstall = true;
