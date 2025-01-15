@@ -71,7 +71,7 @@ export class InstallAuthGuard  {
                 map((user: SessionStatus) => {
 
                     if (user && user.appStatus.locked === true && user.appStatus.installed === true) {
-                        this.message.addDangerMessageByKey('LBL_DISABLED_TITLE_2');
+                        window.location.href = './install.php'
 
                         if (user && user.active === false) {
                             return homePageUrlTree;
