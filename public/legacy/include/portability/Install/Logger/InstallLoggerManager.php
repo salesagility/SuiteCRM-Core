@@ -29,6 +29,8 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+require_once 'include/portability/Install/Logger/InstallLogger.php';
+
 class InstallLoggerManager extends LoggerManager
 {
 
@@ -36,7 +38,7 @@ class InstallLoggerManager extends LoggerManager
      * This is the current log level
      * @var string
      */
-    private static $_level = 'fatal';
+    private static $_level = 'info';
 
     /**
      * This is the instance of the LoggerManager
