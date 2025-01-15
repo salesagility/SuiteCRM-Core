@@ -300,7 +300,8 @@ function make_sugar_config(&$sugar_config)
             '110', '143', '993', '995'
         ],
         'web_to_lead_allowed_redirect_hosts' => [],
-        'trusted_hosts' => []
+        'trusted_hosts' => [],
+        'installed' => true
     );
 }
 
@@ -610,7 +611,8 @@ function get_sugar_config_defaults(): array
             '110', '143', '993', '995'
         ],
         'web_to_lead_allowed_redirect_hosts' => [],
-        'trusted_hosts' => []
+        'trusted_hosts' => [],
+        'installed' => true
     ];
 
     if (!is_object($locale)) {
