@@ -287,7 +287,7 @@ class AppInstallService
         create_writable_dir(sugar_cached('xml'));
         create_writable_dir(sugar_cached('include/javascript'));
         $isModulesCacheWritable = recursive_make_writable(sugar_cached('modules'));
-        if (!$isModulesWritable) {
+        if (!$isModulesCacheWritable) {
             $this->addDebug('Not able to make writable: /public/legacy/cache/modules');
         }
 
