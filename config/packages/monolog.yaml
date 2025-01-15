@@ -3,7 +3,7 @@ monolog:
   handlers:
     upgrade:
       type: stream
-      path: "%env(default:log.dir:env.logs:LOG_DIR)%/upgrade.log"
+      path: "%env(default:base.log.dir:env.base_logs:LOG_DIR)%/upgrade.log"
       level: debug
       channels: [ "upgrade" ]
     install:
