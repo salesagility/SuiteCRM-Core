@@ -5,7 +5,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2025 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -1420,7 +1420,7 @@ function create_default_users()
     global $create_default_user;
     global $sugar_config;
 
-    require_once('install/UserDemoData.php');
+    require_once('install/seed_data/UserDemoData.php');
 
     //Create default admin user
     $user = BeanFactory::newBean('Users');
@@ -2324,12 +2324,26 @@ function create_time($hr=null, $min=null, $sec=null)
     return $timedate->asDbTime($date->setDate(2007, 10, 7)->setTime($hr, $min, $sec));
 }
 
-function create_past_date()
+function create_past_date($max = 365, $min = 1)
 {
     global $timedate;
     $now = $timedate->getNow(true);
-    $day=$now->day-mt_rand(1, 365);
+    $day = $now->day - mt_rand($min, $max);
     return $timedate->asDbDate($now->get_day_begin($day));
+}
+
+function getOpportunityCount($accountDate)
+{
+    global $timedate;
+    $date = $timedate->fromDb($accountDate);
+    $now = $timedate->getNow(true);
+    $now->modify('+6 months');
+
+    if ($date !== null) {
+        return $date->diff($now)->y;
+    }
+
+    return 0;
 }
 
 /**

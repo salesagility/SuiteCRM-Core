@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
 /**
  *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2025 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -41,14 +38,16 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-
+if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
 
 //users demodata
 //VP
 global $sugar_demodata;
 $sugar_demodata['users'][0] = array(
-  'id' => 'seed_jim_id',	
+  'id' => 'seed_jim_id',
   'last_name' => 'Brennan',
   'first_name' => 'Jim',
   'user_name' => 'jim',
@@ -61,7 +60,7 @@ $sugar_demodata['users'][0] = array(
 
 //west team
 $sugar_demodata['users'][] = array(
-  'id' => 'seed_sarah_id',	
+  'id' => 'seed_sarah_id',
   'last_name' => 'Smith',
   'first_name' => 'Sarah',
   'user_name' => 'sarah',
@@ -73,7 +72,7 @@ $sugar_demodata['users'][] = array(
 );
 
 $sugar_demodata['users'][] = array(
-  'id' => 'seed_sally_id',	
+  'id' => 'seed_sally_id',
   'last_name' => 'Bronsen',
   'first_name' => 'Sally',
   'user_name' => 'sally',
@@ -85,7 +84,7 @@ $sugar_demodata['users'][] = array(
 );
 
 $sugar_demodata['users'][] = array(
-  'id' => 'seed_max_id',	
+  'id' => 'seed_max_id',
   'last_name' => 'Jensen',
   'first_name' => 'Max',
   'user_name' => 'max',
@@ -98,7 +97,7 @@ $sugar_demodata['users'][] = array(
 
 //east team
 $sugar_demodata['users'][] = array(
-  'id' => 'seed_will_id',	
+  'id' => 'seed_will_id',
   'last_name' => 'Westin',
   'first_name' => 'Will',
   'user_name' => 'will',
@@ -110,7 +109,7 @@ $sugar_demodata['users'][] = array(
 );
 
 $sugar_demodata['users'][] = array(
-  'id' => 'seed_chris_id',	
+  'id' => 'seed_chris_id',
   'last_name' => 'Olliver',
   'first_name' => 'Chris',
   'user_name' => 'chris',
@@ -123,13 +122,13 @@ $sugar_demodata['users'][] = array(
 
 //teams demodata
 $sugar_demodata['teams'][] = array(
-  'name' => 'East',	
+  'name' => 'East',
   'description' => 'This is the team for the East',
   'team_id' => 'East',
 );
 
 $sugar_demodata['teams'][] = array(
-  'name' => 'West',	
+  'name' => 'West',
   'description' => 'This is the team for the West',
   'team_id' => 'West',
 );
@@ -21355,34 +21354,49 @@ $sugar_demodata['company_name_array'] = array(
 );
 
 $sugar_demodata['street_address_array'] = array(
-	 "123 Anywhere Street",
-	 "345 Sugar Blvd.",
-	 "1715 Scott Dr",
-	 "999 Baker Way",
-	 "67321 West Siam St.",
-	 "48920 San Carlos Ave",
-	 "777 West Filmore Ln",
-	 "9 IBM Path",
-	 "111 Silicon Valley Road",
-	 "321 University Ave.",
- );
+    "25 King Street",
+    "78 Suite Street.",
+    "1715 Scott Dr",
+    "999 Baker Way",
+    "67321 West Siam St.",
+    "48920 San Carlos Ave",
+    "777 West Filmore Ln",
+    "9 IBM Path",
+    "111 Silicon Valley Road",
+    "32 University Ave.",
+    "5 Main Street",
+    "555 Maple Street.",
+    "4275 Elm Dr",
+    "789 River Way",
+    "65478 Canyon Road",
+    "74 South Cemetery Ave",
+    "23 Greenwood Ln",
+    "10 Southwold Path",
+    "111 Vista Road",
+    "12 Long Ave",
+);
 
 $sugar_demodata['city_array'] = array(
-	 "San Jose",
-	 "San Francisco",
-	 "Sunnyvale",
-	 "San Mateo",
-	 "Cupertino",
-	 "Los Angeles",
-	 "Santa Monica",
-	 "Denver",
-	 "St. Petersburg",
-	 "Santa Fe",
-	 "Ohio",
-	 "Salt Lake City",
-	 "Persistance",
-	 "Alabama",
-	 "Kansas City",
+    "San Jose",
+    "San Francisco",
+    "Sunnyvale",
+    "San Mateo",
+    "Los Angeles",
+    "Santa Monica",
+    "Denver",
+    "St. Petersburg",
+    "Santa Fe",
+    "Ohio",
+    "Salt Lake City",
+    "Alabama",
+    "Kansas City",
+    "Atlanta",
+    "Frankfort",
+    "Austin",
+    "Sacramento",
+    "Phoenix",
+    "Hartford",
+    "Dover"
 );
 
 //cases demodata
@@ -21429,49 +21443,73 @@ $sugar_demodata['titles'] = array(
 	"Senior Product Manager"
 );
 
+//Leads
+$sugar_demodata['lead_seed_data_description'] = array(
+    'Interested to learn more about your products',
+    'Please let me know more about what services you offer',
+    'I would like to request the prices of your products',
+    'I am interested in using your products and services for our small business. Please contact me to discuss our options.',
+    'What support services do you offer and how soon can we get started?',
+    'I am using an alternative product and would like to know how easy it would be to migrate to to your product',
+    'I was wondering if it may be possible to arrange an initial call to discuss our future plans and how your products may support us in that venture',
+    'We would be interested to get a demo of your product to see if it is suitable for our business.',
+    'Please send us a quote for your products and services',
+    'We would like to get some support to help with setting up your product, we are having some issues at the moment.',
+    'We would like to know if you have a local agents in our area.',
+    'Hi, I would like to understand what support offerings you offer',
+    'Prospective client looking to learn more about product offerings',
+    'Prospective client looking to learn more about service offerings',
+    'Please let me know what shipping offers are available for your products',
+    'Please arrange an introduction with 1 of your sales agents as soon as possible',
+    'Would you be able to offer training on location or what remote offerings do you offer',
+    'I saw on your website that you offered products we are very interested in, please get me a call to discuss our options.',
+    'Very interested in your product, can we arrange a discussion and demo',
+    'Are there any options other than most available on your website?'
+);
+
 //tasks
 $sugar_demodata['task_seed_data_names'] = array(
-	'Assemble catalogs', 
-	'Make travel arrangements', 
-	'Send a letter', 
-	'Send contract', 
-	'Send fax', 
-	'Send a follow-up letter', 
-	'Send literature', 
-	'Send proposal', 
-	'Send quote', 
-	'Call to schedule meeting', 
-	'Setup evaluation', 
-	'Get demo feedback', 
-	'Arrange introduction', 
-	'Escalate support request', 
-	'Close out support request', 
-	'Ship product', 
-	'Arrange reference call', 
-	'Schedule training', 
-	'Send local user group information', 
+	'Assemble catalogs',
+	'Make travel arrangements',
+	'Send a letter',
+	'Send contract',
+	'Send fax',
+	'Send a follow-up letter',
+	'Send literature',
+	'Send proposal',
+	'Send quote',
+	'Call to schedule meeting',
+	'Setup evaluation',
+	'Get demo feedback',
+	'Arrange introduction',
+	'Escalate support request',
+	'Close out support request',
+	'Ship product',
+	'Arrange reference call',
+	'Schedule training',
+	'Send local user group information',
 	'Add to mailing list',
 );
 
 //meetings
 $sugar_demodata['meeting_seed_data_names'] = array(
-	'Follow-up on proposal', 
-	'Initial discussion', 
-	'Review needs', 
-	'Discuss pricing', 
-	'Demo', 
+	'Follow-up on proposal',
+	'Initial discussion',
+	'Review needs',
+	'Discuss pricing',
+	'Demo',
 	'Introduce all players',
 );
 $sugar_demodata['meeting_seed_data_descriptions'] = 'Meeting to discuss project plan and hash out the details of implementation';
 
 //emails
 $sugar_demodata['email_seed_data_subjects'] = array(
-	'Follow-up on proposal', 
-	'Initial discussion', 
-	'Review needs', 
-	'Discuss pricing', 
-	'Demo', 
-	'Introduce all players', 
+	'Follow-up on proposal',
+	'Initial discussion',
+	'Review needs',
+	'Discuss pricing',
+	'Demo',
+	'Introduce all players',
 );
 $sugar_demodata['email_seed_data_descriptions'] = 'Meeting to discuss project plan and hash out the details of implementation';
 
@@ -21483,13 +21521,13 @@ $sugar_demodata['primary_address_country'] = 'USA';
 
 //manufacturers
 $sugar_demodata['manufacturer_seed_data_names'] = array(
-	'TekWare Inc.', 
+	'TekWare Inc.',
 	'Acme Suppliers'
 );
 
 //Shippers
 $sugar_demodata['shipper_seed_data_names'] = array(
-	'FedEx', 
+	'FedEx',
 	'USPS Ground'
 );
 
@@ -21497,16 +21535,16 @@ $sugar_demodata['shipper_seed_data_names'] = array(
 $sugar_demodata['category_ext_name'] = ' Widgets';
 $sugar_demodata['product_ext_name'] = ' Gadget';
 $sugar_demodata['productcategory_seed_data_names'] = array(
-	'Desktops', 
-	'Laptops', 
-	'Stationary Device', 
+	'Desktops',
+	'Laptops',
+	'Stationary Device',
 	'Modular Device'
 );
 
 //producttype
 $sugar_demodata['producttype_seed_data_names']= array(
-	'Devices', 
-	'Hardware', 
+	'Devices',
+	'Hardware',
 	'Support Contract'
 );
 
@@ -21540,7 +21578,7 @@ $sugar_demodata['producttemplate_seed_data'][] = array(
 	'weight' => 20.0,
 	'date_available' => '2009-10-15',
 	'qty_in_stock' => '72',
-); 
+);
 
 $sugar_demodata['producttemplate_seed_data'][] = array(
 	'name' => 'TK 1000 Desktop',
@@ -21558,7 +21596,7 @@ $sugar_demodata['producttemplate_seed_data'][] = array(
 	'weight' => 20.0,
 	'date_available' => '2009-10-15',
 	'qty_in_stock' => '65',
-); 
+);
 
 $sugar_demodata['producttemplate_seed_data'][] = array(
 	'name' => 'TK m30 Desktop',
@@ -21576,7 +21614,7 @@ $sugar_demodata['producttemplate_seed_data'][] = array(
 	'weight' => 5.0,
 	'date_available' => '2009-10-15',
 	'qty_in_stock' => '12',
-); 
+);
 
 $sugar_demodata['producttemplate_seed_data'][] = array(
 	'name' => 'Reflective Mirror Widget',
@@ -21594,7 +21632,7 @@ $sugar_demodata['producttemplate_seed_data'][] = array(
 	'weight' => 20.0,
 	'date_available' => '2009-10-15',
 	'qty_in_stock' => '65',
-); 
+);
 
 
 $sugar_demodata['contract_seed_data'][] = array(
@@ -21606,7 +21644,7 @@ $sugar_demodata['contract_seed_data'][] = array(
 	'company_signed_date' => '2010-03-15',
 	'customer_signed_date' => '2010-03-16',
 	'description' => 'This is a sub-contract for a very large project.',
-); 
+);
 
 $sugar_demodata['contract_seed_data'][] = array(
 	'name' => 'Ion Engines for Auto Plant',
@@ -21617,7 +21655,7 @@ $sugar_demodata['contract_seed_data'][] = array(
 	'company_signed_date' => '2010-03-15',
 	'customer_signed_date' => '2010-03-16',
 	'description' => 'In competition with Sienar Fleet Systems for this one.',
-); 
+);
 
 $sugar_demodata['project_seed_data']['audit'] = array(
 	'name' => 'Create new plan for the annual audit',
