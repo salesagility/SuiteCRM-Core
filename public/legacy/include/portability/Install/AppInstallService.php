@@ -320,7 +320,7 @@ class AppInstallService
         global $install_script;
         global $bottle;
 
-        $this->installStatus($mod_strings['LBL_START'], null, true, '');
+        $this->installStatus('Starting perform setup install step', null, true, '');
 
         // This file will load the configuration settings from session data,
         // write to the config file, and execute any necessary database steps.
@@ -410,7 +410,7 @@ class AppInstallService
 
         $langHeader = get_language_header();
 
-        $this->installStatus($mod_strings['STAT_CONFIGURATION'], null, false, '');
+        $this->installStatus('Configurating relationships...', null, false, '');
         $this->addDebug("calling handleSugarConfig()");
         $configResult = handleSugarConfigSilent();
         $this->addDebugArray($configResult['debug'] ?? []);
@@ -429,7 +429,7 @@ class AppInstallService
         ///////////////////////////////////////////////////////////////////////////////
         ////    START TABLE STUFF
 
-        $this->addDebug($mod_strings['LBL_PERFORM_TABLES']);
+        $this->addDebug('Creating SuiteCRM application tables, audit tables and relationship metadata');
 
         // create the SugarCRM database
         if ($setup_db_create_database) {
@@ -508,7 +508,7 @@ class AppInstallService
         /**
          * loop through all the Beans and create their tables
          */
-        $this->installStatus($mod_strings['STAT_CREATE_DB']);
+        $this->installStatus('Create database');
         $this->addDebug("looping through all the Beans and create their tables");
 
         //start by clearing out the vardefs
@@ -599,10 +599,8 @@ class AppInstallService
 
         ///////////////////////////////////////////////////////////////////////////////
         ////    START CREATE DEFAULTS
-        $this->addDebug($mod_strings['LBL_PERFORM_CREATE_DEFAULT']);
-
-        $this->installStatus($mod_strings['STAT_CREATE_DEFAULT_SETTINGS']);
-        $this->addDebug("Begin creating Defaults");
+        $this->installStatus('Create default settings...');
+        $this->addDebug("Begin creating default SuiteCRM data");
         installerHook('pre_createDefaultSettings');
         if ($new_config) {
             $this->addDebug("insert defaults into config table");
@@ -613,27 +611,27 @@ class AppInstallService
 
         installerHook('pre_createUsers');
         if ($new_tables) {
-            $this->addDebug($mod_strings['LBL_PERFORM_DEFAULT_USERS']);
+            $this->addDebug('Creating default users');
             create_default_users();
-            $this->addDebug($mod_strings['LBL_PERFORM_DEFAULT_DONE']);
+            $this->addDebug('Creating default users - done');
         } else {
-            $this->addDebug($mod_strings['LBL_PERFORM_ADMIN_PASSWORD']);
+            $this->addDebug('Setting site admin password');
             $db->setUserName($setup_db_sugarsales_user);
             $db->setUserPassword($setup_db_sugarsales_password);
             set_admin_password($setup_site_admin_password);
-            $this->addDebug($mod_strings['LBL_PERFORM_DONE']);
+            $this->addDebug('Setting site admin password - done');
         }
         installerHook('post_createUsers');
 
 
         // default OOB schedulers
 
-        $this->addDebug($mod_strings['LBL_PERFORM_DEFAULT_SCHEDULER']);
+        $this->addDebug('Creating default scheduler jobs');
         $scheduler = BeanFactory::newBean('Schedulers');
         installerHook('pre_createDefaultSchedulers');
         $scheduler->rebuildDefaultSchedulers();
         installerHook('post_createDefaultSchedulers');
-        $this->addDebug($mod_strings['LBL_PERFORM_DONE']);
+        $this->addDebug('Creating default scheduler jobs - done');
 
 
         // Enable Sugar Feeds and add all feeds by default
@@ -664,15 +662,15 @@ class AppInstallService
 
         $memoryUsed = '';
         if (function_exists('memory_get_usage')) {
-            $memoryUsed = $mod_strings['LBL_PERFORM_OUTRO_5'] . memory_get_usage() . $mod_strings['LBL_PERFORM_OUTRO_6'];
-            $this->addDebug('Memory used: ' . $memoryUsed);
+            $memoryUsed = 'Approximate memory used: ' . memory_get_usage() . ' bytes.';
+            $this->addDebug($memoryUsed);
         }
 
 
         $errTcpip = '';
         $fp = @fsockopen("www.suitecrm.com", 80, $errno, $errstr, 3);
         if (!$fp) {
-            $this->addDebug($mod_strings['ERR_PERFORM_NO_TCPIP_SIMPLE']);
+            $this->addDebug('We could not detect an Internet connection.');
         }
 
         if (isset($_SESSION['setup_site_sugarbeet_automatic_checks']) && $_SESSION['setup_site_sugarbeet_automatic_checks'] == true) {
@@ -827,7 +825,7 @@ class AppInstallService
         $_POST = array_merge($_POST, $_SESSION);
 
 
-        $this->installStatus($mod_strings['STAT_INSTALL_FINISH']);
+        $this->installStatus('Install database steps finished...');
         $this->addDebug('Save configuration settings..');
 
         //      <--------------------------------------------------------
@@ -1059,7 +1057,7 @@ class AppInstallService
             ), JSON_THROW_ON_ERROR
         );
 
-        $this->addDebug($json);
+        $this->addDebug('install status: ' . $json);
 
         file_put_contents($fname, $json);
     }
