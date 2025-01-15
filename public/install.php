@@ -44,6 +44,10 @@ use Monolog\Logger;
 
 require __DIR__ . '/../config/bootstrap.php';
 require __DIR__ . '/../vendor/autoload.php';
+if (!is_writable('../logs')) {
+    (new InstallPreChecks(''))->showMissingPermissionsPage('/logs/install.log');
+    return;
+}
 $log = new Logger('install.log');
 $sessionName = 'SCRMSESSID';
 $sessionId = $_COOKIE[$sessionName] ?? false;
