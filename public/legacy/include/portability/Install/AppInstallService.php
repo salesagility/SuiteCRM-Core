@@ -1076,6 +1076,9 @@ class AppInstallService
 
     protected function addDebug(string $message): void
     {
+        if (empty($message)) {
+            return;
+        }
         $this->debug[] = $message;
     }
 
@@ -1099,6 +1102,9 @@ class AppInstallService
 
     protected function addMessage(string $message): void
     {
+        if (empty($message)) {
+            return;
+        }
         $this->messages[] = $message;
     }
 
