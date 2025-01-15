@@ -179,7 +179,8 @@ class InstallHandler extends LegacyHandler
             $installResult = $installResult ?? [];
             $installResult['success'] = false;
             $installResult['messages'] = $installResult['messages'] ?? [];
-            $installResult['messages'] = array_merge($installResult['messages'], ['Exception: ' . $t->getMessage()]);
+            $installResult['debug'] = $installResult['debug'] ?? [];
+            $installResult['debug'] = array_merge($installResult['debug'], ['Exception: ' . $t->getMessage()]);
         }
 
         $success = ($installResult['success'] ?? false) && is_file('config.php');
@@ -187,7 +188,7 @@ class InstallHandler extends LegacyHandler
 
         $messages = ['SuiteCRM Installation Completed'];
         if (!$success) {
-            $messages = ['An error occurred while installing SuiteCRM. Please check the logs.'];
+            $messages = ["An error occurred while installing SuiteCRM. Please check the '/logs/install.log'."];
         }
         $messages = array_merge($messages, $installMessages);
 
