@@ -632,14 +632,11 @@ class ApiBeanMapper
         }
 
         $beanObject = BeanFactory::newBean($beanModule);
-        if ($beanObject === null) {
+        if (empty($beanObject)) {
             return [];
         }
 
         $beanObject->load_relationships();
-        if (empty($beanObject)) {
-            return [];
-        }
 
         foreach ($field_defs as $fieldName => $fieldDefinition) {
 
