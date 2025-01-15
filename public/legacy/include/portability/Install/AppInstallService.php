@@ -959,6 +959,10 @@ class AppInstallService
             }
         }
 
+        $GLOBALS['sugar_config']['installer_locked'] = true;
+        $GLOBALS['sugar_config']['installed'] = true;
+        write_array_to_file("sugar_config", $GLOBALS['sugar_config'], "config.php");
+
         installerHook('post_installModules');
 
         $this->installStatus('Installation process finished');
