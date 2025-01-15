@@ -68,7 +68,7 @@ class SugarLogger implements LoggerTemplate
     protected $maxLogs = 10;
     protected $filesuffix = "";
     protected $date_suffix = "";
-    protected $log_dir = '.';
+    protected $log_dir = '../../logs/legacy';
     protected $defaultPerms = 0664;
 
 

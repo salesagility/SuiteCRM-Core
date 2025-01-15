@@ -403,7 +403,7 @@ class AppInstallService
         $setup_site_url = $_SESSION['setup_site_url'];
         $parsed_url = parse_url((string)$setup_site_url);
         $setup_site_host_name = $parsed_url['host'];
-        $setup_site_log_dir = isset($_SESSION['setup_site_custom_log_dir']) ? $_SESSION['setup_site_log_dir'] : '.';
+        $setup_site_log_dir = isset($_SESSION['setup_site_custom_log_dir']) ? $_SESSION['setup_site_log_dir'] : '../../logs/legacy';
         $setup_site_log_file = 'suitecrm.log';  // may be an option later
         $setup_site_session_path = isset($_SESSION['setup_site_custom_session_path']) ? $_SESSION['setup_site_session_path'] : '';
         $setup_site_log_level = 'fatal';
