@@ -257,10 +257,9 @@ class AppInstallService
         // config.php
         $result = make_writable('./config.php');
 
-        if (!$result) {
-            $this->addDebug('Not able to write to /public/legacy/config.php');
-            $this->addMessage('Not able to write to /public/legacy/config.php');
+        if (is_file('./config.php') && !$result) {
             $this->addDebug('Not able to make writable: /public/legacy/config.php');
+            $this->addMessage('Not able to make writable: /public/legacy/config.php');
             $this->switchLogger();
             return $this->buildResult(false);
         }
