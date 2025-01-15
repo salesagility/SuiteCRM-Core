@@ -114,8 +114,7 @@ class AppInstallService
         require_once 'data/SugarBean.php';
         require_once 'include/entryPoint.php';
 
-
-        if (!empty($sugar_config['installer_locked'])) {
+        if (!empty($sugar_config['installer_locked']) && (isset($sugar_config['installed']) && $sugar_config['installed'] === true)) {
             return $this->buildResult(false, ['Installer has been disabled']);
         }
 
