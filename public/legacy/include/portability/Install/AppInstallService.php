@@ -113,8 +113,6 @@ class AppInstallService
         require_once 'include/utils/LogicHook.php';
         require_once 'data/SugarBean.php';
         require_once 'include/entryPoint.php';
-        require_once 'jssource/minify.php'; // Do we need?
-        require_once 'config.php';
 
 
         if (!empty($sugar_config['installer_locked'])) {
@@ -194,7 +192,7 @@ class AppInstallService
             $_SESSION['setup_site_session_path'] = (isset($sugar_config['session_dir'])) ? $sugar_config['session_dir'] : '';
         }
         if (!isset($_SESSION['setup_site_log_dir']) || empty($_SESSION['setup_site_log_dir'])) {
-            $_SESSION['setup_site_log_dir'] = (isset($sugar_config['log_dir'])) ? $sugar_config['log_dir'] : '.';
+            $_SESSION['setup_site_log_dir'] = (isset($sugar_config['log_dir'])) ? $sugar_config['log_dir'] : '../../logs/legacy';
         }
         if (!isset($_SESSION['setup_site_guid']) || empty($_SESSION['setup_site_guid'])) {
             $_SESSION['setup_site_guid'] = (isset($sugar_config['unique_key'])) ? $sugar_config['unique_key'] : '';
