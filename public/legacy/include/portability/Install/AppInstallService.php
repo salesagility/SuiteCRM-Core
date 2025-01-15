@@ -78,7 +78,7 @@ class AppInstallService
             $recommendedPhpVersion =  constant('SUITECRM_PHP_REC_VERSION');
             $minumumPhpVersion =  constant('SUITECRM_PHP_MIN_VERSION');
 
-            $this->addMessage("Current PHP version '$currentPhpVersion' not supported | Recommended: '$recommendedPhpVersion' | Minimum: '$minumumPhpVersion'");
+            $this->addMessage("Current PHP version '$currentPhpVersion' not supported | Recommended: '$recommendedPhpVersion'");
             $debugMessage = 'The recommended PHP version to install SuiteCRM is ';
             $debugMessage .= constant('SUITECRM_PHP_REC_VERSION');
             $debugMessage .= 'Although the minimum PHP version required is ';
@@ -207,7 +207,6 @@ class AppInstallService
             pullSilentInstallVarsIntoSession();
         } catch (Exception $e) {
             $this->addDebug($e->getMessage());
-            $this->addMessage($e->getMessage());
             $this->switchLogger();
             return $this->buildResult(false);
         }
@@ -275,6 +274,11 @@ class AppInstallService
         if (!$isModulesWritable) {
             $this->addDebug('Not able to make writable: /public/legacy/modules');
         }
+        if (is_dir('./modules') && !$result) {
+            $this->addMessage('Not able to make writable: /public/legacy/config.php');
+            $this->switchLogger();
+            return $this->buildResult(false);
+        }
 
         // cache dir
         create_writable_dir(sugar_cached('custom_fields'));
@@ -299,8 +303,9 @@ class AppInstallService
         try {
             $performSetupResult = $this->performSetup();
         } catch (Exception $e) {
+            $this->addDebug($e->getMessage());
             $this->switchLogger();
-            return $this->buildResult(false, [$e->getMessage()]);
+            return $this->buildResult(false);
         }
 
         installerHook('post_installFileRequire', ['the_file' => 'install/perform_setup.php']);
@@ -320,7 +325,7 @@ class AppInstallService
         global $install_script;
         global $bottle;
 
-        $this->installStatus('Starting perform setup install step', null, true, '');
+        $this->installStatus('Starting "perform setup" install step', null, true, '');
 
         // This file will load the configuration settings from session data,
         // write to the config file, and execute any necessary database steps.
