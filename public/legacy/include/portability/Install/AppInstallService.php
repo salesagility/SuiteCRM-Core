@@ -1,7 +1,7 @@
 <?php
 /**
  * SuiteCRM is a customer relationship management program developed by SalesAgility Ltd.
- * Copyright (C) 2021 SalesAgility Ltd.
+ * Copyright (C) 2025 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -256,11 +256,8 @@ class AppInstallService
         // config.php
         $result = make_writable('./config.php');
 
-        if (is_file('./config.php') && !$result) {
+        if (!$result) {
             $this->addDebug('Not able to make writable: /public/legacy/config.php');
-            $this->addMessage('Not able to make writable: /public/legacy/config.php');
-            $this->switchLogger();
-            return $this->buildResult(false);
         }
 
         // custom dir
@@ -273,11 +270,6 @@ class AppInstallService
         $isModulesWritable = recursive_make_writable('./modules');
         if (!$isModulesWritable) {
             $this->addDebug('Not able to make writable: /public/legacy/modules');
-        }
-        if (is_dir('./modules') && !$result) {
-            $this->addMessage('Not able to make writable: /public/legacy/config.php');
-            $this->switchLogger();
-            return $this->buildResult(false);
         }
 
         // cache dir
