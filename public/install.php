@@ -42,6 +42,13 @@ use App\Install\Service\InstallPreChecks;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
+// clear cookies
+$past = time() - 3600;
+foreach ( $_COOKIE as $key => $value )
+{
+    setcookie( $key, $value, $past, '/' );
+}
+
 require __DIR__ . '/../config/bootstrap.php';
 require __DIR__ . '/../vendor/autoload.php';
 if (!is_writable('../logs')) {
