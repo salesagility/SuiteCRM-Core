@@ -148,7 +148,14 @@ class NavbarHandler extends LegacyHandler implements NavigationProviderInterface
         $accessibleModules = $this->getAccessibleModulesList();
         $accessibleModulesNameMap = $this->createFrontendNameMap($accessibleModules);
         $displayModules = $this->getDisplayEnabledModules();
-        $displayModulesMameMap = array_intersect_key($accessibleModulesNameMap, array_flip($displayModules));
+
+        $displayModulesMameMap = [];
+
+        foreach ($displayModules as $module => $value) {
+            if (isset($accessibleModulesNameMap[$module])) {
+                $displayModulesMameMap[$module] = $accessibleModulesNameMap[$module];
+            }
+        }
 
         $navbar->tabs = array_values($displayModulesMameMap);
         $navbar->groupedTabs = $this->fetchGroupedNavTabs($displayModules, $displayModulesMameMap);
