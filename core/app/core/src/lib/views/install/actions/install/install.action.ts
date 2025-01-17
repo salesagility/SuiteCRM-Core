@@ -88,7 +88,11 @@ export class InstallAction extends InstallViewActionHandler {
 
         this.asyncActionService.run(
             actionName,
-            asyncData
+            asyncData,
+            null,
+            {
+                errorMessageLabel: 'An error occurred while installing SuiteCRM. Please check the \'/logs/install.log\'.'
+            }
         ).pipe(take(1)).subscribe((process: Process) => {
 
             if(process.data.statusCode === 3) {
