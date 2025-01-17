@@ -1320,12 +1320,13 @@ class User implements UserInterface, EquatableInterface, PasswordAuthenticatedUs
      */
     public function invalidateBackupCode(string $code): void
     {
-        $key = array_search($code, $this->getBackupCodes(), true);
+        $backupCodes = $this->getBackupCodes();
+        $key = array_search($code, $backupCodes, true);
         if ($key !== false){
-            unset($this->getBackupCodes()[$key]);
+            unset($backupCodes[$key]);
         }
 
-        $this->backupCodes = array_values($this->backupCodes);
+        $this->setBackupCodes(array_values($backupCodes));
     }
 
 }
