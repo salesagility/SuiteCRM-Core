@@ -29,6 +29,7 @@ export interface Message {
     type: MessageTypes;
     text?: string;
     labelKey?: string;
+    defaultText?: string;
 }
 
 export enum MessageTypes {

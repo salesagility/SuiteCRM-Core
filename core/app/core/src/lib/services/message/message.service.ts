@@ -109,11 +109,17 @@ export class MessageService {
         });
     }
 
-    addSuccessMessageByKey(labelKey: string): number {
-        return this.addMessage({
+    addSuccessMessageByKey(labelKey: string, defaultText:string = null): number {
+        const message = {
             type: MessageTypes.success,
             labelKey
-        });
+        } as Message;
+
+        if (defaultText) {
+            message.defaultText = defaultText;
+        }
+
+        return this.addMessage(message);
     }
 
     addDangerMessage(text: string): number {
@@ -123,11 +129,18 @@ export class MessageService {
         });
     }
 
-    addDangerMessageByKey(labelKey: string): number {
-        return this.addMessage({
+    addDangerMessageByKey(labelKey: string, defaultText: string = null): number {
+
+        const message = {
             type: MessageTypes.danger,
             labelKey
-        });
+        } as Message;
+
+        if (defaultText) {
+            message.defaultText = defaultText;
+        }
+
+        return this.addMessage(message);
     }
 
     addWarningMessage(text: string): number {
@@ -137,11 +150,17 @@ export class MessageService {
         });
     }
 
-    addWarningMessageByKey(labelKey: string): number {
-        return this.addMessage({
+    addWarningMessageByKey(labelKey: string, defaultText: string = null): number {
+        const message = {
             type: MessageTypes.warning,
             labelKey
-        });
+        } as Message;
+
+        if (defaultText) {
+            message.defaultText = defaultText;
+        }
+
+        return this.addMessage(message);
     }
 
     addInfoMessage(text: string): number {

@@ -33,7 +33,7 @@
              class="message {{ message.type }} alert-dismissible fade show shadow"
              [@fade]
              role="alert">
-            <ng-container *ngIf="message.labelKey">{{appStrings[message.labelKey] || message.labelKey || ''}}</ng-container>
+            <ng-container *ngIf="message.labelKey">{{appStrings[message?.labelKey] || message?.defaultText || message?.labelKey || ''}}</ng-container>
             <ng-container *ngIf="message.text && !message.labelKey">{{message.text}}</ng-container>
             <a (click)="close(message)" type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
