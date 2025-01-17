@@ -85,9 +85,10 @@ export class AsyncActionService {
      * @param {string} actionName to submit
      * @param {string} data to send
      * @param {string} presetHandlerKey to use
+     * @param params
      * @returns {object} Observable<Process>
      */
-    public run(actionName: string, data: AsyncActionInput, presetHandlerKey: string = null): Observable<Process> {
+    public run(actionName: string, data: AsyncActionInput, presetHandlerKey: string = null, params: any = null): Observable<Process> {
         const options = {
             ...data
         };
@@ -142,8 +143,20 @@ export class AsyncActionService {
                         return of(null);
                     }
 
-                    this.message.addDangerMessageByKey('LBL_ACTION_ERROR');
                     this.appStateStore.updateLoading(actionName, false);
+
+                    if (params?.errorMessageLabel ?? false) {
+                        this.message.addDangerMessage(params?.errorMessageLabel);
+                        return of(null);
+                    }
+
+                    if (params?.errorMessageLabelKey ?? false) {
+                        this.message.addDangerMessageByKey(params?.errorMessageLabelKey, 'Unexpected error when calling action, please contact your system administrator.');
+                        return of(null);
+                    }
+
+                    this.message.addDangerMessageByKey('LBL_ACTION_ERROR',  'Unexpected error when calling action, please contact your system administrator.');
+
                     return of(null);
                 }),
             );
