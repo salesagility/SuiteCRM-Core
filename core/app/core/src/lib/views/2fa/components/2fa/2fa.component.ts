@@ -62,7 +62,8 @@ export class TwoFactorComponent implements OnInit {
     cancelAppMethodButtonConfig: ButtonInterface;
     regenerateBackupCodesButtonConfig: ButtonInterface;
     verifyCodeButtonConfig: ButtonInterface;
-    copyButtonConfig: ButtonInterface;
+    copyBackupButtonConfig: ButtonInterface;
+    copySecretButtonConfig: ButtonInterface;
     recoveryCodesHeaderLabel: string = '';
 
     @HostListener('keyup.control.enter')
@@ -175,6 +176,10 @@ export class TwoFactorComponent implements OnInit {
         this.clipboard.copy(this.backupCodes);
     }
 
+    public copySecret(): void {
+        this.clipboard.copy(this.secret);
+    }
+
     public generateCodes(): void {
         this.backupCodes = null;
         this.generateBackupCodesService.generate().subscribe({
@@ -248,7 +253,7 @@ export class TwoFactorComponent implements OnInit {
         } as ButtonInterface;
 
         this.verifyCodeButtonConfig = {
-            klass: 'btn btn-sm btn-main',
+            klass: 'btn btn-sm btn-main mb-2',
             onClick: ((): void => {
                 this.finalize2fa()
             }) as ButtonCallback,
@@ -256,10 +261,20 @@ export class TwoFactorComponent implements OnInit {
             titleKey: ''
         } as ButtonInterface;
 
-        this.copyButtonConfig = {
+        this.copyBackupButtonConfig = {
             klass: 'btn btn-sm btn-main copy-button',
             onClick: ((): void => {
                 this.copyBackupCodes()
+            }) as ButtonCallback,
+            labelKey: 'LBL_COPY',
+            titleKey: '',
+            icon: 'clipboard'
+        } as ButtonInterface;
+
+        this.copySecretButtonConfig = {
+            klass: 'btn btn-sm btn-main ml-0',
+            onClick: ((): void => {
+                this.copySecret()
             }) as ButtonCallback,
             labelKey: 'LBL_COPY',
             titleKey: '',

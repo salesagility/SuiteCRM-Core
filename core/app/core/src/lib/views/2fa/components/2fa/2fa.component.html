@@ -41,7 +41,7 @@
         </div>
 
         <div class='container'>
-            <div class='row'>
+            <div class='row mb-3'>
                 <div class='col'>
                     <scrm-widget-panel [title]="appMethodHeaderLabel">
                         <span widget-header-icon-area>
@@ -64,52 +64,64 @@
                             <div class='d-flex col-md-12 pl-4 pr-4 pt-2 pb-2'>
                                 <scrm-label labelKey='LBL_OTP_SETUP' class='small'></scrm-label>
                             </div>
-
-                            <ng-container *ngIf="isQrCodeGenerated()">
-                                <div *ngIf="qrCodeSvg" class='qr-code-container'>
-                                    <div *ngIf="!showSecret()" class='qr-code'>
-                                        <div [innerHTML]="qrCodeSvg | trustHtml">
-                                        </div>
-                                        <div>
-                                            <a class="small show-secret-link pl-1" (click)="setShowSecret(true)">
-                                                <scrm-label labelKey='LBL_USE_SECRET'>
-                                                </scrm-label>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="showSecret()" class='qr-code'>
-                                        <scrm-label class="pb-3" labelKey='LBL_USE_SECRET_DESC'>
-                                        </scrm-label>
-
-                                        <span class="small font-weight-bold pb-3 secret">{{ secret }}</span>
-
-                                        <div>
-                                            <a class="small show-secret-link" (click)="setShowSecret(false)">
-                                                <scrm-label labelKey='LBL_SHOW_QR_CODE'>
-                                                </scrm-label>
-                                            </a>
+                            <div *ngIf="isQrCodeGenerated()" class="row-container">
+                                <div class="qr-code-container">
+                                    <div class="col">
+                                        <div *ngIf="qrCodeSvg" class='qr-code-col'>
+                                            <div class='qr-code'>
+                                                <div [innerHTML]="qrCodeSvg | trustHtml">
+                                                </div>
+                                                <div *ngIf="!showSecret()" class="secret-container">
+                                                    <a class="small show-secret-link pl-1"
+                                                       (click)="setShowSecret(true)">
+                                                        <scrm-label labelKey='LBL_USE_SECRET'>
+                                                        </scrm-label>
+                                                    </a>
+                                                </div>
+                                                <div *ngIf="showSecret()" class="secret-container">
+                                                    <a class="small show-secret-link pl-1"
+                                                       (click)="setShowSecret(false)">
+                                                        <scrm-label labelKey='LBL_HIDE_SECRET'>
+                                                        </scrm-label>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <scrm-label labelKey='LBL_QR_CODE_HELP'
-                                                    class='pl-3 d-inline-block qr-code-label'>
-                                        </scrm-label>
-                                        <div class='d-flex flex-column pt-4 align-items-center'>
-                                            <input [(ngModel)]="authCode"
-                                                   id='auth_code'
-                                                   type='text'
-                                                   name='auth_code'
-                                                   autocomplete='off'
-                                                   class='mb-3 auth-input'/>
+                                    <div class="col">
+                                        <div *ngIf="showSecret()" class='qr-code-secret'>
+                                            <scrm-label class="pb-3" labelKey='LBL_USE_SECRET_DESC'>
+                                            </scrm-label>
 
-                                            <scrm-button id='submit-2fa-code'
-                                                    [config]="verifyCodeButtonConfig">
-                                            </scrm-button>
+                                            <span class="font-weight-bold pb-2 secret">{{ secret }}</span>
+
+                                            <scrm-button class="pb-2"
+                                                         [config]="copySecretButtonConfig"></scrm-button>
                                         </div>
                                     </div>
                                 </div>
-                            </ng-container>
+                                <div class="row">
+                                    <div class="col">
+                                        <div>
+                                            <scrm-label labelKey='LBL_QR_CODE_HELP'
+                                                        class='pl-3 d-inline-block qr-code-label'>
+                                            </scrm-label>
+                                            <div class='d-flex flex-column pt-4 align-items-center'>
+                                                <input [(ngModel)]="authCode"
+                                                       id='auth_code'
+                                                       type='text'
+                                                       name='auth_code'
+                                                       autocomplete='off'
+                                                       class='mb-3 auth-input'/>
 
+                                                <scrm-button id='submit-2fa-code'
+                                                             [config]="verifyCodeButtonConfig">
+                                                </scrm-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </scrm-widget-panel>
                 </div>
@@ -137,7 +149,7 @@
 
                             <ng-container *ngIf="areRecoveryCodesGenerated() && backupCodes">
                                 <div class='d-flex flex-column'>
-                                    <scrm-button [config]="copyButtonConfig"></scrm-button>
+                                    <scrm-button [config]="copyBackupButtonConfig"></scrm-button>
                                 </div>
                                 <div class='d-flex col-md-12 pl-4 pr-4 pt-2 pb-3'>
                                     <div>
