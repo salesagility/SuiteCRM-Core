@@ -95,6 +95,7 @@ class UpgradePackageHandler extends PackageHandler
         $this->compare->setToKeep($upgradeConfig['toKeep']);
         $this->compare->setToKeepIgnore($upgradeConfig['toKeepIgnore']);
         $this->compare->setPathsToExpand($upgradeConfig['toExpand']);
+        $this->compare->setToReAdd($upgradeConfig['toReAdd']);
         $this->upgradeLogger = $upgradeLogger;
     }
 
@@ -138,6 +139,21 @@ class UpgradePackageHandler extends PackageHandler
             $feedback = new Feedback();
             $feedback->setSuccess(false)->setMessages(['Error while trying to extract package to: ' . $extractPath]);
         }
+
+        return $feedback;
+    }
+
+    /**
+     * Run compare and check files to delete
+     * @param string $version
+     * @return Feedback
+     */
+    public function checkFilesToDelete(string $version): Feedback
+    {
+        $feedback = new Feedback();
+        $feedback->setSuccess(true);
+        $messages = ['Files to delete checked'];
+        $feedback->setMessages($messages);
 
         return $feedback;
     }
@@ -215,11 +231,115 @@ class UpgradePackageHandler extends PackageHandler
             'sync manifest generated: ' . json_encode($manifest, JSON_THROW_ON_ERROR)
         ]);
 
+        $tmpFolder = $this->projectDir . '/tmp/toReAdd';
+        $toReAddItems = $this->compare->getToReAdd();
+
+        $this->copyFilesToReAddToTmpFolder($tmpFolder, $toReAddItems);
+
         $this->sync->run($extractPath, $this->projectDir, $manifest);
+
+        $this->restoreFilesFromTmpFolder($tmpFolder, $toReAddItems);
 
         $feedback->setSuccess(true)->setMessages(['Successfully installed package']);
 
         return $feedback;
+    }
+
+    /**
+     * Copy files to be re-added to a temporary folder
+     *
+     * @param string $tmpFolder
+     * @param array $toReAddItems
+     * @return void
+     */
+    protected function copyFilesToReAddToTmpFolder(string $tmpFolder, array $toReAddItems): void
+    {
+        $filesystem = new Filesystem();
+
+        if (!$filesystem->exists($tmpFolder)) {
+            $filesystem->mkdir($tmpFolder);
+        }
+
+        foreach ($toReAddItems as $item) {
+            $sourcePath = $this->projectDir . '/' . $item;
+            $destinationPath = $tmpFolder . '/' . $item;
+
+            if (is_dir($sourcePath)) {
+                $dirContents = scandir($sourcePath);
+
+                foreach ($dirContents as $file) {
+                    if ($file === '.' || $file === '..') {
+                        continue;
+                    }
+
+                    if ($file !== 'en_us.lang.php') {
+                        $fileSourcePath = $sourcePath . '/' . $file;
+                        $fileDestinationPath = $destinationPath . '/' . $file;
+
+                        if (file_exists($fileSourcePath)) {
+                            if (!is_dir($destinationPath)) {
+                                mkdir($destinationPath, 0755, true);
+                            }
+
+                            $filesystem->copy($fileSourcePath, $fileDestinationPath);
+                        }
+                    }
+                }
+                continue;
+            }
+
+            if (file_exists($sourcePath)) {
+                $filesystem->mirror($sourcePath, $destinationPath);
+            }
+        }
+    }
+
+    /**
+     * Restore files from the temporary folder to their original location
+     *
+     * @param string $tmpFolder
+     * @param array $toReAddItems
+     * @return void
+     */
+    protected function restoreFilesFromTmpFolder(string $tmpFolder, array $toReAddItems): void
+    {
+        $filesystem = new Filesystem();
+
+        foreach ($toReAddItems as $item) {
+            $tmpPath = $tmpFolder . '/' . $item;
+            $finalDestinationPath = $this->projectDir . '/' . $item;
+
+            if (file_exists($tmpPath)) {
+                if (is_dir($tmpPath)) {
+                    $dirContents = scandir($tmpPath);
+
+                    foreach ($dirContents as $file) {
+                        if ($file === '.' || $file === '..') {
+                            continue;
+                        }
+
+                        $fileTmpPath = $tmpPath . '/' . $file;
+                        $fileFinalPath = $finalDestinationPath . '/' . $file;
+
+                        if ($file === 'en_us.lang.php' && file_exists($fileFinalPath)) {
+                            continue;
+                        }
+
+                        if (is_dir($fileTmpPath)) {
+                            $filesystem->mirror($fileTmpPath, $fileFinalPath);
+                        } else {
+                            $filesystem->copy($fileTmpPath, $fileFinalPath);
+                        }
+                    }
+                } else {
+                    if (basename($item) !== 'en_us.lang.php' || !file_exists($finalDestinationPath)) {
+                        $filesystem->copy($tmpPath, $finalDestinationPath);
+                    }
+                }
+            }
+        }
+
+        $filesystem->remove($tmpFolder);
     }
 
     /**

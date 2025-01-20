@@ -67,6 +67,16 @@ class FolderComparator implements FolderComparatorInterface
     protected $toExpandKeys;
 
     /**
+     * @var string[]
+     */
+    protected $toReAdd = [];
+
+    /**
+     * @var bool[]
+     */
+    protected $toReAddKeys;
+
+    /**
      * FolderCompare constructor.
      */
     public function __construct()
@@ -303,6 +313,38 @@ class FolderComparator implements FolderComparatorInterface
     protected function getToKeepIgnoreKeys(): array
     {
         return $this->toKeepIgnoreKeys;
+    }
+
+    /**
+     * Set paths to re-add
+     * @param array $toReAdd
+     */
+    public function setToReAdd(array $toReAdd): void
+    {
+        $this->toReAdd = $toReAdd;
+        $this->toReAddKeys = [];
+
+        foreach ($this->toReAdd as $item) {
+            $this->toReAddKeys[$item] = true;
+        }
+    }
+
+    /**
+     * Get paths to re-add
+     * @return array
+     */
+    public function getToReAdd(): array
+    {
+        return $this->toReAdd;
+    }
+
+    /**
+     * Get paths to re-add keys
+     * @return array
+     */
+    public function getToReAddKeys(): array
+    {
+        return $this->toReAddKeys;
     }
 
     /**

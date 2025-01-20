@@ -107,6 +107,11 @@ abstract class BaseStepExecutorCommand extends BaseCommand
             $alerts = $this->getHandler()->getAlerts($position, $context);
 
             foreach ($alerts as $alert) {
+                $messages = $alert->getMessages();
+                if (empty($messages)) {
+                    continue;
+                }
+
                 $title = $alert->getTile() ?? 'Alert';
                 $output->writeln($this->colorMessage('comment', $title));
 
