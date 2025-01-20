@@ -1281,7 +1281,7 @@ function logThis($entry, $path='')
     if (file_exists('include/utils/sugar_file_utils.php')) {
         require_once('include/utils/sugar_file_utils.php');
     }
-    $log = empty($path) ? clean_path(getcwd().'/upgradeWizard.log') : clean_path($path);
+    $log = empty($path) ? clean_path(getcwd().'/../../logs/upgrade.log') : clean_path($path);
 
     // create if not exists
     if (!file_exists($log)) {
