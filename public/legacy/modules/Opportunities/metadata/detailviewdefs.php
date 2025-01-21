@@ -100,54 +100,6 @@ array(
       ],
       'sidebarWidgets' => [
           [
-              'type' => 'statistics',
-              'labelKey' => 'LBL_SIZE_ANALYSIS',
-              'options' => [
-                  'sidebarStatistic' => [
-                      'rows' => [
-                          [
-                              'align' => 'start',
-                              'cols' => [
-                                  [
-                                      'labelKey' => 'LBL_POSITION',
-                                      'size' => 'medium',
-                                  ],
-                              ]
-                          ],
-                          [
-                              'align' => 'start',
-                              'cols' => [
-                                  [
-                                      'statistic' => 'opportunity-size-analysis',
-                                      'size' => 'xx-large',
-                                      'bold' => true,
-                                      'color' => 'green'
-                                  ]
-                              ]
-                          ],
-                          [
-                              'align' => 'start',
-                              'cols' => [
-                                  [
-                                      'labelKey' => 'LBL_OUT_OF',
-                                      'class' => 'pl-1 pr-1',
-                                      'size' => 'regular',
-                                  ],
-                                  [
-                                      'statistic' => 'assigned-user-opportunities-count',
-                                      'class' => 'pl-1 pr-1',
-                                      'size' => 'regular',
-                                  ],
-                              ]
-                          ],
-                      ]
-                  ]
-              ],
-              'acls' => [
-                  'Accounts' => ['view', 'list']
-              ]
-          ],
-          [
               'type' => 'history-timeline',
               'acls' => [
                   'Opportunities' => ['view', 'list']
