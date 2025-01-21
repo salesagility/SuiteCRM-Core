@@ -47,6 +47,19 @@
   margin-top: 0.625rem;
 }
 
+
+@media (max-width: 480px) {
+  .sub-panel .panel-buttons button.btn-outline-light {
+    scrm-label {
+      display: none;
+    }
+
+    scrm-image {
+      display: flex!important;
+    }
+  }
+}
+
 .sub-panel .panel-buttons button.btn-outline-light {
   scrm-image {
     display: none;

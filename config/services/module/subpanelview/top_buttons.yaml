@@ -22,7 +22,6 @@ parameters:
       labelKey: LBL_FILTER
       action: show-filter
       params:
-        collapsedMobile: true
         expanded: true
       modes:
         - list

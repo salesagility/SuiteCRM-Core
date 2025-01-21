@@ -50,6 +50,7 @@
 
   .panel-title {
     font-size: .875rem;
+    max-width: 445px;
   }
 
   .panel-buttons button {
@@ -63,3 +64,23 @@
     max-width: 200px;
   }
 }
+
+@media (max-width: 480px) {
+  .panel-card .panel-title {
+    max-width: 95px;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 576px) {
+  .panel-card .panel-title {
+    max-width: 150px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .panel-card .panel-title {
+    max-width: 245px;
+  }
+}
+
+
