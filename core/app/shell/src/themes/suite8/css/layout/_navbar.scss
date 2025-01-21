@@ -81,6 +81,12 @@
 
 .recently-viewed {
   display: block;
+
+  &.dropdown-item:hover {
+    color: inherit;
+    text-decoration: inherit;
+    background-color: inherit;
+  }
 }
 
 .recently-viewed-nav-header {
