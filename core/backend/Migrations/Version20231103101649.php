@@ -78,10 +78,10 @@ final class Version20231103101649 extends BaseMigration implements ContainerAwar
         try {
 
             $output = new ConsoleOutput();
-            $angularMessage = "SuiteCRM is now using angular 16.";
+            $angularMessage = "SuiteCRM is now using angular 18.";
             $this->log($angularMessage);
             $output->writeln("<comment>Warning! $angularMessage</comment>");
-            $extensionsNeedToBeRebuiltMessage = "'defaultExt' and any extension that contains frontend changes will need to be rebuilt. For defaultExt you can build using `yarn run build:defaultExt`";
+            $extensionsNeedToBeRebuiltMessage = "'defaultExt' and any extension that contains frontend changes will need to be rebuilt. For defaultExt you can build using `yarn run build:extension defaultExt`";
             $this->log($extensionsNeedToBeRebuiltMessage);
             $output->writeln("<comment>Warning! $extensionsNeedToBeRebuiltMessage</comment>");
 
