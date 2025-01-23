@@ -76,12 +76,14 @@ export class NumberFormatter implements Formatter {
             groupSymbolRegex = new RegExp('\\.', 'g');
         }
 
-        value = value.replace(groupSymbolRegex, 'group_separator');
-        value = value.replace(decimalSymbolRegex, 'decimal_separator');
+        value = value ?? '';
+
+        value = value.toString().replace(groupSymbolRegex, 'group_separator');
+        value = value.toString().replace(decimalSymbolRegex, 'decimal_separator');
 
 
-        value = value.replace(/decimal_separator/g, '.');
-        value = value.replace(/group_separator/g, '');
+        value = value.toString().replace(/decimal_separator/g, '.');
+        value = value.toString().replace(/group_separator/g, '');
 
         return value;
     }
@@ -139,14 +141,15 @@ export class NumberFormatter implements Formatter {
             return transformed;
         }
 
-        transformed = transformed.replace(/,/g, 'group_separator');
-        transformed = transformed.replace(/\./g, 'decimal_separator');
+        transformed = transformed ?? '';
+        transformed = transformed.toString().replace(/,/g, 'group_separator');
+        transformed = transformed.toString().replace(/\./g, 'decimal_separator');
 
         const decimalSymbol = this.getDecimalsSymbol() || '.';
         const groupSymbol = this.getGroupSymbol() || ',';
 
-        transformed = transformed.replace(/decimal_separator/g, decimalSymbol);
-        transformed = transformed.replace(/group_separator/g, groupSymbol);
+        transformed = transformed.toString().replace(/decimal_separator/g, decimalSymbol);
+        transformed = transformed.toString().replace(/group_separator/g, groupSymbol);
 
         return transformed;
     }
