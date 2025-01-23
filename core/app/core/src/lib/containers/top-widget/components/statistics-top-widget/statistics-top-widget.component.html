@@ -26,15 +26,18 @@
 */
 -->
 <div *ngIf="(vm$ | async) as vm"
-     class="d-sm-flex justify-content-center widget-bar rounded">
+     class="d-sm-flex justify-content-center widget-bar rounded container-fluid p-0">
     <div class="p-2 widget-bar-entry-message" *ngIf="this.messageLabelKey">
         {{vm.appStrings[this.messageLabelKey] || '' | uppercase}}
     </div>
     <ng-container *ngIf="!loading()">
-        <div class="d-flex justify-content-center align-items-center w-100 mt-3 mb-3">
+        <div class="d-flex h-100 row justify-content-center align-items-center w-100 mt-3 mb-3 mr-0 ml-0">
             <ng-container *ngFor="let item of statistics | keyvalue; index as i; last as isLast; count as total">
-                <div class="d-flex col h-100 flex-column justify-content-start align-items-center widget-bar-entry"
-                    [class.border-right]="total > 1 && i%2 === 0 && !isLast">
+                <div class="d-flex h-100 flex-column justify-content-start align-items-center widget-bar-entry"
+                    [class.border-right]="total > 1 && i%2 === 0 && !isLast"
+                    [class.col]="total === 1"
+                    [class.col-6]="total >= 2"
+                    [class.mt-3]="total >= 2 && i>2">
 
                     <ng-container *ngIf="!shouldHide(vm.statistics[item.key], item.value)">
 

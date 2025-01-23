@@ -42,6 +42,8 @@
 .widget-bar .widget-bar-entry-value {
   font-weight: 700;
   font-size: 1.3em;
+  word-break: break-word;
+  text-align: center;
 
   .skeleton-field-content {
     background-color: $dark-midnight-grey;
@@ -54,6 +56,7 @@
   font-weight: 400;
   font-size: 0.8em;
   text-align: center;
+  word-break: break-word;
 }
 
 .widget-bar .widget-bar-entry-label:first-child {
