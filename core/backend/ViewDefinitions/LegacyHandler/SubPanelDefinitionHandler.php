@@ -204,9 +204,6 @@ class SubPanelDefinitionHandler extends LegacyHandler implements SubPanelDefinit
                 $headerModule = $this->moduleNameMapper->toFrontEnd($columnSubpanel->get_module_name());
                 $extraModuleVardefs = $this->getCollectionListVardefs($tab['collection_list']);
 
-//                if ($tab['searchdefs']){
-//                    $this->vi
-//                }
             } else {
                 $headerModule = $this->getHeaderModule($tab);
             }
