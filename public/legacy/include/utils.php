@@ -3249,7 +3249,7 @@ function get_emails_by_assign_or_link($params)
 
     if ($bean->object_name == 'Case' && !empty($bean->case_number)) {
         $where = str_replace('%1', $bean->case_number, (string) $bean->getEmailSubjectMacro());
-        $return_array['where'] .= "\n AND (email_ids.source = 'direct' OR emails.name LIKE '%$where%')";
+        $return_array['where'] .= "\n AND (emails.name LIKE '%$where%')";
     }
 
     return $return_array;
