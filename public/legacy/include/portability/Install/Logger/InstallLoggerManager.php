@@ -38,7 +38,7 @@ class InstallLoggerManager extends LoggerManager
      * This is the current log level
      * @var string
      */
-    private static $_level = 'info';
+    private static $_level = 'fatal';
 
     /**
      * This is the instance of the LoggerManager
@@ -59,6 +59,7 @@ class InstallLoggerManager extends LoggerManager
         'deprecated' => 40,
         'error' => 25,
         'fatal' => 10,
+        'feedback' => 7,
         'security' => 5,
         'off' => 0,
     ];
@@ -66,7 +67,7 @@ class InstallLoggerManager extends LoggerManager
     //only let the getLogger instantiate this object
     private function __construct()
     {
-        $this->setLevel('info');
+        $this->setLevel('fatal');
 
         if (empty(self::$_loggers)) {
             $this->_findAvailableLoggers();
@@ -107,5 +108,10 @@ class InstallLoggerManager extends LoggerManager
                 }
             }
         }
+        self::$_loggers['SugarLogger'] = new InstallLogger();
+        self::$_loggers['InstallLogger'] = new InstallLogger();
+
     }
+
+
 }

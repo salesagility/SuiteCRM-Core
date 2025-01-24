@@ -770,7 +770,7 @@ function handleLog4Php()
 function installLog($entry)
 {
     if (!empty($GLOBALS['install_log'])) {
-        $GLOBALS['install_log']->info($entry);
+        $GLOBALS['install_log']->feedback($entry);
         return;
     }
 

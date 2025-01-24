@@ -114,6 +114,8 @@ class AppInstallService
         require_once 'data/SugarBean.php';
         require_once 'include/entryPoint.php';
 
+        $this->switchLogger();
+
         if (!empty($sugar_config['installer_locked']) && (isset($sugar_config['installed']) && $sugar_config['installed'] === true)) {
             return $this->buildResult(false, ['Installer has been disabled']);
         }
@@ -133,8 +135,6 @@ class AppInstallService
         setPhpIniSettings();
 
         $locale = new Localization();
-
-        $this->switchLogger();
 
         $setup_sugar_version = $suitecrm_version;
 

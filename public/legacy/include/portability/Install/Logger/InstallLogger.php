@@ -33,6 +33,10 @@ require_once 'include/SugarLogger/SugarLogger.php';
 
 class InstallLogger extends SugarLogger
 {
+
+    protected $log_dir = '../../logs';
+    protected $logfile = 'install';
+
     protected function init(): void
     {
         $config = SugarConfig::getInstance();
@@ -43,8 +47,8 @@ class InstallLogger extends SugarLogger
         $this->logSize = '100MB';
         $this->logfile = 'install';
         $this->ext = '.log';
-        $log_dir = __DIR__ . '/../../../../../../logs';
-        $this->log_dir = $log_dir . (empty($log_dir) ? '' : '/');
+        $this->log_dir = $this->log_dir . (empty($this->log_dir)?'':'/');
+
         unset($config);
         $this->_doInitialization();
         InstallLoggerManager::setLogger('default', 'InstallLogger');
