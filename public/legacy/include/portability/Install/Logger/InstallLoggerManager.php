@@ -69,9 +69,7 @@ class InstallLoggerManager extends LoggerManager
     {
         $this->setLevel('fatal');
 
-        if (empty(self::$_loggers)) {
-            $this->_findAvailableLoggers();
-        }
+        $this->_findAvailableLoggers();
     }
 
     /**
