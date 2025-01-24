@@ -34,6 +34,7 @@ import {map, shareReplay} from 'rxjs/operators';
 import {RecordContentConfig, RecordContentDataSource} from './record-content.model';
 import {FieldLayoutConfig, FieldLayoutDataSource} from '../field-layout/field-layout.model';
 import {LanguageStore} from '../../store/language/language.store';
+import {emptyObject} from "../../common/utils/object-utils";
 
 @Component({
     selector: 'scrm-record-content',
@@ -87,6 +88,10 @@ export class RecordContentComponent implements OnInit, OnDestroy {
         const panelsMap = this.buildPanelMap();
 
         const tabDefs = this.mapTabDefs();
+
+        if (emptyObject(tabDefs)){
+            return;
+        }
 
         Object.keys(tabDefs).forEach(tabDefKey => {
             const tabDef = tabDefs[tabDefKey];
