@@ -53,4 +53,24 @@ class InstallLogger extends SugarLogger
         $this->_doInitialization();
         InstallLoggerManager::setLogger('default', 'InstallLogger');
     }
+
+    /**
+     * @return string
+     */
+    protected function getDateFormatString(): string
+    {
+        return "[YYYY-MM-DD HH:mm:ss]";
+    }
+
+    /**
+     * @param IntlDateFormatter $format
+     * @param string $userID
+     * @param $level
+     * @param mixed $message
+     * @return string
+     */
+    protected function formatLog(IntlDateFormatter $format, string $userID, $level, mixed $message): string
+    {
+        return $format->format(time()) . ' install.' . strtoupper($level) . ': ' . $message . "\n";
+    }
 }
