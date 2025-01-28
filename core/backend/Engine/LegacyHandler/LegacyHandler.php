@@ -116,6 +116,9 @@ abstract class LegacyHandler
 
         $this->startSession();
 
+        // force legacy dir
+        chdir($this->legacyDir);
+
         $this->state->setActiveScope($this->getHandlerKey());
     }
 
