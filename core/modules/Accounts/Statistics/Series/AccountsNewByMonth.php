@@ -129,7 +129,7 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
         $groupingFields = '';
         $months = $this->getMonths();
 
-        $series = $this->buildMultiSeries($result, $groupingFields, $nameField, $valueField, $months);
+        $series = $this->buildMultiSeries($result, $groupingFields, $nameField, $valueField, $months, true);
 
         $chartOptions = new ChartOptions();
         $chartOptions->yAxisTickFormatting = true;
@@ -157,8 +157,9 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
      */
     protected function getMonths(): array
     {
-        $currentYear = date('Y');
-        $currentMonth = date('n');
+        $currentDate = date('Y-m-d');
+        $currentYear = date('Y', strtotime($currentDate));
+        $currentMonth = date('n', strtotime($currentDate));
 
         $months = [];
 
@@ -194,11 +195,16 @@ class AccountsNewByMonth extends LegacyHandler implements StatisticsProviderInte
      */
     protected function generateQuery(array $query): array
     {
-        $lastYear = date('Y', strtotime('-1 year'));
-        $nextMonth = date('m', strtotime('first day of next month'));
         $currentDate = date('Y-m-d');
+
+        $nextMonth = date('Y-m-d', strtotime($currentDate . ' first day of next month'));
+        $lastYear = date('Y-m-d', strtotime($nextMonth . ' -1 year'));
+
+        $startDate = date('Y-m-d', strtotime($lastYear . ' -1 day'));
+        $endDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+
         $query['select'] = "SELECT COUNT(accounts.name) as value, CONCAT(EXTRACT(YEAR FROM accounts.date_entered), '-', LPAD(EXTRACT(MONTH FROM accounts.date_entered), 2, '0')) as yearmonth";
-        $query['where'] .= " AND accounts.date_entered >= '$lastYear-$nextMonth-01' AND accounts.date_entered <= '$currentDate' ";
+        $query['where'] .= " AND accounts.date_entered > '$startDate' AND accounts.date_entered < '$endDate' ";
         $query['order_by'] = '';
         $query['group_by'] = "GROUP BY yearmonth";
 

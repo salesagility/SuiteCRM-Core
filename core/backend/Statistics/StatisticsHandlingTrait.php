@@ -168,7 +168,8 @@ trait StatisticsHandlingTrait
      * @param string $groupingField
      * @param string $nameField
      * @param string $valueField
-     * @param $defaultValues
+     * @param array $defaultValues
+     * @param bool $addEmpty
      * @return Series|SeriesResult
      */
     protected function buildMultiSeries(
@@ -176,8 +177,9 @@ trait StatisticsHandlingTrait
         string $groupingField,
         string $nameField,
         string $valueField,
-        array $defaultValues
-    ) {
+        array $defaultValues,
+        bool $addEmpty = false
+    ): Series|SeriesResult {
         $seriesMap = [];
 
         foreach ($result as $row) {
@@ -204,6 +206,24 @@ trait StatisticsHandlingTrait
             }
 
             $seriesMap[$groupingFieldValue]['items'][$nameFieldValue]->value = $valueFieldValue;
+        }
+
+        if (empty($result) && $addEmpty) {
+            $series = new Series();
+            $series->name = '';
+            $series->series = [];
+            $seriesMap[''] = [
+                'series' => $series,
+                'items' => []
+            ];
+
+            foreach ($defaultValues as $default) {
+                $item = new SeriesItem();
+                $item->name = $default;
+                $item->value = '0';
+
+                $seriesMap['']['items'][$default] = $item;
+            }
         }
 
         $series = new SeriesResult();
