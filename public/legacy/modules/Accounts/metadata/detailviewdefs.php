@@ -180,9 +180,8 @@ array(
           ),
           1 =>
           array(
-            'name' => 'phone_office',
-            'comment' => 'The office phone number',
-            'label' => 'LBL_PHONE_OFFICE',
+              'name' => 'assigned_user_name',
+              'label' => 'LBL_ASSIGNED_TO',
           ),
         ),
         1 =>
@@ -199,9 +198,9 @@ array(
           ),
           1 =>
           array(
-            'name' => 'phone_fax',
-            'comment' => 'The fax phone number of this company',
-            'label' => 'LBL_FAX',
+              'name' => 'phone_office',
+              'comment' => 'The office phone number',
+              'label' => 'LBL_PHONE_OFFICE',
           ),
         ),
         2 =>
@@ -243,14 +242,6 @@ array(
             'name' => 'description',
             'comment' => 'Full text of the note',
             'label' => 'LBL_DESCRIPTION',
-          ),
-        ),
-        5 =>
-        array(
-          0 =>
-          array(
-            'name' => 'assigned_user_name',
-            'label' => 'LBL_ASSIGNED_TO',
           ),
         ),
       ),
