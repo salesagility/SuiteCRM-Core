@@ -1242,9 +1242,9 @@ class AOR_Report extends Basic
 
                 $path = unserialize(base64_decode($field->module_path));
 
-                $data = $field_module->field_defs[$field->field] ?? [];
-
                 $field_module = $module;
+                
+                $data = $field_module->field_defs[$field->field] ?? [];            
                 $table_alias = $field_module->table_name;
                 $oldAlias = $table_alias;
                 if (!empty($path[0]) && $path[0] != $module->module_dir) {
