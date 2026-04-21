@@ -40,6 +40,7 @@ import {WidgetMetadata} from '../../common/metadata/widget.metadata';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
 import {ObjectMap} from "../../common/types/object-map";
+import {RecordLogicMap} from "../../components/record-content/record-logic/record-logic.action";
 
 export interface SummaryTemplates {
     [key: string]: string;
@@ -81,6 +82,7 @@ export interface RecordViewMetadata {
     metadata?: ObjectMap;
     header?: HeaderMetadata;
     sections?: RecordViewSectionMetadataMap;
+    recordLogic?: RecordLogicMap;
 }
 
 export interface RecordViewSectionMetadataMap {
@@ -106,6 +108,7 @@ export interface RecordModalMetadata {
     panels?: Panel[];
     vardefs?: FieldDefinitionMap;
     metadata?: ObjectMap;
+    recordLogic?: RecordLogicMap;
 }
 
 export interface RecordTemplateMetadata {
@@ -552,7 +555,8 @@ export class MetadataStore implements StateStore {
             vardefs: 'vardefs',
             metadata: 'metadata',
             header: 'header',
-            sections: 'sections'
+            sections: 'sections',
+            recordLogic: 'recordLogic'
         };
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
@@ -577,7 +581,8 @@ export class MetadataStore implements StateStore {
             actions: 'actions',
             panels: 'panels',
             vardefs: 'vardefs',
-            metadata: 'metadata'
+            metadata: 'metadata',
+            recordLogic: 'recordLogic'
         };
 
         this.addDefinedMeta(recordModalMeta, receivedMeta, entries);
