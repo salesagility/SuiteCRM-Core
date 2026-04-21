@@ -72,13 +72,15 @@ export class RecordModalContentAdapter implements RecordContentDataSource {
                 const maxColumns = meta.templateMeta.maxColumns || 2;
                 const colClasses = meta?.templateMeta?.colClasses ?? [];
                 const tabDefs = meta.templateMeta.tabDefs;
+                const recordLogic = meta?.recordLogic ?? {};
 
                 return {
                     layout,
                     mode,
                     maxColumns,
                     tabDefs,
-                    colClasses
+                    colClasses,
+                    recordLogic
                 } as RecordContentConfig;
             })
         );
