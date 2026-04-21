@@ -25,7 +25,7 @@
  */
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, of, Subscription} from 'rxjs';
+import {combineLatest, Observable, of, Subscription} from 'rxjs';
 import {FieldMap} from '../../common/record/field.model';
 import {Panel} from '../../common/metadata/metadata.model';
 import {Record} from '../../common/record/record.model';
@@ -35,11 +35,13 @@ import {RecordContentConfig, RecordContentDataSource} from './record-content.mod
 import {FieldLayoutConfig, FieldLayoutDataSource} from '../field-layout/field-layout.model';
 import {LanguageStore} from '../../store/language/language.store';
 import {emptyObject} from "../../common/utils/object-utils";
+import {RecordLogicDependencyService} from "./record-logic/record-logic-dependency.service";
 
 @Component({
     selector: 'scrm-record-content',
     templateUrl: './record-content.component.html',
     styles: [],
+    providers: [RecordLogicDependencyService]
 })
 export class RecordContentComponent implements OnInit, OnDestroy {
 
@@ -54,7 +56,8 @@ export class RecordContentComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
     constructor(
-        protected language: LanguageStore
+        protected language: LanguageStore,
+        protected recordLogicDependencyService: RecordLogicDependencyService
     ) {}
 
     ngOnInit(): void {
@@ -74,11 +77,23 @@ export class RecordContentComponent implements OnInit, OnDestroy {
             this.fields = record.fields;
         }));
 
+        this.subs.push(
+            combineLatest([
+                this.dataSource.getDisplayConfig(),
+                this.dataSource.getRecord()
+            ]).subscribe(([config, record]) => {
+                const recordLogic = config?.recordLogic;
+                if (recordLogic && Object.keys(recordLogic).length) {
+                    this.recordLogicDependencyService.init(record, recordLogic, config.mode);
+                }
+            })
+        );
 
     }
 
     ngOnDestroy(): void {
         this.subs.forEach(sub => sub.unsubscribe());
+        this.recordLogicDependencyService.clear();
     }
 
     updatePanelsInTabs(): void {
