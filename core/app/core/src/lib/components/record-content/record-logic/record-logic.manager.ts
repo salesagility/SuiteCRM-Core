@@ -36,6 +36,8 @@ import {Action, ActionContext, ModeActions} from '../../../common/actions/action
 import {Record} from '../../../common/record/record.model';
 import {ViewMode} from '../../../common/views/view.model';
 import {UpdateValuesBackendAction} from './update-values-backend/update-values-backend.action';
+import {UpdateValuesAction} from './update-values/update-values.action';
+import {AutofillFromRelateAction} from './autofill-from-relate/autofill-from-relate.action';
 
 @Injectable({
     providedIn: 'root'
@@ -51,9 +53,15 @@ export class RecordLogicManager extends BaseActionManager<RecordLogicActionData>
         filter: {} as RecordLogicActionHandlerMap
     };
 
-    constructor(updateValuesBackend: UpdateValuesBackendAction) {
+    constructor(
+        updateValuesBackend: UpdateValuesBackendAction,
+        updateValues: UpdateValuesAction,
+        autofillFromRelate: AutofillFromRelateAction
+    ) {
         super();
         updateValuesBackend.modes.forEach(mode => this.actions[mode][updateValuesBackend.key] = updateValuesBackend);
+        updateValues.modes.forEach(mode => this.actions[mode][updateValues.key] = updateValues);
+        autofillFromRelate.modes.forEach(mode => this.actions[mode][autofillFromRelate.key] = autofillFromRelate);
     }
 
     registerAction(handler: RecordLogicActionHandler): void {
@@ -84,7 +92,7 @@ export class RecordLogicManager extends BaseActionManager<RecordLogicActionData>
     }
 
     protected getModuleName(context?: ActionContext): string {
-        return context.module;
+        return context?.module ?? '';
     }
 
     protected buildActionData(action: Action, context?: ActionContext, changedFieldName?: string): RecordLogicActionData {
