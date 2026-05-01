@@ -33,8 +33,7 @@ import {ProcessService} from '../../process/process.service';
 import {MessageService} from '../../message/message.service';
 import {RecordManager} from '../../record/record.manager';
 import {ConfirmationModalService} from '../../modals/confirmation-modal.service';
-import {SelectModalService} from '../../modals/select-modal.service';
-import {FieldModalService} from '../../modals/field-modal.service';
+import {EventBus} from '../../event-bus/event-bus.service';
 
 export interface UpdateValuesBackendCallbacks {
     onStart?: () => void;
@@ -52,8 +51,7 @@ export class UpdateValuesBackendService {
         protected messages: MessageService,
         protected recordManager: RecordManager,
         protected confirmation: ConfirmationModalService,
-        protected selectModalService: SelectModalService,
-        protected fieldModalService: FieldModalService
+        protected eventBus: EventBus
     ) {
     }
 
@@ -128,24 +126,24 @@ export class UpdateValuesBackendService {
     }
 
     protected showSelectModal(selectModal: any, action: Action, record: Record, callbacks: UpdateValuesBackendCallbacks): void {
-        this.selectModalService.showSelectModal(selectModal.module, (modalRecord: Record) => {
-            if (modalRecord) {
-                const {fields, formGroup, ...baseModalRecord} = modalRecord;
-                action.params.modalRecord = baseModalRecord;
-            }
-            this.callBackend(record, action, callbacks);
-        }, selectModal);
+        this.eventBus.request('open-select-modal', {module: selectModal.module, options: selectModal})
+            .subscribe((modalRecord: Record) => {
+                if (modalRecord) {
+                    const {fields, formGroup, ...baseModalRecord} = modalRecord;
+                    action.params.modalRecord = baseModalRecord;
+                }
+                this.callBackend(record, action, callbacks);
+            });
     }
 
     protected showFieldModal(fieldModal: any, action: Action, record: Record, callbacks: UpdateValuesBackendCallbacks): void {
-        const options = {...fieldModal};
-
-        this.fieldModalService.showFieldModal(options, (fields: Field[]) => {
-            if (fields) {
-                action.params.modalFields = fields;
-            }
-            this.callBackend(record, action, callbacks);
-        });
+        this.eventBus.request('open-field-modal', {options: {...fieldModal}})
+            .subscribe((fields: Field[]) => {
+                if (fields) {
+                    action.params.modalFields = fields;
+                }
+                this.callBackend(record, action, callbacks);
+            });
     }
 
     protected callBackend(record: Record, action: Action, callbacks: UpdateValuesBackendCallbacks): void {
