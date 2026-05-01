@@ -26,7 +26,7 @@
 
 import {Injectable, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import {debounceTime, skip} from 'rxjs/operators';
 import {Record} from '../../../common/record/record.model';
 import {ViewMode} from '../../../common/views/view.model';
 import {RecordLogicMap} from './record-logic.action';
@@ -64,7 +64,7 @@ export class RecordLogicDependencyService implements OnDestroy {
             }
 
             this.subs.push(
-                field.valueChanges$.pipe(debounceTime(500)).subscribe(() => {
+                field.valueChanges$.pipe(skip(1), debounceTime(500)).subscribe(() => {
                     this.recordLogicManager.runLogic(record, mode, config, 'onDependencyChange', fieldName);
                 })
             );
