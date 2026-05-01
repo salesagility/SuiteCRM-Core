@@ -45,6 +45,8 @@ import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {RecordModalService} from "../../../services/modals/record-modal.service";
 import {RecordThreadModalService} from "../../../store/record-thread-modal/record-thread-modal.service";
 import {GlobalActionsAdapter} from "../../../services/global-actions/adapters/actions.adapter";
+import {FieldModalService} from "../../../services/modals/field-modal.service";
+import {SelectModalService} from "../../../services/modals/select-modal.service";
 
 @Injectable({providedIn: 'root'})
 export class ClassicViewResolver extends BaseMetadataResolver {
@@ -66,6 +68,8 @@ export class ClassicViewResolver extends BaseMetadataResolver {
         protected recordThreadModalService: RecordThreadModalService,
         protected globalAsyncActionAdapter: GlobalActionsAdapter,
         protected metadataStore: MetadataStore,
+        protected fieldModalService: FieldModalService,
+        protected selectModalService: SelectModalService,
     ) {
         super(
             systemConfigStore,
@@ -80,7 +84,9 @@ export class ClassicViewResolver extends BaseMetadataResolver {
             recordModalService,
             recordThreadModalService,
             globalAsyncActionAdapter,
-            auth
+            auth,
+            fieldModalService,
+            selectModalService
         );
     }
 

@@ -37,10 +37,8 @@ import {deepClone} from "../../../../common/utils/object-utils";
 import {MessageService} from "../../../../services/message/message.service";
 import {ViewFieldDefinition} from "../../../../common/metadata/metadata.model";
 import {FieldGridOptions} from "../../../field-grid/field-grid.model";
-import {FieldModalResult} from "../../../../services/modals/field-modal.service";
+import {FieldModalResult, FieldModalValidationFunction} from "../../../../services/modals/field-modal.model";
 import {Field} from "../../../../common/record/field.model";
-import {Observable} from "rxjs";
-import {Process} from "../../../../services/process/process.service";
 import {take} from "rxjs/operators";
 
 
@@ -62,9 +60,6 @@ const fieldGridDefaultOptions = {
     wide: 4
   }
 } as FieldGridOptions;
-
-
-export declare type FieldModalValidationFunction = (fields) => Observable<Process>;
 
 @Component({
   selector: 'scrm-field-grid-modal',
