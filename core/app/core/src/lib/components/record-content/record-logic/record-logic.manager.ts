@@ -135,7 +135,14 @@ export class RecordLogicManager extends BaseActionManager<RecordLogicActionData>
             }
 
             const frontendActionTriggeringStatus = this?.actions[mode][action.key]?.getTriggeringStatus() ?? null;
-            const actionTriggeringStatus = action?.triggeringStatus ?? frontendActionTriggeringStatus ?? defaultTriggeringStatus;
+            let actionTriggeringStatus = action?.triggeringStatus ?? frontendActionTriggeringStatus ?? defaultTriggeringStatus;
+
+            if (actionTriggeringStatus.includes('onInit')) {
+                actionTriggeringStatus = actionTriggeringStatus.filter(value => value !== 'onInit');
+                if (!actionTriggeringStatus.includes('onRecordInit')) {
+                    actionTriggeringStatus = ['onRecordInit', ...actionTriggeringStatus];
+                }
+            }
 
             if (triggeringStatus === 'onRecordInit' && actionTriggeringStatus.includes('onRecordInit')) {
                 actions.push(action);
