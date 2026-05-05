@@ -164,6 +164,18 @@ export class UpdateValuesBackendService {
             options.modalFields = action.params.modalFields;
         }
 
+        if (action.params?.relateModule) {
+            options.relateModule = action.params.relateModule;
+        }
+
+        if (action.params?.relateId) {
+            options.relateId = action.params.relateId;
+        }
+
+        if (action.params?.updateFields) {
+            options.updateFields = action.params.updateFields;
+        }
+
         callbacks.onStart?.();
 
         this.processService.submit(processType, options).pipe(take(1)).subscribe({
