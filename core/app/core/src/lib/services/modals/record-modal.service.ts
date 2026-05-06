@@ -129,6 +129,7 @@ export class RecordModalService {
         modal.componentInstance.wrapperClass = recordModalOptions.wrapperClass ?? '';
         modal.componentInstance.closeConfirmationMessages = recordModalOptions.closeConfirmationMessage ?? [];
         modal.componentInstance.closeConfirmationLabel = recordModalOptions.closeConfirmationLabel ?? '';
+        modal.componentInstance.closeConfirmationTitle = recordModalOptions.closeConfirmationTitle ?? '';
         modal.componentInstance.closeConfirmationModal = recordModalOptions.closeConfirmationModal ?? false;
         modal.componentInstance.modalOptions = {...modalOptions ?? {}};
 
