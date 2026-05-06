@@ -41,9 +41,10 @@ export class ConfirmationModalService {
     ) {
     }
 
-    public showModal(confirmationMessages: string[], onProceed: Function, onClose: Function = () => {}, fields = {} as FieldMap, context = {} as StringMap): void {
+    public showModal(confirmationMessages: string[], onProceed: Function, onClose: Function = () => {}, fields = {} as FieldMap, context = {} as StringMap, titleKey: string = ''): void {
         const modal = this.modalService.open(MessageModalComponent);
 
+        modal.componentInstance.titleKey = titleKey;
         modal.componentInstance.labelKeys = confirmationMessages ?? 'LBL_GENERIC_CONFIRMATION';
         modal.componentInstance.fields = fields;
         modal.componentInstance.context = context;
