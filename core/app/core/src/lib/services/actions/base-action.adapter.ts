@@ -97,6 +97,7 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
         const displayConfirmation = params.displayConfirmation || false;
         const confirmationLabel = params.confirmationLabel || '';
         const confirmationMessages = params.confirmationMessages || '';
+        const confirmationTitle = params.confirmationTitle || '';
         const modalContext = {module: context?.module ?? '', ...(params.context || {} as StringMap)} as StringMap;
         const fields = params.fields || {} as FieldMap;
 
@@ -129,7 +130,7 @@ export abstract class BaseActionsAdapter<D extends ActionData> implements Action
                     return;
                 }
             }, () => {
-            }, fields, modalContext);
+            }, fields, modalContext, confirmationTitle);
 
             return;
         }

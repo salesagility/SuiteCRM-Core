@@ -37,7 +37,8 @@ import {
 } from '@angular/core';
 import {emptyObject} from '../../../../common/utils/object-utils';
 import {ButtonInterface} from '../../../../common/components/button/button.model';
-import {Field} from '../../../../common/record/field.model';
+import {Field, FieldMap} from '../../../../common/record/field.model';
+import {StringMap} from '../../../../common/types/string-map';
 import {AttributeMap, Record} from '../../../../common/record/record.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModuleNameMapper} from '../../../../services/navigation/module-name-mapper/module-name-mapper.service';
@@ -231,6 +232,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent implements Aft
             if (event && (this.field?.metadata?.selectConfirmation ?? false)) {
                 const confirmationLabel = this.field.metadata.confirmationLabel ?? '';
                 const confirmationMessages = this.field.metadata.confirmationMessages ?? [];
+                const confirmationTitle = this.field.metadata.confirmationTitle ?? '';
                 const confirmation = [confirmationLabel, ...confirmationMessages];
                 this.confirmation.showModal(
                     confirmation,
@@ -248,7 +250,7 @@ export class RelateEditFieldComponent extends BaseRelateComponent implements Aft
                         }
 
                         this.setValue(this.field.valueObject.id, value, this.field.valueObject);
-                    });
+                    }, {} as FieldMap, {} as StringMap, confirmationTitle);
                 return;
             }
             this.setValue(item.id, item[relateName], item);
@@ -422,13 +424,15 @@ export class RelateEditFieldComponent extends BaseRelateComponent implements Aft
             if (this.field?.metadata?.selectConfirmation ?? false) {
                 const confirmationLabel = this.field.metadata.confirmationLabel ?? '';
                 const confirmationMessages = this.field.metadata.confirmationMessages ?? [];
+                const confirmationTitle = this.field.metadata.confirmationTitle ?? '';
                 const confirmation = [confirmationLabel, ...confirmationMessages];
                 this.confirmation.showModal(
                     confirmation,
                     () => {
                         const record = this.getSelectedRecord(data);
                         this.setItem(record);
-                    });
+                    }, () => {
+                    }, {} as FieldMap, {} as StringMap, confirmationTitle);
                 return;
             }
 

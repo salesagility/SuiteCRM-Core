@@ -27,7 +27,8 @@
 import {Injectable} from '@angular/core';
 import {take} from 'rxjs/operators';
 import {Action} from '../../../common/actions/action.model';
-import {Field} from '../../../common/record/field.model';
+import {Field, FieldMap} from '../../../common/record/field.model';
+import {StringMap} from '../../../common/types/string-map';
 import {Record} from '../../../common/record/record.model';
 import {ProcessService} from '../../process/process.service';
 import {MessageService} from '../../message/message.service';
@@ -63,6 +64,7 @@ export class UpdateValuesBackendService {
         if (displayConfirmation) {
             const confirmationLabel = action.params?.confirmationLabel || '';
             const confirmationMessages = action.params?.confirmationMessages || [];
+            const confirmationTitle = action.params?.confirmationTitle || '';
             const confirmation = [confirmationLabel, ...confirmationMessages];
 
             this.confirmation.showModal(confirmation, () => {
@@ -75,7 +77,8 @@ export class UpdateValuesBackendService {
                     return;
                 }
                 this.callBackend(record, action, callbacks);
-            });
+            }, () => {
+            }, {} as FieldMap, {} as StringMap, confirmationTitle);
             return;
         }
 

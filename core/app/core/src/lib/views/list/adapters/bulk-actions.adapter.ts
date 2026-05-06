@@ -39,6 +39,8 @@ import {BulkActionDataSource} from '../../../components/bulk-action-menu/bulk-ac
 import {Metadata, MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {SelectModalService} from '../../../services/modals/select-modal.service';
 import {AppMetadataStore} from "../../../store/app-metadata/app-metadata.store.service";
+import {FieldMap} from "../../../common/record/field.model";
+import {StringMap} from "../../../common/types/string-map";
 
 @Injectable()
 export class BulkActionsAdapter implements BulkActionDataSource {
@@ -130,6 +132,7 @@ export class BulkActionsAdapter implements BulkActionDataSource {
         const displayConfirmation = params.displayConfirmation || false;
         const confirmationLabel = params.confirmationLabel || '';
         const confirmationMessages = params.confirmationMessages || [];
+        const confirmationTitle = params.confirmationTitle || '';
         const selectModal = definition?.params?.selectModal ?? {};
         const selectModule = selectModal && selectModal.module;
         const recordPanel = definition.params && definition.params.recordPanel;
@@ -148,7 +151,8 @@ export class BulkActionsAdapter implements BulkActionDataSource {
                     return;
                 }
                 this.showSelectModal(selectModal.module, actionName, data, selectModal);
-            });
+            }, () => {
+            }, {} as FieldMap, {} as StringMap, confirmationTitle);
 
             return;
         }

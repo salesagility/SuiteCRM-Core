@@ -77,6 +77,7 @@ export const asyncValidator = (
 
                 const confirmationLabel = process.data?.confirmationLabel ?? '';
                 const confirmationMessages = process.data?.confirmationMessages ?? [];
+                const confirmationTitle = process.data?.confirmationTitle ?? '';
                 const confirmation = [confirmationLabel, ...confirmationMessages];
 
                 if (Object.entries(confirmation).length === 0) {
@@ -88,7 +89,8 @@ export const asyncValidator = (
                     () => confirmationSubject.next(true),
                     () => confirmationSubject.next(false),
                     record.fields,
-                    {value: control.value}
+                    {value: control.value},
+                    confirmationTitle
                 )
 
                 return confirmation$.pipe(

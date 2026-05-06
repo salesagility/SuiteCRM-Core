@@ -34,6 +34,8 @@ import {ConfirmationModalService} from '../../../../services/modals/confirmation
 import {UpdateValuesBackendService} from '../../../../services/actions/update-values-backend/update-values-backend.service';
 import {ObjectArrayMatrix} from '../../../../common/types/object-map';
 import {Record} from '../../../../common/record/record.model';
+import {FieldMap} from '../../../../common/record/field.model';
+import {StringMap} from '../../../../common/types/string-map';
 
 interface UpdateFieldConfig {
     value?: any;
@@ -88,11 +90,13 @@ export class UpdateValuesAction extends RecordLogicActionHandler {
         if (displayConfirmation) {
             const confirmationLabel = action.params?.confirmationLabel || '';
             const confirmationMessages = action.params?.confirmationMessages || [];
+            const confirmationTitle = action.params?.confirmationTitle || '';
             const confirmation = [confirmationLabel, ...confirmationMessages];
 
             this.confirmation.showModal(confirmation, () => {
                 this.applyUpdates(record, updateFields, allowEmpty);
-            });
+            }, () => {
+            }, {} as FieldMap, {} as StringMap, confirmationTitle);
             return;
         }
 

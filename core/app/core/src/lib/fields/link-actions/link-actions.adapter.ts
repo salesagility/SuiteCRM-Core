@@ -28,12 +28,13 @@ import {Injectable} from '@angular/core';
 import {take} from 'rxjs/operators';
 import {Action} from '../../common/actions/action.model';
 import {Record} from '../../common/record/record.model';
-import {Field} from '../../common/record/field.model';
+import {Field, FieldMap} from '../../common/record/field.model';
 import {ViewMode} from '../../common/views/view.model';
 import {AsyncActionInput, AsyncActionService} from '../../services/process/processes/async-action/async-action';
 import {MessageService} from '../../services/message/message.service';
 import {ConfirmationModalService} from '../../services/modals/confirmation-modal.service';
 import {SelectModalService} from '../../services/modals/select-modal.service';
+import {StringMap} from '../../common/types/string-map';
 import {LinkActionManager} from './link-action-manager.service';
 import {LinkActionData} from './link-action.model';
 
@@ -56,6 +57,7 @@ export class LinkActionsAdapter {
         const displayConfirmation = params.displayConfirmation || false;
         const confirmationLabel = params.confirmationLabel || '';
         const confirmationMessages = params.confirmationMessages || '';
+        const confirmationTitle = params.confirmationTitle || '';
         const selectModal = params.selectModal;
         const selectModule = selectModal?.module;
 
@@ -69,7 +71,8 @@ export class LinkActionsAdapter {
                 }
 
                 this.showSelectModal(selectModule, action, field, record, mode);
-            });
+            }, () => {
+            }, {} as FieldMap, {} as StringMap, confirmationTitle);
             return;
         }
 
