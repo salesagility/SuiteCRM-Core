@@ -116,6 +116,7 @@ export class RecordModalComponent implements OnInit, OnDestroy {
     @Input() fields: WritableSignal<FieldMap> = signal({});
     @Input() closeConfirmationLabel: string = '';
     @Input() closeConfirmationMessages: string[] = [];
+    @Input() closeConfirmationTitle: string = '';
     @Input() closeConfirmationModal: boolean = false;
     @Input() modalOptions: any = null;
     @Output() onMaximize: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -164,7 +165,8 @@ export class RecordModalComponent implements OnInit, OnDestroy {
                         this.activeModal.close({
                             type: 'close-button'
                         } as ModalCloseFeedBack);
-                    });
+                    }, () => {
+                    }, {} as FieldMap, {} as StringMap, this.closeConfirmationTitle);
                     return;
                 }
                 this.activeModal.close({
