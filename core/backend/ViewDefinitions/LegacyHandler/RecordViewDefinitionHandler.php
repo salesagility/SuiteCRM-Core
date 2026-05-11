@@ -227,6 +227,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $this->addActionConfig($module, $recordViewDefs, $metadata);
         $this->addModalHeaderActionConfig($module, $recordViewDefs, $metadata);
         $this->addModalFooterActionConfig($module, $recordViewDefs, $metadata);
+        $this->addRecordLogicConfig($recordViewDefs, $metadata);
         $this->addSummaryTemplates($recordViewDefs, $metadata);
         $this->addBackButton($recordViewDefs, $metadata);
 
@@ -755,6 +756,15 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $actions = $this->actionDefinitionProvider->getActions($module, $recordActions) ?? [];
 
         $metadata['actions'] = array_values($actions);
+    }
+
+    /**
+     * @param array $detailViewDefs
+     * @param array $metadata
+     */
+    protected function addRecordLogicConfig(array $detailViewDefs, array &$metadata): void
+    {
+        $metadata['recordLogic'] = $detailViewDefs['recordLogic'] ?? [];
     }
 
     /**
