@@ -81,7 +81,11 @@ export class AutofillFromRelateAction extends RecordLogicActionHandler {
 
         const field = record.fields?.[relateField];
         const idName = field?.definition?.id_name || '';
-        const relateId = record.fields?.[idName]?.value || record.attributes?.[idName] || '';
+        let relateId = field?.valueObject?.id || record.attributes?.[relateField]?.id || '';
+        if (!relateId && idName !== 'id') {
+            relateId = field?.valueObject?.[idName] || record.attributes?.[relateField]?.[idName] || '';
+        }
+
         const relateModule = field?.definition?.module || '';
 
         const enrichedAction: Action = {
