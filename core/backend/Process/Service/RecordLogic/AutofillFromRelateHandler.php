@@ -27,6 +27,7 @@
 
 namespace App\Process\Service\RecordLogic;
 
+use ApiPlatform\Metadata\Exception\InvalidArgumentException;
 use App\Data\Service\RecordProviderInterface;
 use App\Module\Service\ModuleNameMapperInterface;
 use App\Process\Entity\Process;
@@ -118,6 +119,35 @@ class AutofillFromRelateHandler implements ProcessHandlerInterface
             if (empty($sourceField)) {
                 continue;
             }
+
+            $value = $relatedAttributes[$sourceField] ?? '';
+
+            if (empty($value)) {
+                $fieldValues[$targetField] = [];
+                continue;
+            }
+
+            if (is_array($value) && array_is_list($value) && !is_array($value[0])) {
+                $fieldValues[$targetField] = [
+                    'valueList' => $relatedAttributes[$sourceField] ?? '',
+                ];
+                continue;
+            }
+
+            if (is_array($value) && array_is_list($value) && is_array($value[0])) {
+                $fieldValues[$targetField] = [
+                    'valueObjectArray' => $relatedAttributes[$sourceField] ?? '',
+                ];
+                continue;
+            }
+
+            if (is_array($value) && !array_is_list($value)) {
+                $fieldValues[$targetField] = [
+                    'valueObject' => $relatedAttributes[$sourceField] ?? '',
+                ];
+                continue;
+            }
+
             $fieldValues[$targetField] = [
                 'value' => $relatedAttributes[$sourceField] ?? '',
             ];
