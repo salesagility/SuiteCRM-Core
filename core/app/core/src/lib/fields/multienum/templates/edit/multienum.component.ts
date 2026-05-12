@@ -84,6 +84,14 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
             },
             icon: 'cross'
         } as ButtonInterface;
+
+        this.subs.push(this.field.valueChanges$.subscribe({
+            next: (value: any) => {
+                if (value?.valueList) {
+                    this.initValue();
+                }
+            }
+        }));
     }
 
     public onAdd(): void {
