@@ -92,34 +92,58 @@ export class UpdateValuesBackendService {
         this.callBackend(record, action, callbacks);
     }
 
-    updateFieldValue(field: Field, value: any): void {
-        if (value?.value) {
+    updateFieldValue(field: Field, value: any, allowEmpty: boolean = false): void {
+
+        const valueTypesSet = {
+            value: false,
+            valueList: false,
+            valueObject: false,
+            valueObjectArray: false,
+        }
+
+        if (value?.value != null) {
             field.value = value.value;
             field.formControl?.setValue(value.value);
+            valueTypesSet.value = true;
         }
 
-        if (value?.valueList) {
+        if (value?.valueList != null) {
             field.valueList = value.valueList;
+            valueTypesSet.valueList = true;
         }
 
-        if (value?.valueObject) {
+        if (value?.valueObject != null) {
             field.valueObject = value.valueObject;
+            valueTypesSet.valueObject = true;
         }
 
-        if (value?.valueObjectArray) {
+        if (value?.valueObjectArray != null) {
             field.valueObjectArray = value.valueObjectArray;
+            valueTypesSet.valueObjectArray = true;
         }
+
+        const anyValueSet = valueTypesSet.value || valueTypesSet.valueList || valueTypesSet.valueObject || valueTypesSet.valueObjectArray;
+
+        if (!allowEmpty || anyValueSet) {
+            return;
+        }
+
+        field.value = '';
+        field.formControl?.setValue('');
+        field.valueList = [];
+        field.valueObject = {};
+        field.valueObjectArray = [];
     }
 
-    updateFields(record: Record, fieldValues: { [key: string]: any }): void {
+    updateFields(record: Record, fieldValues: { [key: string]: any }, allowEmpty: boolean = false): void {
         Object.keys(fieldValues).forEach(fieldName => {
             const field = record.fields?.[fieldName];
             const value = fieldValues[fieldName];
-            if (!field || !value) {
+            if (!field || (!value && !allowEmpty)) {
                 return;
             }
 
-            this.updateFieldValue(field, value);
+            this.updateFieldValue(field, value, allowEmpty);
         });
 
         record.formGroup?.updateValueAndValidity({onlySelf: true, emitEvent: true});
