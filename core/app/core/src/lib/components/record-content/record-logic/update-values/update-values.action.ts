@@ -82,6 +82,7 @@ export class UpdateValuesAction extends RecordLogicActionHandler {
             }
         }
 
+        const allowEmpty = action.params?.allowEmpty ?? false;
         const displayConfirmation = action.params?.displayConfirmation || false;
 
         if (displayConfirmation) {
@@ -90,19 +91,19 @@ export class UpdateValuesAction extends RecordLogicActionHandler {
             const confirmation = [confirmationLabel, ...confirmationMessages];
 
             this.confirmation.showModal(confirmation, () => {
-                this.applyUpdates(record, updateFields);
+                this.applyUpdates(record, updateFields, allowEmpty);
             });
             return;
         }
 
-        this.applyUpdates(record, updateFields);
+        this.applyUpdates(record, updateFields, allowEmpty);
     }
 
     getTriggeringStatus(): string[] {
         return ['onDependencyChange'];
     }
 
-    protected applyUpdates(record: Record, updateFields: { [key: string]: UpdateFieldConfig }): void {
+    protected applyUpdates(record: Record, updateFields: { [key: string]: UpdateFieldConfig }, allowEmpty: boolean = false): void {
         const fieldValues: { [key: string]: any } = {};
 
         Object.keys(updateFields).forEach(targetFieldName => {
@@ -119,6 +120,6 @@ export class UpdateValuesAction extends RecordLogicActionHandler {
             }
         });
 
-        this.updateValuesBackendService.updateFields(record, fieldValues);
+        this.updateValuesBackendService.updateFields(record, fieldValues, allowEmpty);
     }
 }
