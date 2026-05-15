@@ -396,7 +396,7 @@ export class MultiFlexRelateEditFieldComponent extends BaseMultiFlexRelateCompon
             return;
         }
 
-        this.selectedValues.push(newItem)
+        this.selectedValues.push(newItem);
 
         this.addCurrentlySelectedToOptions(this.options);
     }

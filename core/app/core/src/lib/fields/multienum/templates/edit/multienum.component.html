@@ -29,7 +29,8 @@
     <p-multiSelect
         #multiSelect
         [options]="options"
-        [(ngModel)]="selectedValues"
+        [ngModel]="selectedValuesSignal()"
+        (ngModelChange)="selectedValues = $event"
         [optionLabel]="'label'"
         [optionValue]="optionValueFn"
         dataKey="value"

@@ -111,9 +111,11 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
             } else {
                 this.selectedValues = this.options;
             }
+            this.selectedValuesSignal.set([...this.selectedValues]);
             this.onAdd();
         } else {
             this.selectedValues = [];
+            this.selectedValuesSignal.set(this.selectedValues);
             this.onRemove();
         }
     }
@@ -130,6 +132,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
     public onClear(): void {
         this.selectedValues = [];
+        this.selectedValuesSignal.set(this.selectedValues);
         this.multiSelect.filterValue = '';
         this.onRemove();
     }
