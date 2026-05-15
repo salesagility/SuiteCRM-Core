@@ -47,9 +47,8 @@ class TemplateFile extends TemplateText
     {
         $def = parent::get_field_def();
         $def['studio'] = 'visible';
-        $def['custom'] = true;
         $def['source'] = 'non-db';
         $def['metadata'] = $this->metadata ?? [];
-        return array_merge($def, $this->get_additional_defs());
+        return $def;
     }
 }
