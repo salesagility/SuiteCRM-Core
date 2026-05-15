@@ -82,7 +82,8 @@ export class UpdateValuesBackendAction extends RecordLogicActionHandler {
                 if (!fieldValues) {
                     return;
                 }
-                this.updateValuesBackendService.updateFields(record, fieldValues);
+                const allowEmpty = result?.data?.allowEmpty ?? action.params?.allowEmpty ?? false;
+                this.updateValuesBackendService.updateFields(record, fieldValues, allowEmpty);
             },
             onError: () => {
                 this.messages.addDangerMessageByKey('ERR_RECORD_LOGIC_BACKEND_CALCULATION');
