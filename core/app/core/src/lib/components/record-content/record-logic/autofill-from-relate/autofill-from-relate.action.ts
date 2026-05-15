@@ -104,7 +104,7 @@ export class AutofillFromRelateAction extends RecordLogicActionHandler {
                 if (!fieldValues) {
                     return;
                 }
-                this.updateValuesBackendService.updateFields(record, fieldValues);
+                this.updateValuesBackendService.updateFields(record, fieldValues, true);
             },
             onError: () => {
                 this.messages.addDangerMessageByKey('ERR_RECORD_LOGIC_BACKEND_CALCULATION');
