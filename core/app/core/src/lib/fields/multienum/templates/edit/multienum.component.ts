@@ -36,6 +36,7 @@ import {SystemConfigStore} from "../../../../store/system-config/system-config.s
 import {PrimeNGConfig} from "primeng/api";
 import {ButtonInterface} from '../../../../common/components/button/button.model';
 import {MultiSelect} from "primeng/multiselect";
+import {isEmpty} from "lodash-es";
 
 @Component({
     selector: 'scrm-multienum-edit',
@@ -87,8 +88,18 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
         this.subs.push(this.field.valueChanges$.subscribe({
             next: (value: any) => {
-                if (value?.valueList) {
+
+                if (!isEmpty(value?.valueList)) {
                     this.initValue();
+                    const selectedValuesValueMap = this.selectedValues.map(selectedValue => selectedValue.value);
+                    this.setFormControlValue(selectedValuesValueMap);
+                    return;
+                }
+
+                if (isEmpty(value?.valueList)) {
+                    this.selectedValues = [];
+                    this.selectedValuesSignal.set(this.selectedValues);
+                    this.syncSelectedValuesWithForm();
                 }
             }
         }));
