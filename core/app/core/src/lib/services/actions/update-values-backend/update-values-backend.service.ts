@@ -130,9 +130,17 @@ export class UpdateValuesBackendService {
 
         field.value = '';
         field.formControl?.setValue('');
-        field.valueList = [];
-        field.valueObject = {};
-        field.valueObjectArray = [];
+        if (field.valueList) {
+            field.valueList = [];
+        }
+
+        if (field.valueObject) {
+            field.valueObject = {};
+        }
+
+        if (field.valueObject) {
+            field.valueObjectArray = [];
+        }
     }
 
     updateFields(record: Record, fieldValues: { [key: string]: any }, allowEmpty: boolean = false): void {
