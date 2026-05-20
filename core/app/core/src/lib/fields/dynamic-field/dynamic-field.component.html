@@ -25,7 +25,7 @@
 * the words "Supercharged by SuiteCRM".
 */
 -->
-<ng-container *ngIf="!field?.loading() || !(field?.metadata?.loadingEnabled ?? true)">
+<div [class.d-none]="field?.loading() && (field?.metadata?.loadingEnabled ?? true)">
     <ng-container *ngIf="getErrorPosition() === 'top' && isEdit() && field.formControl && touched()">
         <ng-container *ngIf="field.formControl.errors">
             <ng-container
@@ -98,13 +98,13 @@
         </ng-container>
     </div>
 
-</ng-container>
+</div>
 
-<ng-container *ngIf="field?.loading() && (field?.metadata?.loadingEnabled ?? true) !== false">
+<div [class.d-block]="field?.loading() && (field?.metadata?.loadingEnabled ?? true) !== false" class="d-none">
     <div class="dynamic-field">
         <div class="flex-grow-1 text-break rounded box-loading skeleton-field-content"></div>
     </div>
-</ng-container>
+</div>
 <ng-container *ngIf="activeFootnotes().length">
     <ng-container *ngFor="let footnote of activeFootnotes()">
         <div class="form-text small text-lighter {{footnote?.klass ?? ''}}">
