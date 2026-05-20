@@ -225,7 +225,7 @@ class CloseDraftAction extends LegacyHandler implements ProcessHandlerInterface
      */
     protected function isEmptyDescription(array $attributes): bool
     {
-        $outboundEmail = $this->recordProvider->getRecord('OutboundEmailAccounts', $attributes['outbound_email_id'] ?? '');
+        $outboundEmail = $this->recordProvider->getRecord('OutboundEmailAccounts', $attributes['outbound_email_name']['id'] ?? '');
 
         $signature = $outboundEmail->getAttributes()['signature'] ?? '';
         $trimmedSignature = $this->stripString($signature);
