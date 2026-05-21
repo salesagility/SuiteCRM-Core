@@ -216,6 +216,8 @@ class FilterContentMapper implements FieldMapperInterface
      */
     protected function getContents($encodedContents): ?array
     {
+        $encodedContents = html_entity_decode($encodedContents, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
         try {
             $contents = json_decode($encodedContents, true, 512, JSON_THROW_ON_ERROR);
         } catch (Throwable $e) {
