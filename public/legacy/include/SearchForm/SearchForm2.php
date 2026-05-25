@@ -1376,7 +1376,11 @@ class SearchForm
                                 $where .= $db_field . ' not in (' . $field_value . ')';
                                 break;
                             case 'in':
-                                $where .= $db_field . ' in (' . $field_value . ')';
+                                if ($type == 'bool' && is_array($parms['value']) && in_array(0, $parms['value'])) {
+                                    $where .= "($db_field IN ($field_value) OR $db_field IS NULL)";
+                                } else {
+                                    $where .= $db_field . ' in (' . $field_value . ')';
+                                }
                                 break;
                             case '=':
                                 if ($type == 'bool' && $field_value == 0) {
