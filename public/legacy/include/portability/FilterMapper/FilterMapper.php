@@ -116,6 +116,14 @@ class FilterMapper
                     $values = $this->mapToApi($filter, $values);
                 }
 
+                if (isFalse($value)){
+                    $values = [0];
+                }
+
+                if (isTrue($value)){
+                    $values = [1];
+                }
+
                 $filter['values'] = $values;
                 $filters[$fieldKey] = $filter;
                 continue;
