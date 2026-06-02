@@ -146,10 +146,10 @@ class UserHandler extends LegacyHandler
     public function getSessionLanguage(): string
     {
         $this->init();
-        global $current_language;
+        $lang = get_current_language();
         $this->close();
 
-        return $current_language;
+        return $lang;
     }
 
     /**
