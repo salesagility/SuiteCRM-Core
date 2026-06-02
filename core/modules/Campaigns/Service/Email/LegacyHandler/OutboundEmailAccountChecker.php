@@ -71,7 +71,6 @@ class OutboundEmailAccountChecker extends LegacyHandler
 
         $bean = BeanFactory::getBean('OutboundEmailAccounts', $outboundEmailId);
 
-
         $this->close();
 
         if (empty($bean)) {
@@ -81,16 +80,17 @@ class OutboundEmailAccountChecker extends LegacyHandler
             return false;
         }
 
-        if (empty($bean->mail_smtpserver) || empty($bean->mail_smtpport)) {
-            return false;
-        }
-
-        if (empty($bean->mail_smtpuser)) {
+        if (empty($bean->mail_smtpserver)) {
+            $this->logger->warning(
+                'Campaigns:OutboundEmailAccountChecker::isConfigured - Unable to find server | id - ' . $outboundEmailId
+            );
             return false;
         }
 
         if ($bean->auth_type === 'oauth') {
+            $this->init();
             $externalOAuthConnection = BeanFactory::getBean('ExternalOAuthConnection', $bean->external_oauth_connection_id);
+            $this->close();
 
             if (empty($externalOAuthConnection) || empty($externalOAuthConnection->id)) {
                 $this->logger->warning(
@@ -104,7 +104,10 @@ class OutboundEmailAccountChecker extends LegacyHandler
 
         $authRequired = !empty($bean->mail_smtpauth_req);
 
-        if ($authRequired && (empty($bean->mail_smtppass))) {
+        if ($authRequired && empty($bean->mail_smtppass)) {
+            $this->logger->warning(
+                'Campaigns:OutboundEmailAccountChecker::isConfigured - Unable to find password for auth required Outbound | id - ' . $outboundEmailId
+            );
             return false;
         }
 
