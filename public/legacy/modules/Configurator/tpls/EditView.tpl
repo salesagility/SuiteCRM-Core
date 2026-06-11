@@ -401,7 +401,7 @@
 	</tr>
 {/if}
 	<tr>
-	    <td><a href="index.php?module=Configurator&action=LogView" target="_blank">{$MOD.LBL_LOGVIEW}</a></td>
+	    <td><a href="../#/configurator/LogView" target="_blank">{$MOD.LBL_LOGVIEW}</a></td>
 	</tr>
 </table>
 
