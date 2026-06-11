@@ -122,7 +122,7 @@ export class ListFilterStore implements StateStore {
         this.reset();
         this.filterStore.clear();
         this.filterStore = null;
-        this.collapse.unsubscribe();
+        this.collapse.complete();
     }
 
     clearAuthBased(): void {

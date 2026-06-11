@@ -62,7 +62,7 @@ export class StatisticsStore implements StateStore {
     }
 
     clear(): void {
-        this.store.unsubscribe();
+        this.store.complete();
         this.cache$ = null;
     }
 

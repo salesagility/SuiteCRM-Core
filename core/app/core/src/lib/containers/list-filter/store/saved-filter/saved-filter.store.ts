@@ -229,7 +229,7 @@ export class SavedFilterStore implements StateStore {
     public clear(): void {
         this.cache$ = null;
         this.updateState(deepClone(initialState));
-        this.metadataLoadingState.unsubscribe();
+        this.metadataLoadingState.complete();
         this.metadataLoadingState = null;
         this.recordStore.destroy();
         this.recordStore = null;

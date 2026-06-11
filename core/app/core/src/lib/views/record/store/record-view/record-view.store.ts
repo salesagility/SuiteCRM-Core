@@ -383,7 +383,6 @@ export class RecordViewStore extends ViewStore implements StateStore, BaseRecord
         this.subs = this.safeUnsubscription(this.subs);
         this.clearSubpanels();
         this.subpanelsState.complete();
-        this.subpanelsState.unsubscribe();
         this.updateState(deepClone(initialState));
     }
 
