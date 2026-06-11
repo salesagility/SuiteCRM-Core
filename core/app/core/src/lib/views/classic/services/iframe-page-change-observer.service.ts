@@ -53,7 +53,7 @@ export class IframePageChangeObserver {
         this.loadListener = this.loadHandler.bind(this);
         this.unloadListener = this.unloadHandler.bind(this);
         this.iframe.contentWindow.addEventListener('load', this.loadListener);
-        this.iframe.contentWindow.removeEventListener('unload', this.unloadListener);
+        this.iframe.contentWindow.removeEventListener('pagehide', this.unloadListener);
     }
 
     public destroy(): void {
@@ -61,7 +61,7 @@ export class IframePageChangeObserver {
         const contentWindow = this.iframe && this.iframe.contentWindow;
 
         if (contentWindow) {
-            contentWindow.removeEventListener('unload', this.unloadListener);
+            contentWindow.removeEventListener('pagehide', this.unloadListener);
             contentWindow.removeEventListener('load', this.loadListener);
         }
         this.iframe = null;
@@ -84,16 +84,20 @@ export class IframePageChangeObserver {
     }
 
     protected bindUnload(): void {
-        this.iframe.contentWindow.removeEventListener('unload', this.unloadListener);
+        this.iframe.contentWindow.removeEventListener('pagehide', this.unloadListener);
         this.unloadListener = this.unloadHandler.bind(this);
-        this.iframe.contentWindow.addEventListener('unload', this.unloadListener);
+        this.iframe.contentWindow.addEventListener('pagehide', this.unloadListener);
     }
 
-    protected unloadHandler(): void {
+    protected unloadHandler(event: PageTransitionEvent): void {
+        if (event.persisted) {
+            return;
+        }
+
         this.unLoadCallback();
 
         // Timeout needed because the URL changes immediately after
-        // the `unload` event is dispatched.
+        // the `pagehide` event is dispatched.
         setTimeout(this.triggerPageChange.bind(this), 0);
     }
 
