@@ -36,6 +36,7 @@ import {RecordLogicManager} from './record-logic.manager';
 export class RecordLogicDependencyService implements OnDestroy {
 
     protected subs: Subscription[] = [];
+    protected onInitRecordLogicExecuted: boolean = false;
 
     constructor(
         protected recordLogicManager: RecordLogicManager
@@ -53,7 +54,10 @@ export class RecordLogicDependencyService implements OnDestroy {
             return;
         }
 
-        this.recordLogicManager.runLogic(record, mode, config, 'onRecordInit');
+        if (!this.onInitRecordLogicExecuted) {
+            this.onInitRecordLogicExecuted = true;
+            this.recordLogicManager.runLogic(record, mode, config, 'onRecordInit');
+        }
 
         const depFieldNames = this.collectDependencyFields(config);
 
