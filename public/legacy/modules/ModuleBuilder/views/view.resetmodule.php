@@ -160,15 +160,26 @@ class ViewResetmodule extends SugarView
         $module = StudioModuleFactory::getStudioModule($moduleName) ;
         $customFields = array();
         foreach ($seed->field_defs as $def) {
-            if (isset($def['source']) && $def['source'] == 'custom_fields'
-                && (!in_array($def['name'], ViewResetmodule::$exceptionFields))
-                || (isTrue($def['resetFieldInStudio'] ?? false))) {
-                $field = $df->getFieldWidget($moduleName, $def['name']);
-                $field->delete($df) ;
+            $source = $def['source'] ?? '';
+            $name = $def['name'];
+            $isExcepted = in_array($name, ViewResetmodule::$exceptionFields);
 
-                $module->removeFieldFromLayouts($def['name']);
-                $customFields[] = $def['name'];
+            $shouldDelete = (!$isExcepted && $source === 'custom_fields')
+                || (!$isExcepted && $source === 'non-db')
+                || isTrue($def['resetFieldInStudio'] ?? false);
+
+            if (!$shouldDelete) {
+                continue;
             }
+
+            $field = $df->getFieldWidget($moduleName, $name);
+            if ($field === null) {
+                continue;
+            }
+
+            $field->delete($df);
+            $module->removeFieldFromLayouts($name);
+            $customFields[] = $name;
         }
         $out = "";
         foreach ($customFields as $field) {
