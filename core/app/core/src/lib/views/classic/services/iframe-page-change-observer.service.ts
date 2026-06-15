@@ -50,6 +50,7 @@ export class IframePageChangeObserver {
      */
 
     public init(): void {
+        this.lastDispatched = this.iframe.src;
         this.loadListener = this.loadHandler.bind(this);
         this.unloadListener = this.unloadHandler.bind(this);
         this.iframe.contentWindow.addEventListener('load', this.loadListener);
@@ -79,6 +80,7 @@ export class IframePageChangeObserver {
      */
 
     protected loadHandler(): void {
+        this.triggerPageChange();
         this.loadCallback();
         this.bindUnload();
     }
