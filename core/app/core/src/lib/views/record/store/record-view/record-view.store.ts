@@ -26,7 +26,7 @@
 
 import {isEmpty} from 'lodash-es';
 import {BehaviorSubject, combineLatestWith, Observable, of, Subscription} from 'rxjs';
-import {catchError, distinctUntilChanged, finalize, map, take, tap} from 'rxjs/operators';
+import {catchError, distinctUntilChanged, filter, finalize, map, take, tap} from 'rxjs/operators';
 import {inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {Params} from '@angular/router';
 import {isVoid} from '../../../../common/utils/value-utils';
@@ -380,10 +380,11 @@ export class RecordViewStore extends ViewStore implements StateStore, BaseRecord
      */
     public clear(): void {
         this.cache$ = null;
+        this.subs = this.safeUnsubscription(this.subs);
         this.clearSubpanels();
+        this.subpanelsState.complete();
         this.subpanelsState.unsubscribe();
         this.updateState(deepClone(initialState));
-        this.subs = this.safeUnsubscription(this.subs);
     }
 
     public reloadSubpanels(): void {
@@ -646,7 +647,10 @@ export class RecordViewStore extends ViewStore implements StateStore, BaseRecord
      */
     protected initSubpanels(module: string, recordId: string): void {
         this.showSubpanels = true;
-        this.metadataStore.subPanelMetadata$.subscribe((meta: SubPanelMeta) => {
+        this.subs.push(this.metadataStore.subPanelMetadata$.pipe(
+            filter((meta: SubPanelMeta) => meta && Object.keys(meta).length > 0),
+            take(1)
+        ).subscribe((meta: SubPanelMeta) => {
             this.clearSubpanels();
 
             Object.keys(meta).forEach((key: string) => {
@@ -664,7 +668,7 @@ export class RecordViewStore extends ViewStore implements StateStore, BaseRecord
                     this.subpanelReloadSubject.next(update);
                 })).subscribe());
             });
-        });
+        }));
     }
 
     protected clearSubpanels(): void {
