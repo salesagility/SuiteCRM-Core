@@ -35,6 +35,13 @@ import {RecentlyViewedService} from "../../../../services/navigation/recently-vi
 import {Router} from "@angular/router";
 import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 import {FieldMap} from "../../../../common/record/field.model";
+import {ValidationManager} from "../../../../services/record/validation/validation.manager";
+import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
+import {AsyncValidatorFn, UntypedFormGroup} from "@angular/forms";
+import {
+    allValidationErrorsSilent,
+    collectValidationErrors
+} from "../../../../common/services/validators/validators.model";
 
 @Injectable({
     providedIn: 'root'
@@ -50,7 +57,9 @@ export class RecordSaveAction extends RecordActionHandler {
         protected navigation: ModuleNavigation,
         protected notificationStore: NotificationStore,
         protected recentlyViewedService: RecentlyViewedService,
-        protected recordPaginationService: RecordPaginationService
+        protected recordPaginationService: RecordPaginationService,
+        protected validationManager: ValidationManager,
+        protected metadataStore: MetadataStore
     ) {
         super();
     }
@@ -70,9 +79,13 @@ export class RecordSaveAction extends RecordActionHandler {
 
         data.action.isRunning.set(true);
         this.setAsyncValidators(fields);
+        const formGroup = record.formGroup;
+        this.setRecordAsyncValidators(record, formGroup);
 
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            const collectedErrors = collectValidationErrors(formGroup, fields);
             this.clearAsyncValidators(fields);
+            this.clearRecordAsyncValidators(formGroup);
             data.action.isRunning.set(false);
 
             if (valid) {
@@ -99,7 +112,9 @@ export class RecordSaveAction extends RecordActionHandler {
                 return;
             }
 
-            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            if (!allValidationErrorsSilent(collectedErrors)) {
+                this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            }
         });
     }
 
@@ -129,5 +144,21 @@ export class RecordSaveAction extends RecordActionHandler {
                 field.formControl.updateValueAndValidity();
             }
         });
+    }
+
+    protected setRecordAsyncValidators(record: any, formGroup: UntypedFormGroup): void {
+        const meta = this.metadataStore.get() || {};
+        const viewMeta = meta.recordView || {};
+        const validators: AsyncValidatorFn[] = this.validationManager.getAsyncRecordSaveValidations(record, viewMeta);
+
+        if (validators.length) {
+            formGroup.setAsyncValidators(validators);
+            formGroup.updateValueAndValidity();
+        }
+    }
+
+    protected clearRecordAsyncValidators(formGroup: UntypedFormGroup): void {
+        formGroup.clearAsyncValidators();
+        formGroup.updateValueAndValidity();
     }
 }
