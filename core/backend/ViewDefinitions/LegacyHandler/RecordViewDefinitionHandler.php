@@ -214,6 +214,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
             'vardefs' => $vardefs,
             'metadata' => [],
             'sections' => [],
+            'asyncValidators' => [],
         ];
 
         $this->addTemplateMeta($recordViewDefs, $metadata);
@@ -228,6 +229,7 @@ class RecordViewDefinitionHandler extends LegacyHandler
         $this->addModalHeaderActionConfig($module, $recordViewDefs, $metadata);
         $this->addModalFooterActionConfig($module, $recordViewDefs, $metadata);
         $this->addRecordLogicConfig($recordViewDefs, $metadata);
+        $this->addAsyncValidatorsConfig($recordViewDefs, $metadata);
         $this->addSummaryTemplates($recordViewDefs, $metadata);
         $this->addBackButton($recordViewDefs, $metadata);
 
@@ -765,6 +767,15 @@ class RecordViewDefinitionHandler extends LegacyHandler
     protected function addRecordLogicConfig(array $detailViewDefs, array &$metadata): void
     {
         $metadata['recordLogic'] = $detailViewDefs['recordLogic'] ?? [];
+    }
+
+    /**
+     * @param array $detailViewDefs
+     * @param array $metadata
+     */
+    protected function addAsyncValidatorsConfig(array $detailViewDefs, array &$metadata): void
+    {
+        $metadata['asyncValidators'] = $detailViewDefs['asyncValidators'] ?? [];
     }
 
     /**

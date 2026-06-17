@@ -30,7 +30,7 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {Action} from '../../common/actions/action.model';
 import {ColumnDefinition, ListViewMeta, MassUpdateMeta, SearchMeta} from '../../common/metadata/list.metadata.model';
-import {FieldDefinitionMap} from '../../common/record/field.model';
+import {AsyncValidationDefinition, FieldDefinitionMap} from '../../common/record/field.model';
 import {deepClone} from '../../common/utils/object-utils';
 import {RecentlyViewed} from '../../common/record/recently-viewed.model';
 import {Favorite} from '../../common/record/favorites.model';
@@ -83,6 +83,7 @@ export interface RecordViewMetadata {
     header?: HeaderMetadata;
     sections?: RecordViewSectionMetadataMap;
     recordLogic?: RecordLogicMap;
+    asyncValidators?: { [key: string]: AsyncValidationDefinition };
 }
 
 export interface RecordViewSectionMetadataMap {
@@ -556,7 +557,8 @@ export class MetadataStore implements StateStore {
             metadata: 'metadata',
             header: 'header',
             sections: 'sections',
-            recordLogic: 'recordLogic'
+            recordLogic: 'recordLogic',
+            asyncValidators: 'asyncValidators'
         };
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
