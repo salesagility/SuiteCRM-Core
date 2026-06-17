@@ -1,0 +1,72 @@
+<!--
+/**
+* SuiteCRM is a customer relationship management program developed by SuiteCRM Ltd.
+* Copyright (C) 2026 SuiteCRM Ltd.
+*
+* This program is free software; you can redistribute it and/or modify it under
+* the terms of the GNU Affero General Public License version 3 as published by the
+* Free Software Foundation with the addition of the following permission added
+* to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+* IN WHICH THE COPYRIGHT IS OWNED BY SUITECRM, SUITECRM DISCLAIMS THE
+* WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+* FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+* details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program.  If not, see http://www.gnu.org/licenses.
+*
+* In accordance with Section 7(b) of the GNU Affero General Public License
+* version 3, these Appropriate Legal Notices must retain the display of the
+* "Supercharged by SuiteCRM" logo. If the display of the logos is not reasonably
+* feasible for technical reasons, the Appropriate Legal Notices must display
+* the words "Supercharged by SuiteCRM".
+*/
+-->
+<scrm-modal [closable]="true"
+            [close]="closeButton"
+            [titleKey]="titleKey || ''"
+            bodyKlass="m-0 small-font"
+            footerKlass="border-0"
+            headerKlass="border-0"
+            klass="confirmation-list-modal">
+
+    <div class="confirmation-list-modal-body" modal-body>
+        <ng-container *ngIf="messageKey">
+            <div class="confirmation-list-modal-message">
+                <scrm-dynamic-label [labelKey]="messageKey"
+                                    [fields]="fields"
+                                    [context]="context"
+                                    [module]="module">
+                </scrm-dynamic-label>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="tableConfig">
+            <div class="container-fluid confirmation-list-modal-table-section">
+                <div class="row pb-3" *ngIf="showFilterSignal()">
+                    <div class="col">
+                        <scrm-list-filter *ngIf="filterConfig" [config]="filterConfig"></scrm-list-filter>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <scrm-table [config]="tableConfig"></scrm-table>
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngIf="(loading$ | async) as loading">
+                <scrm-loading-spinner *ngIf="loading" [overlay]="true"></scrm-loading-spinner>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div modal-footer class="confirmation-list-modal-footer">
+        <scrm-modal-button-group [activeModal]="activeModal"
+                                 [config$]="buttonGroup$">
+        </scrm-modal-button-group>
+    </div>
+</scrm-modal>
