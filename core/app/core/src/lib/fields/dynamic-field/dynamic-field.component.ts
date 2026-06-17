@@ -195,6 +195,9 @@ export class DynamicFieldComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         if (this.type === 'relate') {
+            if (this?.field?.metadata?.link === false) {
+                return false;
+            }
             let linkModule = this.getLinkModule();
             return this.navigation?.hasAccessToModule(linkModule) ?? false;
         }
