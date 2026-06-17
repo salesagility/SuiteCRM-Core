@@ -34,6 +34,9 @@ import {RecordModalActionData, RecordModalRecordActionHandler} from "../record-m
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ViewMode} from "../../../../../common/views/view.model";
 import {FieldMap} from "../../../../../common/record/field.model";
+import {ValidationManager} from "../../../../../services/record/validation/validation.manager";
+import {MetadataStore} from "../../../../../store/metadata/metadata.store.service";
+import {AsyncValidatorFn, UntypedFormGroup} from "@angular/forms";
 
 @Injectable({
     providedIn: 'root'
@@ -48,7 +51,9 @@ export class RecordModalSaveAction extends RecordModalRecordActionHandler {
         protected message: MessageService,
         protected navigation: ModuleNavigation,
         protected notificationStore: NotificationStore,
-        protected modalService: NgbModal
+        protected modalService: NgbModal,
+        protected validationManager: ValidationManager,
+        protected metadataStore: MetadataStore
     ) {
         super();
     }
@@ -68,9 +73,12 @@ export class RecordModalSaveAction extends RecordModalRecordActionHandler {
 
         data.action.isRunning.set(true);
         this.setAsyncValidators(fields);
+        const formGroup = record.formGroup;
+        this.setRecordAsyncValidators(record, formGroup);
 
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
             this.clearAsyncValidators(fields);
+            this.clearRecordAsyncValidators(formGroup);
             data.action.isRunning.set(false);
 
             if (valid) {
@@ -112,5 +120,21 @@ export class RecordModalSaveAction extends RecordModalRecordActionHandler {
                 field.formControl.updateValueAndValidity();
             }
         });
+    }
+
+    protected setRecordAsyncValidators(record: any, formGroup: UntypedFormGroup): void {
+        const meta = this.metadataStore.get() || {};
+        const viewMeta = meta.recordView || {};
+        const validators: AsyncValidatorFn[] = this.validationManager.getAsyncRecordSaveValidations(record, viewMeta);
+
+        if (validators.length) {
+            formGroup.setAsyncValidators(validators);
+            formGroup.updateValueAndValidity();
+        }
+    }
+
+    protected clearRecordAsyncValidators(formGroup: UntypedFormGroup): void {
+        formGroup.clearAsyncValidators();
+        formGroup.updateValueAndValidity();
     }
 }
