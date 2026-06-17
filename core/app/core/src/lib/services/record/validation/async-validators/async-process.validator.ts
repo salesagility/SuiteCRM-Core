@@ -111,7 +111,8 @@ export const asyncValidator = (
                                     context: {
                                         value: control.value
                                     }
-                                }
+                                },
+                                silent: true
                             }
                         }
 
@@ -161,6 +162,139 @@ export const asyncValidator = (
     }
 );
 
+export const recordAsyncValidator = (
+    validator: AsyncValidationDefinition,
+    record: Record,
+    processService: ProcessService,
+    confirmationModalService: ConfirmationModalService,
+    fieldMapper: FieldMapper
+): AsyncValidatorFn => (
+    (control: AbstractControl): Promise<StandardValidationErrors | null> | Observable<StandardValidationErrors | null> => {
+
+        const processKey = validator.key;
+        const attributes = fieldMapper.getAttributesMappedFromFields(record);
+
+        const options = {
+            attributes: attributes,
+            originalAttributes: record?.attributes ?? {},
+            params: validator?.params ?? {},
+            module: record?.module ?? ''
+        };
+
+        return processService.submit(processKey, options).pipe(switchMap((process: Process) => {
+
+            if (process.status !== 'error') {
+                return of(null);
+            }
+
+            if (process?.data?.displayListConfirmation ?? false) {
+                const confirmationSubject = new Subject<boolean>();
+                const confirmation$ = confirmationSubject.asObservable();
+
+                const presetConfig = process.data?.preset ?? {};
+                const presetFilter = {
+                    key: 'default',
+                    criteria: {
+                        preset: {
+                            type: presetConfig.type ?? '',
+                            params: presetConfig.params ?? {}
+                        }
+                    }
+                } as any;
+
+                confirmationModalService.showListModal({
+                    titleKey: process.data?.confirmationTitle ?? '',
+                    messageKey: process.data?.confirmationLabel ?? '',
+                    module: process.data?.module ?? record?.module ?? '',
+                    presetFilter,
+                    showFilter: process.data?.showFilter ?? false,
+                    columnFields: process.data?.fields ?? [],
+                    actions: process.data?.actions ?? [],
+                    onProceed: () => confirmationSubject.next(true),
+                    onClose: () => confirmationSubject.next(false)
+                });
+
+                return confirmation$.pipe(
+                    take(1),
+                    map((confirmed: boolean) => {
+                        if (confirmed) {
+                            return null;
+                        }
+
+                        return buildRecordValidationError(processKey, process, true);
+                    })
+                );
+            }
+
+            if (process?.data?.displayConfirmation ?? false) {
+                const confirmationSubject = new Subject<boolean>();
+                const confirmation$ = confirmationSubject.asObservable();
+
+                const confirmationLabel = process.data?.confirmationLabel ?? '';
+                const confirmationMessages = process.data?.confirmationMessages ?? [];
+                const confirmationTitle = process.data?.confirmationTitle ?? '';
+                const confirmation = [confirmationLabel, ...confirmationMessages];
+
+                if (Object.entries(confirmation).length === 0) {
+                    confirmation.push('LBL_GENERIC_CONFIRMATION');
+                }
+
+                confirmationModalService.showModal(
+                    confirmation,
+                    () => confirmationSubject.next(true),
+                    () => confirmationSubject.next(false),
+                    record.fields,
+                    {},
+                    confirmationTitle
+                );
+
+                return confirmation$.pipe(
+                    take(1),
+                    map((confirmed: boolean) => {
+                        if (confirmed) {
+                            return null;
+                        }
+
+                        return buildRecordValidationError(processKey, process, true);
+                    })
+                );
+            }
+
+            return of(buildRecordValidationError(processKey, process));
+        }), take(1));
+    }
+);
+
+function buildRecordValidationError(
+    processKey: string,
+    process: Process,
+    silent: boolean = false
+): StandardValidationErrors {
+    const error = {
+        [processKey]: {
+            message: {
+                labels: {
+                    startLabelKey: '',
+                    icon: '',
+                    endLabelKey: '',
+                },
+                context: {}
+            },
+            silent
+        }
+    };
+
+    if (process?.data?.errors ?? false) {
+        Object.keys(process?.data?.errors).forEach((key) => {
+            if (error[processKey].message.labels[key] === '') {
+                error[processKey].message.labels[key] = process?.data?.errors[key];
+            }
+        });
+    }
+
+    return error;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -188,5 +322,13 @@ export class AsyncProcessValidator implements AsyncProcessValidatorInterface {
         }
 
         return asyncValidator(validator, viewField, record, this.processService, this.confirmationModalService, this.fieldMapper, this.formatter);
+    }
+
+    getRecordValidator(validator: AsyncValidationDefinition, record: Record): AsyncValidatorFn {
+        if (!validator?.key) {
+            return null;
+        }
+
+        return recordAsyncValidator(validator, record, this.processService, this.confirmationModalService, this.fieldMapper);
     }
 }

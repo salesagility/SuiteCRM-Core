@@ -48,6 +48,8 @@ import {LineItemsRequiredValidator} from "./validators/line-items-required.valid
 import {AsyncProcessValidator} from "./async-validators/async-process.validator";
 import {AttachmentValidator} from "./validators/attachment.validator";
 import {SemanticVersionValidator} from "./validators/semantic-version.validator";
+import {AsyncValidationDefinition} from "../../../common/record/field.model";
+import {RecordViewMetadata} from "../../../store/metadata/metadata.store.service";
 
 export interface ValidationManagerInterface {
     registerSaveValidator(module: string, key: string, validator: ValidatorInterface): void;
@@ -218,6 +220,24 @@ export class ValidationManager implements ValidationManagerInterface {
         Object.keys(definitionValidators).forEach((key) => {
             const validator = definitionValidators[key];
             validations.push(this.asyncProcessValidator.getValidator(validator, viewField, record));
+        });
+
+        return validations;
+    }
+
+    public getAsyncRecordSaveValidations(
+        record: Record,
+        viewMeta: RecordViewMetadata
+    ): AsyncValidatorFn[] {
+        const asyncValidatorDefs = viewMeta?.asyncValidators ?? {};
+        const validations: AsyncValidatorFn[] = [];
+
+        Object.keys(asyncValidatorDefs).forEach((key) => {
+            const validator: AsyncValidationDefinition = asyncValidatorDefs[key];
+            const fn = this.asyncProcessValidator.getRecordValidator(validator, record);
+            if (fn) {
+                validations.push(fn);
+            }
         });
 
         return validations;
