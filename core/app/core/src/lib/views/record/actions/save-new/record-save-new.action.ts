@@ -31,6 +31,13 @@ import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageService} from '../../../../services/message/message.service';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
 import {FieldMap} from "../../../../common/record/field.model";
+import {ValidationManager} from "../../../../services/record/validation/validation.manager";
+import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
+import {AsyncValidatorFn, UntypedFormGroup} from "@angular/forms";
+import {
+    allValidationErrorsSilent,
+    collectValidationErrors
+} from "../../../../common/services/validators/validators.model";
 
 @Injectable({
     providedIn: 'root'
@@ -42,7 +49,9 @@ export class RecordSaveNewAction extends RecordActionHandler {
 
     constructor(
         protected message: MessageService,
-        protected navigation: ModuleNavigation
+        protected navigation: ModuleNavigation,
+        protected validationManager: ValidationManager,
+        protected metadataStore: MetadataStore
     ) {
         super();
     }
@@ -54,9 +63,13 @@ export class RecordSaveNewAction extends RecordActionHandler {
 
         data.action.isRunning.set(true);
         this.setAsyncValidators(fields);
+        const formGroup = record.formGroup;
+        this.setRecordAsyncValidators(record, formGroup);
 
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            const collectedErrors = collectValidationErrors(formGroup, fields);
             this.clearAsyncValidators(fields);
+            this.clearRecordAsyncValidators(formGroup);
             data.action.isRunning.set(false);
 
             if (valid) {
@@ -71,7 +84,9 @@ export class RecordSaveNewAction extends RecordActionHandler {
                 return;
             }
 
-            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            if (!allValidationErrorsSilent(collectedErrors)) {
+                this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            }
         });
     }
 
@@ -102,5 +117,21 @@ export class RecordSaveNewAction extends RecordActionHandler {
             }
 
         });
+    }
+
+    protected setRecordAsyncValidators(record: any, formGroup: UntypedFormGroup): void {
+        const meta = this.metadataStore.get() || {};
+        const viewMeta = meta.recordView || {};
+        const validators: AsyncValidatorFn[] = this.validationManager.getAsyncRecordSaveValidations(record, viewMeta);
+
+        if (validators.length) {
+            formGroup.setAsyncValidators(validators);
+            formGroup.updateValueAndValidity();
+        }
+    }
+
+    protected clearRecordAsyncValidators(formGroup: UntypedFormGroup): void {
+        formGroup.clearAsyncValidators();
+        formGroup.updateValueAndValidity();
     }
 }
