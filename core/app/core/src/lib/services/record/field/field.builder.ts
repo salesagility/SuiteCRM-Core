@@ -179,7 +179,7 @@ export class FieldBuilder {
 
         const formattedValue = this.typeFormatter.toUserFormat(viewField.type, value, {mode: 'edit', metadata});
 
-        if (viewField.link) {
+        if (viewField.link !== undefined && viewField.link !== null) {
             metadata.link = viewField.link;
         }
 
