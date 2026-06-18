@@ -24,10 +24,15 @@
  * the words "Supercharged by SuiteCRM".
  */
 
+import {inject} from '@angular/core';
+import {AsyncValidatorFn, UntypedFormGroup} from '@angular/forms';
 import {Action, ActionHandler, RecordBasedActionData} from '../../../common/actions/action.model';
+import {FieldMap} from '../../../common/record/field.model';
 import {Record} from '../../../common/record/record.model';
+import {ValidationManager} from '../../../services/record/validation/validation.manager';
 import {RecordViewStore} from '../store/record-view/record-view.store';
 import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
+import {MetadataStore} from '../../../store/metadata/metadata.store.service';
 import {Params, Router} from "@angular/router";
 import {RecordPaginationService} from "../store/record-pagination/record-pagination.service";
 
@@ -38,9 +43,52 @@ export interface RecordActionData extends RecordBasedActionData {
 
 export abstract class RecordActionHandler extends ActionHandler<RecordActionData> {
 
+    protected validationManager = inject(ValidationManager);
+    protected metadataStore = inject(MetadataStore);
+
     abstract run(data: RecordActionData): void;
 
     abstract shouldDisplay(data: RecordActionData): boolean;
+
+    setAsyncValidators(fields: FieldMap): void {
+        Object.keys(fields).forEach(fieldKey => {
+            const field = fields[fieldKey];
+
+            field.asyncValidationErrors = null;
+
+            if (field?.asyncValidators?.length) {
+                field.formControl.setAsyncValidators(field?.asyncValidators);
+                field.formControl.updateValueAndValidity();
+            }
+        });
+    }
+
+    clearAsyncValidators(fields: FieldMap): void {
+        Object.keys(fields).forEach(fieldKey => {
+            const field = fields[fieldKey];
+
+            if (field?.asyncValidators?.length) {
+                field.formControl.clearAsyncValidators();
+                field.formControl.updateValueAndValidity();
+            }
+        });
+    }
+
+    protected setRecordAsyncValidators(record: Record, formGroup: UntypedFormGroup): void {
+        const meta = this.metadataStore.get() || {};
+        const viewMeta = meta.recordView || {};
+        const validators: AsyncValidatorFn[] = this.validationManager.getAsyncRecordSaveValidations(record, viewMeta);
+
+        if (validators.length) {
+            formGroup.setAsyncValidators(validators);
+            formGroup.updateValueAndValidity();
+        }
+    }
+
+    protected clearRecordAsyncValidators(formGroup: UntypedFormGroup): void {
+        formGroup.clearAsyncValidators();
+        formGroup.updateValueAndValidity();
+    }
 
     checkRecordAccess(data: RecordActionData, defaultAcls: string[] = []): boolean {
 

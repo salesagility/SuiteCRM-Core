@@ -33,10 +33,10 @@ import {NotificationStore} from '../../../../../store/notification/notification.
 import {RecordModalActionData, RecordModalRecordActionHandler} from "../record-modal-record.action";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ViewMode} from "../../../../../common/views/view.model";
-import {FieldMap} from "../../../../../common/record/field.model";
-import {ValidationManager} from "../../../../../services/record/validation/validation.manager";
-import {MetadataStore} from "../../../../../store/metadata/metadata.store.service";
-import {AsyncValidatorFn, UntypedFormGroup} from "@angular/forms";
+import {
+    allValidationErrorsSilent,
+    collectValidationErrors
+} from "../../../../../common/services/validators/validators.model";
 
 @Injectable({
     providedIn: 'root'
@@ -51,9 +51,7 @@ export class RecordModalSaveAction extends RecordModalRecordActionHandler {
         protected message: MessageService,
         protected navigation: ModuleNavigation,
         protected notificationStore: NotificationStore,
-        protected modalService: NgbModal,
-        protected validationManager: ValidationManager,
-        protected metadataStore: MetadataStore
+        protected modalService: NgbModal
     ) {
         super();
     }
@@ -77,6 +75,7 @@ export class RecordModalSaveAction extends RecordModalRecordActionHandler {
         this.setRecordAsyncValidators(record, formGroup);
 
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            const collectedErrors = collectValidationErrors(formGroup, fields);
             this.clearAsyncValidators(fields);
             this.clearRecordAsyncValidators(formGroup);
             data.action.isRunning.set(false);
@@ -90,51 +89,14 @@ export class RecordModalSaveAction extends RecordModalRecordActionHandler {
                 this.removeBackdrop();
                 return;
             }
-            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+
+            if (!allValidationErrorsSilent(collectedErrors)) {
+                this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            }
         });
     }
 
     shouldDisplay(data: RecordModalActionData): boolean {
         return true;
-    }
-
-    setAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-
-            field.asyncValidationErrors = null;
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.setAsyncValidators(field?.asyncValidators);
-                field.formControl.updateValueAndValidity();
-            }
-        });
-    }
-
-    clearAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.clearAsyncValidators();
-                field.formControl.updateValueAndValidity();
-            }
-        });
-    }
-
-    protected setRecordAsyncValidators(record: any, formGroup: UntypedFormGroup): void {
-        const meta = this.metadataStore.get() || {};
-        const viewMeta = meta.recordView || {};
-        const validators: AsyncValidatorFn[] = this.validationManager.getAsyncRecordSaveValidations(record, viewMeta);
-
-        if (validators.length) {
-            formGroup.setAsyncValidators(validators);
-            formGroup.updateValueAndValidity();
-        }
-    }
-
-    protected clearRecordAsyncValidators(formGroup: UntypedFormGroup): void {
-        formGroup.clearAsyncValidators();
-        formGroup.updateValueAndValidity();
     }
 }

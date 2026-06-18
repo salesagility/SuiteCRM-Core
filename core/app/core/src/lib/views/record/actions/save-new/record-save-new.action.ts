@@ -30,10 +30,6 @@ import {take} from 'rxjs/operators';
 import {RecordActionData, RecordActionHandler} from '../record.action';
 import {MessageService} from '../../../../services/message/message.service';
 import {ModuleNavigation} from '../../../../services/navigation/module-navigation/module-navigation.service';
-import {FieldMap} from "../../../../common/record/field.model";
-import {ValidationManager} from "../../../../services/record/validation/validation.manager";
-import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
-import {AsyncValidatorFn, UntypedFormGroup} from "@angular/forms";
 import {
     allValidationErrorsSilent,
     collectValidationErrors
@@ -49,9 +45,7 @@ export class RecordSaveNewAction extends RecordActionHandler {
 
     constructor(
         protected message: MessageService,
-        protected navigation: ModuleNavigation,
-        protected validationManager: ValidationManager,
-        protected metadataStore: MetadataStore
+        protected navigation: ModuleNavigation
     ) {
         super();
     }
@@ -92,46 +86,5 @@ export class RecordSaveNewAction extends RecordActionHandler {
 
     shouldDisplay(data: RecordActionData): boolean {
         return true;
-    }
-
-    setAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-
-            field.asyncValidationErrors = null;
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.setAsyncValidators(field?.asyncValidators);
-                field.formControl.updateValueAndValidity();
-            }
-        });
-    }
-
-    clearAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.clearAsyncValidators();
-                field.formControl.updateValueAndValidity();
-            }
-
-        });
-    }
-
-    protected setRecordAsyncValidators(record: any, formGroup: UntypedFormGroup): void {
-        const meta = this.metadataStore.get() || {};
-        const viewMeta = meta.recordView || {};
-        const validators: AsyncValidatorFn[] = this.validationManager.getAsyncRecordSaveValidations(record, viewMeta);
-
-        if (validators.length) {
-            formGroup.setAsyncValidators(validators);
-            formGroup.updateValueAndValidity();
-        }
-    }
-
-    protected clearRecordAsyncValidators(formGroup: UntypedFormGroup): void {
-        formGroup.clearAsyncValidators();
-        formGroup.updateValueAndValidity();
     }
 }

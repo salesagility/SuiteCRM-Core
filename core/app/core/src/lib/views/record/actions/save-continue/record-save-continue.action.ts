@@ -34,10 +34,6 @@ import {RecentlyViewedService} from "../../../../services/navigation/recently-vi
 import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 import {ViewMode} from "../../../../common/views/view.model";
-import {FieldMap} from "../../../../common/record/field.model";
-import {ValidationManager} from "../../../../services/record/validation/validation.manager";
-import {MetadataStore} from "../../../../store/metadata/metadata.store.service";
-import {AsyncValidatorFn, UntypedFormGroup} from "@angular/forms";
 import {
     allValidationErrorsSilent,
     collectValidationErrors
@@ -57,9 +53,7 @@ export class RecordSaveContinueAction extends RecordActionHandler {
         protected notificationStore: NotificationStore,
         protected systemConfigStore: SystemConfigStore,
         protected recentlyViewedService: RecentlyViewedService,
-        protected recordPaginationService: RecordPaginationService,
-        protected validationManager: ValidationManager,
-        protected metadataStore: MetadataStore
+        protected recordPaginationService: RecordPaginationService
     ) {
         super();
     }
@@ -123,42 +117,4 @@ export class RecordSaveContinueAction extends RecordActionHandler {
         return this.recordPaginationService.checkRecordValid(data.store.getRecordId());
     }
 
-    setAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-            field.asyncValidationErrors = null;
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.setAsyncValidators(field?.asyncValidators);
-                field.formControl.updateValueAndValidity();
-            }
-        });
-    }
-
-    clearAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.clearAsyncValidators();
-                field.formControl.updateValueAndValidity();
-            }
-        });
-    }
-
-    protected setRecordAsyncValidators(record: any, formGroup: UntypedFormGroup): void {
-        const meta = this.metadataStore.get() || {};
-        const viewMeta = meta.recordView || {};
-        const validators: AsyncValidatorFn[] = this.validationManager.getAsyncRecordSaveValidations(record, viewMeta);
-
-        if (validators.length) {
-            formGroup.setAsyncValidators(validators);
-            formGroup.updateValueAndValidity();
-        }
-    }
-
-    protected clearRecordAsyncValidators(formGroup: UntypedFormGroup): void {
-        formGroup.clearAsyncValidators();
-        formGroup.updateValueAndValidity();
-    }
 }
