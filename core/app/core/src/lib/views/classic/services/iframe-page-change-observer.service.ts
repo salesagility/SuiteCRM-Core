@@ -32,6 +32,7 @@ export class IframePageChangeObserver {
     private unLoadCallback: Function = null;
     private unloadListener: Function = null;
     private loadListener: Function = null;
+    private destroyed = false;
 
     constructor(
         iframe,
@@ -65,6 +66,7 @@ export class IframePageChangeObserver {
             contentWindow.removeEventListener('pagehide', this.unloadListener);
             contentWindow.removeEventListener('load', this.loadListener);
         }
+        this.destroyed = true;
         this.iframe = null;
         this.lastDispatched = null;
         this.changeCallback = null;
@@ -80,8 +82,11 @@ export class IframePageChangeObserver {
      */
 
     protected loadHandler(): void {
-        this.triggerPageChange();
-        this.loadCallback();
+        if (this.destroyed) {
+            return;
+        }
+
+        this.loadCallback?.();
         this.bindUnload();
     }
 
@@ -92,15 +97,19 @@ export class IframePageChangeObserver {
     }
 
     protected unloadHandler(event: PageTransitionEvent): void {
-        if (event.persisted) {
+        if (event.persisted || this.destroyed) {
             return;
         }
 
-        this.unLoadCallback();
+        this.unLoadCallback?.();
 
         // Timeout needed because the URL changes immediately after
         // the `pagehide` event is dispatched.
-        setTimeout(this.triggerPageChange.bind(this), 0);
+        setTimeout(() => {
+            if (!this.destroyed) {
+                this.triggerPageChange();
+            }
+        }, 0);
     }
 
     protected triggerPageChange(): void {
@@ -108,7 +117,7 @@ export class IframePageChangeObserver {
 
         if (newHref && newHref !== this.lastDispatched) {
             this.lastDispatched = newHref;
-            this.changeCallback(newHref);
+            this.changeCallback?.(newHref);
         }
     }
 
