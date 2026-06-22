@@ -52,9 +52,6 @@ class PreUpgradeMigrationRunner implements PreUpgradeMigrationRunnerInterface
     ) {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function run(string $migrationsDir): Feedback
     {
         $feedback = new Feedback();
@@ -95,9 +92,69 @@ class PreUpgradeMigrationRunner implements PreUpgradeMigrationRunnerInterface
         return $feedback;
     }
 
-    /**
-     * @inheritDoc
-     */
+    public function runSingle(string $migrationsDir, string $version, bool $force = false): Feedback
+    {
+        $feedback = new Feedback();
+
+        $this->ensureTableExists();
+
+        $file = $migrationsDir . '/' . $version . '.php';
+
+        if (!file_exists($file)) {
+            $feedback->setSuccess(false)
+                     ->setMessages(['Pre-upgrade migration file not found: ' . $file]);
+
+            return $feedback;
+        }
+
+        $instance = $this->loadInstance($file);
+
+        if ($instance === null) {
+            $feedback->setSuccess(false)
+                     ->setMessages(['Could not load pre-upgrade migration: ' . $version]);
+
+            return $feedback;
+        }
+
+        $className = $this->toClassName($version);
+
+        if (!$force && $this->hasExecuted($className)) {
+            $feedback->setSuccess(true)
+                     ->setMessages(['Pre-upgrade migration already executed: ' . $version]);
+
+            return $feedback;
+        }
+
+        if ($force && $this->hasExecuted($className)) {
+            $this->clearExecuted($className);
+        }
+
+        $instance->setContainer($this->container);
+
+        if (!$instance->shouldRun()) {
+            $this->upgradeLogger->info('Pre-upgrade migration skipped by shouldRun(): ' . $className);
+
+            $feedback->setSuccess(true)
+                     ->setMessages(['Pre-upgrade migration skipped by shouldRun(): ' . $version]);
+
+            return $feedback;
+        }
+
+        $error = $this->executeMigration($instance, $className);
+
+        if ($error !== null) {
+            $feedback->setSuccess(false)
+                     ->setMessages(['Pre-upgrade migration failed: ' . $version . ' — ' . $error]);
+
+            return $feedback;
+        }
+
+        $feedback->setSuccess(true)
+                 ->setMessages(['Successfully ran pre-upgrade migration: ' . $version]);
+
+        return $feedback;
+    }
+
     public function getStatus(string $migrationsDir): array
     {
         $this->ensureTableExists();
@@ -110,8 +167,16 @@ class PreUpgradeMigrationRunner implements PreUpgradeMigrationRunnerInterface
             $className = $this->toClassName($shortVersion);
             $executedAt = $this->getExecutedAt($className);
 
+            $instance = $this->loadInstance($file);
+            $description = '';
+
+            if ($instance !== null) {
+                $description = $instance->getDescription();
+            }
+
             $status[] = [
                 'version' => $shortVersion,
+                'description' => $description,
                 'executed' => $executedAt !== null,
                 'executed_at' => $executedAt,
             ];

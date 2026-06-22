@@ -37,9 +37,14 @@ interface PreUpgradeMigrationRunnerInterface
     public function run(string $migrationsDir): Feedback;
 
     /**
+     * Runs a single migration by short version name (e.g. Version20250605120000).
+     */
+    public function runSingle(string $migrationsDir, string $version, bool $force = false): Feedback;
+
+    /**
      * Returns the execution status of every discovered migration.
      *
-     * @return array<int, array{version: string, executed: bool, executed_at: string|null}>
+     * @return array<int, array{version: string, description: string, executed: bool, executed_at: string|null}>
      */
     public function getStatus(string $migrationsDir): array;
 }
