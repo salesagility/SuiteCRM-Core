@@ -191,7 +191,7 @@ services:
   # this creates a service per class whose id is the fully-qualified class name
   App\:
     resource: '../core/backend/*'
-    exclude: '../core/backend/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    exclude: '../core/backend/{DependencyInjection,Entity,Migrations,PreUpgradeMigrations,Tests,Kernel.php}'
 
   App\Module\:
     resource: '../core/modules/*'
@@ -412,6 +412,10 @@ services:
       - !tagged { tag: 'app.install.step' }
       - !tagged { tag: 'cli.install.step'}
       - '@monolog.logger.install'
+
+  App\Install\Service\PreUpgradeMigrations\PreUpgradeMigrationRunner:
+    arguments:
+      $container: '@service_container'
 
   Doctrine\Migrations\Version\DbalMigrationFactory: ~
   App\Install\Service\Migrations\MigrationFactoryDecorator:
