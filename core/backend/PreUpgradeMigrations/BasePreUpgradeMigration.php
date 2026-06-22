@@ -94,6 +94,11 @@ abstract class BasePreUpgradeMigration implements ContainerAwareInterface
     }
 
     /**
+     * A short summary of what this migration does.
+     */
+    abstract public function getDescription(): string;
+
+    /**
      * Return false to skip execution for this upgrade cycle. The migration will
      * not be marked as executed and will be re-evaluated during the next upgrade.
      */
