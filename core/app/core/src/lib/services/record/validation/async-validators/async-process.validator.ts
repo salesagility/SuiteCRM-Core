@@ -36,6 +36,7 @@ import {AsyncValidationDefinition} from "../../../../common/record/field.model";
 import {ConfirmationModalService} from "../../../modals/confirmation-modal.service";
 import {FieldMapper} from "../../field/field.mapper";
 import {DataTypeFormatter} from "../../../formatters/data-type.formatter.service";
+import {SavedFilter} from "../../../../store/saved-filters/saved-filter.model";
 
 export const asyncValidator = (
     validator: AsyncValidationDefinition,
@@ -200,7 +201,7 @@ export const recordAsyncValidator = (
                             params: presetConfig.params ?? {}
                         }
                     }
-                } as any;
+                } as SavedFilter;
 
                 confirmationModalService.showListModal({
                     titleKey: process.data?.confirmationTitle ?? '',
