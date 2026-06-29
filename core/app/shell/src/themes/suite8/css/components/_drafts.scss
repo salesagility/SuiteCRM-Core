@@ -94,6 +94,8 @@
 
     .drafts-modal-wrapper {
       min-height: 25em;
+      width: 100%;
+      overflow: hidden;
     }
 
     .drafts-modal-container {
@@ -193,6 +195,7 @@
   .modal-header-actions-container {
     display: flex;
     align-items: center;
+    white-space: nowrap;
   }
 
   .minimise-button {
@@ -200,17 +203,24 @@
   }
 
   .drafts-modal-title {
-    margin-left: 0;
-    margin-bottom: 0;
-    position: relative;
-    top: -2px;
+    margin: 0 !important;
+    padding: 0 !important;
     color: $midnight-blue !important;
     font-weight: 700;
     font-size: 14px;
-    line-height: 1.2;
+    line-height: 1;
+    text-align: left !important;
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
 
     scrm-label {
       margin-top: 0 !important;
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 75px;
     }
   }
 
@@ -223,13 +233,8 @@
       font-weight: 600;
       border: none!important;
 
+      &:focus,
       &:focus-visible {
-        outline: none !important;
-        box-shadow: none !important;
-        border: none !important;
-      }
-
-      &:focus {
         outline: none !important;
         box-shadow: none !important;
         border: none !important;
@@ -238,7 +243,6 @@
     .action-group-menu {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
 
       .inline-confirmation {
         color: #534d64 !important;
@@ -246,14 +250,28 @@
         font-size: 14px;
         display: flex;
         align-items: center !important;
-        padding-right: 1.85rem;
+        line-height: 1;
 
         .inline-confirmation-button {
           background-color: transparent;
+          padding-left: 0 !important;
+
+          &:first-child {
+            padding-right: 0.375rem;
+          }
 
           .btn-link {
             color: $bright-purple !important;
             font-weight: 700;
+            padding-top: 0;
+            padding-bottom: 0;
+            line-height: 1;
+            display: inline-block;
+            max-width: 6em;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: middle;
           }
         }
       }
@@ -263,7 +281,31 @@
 }
 
 .drafts-header.drafts-confirming {
-  background-color: $bright-blue !important;
+  background-color: $light-grey !important;
+
+  .drafts-modal-title {
+    flex: 0 0 auto;
+    padding-right: 0.25rem !important;
+  }
+
+  .modal-header-actions-container {
+    flex: 1 1 0;
+    min-width: 0;
+
+    scrm-minimise-button,
+    scrm-close-button {
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    scrm-minimise-button + scrm-close-button {
+      margin-left: 0;
+    }
+  }
+
+  .drafts-modal-actions .action-group-menu .inline-confirmation {
+    justify-content: flex-start !important;
+  }
 }
 
 .drafts-modal {
