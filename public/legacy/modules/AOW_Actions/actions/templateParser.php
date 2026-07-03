@@ -30,7 +30,7 @@ require_once 'modules/AOS_PDF_Templates/templateParser.php';
 #[\AllowDynamicProperties]
 class aowTemplateParser extends templateParser
 {
-    public static function parse_template($string, $bean_arr)
+    public static function parse_template($string, $bean_arr, $userFormat = false)
     {
         global $beanList;
 
