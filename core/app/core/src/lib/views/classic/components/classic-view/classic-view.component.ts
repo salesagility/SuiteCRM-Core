@@ -85,6 +85,7 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     public wrapper: any;
     public url: string;
     protected iframe = null;
+    protected isRedirecting = false;
     private iframePageChangeHandler: IframePageChangeObserver;
     private iframeResizeHandler: IframeResizeHandlerHandler;
 
@@ -123,7 +124,6 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         if (this.iframeResizeHandler) {
             this.iframeResizeHandler.destroy();
             this.iframeResizeHandler = null;
-
         }
         if (this.iframePageChangeHandler) {
             this.iframePageChangeHandler.destroy();
@@ -165,9 +165,7 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     protected onPageChange(newLocation): void {
 
         if (this.shouldRedirect(newLocation) === false) {
-            this.iframe.style.display = 'block';
-            this.cleanObservers();
-            this.initObservers();
+            this.pageUnlock();
             return;
         }
 
@@ -178,23 +176,29 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
             return;
         }
 
+        this.isRedirecting = true;
         this.ngZone.run(() => this.router.navigateByUrl(location).then()).then();
     }
 
     protected onIFrameLoad(): void {
-        // Do not show scroll at any time, to avoid flickering
-        this.iframe.contentWindow.document.body.style.overflow = 'hidden';
+        if (this.isRedirecting) {
+            return;
+        }
 
-        // Init resize handler
+        if (this.iframe?.contentWindow?.document?.body) {
+            this.iframe.contentWindow.document.body.style.overflow = 'hidden';
+        }
         this.iframeResizeHandler.init(this.iframe);
-
         this.forceCacheRebuildAfterRepairAndRebuild();
     }
 
     // Temporary solution. Force a cache rebuild after quick repair and rebuild.
     // Can be removed after Repair and Rebuild page is re-done with to Suite8 views.
     protected forceCacheRebuildAfterRepairAndRebuild(): void {
-        const iframeUrl = this.iframe.contentWindow.location.href;
+        const iframeUrl = this.iframe?.contentWindow?.location?.href;
+        if (!iframeUrl) {
+            return;
+        }
 
         const url = new URL(iframeUrl);
         const params = new URLSearchParams(url.search);
@@ -204,9 +208,17 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         }
     }
 
-    protected onIFrameUnload(): void {
-        // hide iframe, while being re-directed
+    protected pageLock(): void {
         this.iframe.style.display = 'none';
+    }
+
+    protected pageUnlock(): void {
+        this.isRedirecting = false;
+        this.iframe.style.display = 'block';
+    }
+
+    protected onIFrameUnload(): void {
+        this.pageLock();
         this.iframeResizeHandler.destroy();
     }
 
@@ -215,6 +227,7 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
             this.iframe,
             this.onPageChange.bind(this),
             this.onIFrameLoad.bind(this),
+            this.pageUnlock.bind(this),
             this.onIFrameUnload.bind(this),
         );
     }
