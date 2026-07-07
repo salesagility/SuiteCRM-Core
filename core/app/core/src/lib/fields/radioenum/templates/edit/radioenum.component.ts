@@ -36,7 +36,7 @@ import {FieldLogicDisplayManager} from '../../../field-logic-display/field-logic
 @Component({
     selector: 'scrm-radioenum-edit',
     templateUrl: './radioenum.component.html',
-    styleUrls: []
+    styleUrls: ['./radioenum.component.scss']
 })
 export class RadioEnumEditFieldComponent extends BaseEnumComponent {
     formGroup: UntypedFormGroup;
@@ -60,6 +60,13 @@ export class RadioEnumEditFieldComponent extends BaseEnumComponent {
     ngOnInit(): void {
         this.checkAndInitAsDynamicEnum();
 
+        // Restore filter value from criteria so the radio button stays selected after search
+        if (this.field.criteria && this.field.criteria.values && this.field.criteria.values.length > 0) {
+            const criteriaValue = this.field.criteria.values[0];
+            this.field.value = criteriaValue;
+            this.field.formControl.setValue(criteriaValue);
+        }
+
         super.ngOnInit();
 
         this.subscribeValueChanges();
@@ -76,6 +83,15 @@ export class RadioEnumEditFieldComponent extends BaseEnumComponent {
     public getId(item: Option) {
         return this.field.name + '-' + item.value;
     }
+
+    protected setFieldValue(newValue): void {
+        if (this.field.criteria) {
+            this.field.criteria.operator = '=';
+            this.field.criteria.values = [newValue];
+        }
+        this.field.value = newValue;
+    }
+}
 
     protected buildOptionsArray(appStrings: LanguageListStringMap): void {
         this.options = [];

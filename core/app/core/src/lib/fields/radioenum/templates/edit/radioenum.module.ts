@@ -26,8 +26,8 @@
 
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RadioButtonModule} from 'primeng/radiobutton';
 import {RadioEnumEditFieldComponent} from './radioenum.component';
 
 @NgModule({
@@ -36,7 +36,8 @@ import {RadioEnumEditFieldComponent} from './radioenum.component';
     imports: [
         CommonModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RadioButtonModule
     ]
 })
 export class RadioEnumEditFieldModule {

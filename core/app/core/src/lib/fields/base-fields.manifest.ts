@@ -314,7 +314,7 @@ export const baseViewFieldsMap: FieldComponentMap = {
     'radioenum.list': RadioEnumDetailFieldComponent,
     'radioenum.detail': RadioEnumDetailFieldComponent,
     'radioenum.edit': RadioEnumEditFieldComponent,
-    'radioenum.filter': MultiEnumFilterFieldComponent,
+    'radioenum.filter': RadioEnumEditFieldComponent,
     'enum-dropdown.list': DropdownEnumDetailFieldComponent,
     'enum-dropdown.detail': DropdownEnumDetailFieldComponent,
     'enum-dropdown.edit': DropdownEnumEditFieldComponent,

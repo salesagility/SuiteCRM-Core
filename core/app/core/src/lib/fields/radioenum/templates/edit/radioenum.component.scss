@@ -1,0 +1,16 @@
+.radioenum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.radioenum-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    label {
+        margin: 0;
+        cursor: pointer;
+    }
+}
