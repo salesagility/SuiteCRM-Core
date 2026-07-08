@@ -179,7 +179,7 @@ class BasePDFManager extends LegacyHandler
 
         $pdfConfig = $this->pdfLegacyHandler->buildPDFConfig($templateBean);
         $basePdf = $this->pdfLegacyHandler->createPdf($pdfConfig);
-        $fileName = $this->getPdfName($templateBean->name);
+        $fileName = str_replace(' ', '_', $templateBean->name) . '.pdf';;
 
         $storageType = $this->getStorageType();
 
