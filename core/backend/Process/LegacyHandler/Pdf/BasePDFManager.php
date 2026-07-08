@@ -142,15 +142,31 @@ class BasePDFManager extends LegacyHandler
     {
         $objectArr = [];
         $objectArr[$moduleBean->module_dir] = $moduleBean->id;
-        $objectArr['Accounts'] = $moduleBean->billing_account_id ?? '';
+
+        if ($moduleBean->module_dir !== 'Accounts') {
+            $objectArr['Accounts'] = $moduleBean->billing_account_id ?? '';
+        }
+
+        if ($moduleBean->module_dir !== 'Contacts') {
+            $objectArr['Contacts'] = $moduleBean->billing_contact_id ?? '';
+        }
+
+        if ($moduleBean->module_dir !== 'Users') {
+            $objectArr['Users'] = $moduleBean->assigned_user_id ?? '';
+        }
+
+        if ($moduleBean->module_dir !== 'Currencies') {
+            $objectArr['Currencies'] = $moduleBean->currency_id ?? '';
+        }
 
         if ($moduleBean->module_dir === 'Contacts') {
             $objectArr['Accounts'] = $moduleBean->account_id;
         }
 
-        $objectArr['Contacts'] = $moduleBean->billing_contact_id ?? '';
-        $objectArr['Users'] = $moduleBean->assigned_user_id ?? '';
-        $objectArr['Currencies'] = $moduleBean->currency_id ?? '';
+        if ($moduleBean->module_dir === 'AOS_Contracts') {
+            $objectArr['Accounts'] = $moduleBean->contract_account_id ?? '';
+            $objectArr['Contacts'] = $moduleBean->contact_id ?? '';
+        }
 
         return $objectArr;
     }
@@ -179,7 +195,7 @@ class BasePDFManager extends LegacyHandler
 
         $pdfConfig = $this->pdfLegacyHandler->buildPDFConfig($templateBean);
         $basePdf = $this->pdfLegacyHandler->createPdf($pdfConfig);
-        $fileName = str_replace(' ', '_', $templateBean->name) . '.pdf';;
+        $fileName = str_replace(' ', '_', $templateBean->name) . '.pdf';
 
         $storageType = $this->getStorageType();
 
@@ -376,7 +392,7 @@ class BasePDFManager extends LegacyHandler
         $modStrings = return_module_language($GLOBALS['current_language'] ?? 'en_us', $legacyModule);
         $this->close();
 
-        $singular = $modStrings['LBL_MODULE_NAME_SINGULAR'] ?? $this->moduleNameMapper->toCore($legacyModule);
+        $singular = $modStrings['LBL_PDF_NAME'] ?? $this->moduleNameMapper->toCore($legacyModule);
 
         return str_replace(' ', '_', $singular);
     }
