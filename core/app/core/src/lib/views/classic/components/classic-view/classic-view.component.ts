@@ -150,19 +150,18 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
             window.parent.postMessage('iframe-clicked', '*');
         });
 
-        this.initObservers();
-    }
-
-    initObservers(): void {
         this.iframePageChangeHandler = this.buildIframePageChangeObserver();
         this.iframeResizeHandler = this.buildIframeResizeHandlerHandler();
-
-        if (this.iframePageChangeHandler) {
-            this.iframePageChangeHandler.init();
-        }
+        this.iframePageChangeHandler.init();
     }
 
     protected onPageChange(newLocation): void {
+
+        if (!this.auth.isLoggedIn()) {
+            this.isRedirecting = true;
+            this.auth.logout('LBL_SESSION_EXPIRED');
+            return;
+        }
 
         if (this.shouldRedirect(newLocation) === false) {
             this.pageUnlock();
@@ -170,8 +169,10 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         }
 
         const location = this.routeConverter.toFrontEndRoute(newLocation);
+        const normalizedLocation = location?.toLowerCase();
 
-        if (location === '/users/login') {
+        if (normalizedLocation === 'users/login' || normalizedLocation === 'login' || normalizedLocation === 'logged-out') {
+            this.isRedirecting = true;
             this.auth.logout('LBL_SESSION_EXPIRED');
             return;
         }
