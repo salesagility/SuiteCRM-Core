@@ -29,6 +29,7 @@ export class IframePageChangeObserver {
     private lastDispatched: string;
     private changeCallback: Function = null;
     private loadCallback: Function = null;
+    private pageUnlockCallback: Function = null;
     private unLoadCallback: Function = null;
     private unloadListener: Function = null;
     private loadListener: Function = null;
@@ -38,11 +39,13 @@ export class IframePageChangeObserver {
         iframe,
         changeCallback: Function = null,
         loadCallback: Function = null,
+        pageUnlockCallback: Function = null,
         unLoadCallback: Function = null,
     ) {
         this.iframe = iframe;
         this.changeCallback = changeCallback;
         this.loadCallback = loadCallback;
+        this.pageUnlockCallback = pageUnlockCallback;
         this.unLoadCallback = unLoadCallback;
     }
 
@@ -70,11 +73,11 @@ export class IframePageChangeObserver {
         this.lastDispatched = null;
         this.changeCallback = null;
         this.loadCallback = null;
+        this.pageUnlockCallback = null;
         this.unLoadCallback = null;
         this.loadListener = null;
         this.unloadListener = null;
     }
-
 
     /**
      * Internal API
@@ -85,6 +88,7 @@ export class IframePageChangeObserver {
             return;
         }
 
+        this.triggerPageChange();
         this.loadCallback?.();
         this.bindUnload();
     }
@@ -101,22 +105,23 @@ export class IframePageChangeObserver {
         }
 
         this.unLoadCallback?.();
-
-        // Timeout needed because the URL changes immediately after
-        // the `pagehide` event is dispatched.
-        setTimeout(() => {
-            if (!this.destroyed) {
-                this.triggerPageChange();
-            }
-        }, 0);
     }
 
     protected triggerPageChange(): void {
-        const newHref = this.iframe && this.iframe.contentWindow && this.iframe.contentWindow.location.href;
+        if (this.destroyed) {
+            return;
+        }
 
-        if (newHref && newHref !== this.lastDispatched) {
-            this.lastDispatched = newHref;
-            this.changeCallback?.(newHref);
+        try {
+            const newHref = this.iframe?.contentWindow?.location?.href;
+
+            if (newHref && newHref !== this.lastDispatched) {
+                this.lastDispatched = newHref;
+                this.changeCallback?.(newHref);
+            } else {
+                this.pageUnlockCallback?.();
+            }
+        } catch (e) {
         }
     }
 
