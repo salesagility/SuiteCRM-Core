@@ -26,7 +26,6 @@
 
 import {AfterViewInit, Component, ElementRef, HostListener, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DomSanitizer} from '@angular/platform-browser';
 import {IframeResizeHandlerHandler} from '../../services/iframe-resize-handler.service';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {AuthService} from '../../../../services/auth/auth.service';
@@ -92,7 +91,6 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private sanitizer: DomSanitizer,
         private routeConverter: RouteConverter,
         private auth: AuthService,
         private ngZone: NgZone,
