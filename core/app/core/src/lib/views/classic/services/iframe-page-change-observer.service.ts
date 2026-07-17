@@ -56,18 +56,20 @@ export class IframePageChangeObserver {
     public init(): void {
         this.loadListener = this.loadHandler.bind(this);
         this.unloadListener = this.unloadHandler.bind(this);
-        this.iframe.contentWindow.addEventListener('load', this.loadListener);
-        this.iframe.contentWindow.removeEventListener('pagehide', this.unloadListener);
+
+        this.iframe.addEventListener('load', this.loadListener);
     }
 
     public destroy(): void {
+        if (this.iframe) {
+            this.iframe.removeEventListener('load', this.loadListener);
+        }
 
         const contentWindow = this.iframe && this.iframe.contentWindow;
-
         if (contentWindow) {
             contentWindow.removeEventListener('pagehide', this.unloadListener);
-            contentWindow.removeEventListener('load', this.loadListener);
         }
+
         this.destroyed = true;
         this.iframe = null;
         this.lastDispatched = null;
@@ -94,9 +96,11 @@ export class IframePageChangeObserver {
     }
 
     protected bindUnload(): void {
-        this.iframe.contentWindow.removeEventListener('pagehide', this.unloadListener);
-        this.unloadListener = this.unloadHandler.bind(this);
-        this.iframe.contentWindow.addEventListener('pagehide', this.unloadListener);
+        const contentWindow = this.iframe?.contentWindow;
+        if (contentWindow) {
+            contentWindow.removeEventListener('pagehide', this.unloadListener);
+            contentWindow.addEventListener('pagehide', this.unloadListener);
+        }
     }
 
     protected unloadHandler(event: PageTransitionEvent): void {
