@@ -54,6 +54,17 @@ export class IframePageChangeObserver {
      */
 
     public init(): void {
+        try {
+            const href = this.iframe?.contentWindow?.location?.href;
+            if (href && href !== 'about:blank') {
+                this.lastDispatched = href;
+            } else {
+                this.lastDispatched = new URL(this.iframe.src, window.location.href).href;
+            }
+        } catch (e) {
+            this.lastDispatched = this.iframe.src;
+        }
+
         this.loadListener = this.loadHandler.bind(this);
         this.unloadListener = this.unloadHandler.bind(this);
 
