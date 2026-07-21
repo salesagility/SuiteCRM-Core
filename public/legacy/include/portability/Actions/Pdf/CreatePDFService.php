@@ -91,7 +91,8 @@ class CreatePDFService
             '@&(gt|#62);@i',
             '@&(nbsp|#160);@i',
             '@&(iexcl|#161);@i',
-            '@<address[^>]*?>@si'
+            '@<address[^>]*?>@si',
+            '@&(apos|#0*39);@',
         );
 
         $replace = array(
@@ -104,10 +105,14 @@ class CreatePDFService
             '>',
             ' ',
             chr(161),
-            '<br>'
+            '<br>',
+            "'",
         );
 
         $text = preg_replace($search, $replace, (string)$template->description);
+        $text = preg_replace_callback('@&#(\d+);@', function ($matches) {
+            return chr((int)$matches[1]);
+        }, $text);
         $text = str_replace("<p><pagebreak /></p>", "<pagebreak />", $text);
         $text = preg_replace_callback(
             '/{DATE\s+(.*?)}/',
