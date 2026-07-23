@@ -30,6 +30,7 @@ import {RecordListModalStore} from '../../record-list-modal/store/record-list-mo
 import {FilterConfig} from '../../list-filter/components/list-filter/list-filter.model';
 import {SavedFilter} from '../../../store/saved-filters/saved-filter.model';
 import {of} from 'rxjs';
+import {deepClone, emptyObject} from "../../../common/utils/object-utils";
 
 export class ConfirmationListFilterAdapter {
 
@@ -79,7 +80,12 @@ export class ConfirmationListFilterAdapter {
             },
 
             resetFilter: (reload?: boolean): void => {
-                store.recordList.resetSearchCriteria(reload);
+                const criteria = store.initialFilter?.criteria;
+                if (criteria && !emptyObject(criteria)) {
+                    store.recordList.updateSearchCriteria(deepClone(criteria), reload);
+                } else {
+                    store.recordList.resetSearchCriteria(reload);
+                }
             },
 
             addSavedFilter: (_filter: SavedFilter): void => {
