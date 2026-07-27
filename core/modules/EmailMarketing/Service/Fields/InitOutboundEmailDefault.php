@@ -131,6 +131,7 @@ class InitOutboundEmailDefault implements ProcessHandlerInterface
         $record = $this->recordProvider->getRecord('OutboundEmailAccounts', $id);
 
         $attributes = $record->getAttributes() ?? [];
+        $attributes['id'] = $record->getId();
 
         if (!isset($attributes['from_name'])) {
             $attributes['from_addr'] = $attributes['smtp_from_name'] . ' ' . $attributes['smtp_from_addr'];

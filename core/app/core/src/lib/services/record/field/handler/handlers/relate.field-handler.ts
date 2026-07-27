@@ -26,6 +26,7 @@
 import {isObject, isString} from "lodash-es";
 import {Injectable} from "@angular/core";
 import {AttributeMap, Record} from '../../../../../common/record/record.model';
+import {Field} from '../../../../../common/record/field.model';
 import {BaseFieldHandler} from "./base.field-handler";
 import {RelateField} from "../../types/relate.value-object-type";
 
@@ -85,6 +86,20 @@ export class RelateFieldHandler extends BaseFieldHandler<RelateField> {
         relate['name'] = relateValue;
 
         return relate;
+    }
+
+    protected updateValueByType(field: Field, valueType: string, value: any, record: Record): void {
+        super.updateValueByType(field, valueType, value, record);
+
+        if (valueType === 'valueObject' && value?.id) {
+            const idName = (field as RelateField)?.definition?.id_name || '';
+            const idField = record?.fields[idName] ?? null;
+
+            if (idField && idName !== field.name) {
+                idField.value = value.id;
+                idField.formControl.setValue(value.id);
+            }
+        }
     }
 
     protected getRelateFieldName(field: RelateField): string {
