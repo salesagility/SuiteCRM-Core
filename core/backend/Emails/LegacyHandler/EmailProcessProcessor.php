@@ -309,6 +309,11 @@ class EmailProcessProcessor extends LegacyHandler
 
         $this->close();
 
+        if (empty($bean)) {
+            $emailRecord->setAttributes($attributes);
+            return $emailRecord;
+        }
+
         $attributes = $this->parseBean($attributes, $bean);
 
         $emailRecord->setAttributes($attributes);

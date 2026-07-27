@@ -163,7 +163,9 @@ class OpenDraftAction implements ProcessHandlerInterface
      */
     protected function getModalData(Record $record): array
     {
-        return [
+        $attributes = $record->getAttributes();
+
+        $modalData = [
             'module' => 'emails',
             'metadataView' => 'modalComposeView',
             'detached' => true,
@@ -171,8 +173,6 @@ class OpenDraftAction implements ProcessHandlerInterface
             'closable' => false,
             'record' => $record->toArray(),
             'recordId' => $record->getId(),
-            'parentId' => $record->getAttributes()['parent_name']['id'] ?? null,
-            'parentType' => $record->getAttributes()['parent_type'] ?? null,
             'headerActionsKlass' => 'draft-modal-action',
             'headerClass' => 'left-aligned-title',
             'dynamicTitleKey' => 'LBL_EMAIL_MODAL_DRAFT_DYNAMIC_TITLE',
@@ -186,6 +186,16 @@ class OpenDraftAction implements ProcessHandlerInterface
                 ]
             ]
         ];
+
+        $parentName = $attributes['parent_name']['name'] ?? '';
+        $parentId = $attributes['parent_name']['id'] ?? null;
+
+        if (!empty($parentName) && !empty($parentId)) {
+            $modalData['parentId'] = $parentId;
+            $modalData['parentType'] = $attributes['parent_type'] ?? null;
+        }
+
+        return $modalData;
     }
 
     /**
@@ -201,7 +211,7 @@ class OpenDraftAction implements ProcessHandlerInterface
 
         $recipients = $this->getRecipients($attributes);
 
-        return [
+        $mapFields = [
             'name' => $name,
             'description_html' => $bodyHtml,
             'outbound_email_id' => $outboundEmailId,
@@ -212,11 +222,19 @@ class OpenDraftAction implements ProcessHandlerInterface
             'type' => $attributes['type'] ?? '',
             'status' => $attributes['status'] ?? '',
             'outbound_email_name_record' => $this->getOutboundEmailRecord($outboundEmailId, $fromName),
-            'parent_name' => $attributes['parent_name']['name'] ?? '',
-            'parent_type' => $attributes['parent_type'] ?? '',
-            'parent_id' => $attributes['parent_name']['id'] ?? '',
             'email_attachments' => $attributes['email_attachments'] ?? [],
         ];
+
+        $parentName = $attributes['parent_name']['name'] ?? '';
+        $parentId = $attributes['parent_name']['id'] ?? '';
+
+        if (!empty($parentName) && !empty($parentId)) {
+            $mapFields['parent_name'] = $parentName;
+            $mapFields['parent_type'] = $attributes['parent_type'] ?? '';
+            $mapFields['parent_id'] = $parentId;
+        }
+
+        return $mapFields;
     }
 
     /**
