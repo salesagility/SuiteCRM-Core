@@ -29,8 +29,10 @@
 namespace App\Module\Emails\Service\RecordThreadModalActions;
 
 use ApiPlatform\Metadata\Exception\InvalidArgumentException;
+use App\Authentication\LegacyHandler\UserHandler;
 use App\Data\Entity\Record;
 use App\Data\Service\RecordProviderInterface;
+use App\Languages\LegacyHandler\AppListStringsProviderInterface;
 use App\Process\Entity\Process;
 use App\Process\Service\ProcessHandlerInterface;
 
@@ -41,6 +43,8 @@ class OpenDraftAction implements ProcessHandlerInterface
 
     public function __construct(
         protected RecordProviderInterface $recordProvider,
+        protected AppListStringsProviderInterface $appListStringsProvider,
+        protected UserHandler $userHandler,
     )
     {
     }
@@ -165,6 +169,16 @@ class OpenDraftAction implements ProcessHandlerInterface
     {
         $attributes = $record->getAttributes();
 
+        $parentName = $attributes['parent_name']['name'] ?? '';
+        $parentId = $attributes['parent_name']['id'] ?? null;
+        $hasValidParent = !empty($parentName) && !empty($parentId);
+
+        if (!$hasValidParent) {
+            unset($attributes['parent_name'], $attributes['parent_id']);
+            $attributes['parent_type'] = $this->getDefaultParentType();
+            $record->setAttributes($attributes);
+        }
+
         $modalData = [
             'module' => 'emails',
             'metadataView' => 'modalComposeView',
@@ -187,10 +201,7 @@ class OpenDraftAction implements ProcessHandlerInterface
             ]
         ];
 
-        $parentName = $attributes['parent_name']['name'] ?? '';
-        $parentId = $attributes['parent_name']['id'] ?? null;
-
-        if (!empty($parentName) && !empty($parentId)) {
+        if ($hasValidParent) {
             $modalData['parentId'] = $parentId;
             $modalData['parentType'] = $attributes['parent_type'] ?? null;
         }
@@ -232,6 +243,8 @@ class OpenDraftAction implements ProcessHandlerInterface
             $mapFields['parent_name'] = $parentName;
             $mapFields['parent_type'] = $attributes['parent_type'] ?? '';
             $mapFields['parent_id'] = $parentId;
+        } else {
+            $mapFields['parent_type'] = $this->getDefaultParentType();
         }
 
         return $mapFields;
@@ -320,5 +333,21 @@ class OpenDraftAction implements ProcessHandlerInterface
         }
 
         return $name;
+    }
+
+    protected function getDefaultParentType(): string
+    {
+        $language = $this->userHandler->getCurrentLanguage();
+        $appListStrings = $this->appListStringsProvider->getAppListStrings($language);
+        $items = $appListStrings?->getItems() ?? [];
+        $options = $items['record_type_display'] ?? [];
+
+        foreach ($options as $key => $label) {
+            if (!empty($key)) {
+                return $key;
+            }
+        }
+
+        return '';
     }
 }
