@@ -89,7 +89,7 @@ class EmailProcessProcessor extends LegacyHandler
         }
 
         /** @var \OutboundEmailAccounts $outboundEmail */
-        $outboundEmail = \BeanFactory::getBean('OutboundEmailAccounts', $emailAttributes['outbound_email_id']);
+        $outboundEmail = \BeanFactory::getBean('OutboundEmailAccounts', $emailAttributes['outbound_email_id'] ?? '');
 
         if (empty($outboundEmail)) {
             $this->close();
