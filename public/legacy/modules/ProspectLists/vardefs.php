@@ -242,7 +242,7 @@ $dictionary['ProspectList'] = array(
         array(
             'name' => 'idx_prospect_list_name',
             'type' => 'index',
-            'fields' => array('name')
+            'fields' => array('name', 'deleted')
         ),
         array(
             'name' => 'idx_list_type',

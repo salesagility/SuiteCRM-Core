@@ -958,8 +958,15 @@ function validate_form(formname, startsWith, switchTab = true) {
         if (validate[formname][i][requiredIndex]
           && !isFieldTypeExceptFromEmptyCheck(validate[formname][i][typeIndex])
         ) {
-          if (typeof form[validate[formname][i][nameIndex]] == 'undefined' || trim(form[validate[formname][i][nameIndex]].value) == "") {
-            add_error_style(formname, validate[formname][i][nameIndex], requiredTxt + ' ' + validate[formname][i][msgIndex], true, switchTab);
+          var fieldName = validate[formname][i][nameIndex];
+          var fieldValue = form[fieldName].value;
+
+          if (typeof tinymce !== 'undefined' && tinymce.get(fieldName)) {
+            fieldValue = tinymce.get(fieldName).getContent({format: 'text'});
+          }
+
+          if (typeof form[fieldName] == 'undefined' || trim(fieldValue) === '') {
+            add_error_style(formname, fieldName, requiredTxt + ' ' + validate[formname][i][msgIndex]);
             isError = true;
           }
         }

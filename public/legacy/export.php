@@ -78,9 +78,44 @@ if (!empty($_REQUEST['sample'])) {
     $content = exportSample($the_module);
 } else {
     if (!empty($_REQUEST['uid'])) {
-        $content = export($the_module, $_REQUEST['uid'], isset($_REQUEST['members']) ? $_REQUEST['members'] : false);
+        $ids = explode(',', $_REQUEST['uid']);
     } else {
-        $content = export($the_module);
+        $ids = array();
+        $bean = BeanFactory::getBean($the_module);
+        $currentQuery = generateSearchWhere($the_module, $_REQUEST['current_post']);
+        if (!empty($currentQuery['where'])) {
+            // handle select all queries with filters
+            $query = $bean->create_new_list_query(
+                "",
+                $currentQuery['where'],
+                array(),
+                array(),
+                0,
+                '',
+                false,
+                $bean,
+                true,
+                true
+            );
+            $result = $db->query($query, true);
+        } else {
+            // handle default select all
+            $result = $db->query("SELECT id FROM $bean->table_name WHERE deleted=0;");
+        }
+
+        while ($val = $db->fetchByAssoc($result, false)) {
+            $ids[] = $val['id'];
+        }
+
+        unset($result, $bean);
+    }
+
+    $idChunks = array_chunk($ids, 1000, true);
+    $content = '';
+    $displayHeaders = true;
+    foreach($idChunks as $chunk) {
+        $content .= export($the_module, implode(",", $chunk), isset($_REQUEST['members']) ? $_REQUEST['members'] : false, false, $displayHeaders);
+        $displayHeaders = false;
     }
 }
 $filename = $_REQUEST['module'];
