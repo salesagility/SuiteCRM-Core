@@ -136,7 +136,6 @@ export class ConfirmationListModalComponent implements OnInit, OnDestroy {
 
     protected initTable(): void {
         const adapter = new ConfirmationListTableAdapter(
-            this.navigation,
             this.systemConfigs,
             this.preferences,
             this.columnFields

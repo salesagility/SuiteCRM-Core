@@ -27,12 +27,9 @@
 import {of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {ColumnDefinition} from '../../../common/metadata/list.metadata.model';
-import {Field} from '../../../common/record/field.model';
-import {Record} from '../../../common/record/record.model';
 import {SortDirection} from '../../../common/views/list/list-navigation.model';
 import {RecordListModalStore} from '../../record-list-modal/store/record-list-modal/record-list-modal.store';
 import {TableConfig} from '../../../components/table/table.model';
-import {ModuleNavigation} from '../../../services/navigation/module-navigation/module-navigation.service';
 import {UserPreferenceStore} from '../../../store/user-preference/user-preference.store';
 import {SystemConfigStore} from '../../../store/system-config/system-config.store';
 import {ConfirmationListFieldConfig} from '../models/confirmation-list-modal.model';
@@ -40,7 +37,6 @@ import {ConfirmationListFieldConfig} from '../models/confirmation-list-modal.mod
 export class ConfirmationListTableAdapter {
 
     constructor(
-        protected navigation: ModuleNavigation,
         protected systemConfigs: SystemConfigStore,
         protected preferences: UserPreferenceStore,
         protected columnFields: ConfirmationListFieldConfig[] = []
@@ -102,7 +98,6 @@ export class ConfirmationListTableAdapter {
 
     protected mapColumns(store: RecordListModalStore, columns: ColumnDefinition[]): ColumnDefinition[] {
         let filtered = columns;
-        const explicitLinkFields = this.getExplicitLinkFields();
 
         if (this.columnFields?.length) {
             filtered = this.filterAndOverrideColumns(columns, this.columnFields);
@@ -113,26 +108,12 @@ export class ConfirmationListTableAdapter {
             const metadata = column.metadata || {};
             mapped.metadata = {...metadata};
 
-            if (!explicitLinkFields.has(mapped.name)) {
-                this.disableRelateFieldsLink(mapped);
-            }
-
             if (mapped.link) {
-                this.addNewTabLinkHandler(store, mapped);
+                this.addNewTabLinkHandler(mapped);
             }
 
             return mapped;
         });
-    }
-
-    protected getExplicitLinkFields(): Set<string> {
-        const fields = new Set<string>();
-        for (const fieldConfig of this.columnFields) {
-            if (fieldConfig.link !== undefined) {
-                fields.add(fieldConfig.name);
-            }
-        }
-        return fields;
     }
 
     protected filterAndOverrideColumns(columns: ColumnDefinition[], columnFields: ConfirmationListFieldConfig[]): ColumnDefinition[] {
@@ -157,18 +138,7 @@ export class ConfirmationListTableAdapter {
         return filtered;
     }
 
-    protected disableRelateFieldsLink(definition: ColumnDefinition): void {
-        if (definition.type !== 'relate') {
-            return;
-        }
-        definition.link = false;
-        definition.metadata.link = false;
-    }
-
-    protected addNewTabLinkHandler(store: RecordListModalStore, definition: ColumnDefinition): void {
-        definition.metadata.onClick = (_field: Field, record: Record): void => {
-            const route = this.navigation.getRecordRouterLink(store.module, record.id);
-            window.open(`#${route}`, '_blank');
-        };
+    protected addNewTabLinkHandler(definition: ColumnDefinition): void {
+        definition.metadata.target = '_blank';
     }
 }
