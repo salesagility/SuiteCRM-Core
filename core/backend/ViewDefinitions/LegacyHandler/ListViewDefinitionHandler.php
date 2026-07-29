@@ -288,7 +288,6 @@ class ListViewDefinitionHandler extends LegacyHandler
 
         if ($column['name'] === 'email1') {
             $column['type'] = 'email';
-            $column['link'] = false;
         }
 
         return $column;

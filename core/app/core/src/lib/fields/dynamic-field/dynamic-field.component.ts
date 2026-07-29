@@ -202,6 +202,10 @@ export class DynamicFieldComponent implements OnInit, OnChanges, OnDestroy {
             return this.navigation?.hasAccessToModule(linkModule) ?? false;
         }
 
+        if (this.type === 'email') {
+            return false;
+        }
+
         if (this?.record?.module && !this.navigation?.hasAccessToModule(this?.record?.module)) {
             return false;
         }
