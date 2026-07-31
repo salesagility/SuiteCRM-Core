@@ -30,6 +30,7 @@ namespace App\Data\LegacyHandler;
 use App\Data\Service\AlertProviderInterface;
 use App\Data\Service\Record\EntityRecordMappers\EntityRecordMapperRunner;
 use App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerRunnerInterface;
+use App\Data\Service\Record\RecordValidators\RecordValidatorRunnerInterface;
 use App\Data\Service\RecordDeletionServiceInterface;
 use App\Engine\LegacyHandler\LegacyScopeState;
 use App\Engine\Service\AclManagerInterface;
@@ -77,7 +78,8 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
         FavoriteProviderInterface $favorites,
         RecordDeletionServiceInterface $recordDeletionProvider,
         EntityRecordMapperRunner $entityRecordMapperRunner,
-        RecordSaveHandlerRunnerInterface $saveHandlerRunner
+        RecordSaveHandlerRunnerInterface $saveHandlerRunner,
+        RecordValidatorRunnerInterface $saveValidatorRunner
     ) {
         parent::__construct(
             $projectDir,
@@ -90,7 +92,8 @@ class AlertHandler extends RecordHandler implements AlertProviderInterface
             $aclHandler,
             $favorites,
             $entityRecordMapperRunner,
-            $saveHandlerRunner
+            $saveHandlerRunner,
+            $saveValidatorRunner
         );
         $this->recordDeletionProvider = $recordDeletionProvider;
     }

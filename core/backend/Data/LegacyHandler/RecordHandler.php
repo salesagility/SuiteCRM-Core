@@ -31,6 +31,7 @@ use ApiBeanMapper;
 use App\Data\Entity\Record;
 use App\Data\Service\Record\EntityRecordMappers\EntityRecordMapperRunner;
 use App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerRunnerInterface;
+use App\Data\Service\Record\RecordValidators\RecordValidatorRunnerInterface;
 use App\Data\Service\RecordProviderInterface;
 use App\Engine\LegacyHandler\LegacyHandler;
 use App\Engine\LegacyHandler\LegacyScopeState;
@@ -68,6 +69,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
 
     protected EntityRecordMapperRunner $entityRecordMapperRunner;
     protected RecordSaveHandlerRunnerInterface $saveHandlerRunner;
+    protected RecordValidatorRunnerInterface $saveValidatorRunner;
 
     /**
      * RecordViewHandler constructor.
@@ -82,6 +84,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
      * @param FavoriteProviderInterface $favorites
      * @param EntityRecordMapperRunner $entityRecordMapperRunner
      * @param RecordSaveHandlerRunnerInterface $saveHandlerRunner
+     * @param RecordValidatorRunnerInterface $saveValidatorRunner
      */
     public function __construct(
         string $projectDir,
@@ -94,7 +97,8 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         AclManagerInterface $aclHandler,
         FavoriteProviderInterface $favorites,
         EntityRecordMapperRunner $entityRecordMapperRunner,
-        RecordSaveHandlerRunnerInterface $saveHandlerRunner
+        RecordSaveHandlerRunnerInterface $saveHandlerRunner,
+        RecordValidatorRunnerInterface $saveValidatorRunner
     ) {
         parent::__construct(
             $projectDir,
@@ -109,6 +113,7 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         $this->favorites = $favorites;
         $this->entityRecordMapperRunner = $entityRecordMapperRunner;
         $this->saveHandlerRunner = $saveHandlerRunner;
+        $this->saveValidatorRunner = $saveValidatorRunner;
     }
 
     /**
@@ -265,6 +270,10 @@ class RecordHandler extends LegacyHandler implements RecordProviderInterface
         if (!$bean->ACLAccess('save')) {
             throw new AccessDeniedHttpException();
         }
+
+        $isUpdate = !empty($bean->id) && empty($bean->new_with_id);
+        $mode = $isUpdate ? 'edit' : 'create';
+        $this->saveValidatorRunner->run($record, $bean, $mode);
 
         $previousVersion = null;
         if (!empty($bean->id) && empty($bean->new_with_id)) {

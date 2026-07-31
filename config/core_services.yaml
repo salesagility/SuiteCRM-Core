@@ -160,6 +160,8 @@ services:
       tags: [ 'record.saveHandlers.fieldType' ]
     App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerInterface:
       tags: [ 'record.saveHandlers.record' ]
+    App\Data\Service\Record\RecordValidators\RecordValidatorInterface:
+      tags: [ 'record.validators.record' ]
     App\Data\Service\Record\RecordDeleteHandlers\RecordFieldDeleteHandlerInterface:
       tags: [ 'record.deleteHandlers.field' ]
     App\Data\Service\Record\RecordDeleteHandlers\RecordFieldTypeDeleteHandlerInterface:
@@ -495,6 +497,10 @@ services:
     lazy: true
     arguments:
       - !tagged { tag: 'record.saveHandlers.record' }
+
+  App\Data\Service\Record\RecordValidators\RecordValidatorRegistry:
+    arguments:
+      - !tagged { tag: 'record.validators.record' }
 
   App\Data\Service\Record\RecordDeleteHandlers\RecordFieldDeleteHandlerRegistry:
     arguments:

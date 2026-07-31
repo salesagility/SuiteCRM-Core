@@ -2632,10 +2632,14 @@ EOQ;
      */
     public function hasSaveAccess(): bool
     {
+        if (defined('SUGARCRM_IS_INSTALLING')) {
+            return true;
+        }
+
         global $current_user;
 
         if (empty($this->id)) {
-            return true;
+            return is_admin($current_user);
         }
 
         if (empty($current_user->id)) {
@@ -2653,13 +2657,16 @@ EOQ;
      */
     protected function setIsAdmin(): void
     {
+        if (defined('SUGARCRM_IS_INSTALLING')) {
+            return;
+        }
+
         global $current_user;
         if (!isset($this->is_admin)) {
             return;
         }
 
-
-        $originalIsAdminValue = $this->is_admin ?? false;
+        $originalIsAdminValue = false;
         if ($this->isUpdate() && isset($this->fetched_row['is_admin'])) {
             $originalIsAdminValue = isTrue($this->fetched_row['is_admin'] ?? false);
         }
@@ -2668,7 +2675,6 @@ EOQ;
         if (!is_admin($currentUserReloaded)) {
             $this->is_admin = $originalIsAdminValue;
         }
-
     }
 
     protected function getCurrentPreference(string $key) {
@@ -2690,13 +2696,26 @@ EOQ;
 
     protected function restrictAdminOnlyFields(): void
     {
-        global $current_user;
-
-        if (is_admin($current_user)){
+        if (defined('SUGARCRM_IS_INSTALLING')) {
             return;
         }
 
+        global $current_user;
+
+        if (is_admin($current_user)) {
+            return;
+        }
+
+        $adminOnlyFieldDefaults = [
+            'UserType' => 'RegularUser',
+            'status' => 'Inactive',
+            'employee_status' => '',
+        ];
+
         if (empty($this->id)) {
+            foreach ($adminOnlyFieldDefaults as $field => $default) {
+                $this->$field = $default;
+            }
             return;
         }
 
@@ -2706,13 +2725,7 @@ EOQ;
             return;
         }
 
-        $adminOnlyFields = [
-            'UserType',
-            'status',
-            'employee_status',
-        ];
-
-        foreach ($adminOnlyFields as $field) {
+        foreach ($adminOnlyFieldDefaults as $field => $default) {
             if (isset($this->$field) && $this->$field !== $savedBean->$field) {
                 $this->$field = $savedBean->$field;
             }
