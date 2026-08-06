@@ -64,6 +64,13 @@ $app->group('', function () use ($app) {
             ->add($paramsMiddlewareFactory->bind(Param\GetModuleParams::class));
 
         /**
+         * Get the file attached to a module record
+         */
+        $app
+            ->get('/module/{moduleName}/{id}/file', 'Api\V8\Controller\ModuleController:getModuleRecordFile')
+            ->add($paramsMiddlewareFactory->bind(Param\GetModuleFileParams::class));
+
+        /**
          * Create a module record
          */
         $app

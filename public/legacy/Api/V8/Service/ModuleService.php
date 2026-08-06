@@ -7,6 +7,7 @@ use Api\V8\BeanDecorator\BeanManager;
 use Api\V8\JsonApi\Helper\AttributeObjectHelper;
 use Api\V8\JsonApi\Helper\PaginationObjectHelper;
 use Api\V8\JsonApi\Helper\RelationshipObjectHelper;
+use Api\V8\JsonApi\Response\AttributeResponse;
 use Api\V8\JsonApi\Response\DataResponse;
 use Api\V8\JsonApi\Response\DocumentResponse;
 use Api\V8\JsonApi\Response\MetaResponse;
@@ -14,6 +15,7 @@ use Api\V8\Param\CreateModuleParams;
 use BeanFactory;
 use DocumentRevision;
 use Api\V8\Param\DeleteModuleParams;
+use Api\V8\Param\GetModuleFileParams;
 use Api\V8\Param\GetModuleParams;
 use Api\V8\Param\GetModulesParams;
 use Api\V8\Param\UpdateModuleParams;
@@ -89,6 +91,72 @@ class ModuleService
         }
 
         $dataResponse = $this->getDataResponse($bean, $fields, $path);
+
+        $response = new DocumentResponse();
+        $response->setData($dataResponse);
+
+        return $response;
+    }
+
+    /**
+     * Returns the file attached to a record, base64 encoded — the counterpart
+     * of the upload support in createRecord/updateRecord (filecontents
+     * attribute). Notes store their file at upload/{note_id} (addFileToNote),
+     * Documents at upload/{document_revision_id} (addFileToDocument).
+     *
+     * @param GetModuleFileParams $params
+     * @return DocumentResponse
+     * @throws AccessDeniedException
+     * @throws InvalidArgumentException When the module has no file support or the record has no file.
+     * @throws Exception When the stored file cannot be read.
+     */
+    public function getRecordFile(GetModuleFileParams $params)
+    {
+        $module = $params->getModuleName();
+        $bean = $this->beanManager->getBeanSafe($module, $params->getId());
+
+        $this->assertSelfOrAdmin($module, $bean->id);
+        if (!$bean->ACLAccess('view')) {
+            throw new AccessDeniedException();
+        }
+
+        $filename = (string) $bean->filename;
+        $mimeType = (string) $bean->file_mime_type;
+
+        if ($module === 'Notes') {
+            $fileId = $bean->id;
+        } elseif ($module === 'Documents') {
+            $fileId = (string) $bean->document_revision_id;
+            $revision = $fileId !== '' ? BeanFactory::getBean('DocumentRevisions', $fileId) : null;
+            if ($revision !== null && !empty($revision->id)) {
+                $filename = (string) ($revision->filename ?: $filename);
+                $mimeType = (string) ($revision->file_mime_type ?: $mimeType);
+            }
+        } else {
+            throw new InvalidArgumentException(
+                sprintf('Module %s does not support file attachments', $module)
+            );
+        }
+
+        $filePath = 'upload/' . $fileId;
+        if ($fileId === '' || $filename === '' || !file_exists($filePath)) {
+            throw new InvalidArgumentException(
+                sprintf('Record %s in module %s has no attached file', $bean->id, $module)
+            );
+        }
+
+        $contents = file_get_contents($filePath);
+        if ($contents === false) {
+            LoggerManager::getLogger()->error('getRecordFile: unable to read ' . $filePath);
+            throw new Exception('Attached file could not be read');
+        }
+
+        $dataResponse = new DataResponse($bean->getObjectName(), $bean->id);
+        $dataResponse->setAttributes(new AttributeResponse([
+            'filename' => $filename,
+            'file_mime_type' => $mimeType,
+            'filecontents' => base64_encode($contents),
+        ]));
 
         $response = new DocumentResponse();
         $response->setData($dataResponse);

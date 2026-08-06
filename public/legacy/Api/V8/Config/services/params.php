@@ -37,6 +37,12 @@ return CustomLoader::mergeCustomArray([
             $container->get(BeanManager::class)
         );
     },
+    Param\GetModuleFileParams::class => function (Container $container) {
+        return new Param\GetModuleFileParams(
+            $container->get(ValidatorFactory::class),
+            $container->get(BeanManager::class)
+        );
+    },
     Param\CreateModuleParams::class => function (Container $container) {
         return new Param\CreateModuleParams(
             $container->get(ValidatorFactory::class),
