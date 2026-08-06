@@ -3,6 +3,7 @@ namespace Api\V8\Controller;
 
 use Api\V8\Param\CreateModuleParams;
 use Api\V8\Param\DeleteModuleParams;
+use Api\V8\Param\GetModuleFileParams;
 use Api\V8\Param\GetModuleParams;
 use Api\V8\Param\GetModulesParams;
 use Api\V8\Param\UpdateModuleParams;
@@ -37,6 +38,25 @@ class ModuleController extends BaseController
     {
         try {
             $jsonResponse = $this->moduleService->getRecord($params, $request->getUri()->getPath());
+
+            return $this->generateResponse($response, $jsonResponse, 200);
+        } catch (\Exception $exception) {
+            return $this->generateErrorResponse($response, $exception, 400);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @param GetModuleFileParams $params
+     *
+     * @return Response
+     */
+    public function getModuleRecordFile(Request $request, Response $response, array $args, GetModuleFileParams $params)
+    {
+        try {
+            $jsonResponse = $this->moduleService->getRecordFile($params);
 
             return $this->generateResponse($response, $jsonResponse, 200);
         } catch (\Exception $exception) {
