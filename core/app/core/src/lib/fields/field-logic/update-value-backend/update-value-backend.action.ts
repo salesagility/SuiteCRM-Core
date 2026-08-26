@@ -31,13 +31,10 @@ import {Record} from '../../../common/record/record.model';
 import {StringArrayMap} from '../../../common/types/string-map';
 import {ViewMode} from '../../../common/views/view.model';
 import {FieldLogicActionData, FieldLogicActionHandler} from '../field-logic.action';
-import {AsyncActionInput, AsyncActionService} from '../../../services/process/processes/async-action/async-action';
-import {ProcessService} from '../../../services/process/process.service';
 import {MessageService} from '../../../services/message/message.service';
-import {take} from 'rxjs/operators';
-import {ActiveFieldsChecker} from "../../../services/condition-operators/active-fields-checker.service";
-import {RecordManager} from "../../../services/record/record.manager";
-import {ObjectArrayMatrix} from "../../../common/types/object-map";
+import {ActiveFieldsChecker} from '../../../services/condition-operators/active-fields-checker.service';
+import {UpdateValuesBackendService} from '../../../services/actions/update-values-backend/update-values-backend.service';
+import {ObjectArrayMatrix} from '../../../common/types/object-map';
 
 @Injectable({
     providedIn: 'root'
@@ -48,11 +45,9 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
     modes = ['edit', 'detail', 'list', 'create', 'massupdate', 'filter'] as ViewMode[];
 
     constructor(
-        protected asyncActionService: AsyncActionService,
-        protected processService: ProcessService,
         protected messages: MessageService,
-        protected recordManager: RecordManager,
-        protected activeFieldsChecker: ActiveFieldsChecker
+        protected activeFieldsChecker: ActiveFieldsChecker,
+        protected updateValuesBackendService: UpdateValuesBackendService
     ) {
         super();
     }
@@ -83,68 +78,48 @@ export class UpdateValueBackendAction extends FieldLogicActionHandler {
 
         const isActive = this.activeFieldsChecker.isActive(relatedFields, record, activeOnFields, relatedAttributesFields, activeOnAttributes);
 
-        if (isActive) {
-
-            const processType = process;
-
-            const baseRecord = this.recordManager.getBaseRecord(record);
-
-            const options = {
-                action: processType,
-                module: record.module ?? '',
-                record: baseRecord
-            } as AsyncActionInput;
-
-            field.loading.set(true)
-
-            this.processService.submit(processType, options).pipe(take(1)).subscribe({
-                next: (result) => {
-
-                    const value = result?.data?.value ?? null;
-                    field.loading.set(false);
-
-                    let handler = 'addSuccessMessageByKey';
-                    if (result?.status === 'error') {
-                        handler = 'addDangerMessageByKey';
-                    }
-
-                    if (result?.messages && result?.messages?.length) {
-                        result.messages.forEach(message => {
-                            if (!!message) {
-                                this.messages[handler](message);
-                            }
-                        });
-                    }
-
-                    if (value === null) {
-                        this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
-                        return;
-                    }
-                    this.updateValue(field, value.toString(), record);
-                },
-                error: (error) => {
-                    field.loading.set(false)
-                    this.messages.addDangerMessageByKey("ERR_FIELD_LOGIC_BACKEND_CALCULATION");
-                }
-            });
+        if (!isActive) {
+            return;
         }
+
+        this.updateValuesBackendService.run(record, action, {
+            onStart: () => {
+                field.loading.set(true);
+            },
+            onResult: (result) => {
+                field.loading.set(false);
+                this.handleResult(result, field, record);
+            },
+            onError: () => {
+                field.loading.set(false);
+                this.messages.addDangerMessageByKey('ERR_FIELD_LOGIC_BACKEND_CALCULATION');
+            }
+        });
     }
 
     getTriggeringStatus(): string[] {
         return ['onDependencyChange'];
     }
 
-    /**
-     * Update the new value
-     * @param {object} field
-     * @param {string} value
-     * @param {object} record
-     */
+    protected handleResult(result: any, field: Field, record: Record): void {
+        const fieldValues = result?.data?.fieldValues ?? null;
+
+        if (fieldValues) {
+            this.updateValuesBackendService.updateFields(record, fieldValues);
+            return;
+        }
+
+        const value = result?.data?.value ?? null;
+        if (value === null) {
+            this.messages.addDangerMessageByKey('ERR_FIELD_LOGIC_BACKEND_CALCULATION');
+            return;
+        }
+        this.updateValue(field, value.toString(), record);
+    }
+
     protected updateValue(field: Field, value: string, record: Record): void {
         field.value = value.toString();
         field.formControl.setValue(value);
-        // re-validate the parent form-control after value update
         record.formGroup.updateValueAndValidity({onlySelf: true, emitEvent: true});
     }
-
 }

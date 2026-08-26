@@ -127,6 +127,10 @@ export class TableBodyComponent implements OnInit, OnDestroy {
 
                 this.maxColumns = maxColumns;
 
+                if (!columns) {
+                    return {columns: [], selection, selected: {}, selectionStatus: SelectionStatus.NONE, displayedColumns: [], records: [], loading} as TableViewModel;
+                }
+
                 const columnsDefs = this.buildDisplayColumns(columns);
                 this.popoverColumns = this.buildHiddenColumns(columns, columnsDefs);
 

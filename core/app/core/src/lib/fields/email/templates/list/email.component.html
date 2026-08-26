@@ -26,7 +26,11 @@
 */
 -->
 <div class="mailto-field">
-    <a *ngIf="linkType === 'mailto'" href="mailto:{{ this.field.value }}">{{ this.field.value }}</a>
-
-    <a *ngIf="linkType === 'sugar'" class="clickable field-link" (click)="openEmailModal()">{{ this.field.value }}</a>
+    <ng-container *ngIf="field?.metadata?.link !== false">
+        <a *ngIf="linkType === 'mailto'" href="mailto:{{ this.field.value }}">{{ this.field.value }}</a>
+        <a *ngIf="linkType === 'sugar'" class="clickable field-link" (click)="openEmailModal()">{{ this.field.value }}</a>
+    </ng-container>
+    <ng-container *ngIf="field?.metadata?.link === false">
+        <span>{{ this.field.value }}</span>
+    </ng-container>
 </div>

@@ -55,7 +55,7 @@ abstract class BuildPDFEmail
             return $this->buildToField('Contacts', $contact);
         }
 
-        $account = $this->getRelatedRecordId($record, $keys['contactKey']);
+        $account = $this->getRelatedRecordId($record, $keys['accountKey']);
         if ($account) {
             return $this->buildToField('Accounts', $account);
         }

@@ -33,6 +33,7 @@ import {LanguageStore} from '../../store/language/language.store';
 import {MessageService} from '../message/message.service';
 import {isTrue} from "../../common/utils/value-utils";
 import {deepClone} from "../../common/utils/object-utils";
+import {EventBus} from "../event-bus/event-bus.service";
 
 
 @Injectable({
@@ -40,11 +41,23 @@ import {deepClone} from "../../common/utils/object-utils";
 })
 export class SelectModalService {
 
+    initialized = false;
+
     constructor(
         protected languageStore: LanguageStore,
         protected message: MessageService,
-        protected modalService: NgbModal
+        protected modalService: NgbModal,
+        protected eventBus: EventBus
     ) {
+    }
+
+    init(): void {
+        this.initialized = true;
+        this.eventBus.on('open-select-modal').subscribe(message => {
+            this.showSelectModal(message.payload.module, (result) => {
+                this.eventBus.respond(message.messageId, result);
+            }, message.payload.options);
+        });
     }
 
 

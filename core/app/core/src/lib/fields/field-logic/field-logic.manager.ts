@@ -204,6 +204,13 @@ export class FieldLogicManager extends BaseActionManager<FieldLogicActionData> {
 
             let actionTriggeringStatus = action?.triggeringStatus ?? frontendActionTriggeringStatus ?? defaultTriggeringStatus;
 
+            if (actionTriggeringStatus.includes('onInit')) {
+                actionTriggeringStatus = actionTriggeringStatus.filter(value => value !== 'onInit');
+                if (!actionTriggeringStatus.includes('onFieldInitialize')) {
+                    actionTriggeringStatus = ['onFieldInitialize', ...actionTriggeringStatus];
+                }
+            }
+
             if (actionTriggeringStatus.includes('onValueChange')) {
                 actionTriggeringStatus = actionTriggeringStatus.filter(value => value !== 'onValueChange');
                 actionTriggeringStatus = ['onAnyLogic', ...actionTriggeringStatus];

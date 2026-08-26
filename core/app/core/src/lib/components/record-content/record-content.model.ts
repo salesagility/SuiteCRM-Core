@@ -28,6 +28,7 @@ import {Panel, TabDefinitions} from '../../common/metadata/metadata.model';
 import {Record} from '../../common/record/record.model';
 import {ViewMode} from '../../common/views/view.model';
 import {Observable} from 'rxjs';
+import {RecordLogicMap} from './record-logic/record-logic.action';
 
 export interface RecordContentDataSource {
     inlineEdit: boolean;
@@ -47,4 +48,5 @@ export interface RecordContentConfig {
     maxColumns: number;
     colClasses?: string[];
     tabDefs: TabDefinitions;
+    recordLogic?: RecordLogicMap;
 }

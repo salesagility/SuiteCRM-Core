@@ -29,19 +29,23 @@ export class IframePageChangeObserver {
     private lastDispatched: string;
     private changeCallback: Function = null;
     private loadCallback: Function = null;
+    private pageUnlockCallback: Function = null;
     private unLoadCallback: Function = null;
     private unloadListener: Function = null;
     private loadListener: Function = null;
+    private destroyed = false;
 
     constructor(
         iframe,
         changeCallback: Function = null,
         loadCallback: Function = null,
+        pageUnlockCallback: Function = null,
         unLoadCallback: Function = null,
     ) {
         this.iframe = iframe;
         this.changeCallback = changeCallback;
         this.loadCallback = loadCallback;
+        this.pageUnlockCallback = pageUnlockCallback;
         this.unLoadCallback = unLoadCallback;
     }
 
@@ -50,59 +54,89 @@ export class IframePageChangeObserver {
      */
 
     public init(): void {
+        try {
+            const href = this.iframe?.contentWindow?.location?.href;
+            if (href && href !== 'about:blank') {
+                this.lastDispatched = href;
+            } else {
+                this.lastDispatched = new URL(this.iframe.src, window.location.href).href;
+            }
+        } catch (e) {
+            this.lastDispatched = this.iframe.src;
+        }
+
         this.loadListener = this.loadHandler.bind(this);
         this.unloadListener = this.unloadHandler.bind(this);
-        this.iframe.contentWindow.addEventListener('load', this.loadListener);
-        this.iframe.contentWindow.removeEventListener('unload', this.unloadListener);
+
+        this.iframe.addEventListener('load', this.loadListener);
     }
 
     public destroy(): void {
+        if (this.iframe) {
+            this.iframe.removeEventListener('load', this.loadListener);
+        }
 
         const contentWindow = this.iframe && this.iframe.contentWindow;
-
         if (contentWindow) {
-            contentWindow.removeEventListener('unload', this.unloadListener);
-            contentWindow.removeEventListener('load', this.loadListener);
+            contentWindow.removeEventListener('pagehide', this.unloadListener);
         }
+
+        this.destroyed = true;
         this.iframe = null;
         this.lastDispatched = null;
         this.changeCallback = null;
         this.loadCallback = null;
+        this.pageUnlockCallback = null;
         this.unLoadCallback = null;
         this.loadListener = null;
         this.unloadListener = null;
     }
-
 
     /**
      * Internal API
      */
 
     protected loadHandler(): void {
-        this.loadCallback();
+        if (this.destroyed) {
+            return;
+        }
+
+        this.triggerPageChange();
+        this.loadCallback?.();
         this.bindUnload();
     }
 
     protected bindUnload(): void {
-        this.iframe.contentWindow.removeEventListener('unload', this.unloadListener);
-        this.unloadListener = this.unloadHandler.bind(this);
-        this.iframe.contentWindow.addEventListener('unload', this.unloadListener);
+        const contentWindow = this.iframe?.contentWindow;
+        if (contentWindow) {
+            contentWindow.removeEventListener('pagehide', this.unloadListener);
+            contentWindow.addEventListener('pagehide', this.unloadListener);
+        }
     }
 
-    protected unloadHandler(): void {
-        this.unLoadCallback();
+    protected unloadHandler(event: PageTransitionEvent): void {
+        if (event.persisted || this.destroyed) {
+            return;
+        }
 
-        // Timeout needed because the URL changes immediately after
-        // the `unload` event is dispatched.
-        setTimeout(this.triggerPageChange.bind(this), 0);
+        this.unLoadCallback?.();
     }
 
     protected triggerPageChange(): void {
-        const newHref = this.iframe && this.iframe.contentWindow && this.iframe.contentWindow.location.href;
+        if (this.destroyed) {
+            return;
+        }
 
-        if (newHref && newHref !== this.lastDispatched) {
-            this.lastDispatched = newHref;
-            this.changeCallback(newHref);
+        try {
+            const newHref = this.iframe?.contentWindow?.location?.href;
+
+            if (newHref && newHref !== this.lastDispatched) {
+                this.lastDispatched = newHref;
+                this.changeCallback?.(newHref);
+            } else {
+                this.pageUnlockCallback?.();
+            }
+        } catch (e) {
         }
     }
 

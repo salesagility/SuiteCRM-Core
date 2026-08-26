@@ -25,7 +25,7 @@
  */
 
 import {BaseFieldComponent} from './base-field.component';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Field, FieldDefinition, Option} from '../../common/record/field.model';
 import {isVoid, isEmptyString} from '../../common/utils/value-utils';
@@ -43,6 +43,7 @@ import {isNull, isObject} from "lodash-es";
 @Component({template: ''})
 export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnDestroy {
     selectedValues: Option[] = [];
+    selectedValuesSignal: WritableSignal<Option[]> = signal<Option[]>([]);
     valueLabel = '';
     optionsMap: LanguageStringMap;
     options: Option[] = [];
@@ -98,6 +99,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
         this.options = [];
         this.optionsMap = {};
         this.selectedValues = [];
+        this.selectedValuesSignal.set(this.selectedValues);
     }
 
     getInvalidClass(): string {
@@ -187,6 +189,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
     protected initValue(): void {
 
         this.selectedValues = [];
+        this.selectedValuesSignal.set(this.selectedValues);
 
         if (this.field?.criteria ?? false) {
             this.initValueLabel();
@@ -221,6 +224,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
                 value: fieldValue,
                 label: this.valueLabel
             } as Option);
+            this.selectedValuesSignal.set([...this.selectedValues]);
         }
     }
 
@@ -250,6 +254,7 @@ export class BaseEnumComponent extends BaseFieldComponent implements OnInit, OnD
             value: defaultVal,
             label: this.optionsMap[defaultVal]
         } as Option);
+        this.selectedValuesSignal.set([...this.selectedValues]);
         this.initEnumDefaultFieldValues(defaultVal);
     }
 

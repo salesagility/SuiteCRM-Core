@@ -619,7 +619,7 @@ export class RecordListStore implements StateStore, DataSource<Record>, Selectio
      */
     public clear(): void {
         this.cache$ = null;
-        this.store.unsubscribe();
+        this.store.complete();
         this.preferencesSub.unsubscribe();
     }
 

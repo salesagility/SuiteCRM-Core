@@ -41,7 +41,16 @@ class templateParser
                 if ($focus_arr['type'] == 'relate') {
                     if (isset($focus_arr['module']) && $focus_arr['module'] != '' && $focus_arr['module'] != 'EmailAddress') {
                         $idName = $focus_arr['id_name'];
+
+                        if (empty($focus->$idName)) {
+                            continue;
+                        }
+
                         $relate_focus = BeanFactory::getBean($focus_arr['module'], $focus->$idName);
+
+                        if (empty($relate_focus)) {
+                            continue;
+                        }
 
                         $string = templateParser::parse_template_bean($string, $focus_arr['name'], $relate_focus, $userFormat);
                     }

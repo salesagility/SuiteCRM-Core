@@ -35,6 +35,7 @@ export interface StandardValidationError {
     [key: string]: any;
 
     message: MessageInfo;
+    silent?: boolean;
 }
 
 export interface MessageInfo {
@@ -45,4 +46,33 @@ export interface MessageInfo {
 
 export declare interface StandardValidatorFn extends ValidatorFn {
     (control: AbstractControl): StandardValidationErrors | null;
+}
+
+export function collectValidationErrors(formGroup: AbstractControl, fields: {[key: string]: {formControl?: AbstractControl}}): StandardValidationErrors[] {
+    const errorSets: StandardValidationErrors[] = [];
+
+    if (formGroup?.errors) {
+        errorSets.push({...formGroup.errors} as StandardValidationErrors);
+    }
+
+    if (fields) {
+        Object.keys(fields).forEach(key => {
+            const control = fields[key]?.formControl;
+            if (control?.errors) {
+                errorSets.push({...control.errors} as StandardValidationErrors);
+            }
+        });
+    }
+
+    return errorSets;
+}
+
+export function allValidationErrorsSilent(errorSets: StandardValidationErrors[]): boolean {
+    if (errorSets.length === 0) {
+        return false;
+    }
+
+    return errorSets.every(errors =>
+        Object.keys(errors).every(key => (errors[key] as StandardValidationError)?.silent === true)
+    );
 }

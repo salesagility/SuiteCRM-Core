@@ -1748,7 +1748,7 @@ $app_strings = array(
     'LBL_DISMISS' => 'Dismiss',
     'LBL_DISMISS_INLINE_CONFIRM' => 'Dismiss?',
     'LBL_DISMISS_ALL_INLINE_CONFIRM' => 'Dismiss All?',
-    'LBL_DISMISS_ALL_DRAFTS_CONFIRM' => 'Dismiss all drafts?',
+    'LBL_DISMISS_ALL_DRAFTS_CONFIRM' => 'Dismiss all?',
     'NTC_DISMISS_CONFIRMATION' => 'Are you sure you want to dismiss this alert?',
     'NTC_DISMISS_ALL_CONFIRMATION' => 'Are you sure you want to dismiss all alerts?',
     'LBL_ALERT_DISMISS_SUCCESS' => 'Alert dismissed successfully',
@@ -4507,3 +4507,7 @@ $app_list_strings['email_import_timeframe_start_dom'] = [
 ];
 
 $app_strings['LBL_NOT_AUTHORIZED'] = 'Not authorized';
+
+$app_strings['LBL_AUTOFILL_MISSING_RELATE_MODULE'] = 'Autofill failed: related module is not configured.';
+$app_strings['LBL_AUTOFILL_MISSING_RELATE_ID'] = 'Autofill failed: no related record selected.';
+$app_strings['LBL_AUTOFILL_MISSING_UPDATE_FIELDS'] = 'Autofill failed: no fields configured for update.';

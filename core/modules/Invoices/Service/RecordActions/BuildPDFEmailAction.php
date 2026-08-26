@@ -67,14 +67,13 @@ class BuildPDFEmailAction extends BuildPDFEmail implements ProcessHandlerInterfa
     public function getRequiredACLs(Process $process): array
     {
         $options = $process->getOptions();
-        $module = $options['module'] ?? '';
-
+        $module = $options['params']['module'] ?? '';
 
         return [
             $module => [
                 [
                     'action' => 'detail',
-                    'record' => $options['id'] ?? ''
+                    'record' => $options['params']['id'] ?? ''
                 ]
             ],
         ];

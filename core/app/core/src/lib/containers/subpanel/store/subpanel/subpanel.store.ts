@@ -120,7 +120,7 @@ export class SubpanelStore implements StateStore {
     }
 
     clear(): void {
-        this.metadataState.unsubscribe();
+        this.metadataState.complete();
         this.metadataState = null;
         this.recordList.clear();
         this.recordList = null;

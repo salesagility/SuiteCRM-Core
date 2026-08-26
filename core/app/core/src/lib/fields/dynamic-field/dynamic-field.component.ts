@@ -195,8 +195,15 @@ export class DynamicFieldComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         if (this.type === 'relate') {
+            if (this?.field?.metadata?.link === false) {
+                return false;
+            }
             let linkModule = this.getLinkModule();
             return this.navigation?.hasAccessToModule(linkModule) ?? false;
+        }
+
+        if (this.type === 'email') {
+            return false;
         }
 
         if (this?.record?.module && !this.navigation?.hasAccessToModule(this?.record?.module)) {
@@ -213,9 +220,16 @@ export class DynamicFieldComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         const fieldMetadata = this?.field?.metadata ?? {};
-        const linkOnClick = fieldMetadata?.onClick ?? null;
 
-        return !!linkOnClick;
+        if (fieldMetadata?.onClick) {
+            return true;
+        }
+
+        if (fieldMetadata?.target === '_blank') {
+            return true;
+        }
+
+        return false;
     }
 
     isEdit(): boolean {
@@ -253,6 +267,14 @@ export class DynamicFieldComponent implements OnInit, OnChanges, OnDestroy {
         if (fieldMetadata && fieldMetadata.onClick) {
             this.field.metadata.onClick(this.field, this.record);
             return;
+        }
+
+        if (fieldMetadata?.target === '_blank') {
+            const link = this.getLink();
+            if (link) {
+                window.open(`#${link}`, '_blank');
+            }
+            return false;
         }
 
         this.router.navigateByUrl(this.getLink()).then();

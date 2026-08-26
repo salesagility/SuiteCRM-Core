@@ -191,7 +191,7 @@ $dictionary['Note'] = array(
 
           'filename' => [
               'name' => 'filename',
-              'vname' => 'LBL_FILENAME',
+              'vname' => 'LBL_LEGACY_FILENAME',
               'type' => 'varchar',
               'dbType' => 'varchar',
               'len' => '255',

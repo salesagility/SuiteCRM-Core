@@ -34,7 +34,10 @@ import {RecentlyViewedService} from "../../../../services/navigation/recently-vi
 import {RecordPaginationService} from "../../store/record-pagination/record-pagination.service";
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 import {ViewMode} from "../../../../common/views/view.model";
-import {FieldMap} from "../../../../common/record/field.model";
+import {
+    allValidationErrorsSilent,
+    collectValidationErrors
+} from "../../../../common/services/validators/validators.model";
 
 @Injectable({
     providedIn: 'root'
@@ -63,16 +66,20 @@ export class RecordSaveContinueAction extends RecordActionHandler {
             return field?.loading() ?? false;
         });
 
-        if(isFieldLoading) {
+        if (isFieldLoading) {
             this.message.addWarningMessageByKey('LBL_LOADING_IN_PROGRESS');
-            return ;
+            return;
         }
 
         data.action.isRunning.set(true);
         this.setAsyncValidators(fields);
+        const formGroup = record.formGroup;
+        this.setRecordAsyncValidators(record, formGroup);
 
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            const collectedErrors = collectValidationErrors(formGroup, fields);
             this.clearAsyncValidators(fields);
+            this.clearRecordAsyncValidators(formGroup);
             data.action.isRunning.set(false);
 
             if (valid) {
@@ -87,7 +94,9 @@ export class RecordSaveContinueAction extends RecordActionHandler {
                 return;
             }
 
-            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            if (!allValidationErrorsSilent(collectedErrors)) {
+                this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            }
         });
     }
 
@@ -101,33 +110,11 @@ export class RecordSaveContinueAction extends RecordActionHandler {
         const offset = this.recordPaginationService.getOffsetFromUrl();
         if (!totalRecords || !offset ||
             (offset >= totalRecords) ||
-            (offset <= 0) ) {
+            (offset <= 0)) {
             return false;
         }
 
         return this.recordPaginationService.checkRecordValid(data.store.getRecordId());
     }
 
-    setAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-            field.asyncValidationErrors = null;
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.setAsyncValidators(field?.asyncValidators);
-                field.formControl.updateValueAndValidity();
-            }
-        });
-    }
-
-    clearAsyncValidators(fields: FieldMap): void {
-        Object.keys(fields).forEach(fieldKey => {
-            const field = fields[fieldKey];
-
-            if (field?.asyncValidators?.length) {
-                field.formControl.clearAsyncValidators();
-                field.formControl.updateValueAndValidity();
-            }
-        });
-    }
 }

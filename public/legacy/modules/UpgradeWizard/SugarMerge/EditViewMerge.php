@@ -617,6 +617,17 @@ class EditViewMerge
     }
 
     /**
+     * Merge Record Logic
+     * @return void
+     */
+    protected function mergeRecordLogic(): void
+    {
+        $key = 'recordLogic';
+        $sources = $this->getViewDefsSources();
+        $this->newData[$this->module][$this->viewDefs][$key] = $this->mergeMetadataArrayEntry($key, $sources);
+    }
+
+    /**
      * Get view defs from different sources
      * @return array
      */
@@ -663,6 +674,7 @@ class EditViewMerge
         $this->mergeHeaderWidgets();
         $this->mergeTopWidget();
         $this->mergeRecordActions();
+        $this->mergeRecordLogic();
         $this->setPanels();
     }
     /**

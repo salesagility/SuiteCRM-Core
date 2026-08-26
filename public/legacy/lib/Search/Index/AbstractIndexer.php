@@ -291,6 +291,7 @@ abstract class AbstractIndexer
      */
     protected function setupLogger()
     {
+        global $sugar_config;
         $this->logger = new Logger($this->getIndexerName());
 
         // Set up SugarLog handler (this will forward messages to the default logging)
@@ -298,7 +299,21 @@ abstract class AbstractIndexer
 
         // Set up Monolog logfile logger
         try {
-            $this->logger->pushHandler(new StreamHandler($this->logFile));
+            if (empty($sugar_config['log_dir'])) {
+                $this->logger->warning('log_dir is not set in $sugar_config; falling back to default log directory.');
+                $logDir = '../../logs/legacy';
+            } else {
+                $logDir = rtrim($sugar_config['log_dir'], '/');
+            }
+
+            if (!is_dir($logDir) || !is_writable($logDir)) {
+                $this->logger->error(
+                    'Indexer log directory is not accessible or not writable: ' . $logDir . '. Cannot set up file logging for indexer.'
+                );
+            } else {
+                $logPath = $logDir . '/' . $this->logFile;
+                $this->logger->pushHandler(new StreamHandler($logPath));
+            }
         } catch (\Exception $exception) {
             $this->logger->error('Failed to create indexer log stream handler.');
             $this->logger->error($exception);

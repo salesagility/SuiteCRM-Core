@@ -212,7 +212,26 @@
 }
 
 .modal-dialog-scrollable .modal-body {
-  max-height: calc(100vh - 6.5rem);
+  max-height: calc(100vh - 9.3rem);
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px transparent;
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $light-grey;
+    border-radius: 51px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $light-grey;
+  }
 }
 
 /* modal animation */

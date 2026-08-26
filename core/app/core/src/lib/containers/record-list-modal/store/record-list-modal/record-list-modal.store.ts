@@ -44,6 +44,7 @@ export class RecordListModalStore implements StateStore {
     module: string = '';
     parentModule: string = '';
     recordList: RecordListStore;
+    initialFilter: SavedFilter;
     listMetadata$: Observable<RecordListMeta>;
     searchMetadata$: Observable<SearchMeta>;
     selection$: Observable<RecordSelection>;
@@ -94,6 +95,7 @@ export class RecordListModalStore implements StateStore {
     public init(module: string, parentModule: string = '', filter: SavedFilter = null): void {
         this.module = module;
         this.parentModule = parentModule;
+        this.initialFilter = filter;
 
         this.loadCurrentSort();
 

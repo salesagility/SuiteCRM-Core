@@ -76,6 +76,7 @@ export class RecordThreadModalComponent implements OnInit {
     @Input() wrapperClass: string = '';
     @Input() closeConfirmationLabel: string = '';
     @Input() closeConfirmationMessages: string[] = [];
+    @Input() closeConfirmationTitle: string = '';
     @Input() closeConfirmationModal: boolean = false;
     @Input() showFullHeaderConfirmation: boolean = false;
     @Input() headerConfirmationClass: string = '';

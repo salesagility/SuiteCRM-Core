@@ -228,12 +228,13 @@ export class ModuleNavigation {
      * @returns {string} router link
      */
     public getRecordRouterLink(module: string, id: string, isEdit?: boolean): string {
+        const moduleName = this.moduleNameMapper.toFrontend(module);
 
         if(isEdit) {
-            return `/${module}/edit/${id}`;
+            return `/${moduleName}/edit/${id}`;
         }
 
-        return `/${module}/record/${id}`;
+        return `/${moduleName}/record/${id}`;
     }
 
     /**

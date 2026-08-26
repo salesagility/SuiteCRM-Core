@@ -63,7 +63,6 @@ class TemplateImage extends TemplateText
         $def = parent::get_field_def();
         $def['studio'] = 'visible';
         $def['type'] = 'image';
-        $def['custom'] = true;
         $def['source'] = 'non-db';
         $def['metadata'] = $this->metadata ?? [];
 

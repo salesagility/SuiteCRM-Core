@@ -28,51 +28,39 @@ import {Injectable} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {LanguageStore} from '../../store/language/language.store';
 import {MessageService} from '../message/message.service';
-import {
-    FieldGridModalComponent,
-    FieldModalValidationFunction
-} from "../../components/modal/components/field-grid-modal/field-grid-modal.component";
+import {FieldGridModalComponent} from "../../components/modal/components/field-grid-modal/field-grid-modal.component";
 import {Field} from "../../common/record/field.model";
-import {FieldGridOptions} from "../../components/field-grid/field-grid.model";
 import {emptyObject} from "../../common/utils/object-utils";
 import {Record} from "../../common/record/record.model";
 import {SystemConfigStore} from "../../store/system-config/system-config.store";
+import {FieldModalOptions, FieldModalResult} from "./field-modal.model";
+import {EventBus} from "../event-bus/event-bus.service";
 
-
-export interface FieldModalOptions {
-    fields: Field[];
-    titleKey: string;
-    topButtonsDropdownLabelKey?: string;
-    descriptionKey?: string;
-    module?: string;
-    maxColumns?: number;
-    centered?: boolean;
-    scrollable?: boolean;
-    size?: 'sm' | 'lg' | 'xl';
-    fieldGridOptions?: FieldGridOptions;
-    validation?: FieldModalValidationFunction
-
-    [key: string]: any;
-}
-
-export interface FieldModalResult {
-    fields: Field[];
-    module: string;
-
-    [key: string]: any;
-}
+export {FieldModalOptions, FieldModalResult, FieldModalValidationFunction} from "./field-modal.model";
 
 @Injectable({
     providedIn: 'root'
 })
 export class FieldModalService {
 
+    initialized = false;
+
     constructor(
         protected languageStore: LanguageStore,
         protected message: MessageService,
         protected modalService: NgbModal,
-        protected systemConfigs: SystemConfigStore
+        protected systemConfigs: SystemConfigStore,
+        protected eventBus: EventBus
     ) {
+    }
+
+    init(): void {
+        this.initialized = true;
+        this.eventBus.on('open-field-modal').subscribe(message => {
+            this.showFieldModal(message.payload.options, (fields) => {
+                this.eventBus.respond(message.messageId, fields);
+            });
+        });
     }
 
     /**

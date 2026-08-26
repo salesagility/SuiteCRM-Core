@@ -36,6 +36,7 @@ import {SystemConfigStore} from "../../../../store/system-config/system-config.s
 import {PrimeNGConfig} from "primeng/api";
 import {ButtonInterface} from '../../../../common/components/button/button.model';
 import {MultiSelect} from "primeng/multiselect";
+import {isEmpty} from "lodash-es";
 
 @Component({
     selector: 'scrm-multienum-edit',
@@ -84,6 +85,24 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
             },
             icon: 'cross'
         } as ButtonInterface;
+
+        this.subs.push(this.field.valueChanges$.subscribe({
+            next: (value: any) => {
+
+                if (!isEmpty(value?.valueList)) {
+                    this.initValue();
+                    const selectedValuesValueMap = this.selectedValues.map(selectedValue => selectedValue.value);
+                    this.setFormControlValue(selectedValuesValueMap);
+                    return;
+                }
+
+                if (isEmpty(value?.valueList)) {
+                    this.selectedValues = [];
+                    this.selectedValuesSignal.set(this.selectedValues);
+                    this.syncSelectedValuesWithForm();
+                }
+            }
+        }));
     }
 
     public onAdd(): void {
@@ -103,9 +122,11 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
             } else {
                 this.selectedValues = this.options;
             }
+            this.selectedValuesSignal.set([...this.selectedValues]);
             this.onAdd();
         } else {
             this.selectedValues = [];
+            this.selectedValuesSignal.set(this.selectedValues);
             this.onRemove();
         }
     }
@@ -122,6 +143,7 @@ export class MultiEnumEditFieldComponent extends BaseMultiEnumComponent {
 
     public onClear(): void {
         this.selectedValues = [];
+        this.selectedValuesSignal.set(this.selectedValues);
         this.multiSelect.filterValue = '';
         this.onRemove();
     }

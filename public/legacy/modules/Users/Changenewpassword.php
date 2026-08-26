@@ -107,42 +107,35 @@ if (!empty($_REQUEST['guid']) && !empty($_REQUEST['key'])) {
         if (!$expired) {
             global $RAW_REQUEST;
             $password = $RAW_REQUEST['new_password'] ?? $_POST['new_password'] ?? '';
-            $usr = new user();
-            $errors = $usr->passwordValidationCheck($password);
+            $errors = $userBean->passwordValidationCheck($password);
             // if the form is filled and we want to login
             if (isset($_REQUEST['login']) && $_REQUEST['login'] == '1') {
-                if ($row['username'] == $_POST['user_name']) {
-                    if (!$errors) {
-                        $usr_id = $usr->retrieve_user_id($_POST['user_name']);
-                        $usr->retrieve($usr_id);
-                        $usr->setNewPassword($password);
-                        $query2 = "UPDATE users_password_link SET deleted='1' where id='" . $db->quote($_REQUEST['guid']) . "'";
-                        DBManagerFactory::getInstance()->query($query2, true, "Error setting link for $usr->user_name: ");
-                        $_POST['user_name'] = $_REQUEST['user_name'];
-                        $_POST['username_password'] = $_REQUEST['new_password'];
-                        $_POST['module'] = 'Users';
-                        $_POST['action'] = 'Authenticate';
-                        $_POST['login_module'] = 'Home';
-                        $_POST['login_action'] = 'index';
-                        $_POST['Login'] = 'Login';
-                        foreach ($_POST as $k => $v) {
-                            $_REQUEST[$k] = $v;
-                            $_GET[$k] = $v;
-                        }
-                        unset($_REQUEST['entryPoint'], $_GET['entryPoint']);
-                        $GLOBALS['app']->execute();
-                        die();
+                if (!$errors) {
+                    $userBean->setNewPassword($password);
+                    $query2 = "UPDATE users_password_link SET deleted='1' where id='" . $db->quote($_REQUEST['guid']) . "'";
+                    DBManagerFactory::getInstance()->query($query2, true, "Error setting link for $userBean->user_name: ");
+                    $_POST['user_name'] = $userBean->user_name;
+                    $_POST['username_password'] = $_REQUEST['new_password'];
+                    $_POST['module'] = 'Users';
+                    $_POST['action'] = 'Authenticate';
+                    $_POST['login_module'] = 'Home';
+                    $_POST['login_action'] = 'index';
+                    $_POST['Login'] = 'Login';
+                    foreach ($_POST as $k => $v) {
+                        $_REQUEST[$k] = $v;
+                        $_GET[$k] = $v;
                     }
-                    $redirect = false;
+                    unset($_REQUEST['entryPoint'], $_GET['entryPoint']);
+                    $GLOBALS['app']->execute();
+                    die();
                 }
+                $redirect = false;
             } else {
                 $redirect = false;
                 if (!$errors && !empty($password)){
-                    $usr_id = $usr->retrieve_user_id($_POST['user_name']);
-                    $usr->retrieve($usr_id);
-                    $usr->setNewPassword($password);
+                    $userBean->setNewPassword($password);
                     $query2 = "UPDATE users_password_link SET deleted='1' where id='" . $db->quote($_REQUEST['guid']) . "'";
-                    DBManagerFactory::getInstance()->query($query2, true, "Error setting link for $usr->user_name: ");
+                    DBManagerFactory::getInstance()->query($query2, true, "Error setting link for $userBean->user_name: ");
                     if ($_REQUEST['redirect'] === '1') {
                         $redirect = true;
                     }

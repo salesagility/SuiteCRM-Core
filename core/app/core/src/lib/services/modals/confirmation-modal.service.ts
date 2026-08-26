@@ -26,10 +26,27 @@
 
 import {Injectable} from '@angular/core';
 import {MessageModalComponent} from '../../components/modal/components/message-modal/message-modal.component';
+import {ConfirmationListModalComponent} from '../../containers/confirmation-list-modal/components/confirmation-list-modal.component';
 import {ModalButtonInterface} from '../../common/components/modal/modal.model';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringMap} from "../../common/types/string-map";
 import {FieldMap} from "../../common/record/field.model";
+import {SavedFilter} from "../../store/saved-filters/saved-filter.model";
+import {ConfirmationListAction, ConfirmationListFieldConfig} from "../../containers/confirmation-list-modal/models/confirmation-list-modal.model";
+
+export interface ConfirmationListModalOptions {
+    titleKey: string;
+    messageKey?: string;
+    module: string;
+    presetFilter: SavedFilter;
+    showFilter?: boolean;
+    columnFields?: ConfirmationListFieldConfig[];
+    actions?: ConfirmationListAction[];
+    onProceed: Function;
+    onClose?: Function;
+    fields?: FieldMap;
+    context?: StringMap;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -41,9 +58,10 @@ export class ConfirmationModalService {
     ) {
     }
 
-    public showModal(confirmationMessages: string[], onProceed: Function, onClose: Function = () => {}, fields = {} as FieldMap, context = {} as StringMap): void {
+    public showModal(confirmationMessages: string[], onProceed: Function, onClose: Function = () => {}, fields = {} as FieldMap, context = {} as StringMap, titleKey: string = ''): void {
         const modal = this.modalService.open(MessageModalComponent);
 
+        modal.componentInstance.titleKey = titleKey;
         modal.componentInstance.labelKeys = confirmationMessages ?? 'LBL_GENERIC_CONFIRMATION';
         modal.componentInstance.fields = fields;
         modal.componentInstance.context = context;
@@ -74,6 +92,47 @@ export class ConfirmationModalService {
             if (onClose) {
                 onClose();
             }
+        });
+    }
+
+    public showListModal(options: ConfirmationListModalOptions): void {
+        const onClose = options.onClose ?? (() => {});
+
+        const modal = this.modalService.open(ConfirmationListModalComponent, {size: 'xl', scrollable: true});
+
+        modal.componentInstance.titleKey = options.titleKey ?? '';
+        modal.componentInstance.messageKey = options.messageKey ?? '';
+        modal.componentInstance.module = options.module;
+        modal.componentInstance.presetFilter = options.presetFilter;
+        modal.componentInstance.showFilter = options.showFilter ?? false;
+        modal.componentInstance.columnFields = options.columnFields ?? [];
+        modal.componentInstance.actions = options.actions ?? [];
+        modal.componentInstance.onProceed = options.onProceed;
+        modal.componentInstance.fields = options.fields ?? {};
+        modal.componentInstance.context = options.context ?? {};
+
+        modal.componentInstance.buttons = [
+            {
+                labelKey: 'LBL_CANCEL',
+                klass: ['btn-secondary'],
+                onClick: activeModal => {
+                    activeModal.dismiss();
+                }
+            } as ModalButtonInterface,
+            {
+                labelKey: 'LBL_PROCEED',
+                klass: ['btn-main'],
+                onClick: activeModal => {
+                    options.onProceed();
+                    activeModal.close();
+                }
+            } as ModalButtonInterface,
+        ];
+
+        modal.componentInstance.onClose = onClose;
+
+        modal.dismissed.subscribe(() => {
+            onClose();
         });
     }
 }

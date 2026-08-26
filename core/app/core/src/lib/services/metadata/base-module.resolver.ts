@@ -44,6 +44,8 @@ import {AuthService} from '../auth/auth.service';
 import {RecordModalService} from "../modals/record-modal.service";
 import {RecordThreadModalService} from "../../store/record-thread-modal/record-thread-modal.service";
 import {GlobalActionsAdapter} from "../global-actions/adapters/actions.adapter";
+import {FieldModalService} from "../modals/field-modal.service";
+import {SelectModalService} from "../modals/select-modal.service";
 
 @Injectable({providedIn: 'root'})
 export class BaseModuleResolver extends BaseMetadataResolver {
@@ -63,7 +65,9 @@ export class BaseModuleResolver extends BaseMetadataResolver {
         protected recordModalService: RecordModalService,
         protected recordThreadModalService: RecordThreadModalService,
         protected globalAsyncActionAdapter: GlobalActionsAdapter,
-        protected auth: AuthService
+        protected auth: AuthService,
+        protected fieldModalService: FieldModalService,
+        protected selectModalService: SelectModalService
     ) {
         super(
             systemConfigStore,
@@ -78,7 +82,9 @@ export class BaseModuleResolver extends BaseMetadataResolver {
             recordModalService,
             recordThreadModalService,
             globalAsyncActionAdapter,
-            auth
+            auth,
+            fieldModalService,
+            selectModalService
         );
     }
 

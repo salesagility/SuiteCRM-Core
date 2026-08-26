@@ -160,6 +160,8 @@ services:
       tags: [ 'record.saveHandlers.fieldType' ]
     App\Data\Service\Record\RecordSaveHandlers\RecordSaveHandlerInterface:
       tags: [ 'record.saveHandlers.record' ]
+    App\Data\Service\Record\RecordValidators\RecordValidatorInterface:
+      tags: [ 'record.validators.record' ]
     App\Data\Service\Record\RecordDeleteHandlers\RecordFieldDeleteHandlerInterface:
       tags: [ 'record.deleteHandlers.field' ]
     App\Data\Service\Record\RecordDeleteHandlers\RecordFieldTypeDeleteHandlerInterface:
@@ -191,7 +193,7 @@ services:
   # this creates a service per class whose id is the fully-qualified class name
   App\:
     resource: '../core/backend/*'
-    exclude: '../core/backend/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    exclude: '../core/backend/{DependencyInjection,Entity,Migrations,PreUpgradeMigrations,Tests,Kernel.php}'
 
   App\Module\:
     resource: '../core/modules/*'
@@ -413,6 +415,10 @@ services:
       - !tagged { tag: 'cli.install.step'}
       - '@monolog.logger.install'
 
+  App\Install\Service\PreUpgradeMigrations\PreUpgradeMigrationRunner:
+    arguments:
+      $container: '@service_container'
+
   Doctrine\Migrations\Version\DbalMigrationFactory: ~
   App\Install\Service\Migrations\MigrationFactoryDecorator:
     decorates: Doctrine\Migrations\Version\DbalMigrationFactory
@@ -491,6 +497,10 @@ services:
     lazy: true
     arguments:
       - !tagged { tag: 'record.saveHandlers.record' }
+
+  App\Data\Service\Record\RecordValidators\RecordValidatorRegistry:
+    arguments:
+      - !tagged { tag: 'record.validators.record' }
 
   App\Data\Service\Record\RecordDeleteHandlers\RecordFieldDeleteHandlerRegistry:
     arguments:

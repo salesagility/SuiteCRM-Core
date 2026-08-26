@@ -131,8 +131,10 @@ export class ClassicModalComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     protected onIFrameLoad(): void {
-        // Do not show scroll at any time, to avoid flickering
-        this.iframe.contentWindow.document.body.style.overflow = 'hidden';
+        this.pageUnlock();
+        if (this.iframe?.contentWindow?.document?.body) {
+            this.iframe.contentWindow.document.body.style.overflow = 'hidden';
+        }
 
         // callback function to execute custom task
         // as required by the caller
@@ -150,11 +152,16 @@ export class ClassicModalComponent implements OnInit, OnDestroy, AfterViewInit {
         this.iframeResizeHandler.destroy();
     }
 
+    protected pageUnlock(): void {
+        this.iframe.style.display = 'block';
+    }
+
     protected buildIframePageChangeObserver(): IframePageChangeObserver {
         return new IframePageChangeObserver(
             this.iframe,
             null,
             this.onIFrameLoad.bind(this),
+            null,
             this.onIFrameUnload.bind(this),
         );
     }

@@ -63,6 +63,7 @@ export class BaseMultiEnumComponent extends BaseEnumComponent {
 
         this.selectedValues = valueArray.map(valueElement=>this.buildOptionFromValue(valueElement, ''));
         this.selectedValues = uniqBy(this.selectedValues, 'value');
+        this.selectedValuesSignal.set([...this.selectedValues]);
 
         this.syncSelectedValuesWithForm();
     }

@@ -34,7 +34,10 @@ import {RecordPaginationService} from "../../store/record-pagination/record-pagi
 import {SystemConfigStore} from "../../../../store/system-config/system-config.store";
 import {ViewMode} from "../../../../common/views/view.model";
 import {Router} from "@angular/router";
-import {Field} from "../../../../common/record/field.model";
+import {
+    allValidationErrorsSilent,
+    collectValidationErrors
+} from "../../../../common/services/validators/validators.model";
 
 @Injectable({
     providedIn: 'root'
@@ -56,10 +59,14 @@ export class RecordSaveScheduleAction extends RecordActionHandler {
     }
 
     run(data: RecordActionData): void {
-        const fields = data.store.recordStore.getStaging().fields;
+        const record = data.store.recordStore.getStaging();
+        const fields = record.fields;
+        const formGroup = record.formGroup;
         const params = data.action.params;
 
         data.store.recordStore.validate().pipe(take(1)).subscribe(valid => {
+            const collectedErrors = collectValidationErrors(formGroup, fields);
+
             if (valid) {
                 const statusKey = params.statusKey ?? 'status';
                 fields[statusKey].value = 'scheduled';
@@ -72,7 +79,9 @@ export class RecordSaveScheduleAction extends RecordActionHandler {
                 return;
             }
 
-            this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            if (!allValidationErrorsSilent(collectedErrors)) {
+                this.message.addWarningMessageByKey('LBL_VALIDATION_ERRORS');
+            }
         });
     }
 

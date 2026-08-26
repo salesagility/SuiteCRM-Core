@@ -31,7 +31,7 @@ import {Action} from '../../../common/actions/action.model';
 import {ViewMode} from '../../../common/views/view.model';
 import {Record} from '../../../common/record/record.model';
 import {Panel} from '../../../common/metadata/metadata.model';
-import {MetadataStore, RecordViewSectionMetadata} from '../../../store/metadata/metadata.store.service';
+import {MetadataStore, RecordViewMetadata, RecordViewSectionMetadata} from '../../../store/metadata/metadata.store.service';
 import {RecordContentConfig, RecordContentDataSource} from '../../../components/record-content/record-content.model';
 import {RecordActionManager} from '../actions/record-action-manager.service';
 import {RecordActionData} from '../actions/record.action';
@@ -73,19 +73,21 @@ export class RecordContentAdapter implements RecordContentDataSource {
     getDisplayConfig(): Observable<RecordContentConfig> {
 
         return this.store.sectionMetadata$.pipe(
-            combineLatestWith(this.store.mode$),
-            map(([meta, mode]: [RecordViewSectionMetadata, ViewMode]) => {
+            combineLatestWith(this.store.mode$, this.metadata.recordViewMetadata$),
+            map(([meta, mode, recordViewMeta]: [RecordViewSectionMetadata, ViewMode, RecordViewMetadata]) => {
                 const layout = this.getPanelDisplayType(meta);
                 const maxColumns = meta.templateMeta.maxColumns || 2;
                 const colClasses = meta?.templateMeta?.colClasses ?? [];
                 const tabDefs = meta.templateMeta.tabDefs;
+                const recordLogic = recordViewMeta?.recordLogic ?? {};
 
                 return {
                     layout,
                     mode,
                     maxColumns,
                     tabDefs,
-                    colClasses
+                    colClasses,
+                    recordLogic
                 } as RecordContentConfig;
             })
         );

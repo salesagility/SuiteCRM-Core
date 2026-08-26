@@ -163,6 +163,8 @@ class CalDAVProvider extends AbstractCalendarProvider
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_setopt($curl, CURLOPT_TIMEOUT, 30);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+            curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            curl_setopt($curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
             curl_setopt($curl, CURLOPT_HEADERFUNCTION, function ($_curl, $header) use (&$responseHeaders) {
                 $length = strlen($header);
                 $parts = explode(':', $header, 2);

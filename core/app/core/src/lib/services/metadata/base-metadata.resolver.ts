@@ -42,6 +42,8 @@ import {AuthService} from '../auth/auth.service';
 import {RecordModalService} from "../modals/record-modal.service";
 import {RecordThreadModalService} from "../../store/record-thread-modal/record-thread-modal.service";
 import {GlobalActionsAdapter} from "../global-actions/adapters/actions.adapter";
+import {FieldModalService} from "../modals/field-modal.service";
+import {SelectModalService} from "../modals/select-modal.service";
 
 
 @Injectable({providedIn: 'root'})
@@ -60,7 +62,9 @@ export class BaseMetadataResolver  {
         protected recordModalService: RecordModalService,
         protected recordThreadModalService: RecordThreadModalService,
         protected globalAsyncActionAdapter: GlobalActionsAdapter,
-        protected auth: AuthService
+        protected auth: AuthService,
+        protected fieldModalService: FieldModalService,
+        protected selectModalService: SelectModalService
     ) {
     }
 
@@ -82,6 +86,14 @@ export class BaseMetadataResolver  {
 
                             if (!this.globalAsyncActionAdapter.initialized) {
                                 this.globalAsyncActionAdapter.init();
+                            }
+
+                            if (!this.fieldModalService.initialized) {
+                                this.fieldModalService.init();
+                            }
+
+                            if (!this.selectModalService.initialized) {
+                                this.selectModalService.init();
                             }
                         });
                     }, 0)

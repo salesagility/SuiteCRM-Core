@@ -89,7 +89,7 @@ class EmailProcessProcessor extends LegacyHandler
         }
 
         /** @var \OutboundEmailAccounts $outboundEmail */
-        $outboundEmail = \BeanFactory::getBean('OutboundEmailAccounts', $emailAttributes['outbound_email_id']);
+        $outboundEmail = \BeanFactory::getBean('OutboundEmailAccounts', $emailAttributes['outbound_email_id'] ?? '');
 
         if (empty($outboundEmail)) {
             $this->close();
@@ -308,6 +308,11 @@ class EmailProcessProcessor extends LegacyHandler
         $bean = \BeanFactory::getBean($attributes['parent_type'], $attributes['parent_id']);
 
         $this->close();
+
+        if (empty($bean)) {
+            $emailRecord->setAttributes($attributes);
+            return $emailRecord;
+        }
 
         $attributes = $this->parseBean($attributes, $bean);
 

@@ -26,7 +26,6 @@
 
 import {AfterViewInit, Component, ElementRef, HostListener, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DomSanitizer} from '@angular/platform-browser';
 import {IframeResizeHandlerHandler} from '../../services/iframe-resize-handler.service';
 import {SystemConfigStore} from '../../../../store/system-config/system-config.store';
 import {AuthService} from '../../../../services/auth/auth.service';
@@ -86,13 +85,13 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
     public wrapper: any;
     public url: string;
     protected iframe = null;
+    protected isRedirecting = false;
     private iframePageChangeHandler: IframePageChangeObserver;
     private iframeResizeHandler: IframeResizeHandlerHandler;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private sanitizer: DomSanitizer,
         private routeConverter: RouteConverter,
         private auth: AuthService,
         private ngZone: NgZone,
@@ -125,7 +124,6 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         if (this.iframeResizeHandler) {
             this.iframeResizeHandler.destroy();
             this.iframeResizeHandler = null;
-
         }
         if (this.iframePageChangeHandler) {
             this.iframePageChangeHandler.destroy();
@@ -152,51 +150,56 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
             window.parent.postMessage('iframe-clicked', '*');
         });
 
-        this.initObservers();
-    }
-
-    initObservers(): void {
         this.iframePageChangeHandler = this.buildIframePageChangeObserver();
         this.iframeResizeHandler = this.buildIframeResizeHandlerHandler();
-
-        if (this.iframePageChangeHandler) {
-            this.iframePageChangeHandler.init();
-        }
+        this.iframePageChangeHandler.init();
     }
 
     protected onPageChange(newLocation): void {
 
-        if (this.shouldRedirect(newLocation) === false) {
-            this.iframe.style.display = 'block';
-            this.cleanObservers();
-            this.initObservers();
-            return;
-        }
-
-        const location = this.routeConverter.toFrontEndRoute(newLocation);
-
-        if (location === '/users/login') {
+        if (!this.auth.isLoggedIn()) {
+            this.isRedirecting = true;
             this.auth.logout('LBL_SESSION_EXPIRED');
             return;
         }
 
+        if (this.shouldRedirect(newLocation) === false) {
+            this.pageUnlock();
+            return;
+        }
+
+        const location = this.routeConverter.toFrontEndRoute(newLocation);
+        const normalizedLocation = location?.toLowerCase();
+
+        if (normalizedLocation === 'users/login' || normalizedLocation === 'login' || normalizedLocation === 'logged-out') {
+            this.isRedirecting = true;
+            this.auth.logout('LBL_SESSION_EXPIRED');
+            return;
+        }
+
+        this.isRedirecting = true;
         this.ngZone.run(() => this.router.navigateByUrl(location).then()).then();
     }
 
     protected onIFrameLoad(): void {
-        // Do not show scroll at any time, to avoid flickering
-        this.iframe.contentWindow.document.body.style.overflow = 'hidden';
+        if (this.isRedirecting) {
+            return;
+        }
 
-        // Init resize handler
+        if (this.iframe?.contentWindow?.document?.body) {
+            this.iframe.contentWindow.document.body.style.overflow = 'hidden';
+        }
         this.iframeResizeHandler.init(this.iframe);
-
         this.forceCacheRebuildAfterRepairAndRebuild();
     }
 
     // Temporary solution. Force a cache rebuild after quick repair and rebuild.
     // Can be removed after Repair and Rebuild page is re-done with to Suite8 views.
     protected forceCacheRebuildAfterRepairAndRebuild(): void {
-        const iframeUrl = this.iframe.contentWindow.location.href;
+        const iframeUrl = this.iframe?.contentWindow?.location?.href;
+        if (!iframeUrl) {
+            return;
+        }
 
         const url = new URL(iframeUrl);
         const params = new URLSearchParams(url.search);
@@ -206,9 +209,17 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
         }
     }
 
-    protected onIFrameUnload(): void {
-        // hide iframe, while being re-directed
+    protected pageLock(): void {
         this.iframe.style.display = 'none';
+    }
+
+    protected pageUnlock(): void {
+        this.isRedirecting = false;
+        this.iframe.style.display = 'block';
+    }
+
+    protected onIFrameUnload(): void {
+        this.pageLock();
         this.iframeResizeHandler.destroy();
     }
 
@@ -217,6 +228,7 @@ export class ClassicViewUiComponent implements OnInit, OnDestroy, AfterViewInit 
             this.iframe,
             this.onPageChange.bind(this),
             this.onIFrameLoad.bind(this),
+            this.pageUnlock.bind(this),
             this.onIFrameUnload.bind(this),
         );
     }

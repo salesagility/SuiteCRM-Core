@@ -52,10 +52,10 @@ class BooleanFilterMapper implements FilterMapperInterface
         $mapped = [];
 
         foreach ($values as $value) {
-            if (empty($value)) {
+            if ($value === '' || $value === null) {
                 continue;
             }
-            $mapped[] = $value === 'true' ? 1 : 0;
+            $mapped[] = isTrue($value) ? 1 : 0;
         }
 
         $legacyValue = $mapped;

@@ -71,8 +71,8 @@ class SetupLegacyMigrationCommand extends BaseStepExecutorCommand
     {
         parent::configure();
 
-        $this->setDescription('Setup for migrating from a SuiteCRM 7.14.x+ instance')
-            ->setHelp('This command will setup the migration from your SuiteCRM 7.14.x+ instance to SuiteCRM 8.x');
+        $this->setDescription('Setup for migrating from a SuiteCRM 7.15.x+ instance')
+            ->setHelp('This command will setup the migration from your SuiteCRM 7.15.x+ instance to SuiteCRM 8.x');
     }
 
     /**
@@ -89,7 +89,7 @@ class SetupLegacyMigrationCommand extends BaseStepExecutorCommand
      */
     protected function getTitle(): string
     {
-        return 'SuiteCRM Setup SuiteCRM 7.14.x+ Migration';
+        return 'SuiteCRM Setup SuiteCRM 7.15.x+ Migration';
     }
 
     /**

@@ -1191,6 +1191,10 @@ class SugarEmailAddress extends SugarBean
      */
     public function getEmailGUID($addr)
     {
+        if (empty($addr)) {
+            return '';
+        }
+
         $address = $this->db->quote($this->_cleanAddress($addr));
         $addressCaps = strtoupper($address);
 

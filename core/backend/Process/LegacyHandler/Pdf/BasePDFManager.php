@@ -143,8 +143,29 @@ class BasePDFManager extends LegacyHandler
         $objectArr = [];
         $objectArr[$moduleBean->module_dir] = $moduleBean->id;
 
+        if ($moduleBean->module_dir !== 'Accounts') {
+            $objectArr['Accounts'] = $moduleBean->billing_account_id ?? '';
+        }
+
+        if ($moduleBean->module_dir !== 'Contacts') {
+            $objectArr['Contacts'] = $moduleBean->billing_contact_id ?? '';
+        }
+
+        if ($moduleBean->module_dir !== 'Users') {
+            $objectArr['Users'] = $moduleBean->assigned_user_id ?? '';
+        }
+
+        if ($moduleBean->module_dir !== 'Currencies') {
+            $objectArr['Currencies'] = $moduleBean->currency_id ?? '';
+        }
+
         if ($moduleBean->module_dir === 'Contacts') {
             $objectArr['Accounts'] = $moduleBean->account_id;
+        }
+
+        if ($moduleBean->module_dir === 'AOS_Contracts') {
+            $objectArr['Accounts'] = $moduleBean->contract_account_id ?? '';
+            $objectArr['Contacts'] = $moduleBean->contact_id ?? '';
         }
 
         return $objectArr;
@@ -174,7 +195,7 @@ class BasePDFManager extends LegacyHandler
 
         $pdfConfig = $this->pdfLegacyHandler->buildPDFConfig($templateBean);
         $basePdf = $this->pdfLegacyHandler->createPdf($pdfConfig);
-        $fileName = $this->getPdfName($templateBean->name);
+        $fileName = str_replace(' ', '_', $templateBean->name) . '.pdf';
 
         $storageType = $this->getStorageType();
 
@@ -226,7 +247,12 @@ class BasePDFManager extends LegacyHandler
         $templateBean = $this->getBean('AOS_PDF_Templates', $templateId);
 
         $pdfConfig = $this->pdfLegacyHandler->buildPDFConfig($templateBean);
-        $fileName = $this->getPdfName($templateBean->name);
+        $fileNaming = $options['fileNaming'] ?? 'record';
+        if ($fileNaming === 'template') {
+            $fileName = str_replace(' ', '_', $templateBean->name) . '.pdf';
+        } else {
+            $fileName = $this->getPdfName($module, $moduleBean->name);
+        }
         $objectArr = $this->setObjectArray($moduleBean);
 
         [$header, $footer, $printable] = $this->pdfLegacyHandler->parseTemplate($moduleBean, $templateBean, $objectArr, true);
@@ -243,7 +269,7 @@ class BasePDFManager extends LegacyHandler
             return $this->createPDFMediaObject($parentRecord, $fileName, $pdfConfig, $pdfContent, $temp);
         }
 
-        if (isset($options['createNote']) && $options['createNote'] === true) {
+        if ($options['createNote'] ?? true) {
             $note = $this->createNote($moduleBean, $fileName, $options);
             return $this->createPDFMediaObject($note, $fileName, $pdfConfig, $pdfContent, $temp);
         }
@@ -353,9 +379,22 @@ class BasePDFManager extends LegacyHandler
         ];
     }
 
-    protected function getPdfName(string $name): string
+    protected function getPdfName(string $module, string $name): string
     {
-        return str_replace(" ", "_", $name) . ".pdf";
+        $legacyModule = $this->moduleNameMapper->toLegacy($module);
+        $moduleLabel = $this->getModuleSingularLabel($legacyModule);
+        return $moduleLabel . '_' . str_replace(' ', '_', $name) . '.pdf';
+    }
+
+    protected function getModuleSingularLabel(string $legacyModule): string
+    {
+        $this->init();
+        $modStrings = return_module_language($GLOBALS['current_language'] ?? 'en_us', $legacyModule);
+        $this->close();
+
+        $singular = $modStrings['LBL_PDF_NAME'] ?? $this->moduleNameMapper->toCore($legacyModule);
+
+        return str_replace(' ', '_', $singular);
     }
 
     protected function retrieveBean(SugarBean $moduleBean, string $id): ?SugarBean

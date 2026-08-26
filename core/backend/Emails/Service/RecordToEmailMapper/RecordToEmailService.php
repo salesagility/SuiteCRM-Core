@@ -146,7 +146,7 @@ class RecordToEmailService
         $mediaObjects = [];
 
         foreach ($attachments as $key => $attachment) {
-            if (!$attachment['id'] ?? null) {
+            if (!($attachment['id'] ?? null)) {
                 $this->logger->warning('Attachment id is missing in email attachments');
                 continue;
             }

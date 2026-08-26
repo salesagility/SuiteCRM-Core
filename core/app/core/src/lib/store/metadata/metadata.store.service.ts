@@ -30,7 +30,7 @@ import {distinctUntilChanged, map, shareReplay, tap} from 'rxjs/operators';
 import {EntityGQL} from '../../services/api/graphql-api/api.entity.get';
 import {Action} from '../../common/actions/action.model';
 import {ColumnDefinition, ListViewMeta, MassUpdateMeta, SearchMeta} from '../../common/metadata/list.metadata.model';
-import {FieldDefinitionMap} from '../../common/record/field.model';
+import {AsyncValidationDefinition, FieldDefinitionMap} from '../../common/record/field.model';
 import {deepClone} from '../../common/utils/object-utils';
 import {RecentlyViewed} from '../../common/record/recently-viewed.model';
 import {Favorite} from '../../common/record/favorites.model';
@@ -40,6 +40,7 @@ import {WidgetMetadata} from '../../common/metadata/widget.metadata';
 import {StateStore} from '../state';
 import {AppStateStore} from '../app-state/app-state.store';
 import {ObjectMap} from "../../common/types/object-map";
+import {RecordLogicMap} from "../../components/record-content/record-logic/record-logic.action";
 
 export interface SummaryTemplates {
     [key: string]: string;
@@ -81,6 +82,8 @@ export interface RecordViewMetadata {
     metadata?: ObjectMap;
     header?: HeaderMetadata;
     sections?: RecordViewSectionMetadataMap;
+    recordLogic?: RecordLogicMap;
+    asyncValidators?: { [key: string]: AsyncValidationDefinition };
 }
 
 export interface RecordViewSectionMetadataMap {
@@ -106,6 +109,7 @@ export interface RecordModalMetadata {
     panels?: Panel[];
     vardefs?: FieldDefinitionMap;
     metadata?: ObjectMap;
+    recordLogic?: RecordLogicMap;
 }
 
 export interface RecordTemplateMetadata {
@@ -552,7 +556,9 @@ export class MetadataStore implements StateStore {
             vardefs: 'vardefs',
             metadata: 'metadata',
             header: 'header',
-            sections: 'sections'
+            sections: 'sections',
+            recordLogic: 'recordLogic',
+            asyncValidators: 'asyncValidators'
         };
 
         this.addDefinedMeta(recordViewMeta, receivedMeta, entries);
@@ -577,7 +583,8 @@ export class MetadataStore implements StateStore {
             actions: 'actions',
             panels: 'panels',
             vardefs: 'vardefs',
-            metadata: 'metadata'
+            metadata: 'metadata',
+            recordLogic: 'recordLogic'
         };
 
         this.addDefinedMeta(recordModalMeta, receivedMeta, entries);
