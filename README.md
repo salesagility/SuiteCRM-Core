@@ -91,7 +91,7 @@ Alternatively, you can support the core team with a small [donation](https://ope
 
 ### 🗺️ Roadmap
 
-View the [Roadmap](https://suitecrm.com/roadmap/) to see what’s coming next in SuiteCRM 8.
+View the [Roadmap](https://suitecrm.com/suitecrm-roadmap/) to see what’s coming next in SuiteCRM 8.
 
 ---
 
